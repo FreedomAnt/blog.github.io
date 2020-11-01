@@ -1,65 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>数据可视化</title>
-    <url>/%E5%BC%80%E5%8F%91/javascript/%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/</url>
-    <content><![CDATA[<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
-<li>Leaflet|28.9K|适合移动设备</li>
-<li>Chartist.js|12.3K|创建响应式图表</li>
-<li>d3|93.6K|svg+canvas+html</li>
-<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
-<li>Echarts|42.8K|百度产品</li>
-<li>AntV|蚂蚁金服</li>
-<li>Highcharts|9.7K|可视化库，商用付费</li>
-</ul>
-<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
-<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
-</ul>
-<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
-<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
-<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
-<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
-</ul>
-<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
-<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
-<li>FineReport</li>
-<li>数字冰雹</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
-<li>recharts|14.7K|Redefined chart library built with React and D3</li>
-<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
-<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
-<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
-<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
-</ul>
-<hr>
-<p>选型</p>
-<blockquote>
-<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
-<p>开发：Echarts|AntV|D3</p>
-</blockquote>
-<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts&gt;antv</p>
-<hr>
-<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
-<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
-<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>javascript</category>
-        <category>可视化</category>
-      </categories>
-      <tags>
-        <tag>可视化</tag>
-        <tag>数据</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Sentry部署</title>
     <url>/%E5%BC%80%E5%8F%91/javascript/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p>Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等组件，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
@@ -87,7 +28,7 @@
 <blockquote>
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建： docker exec -it my-sentry /bin/sh ==&gt; sentry createuser</p>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjeDZkOyYjOTc7JiN4Njk7JiMxMDg7JiM3ODsmIzk3OyYjeDZkOyYjMTAxOyYjNjQ7JiMxMTM7JiN4NzE7JiN4MmU7JiM5OTsmIzExMTsmIzEwOTs=">&#x6d;&#97;&#x69;&#108;&#78;&#97;&#x6d;&#101;&#64;&#113;&#x71;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjeDYxOyYjMTA1OyYjeDZjOyYjNzg7JiN4NjE7JiN4NmQ7JiN4NjU7JiM2NDsmIzExMzsmI3g3MTsmI3gyZTsmIzk5OyYjeDZmOyYjeDZkOw==">&#109;&#x61;&#105;&#x6c;&#78;&#x61;&#x6d;&#x65;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h2 id="启动-Sentry-Server，同时添加端口映射。"><a href="#启动-Sentry-Server，同时添加端口映射。" class="headerlink" title="启动 Sentry Server，同时添加端口映射。"></a>启动 Sentry Server，同时添加端口映射。</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 -p 9000:9000 参数，再启动后可以通过访问 <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MDAwLw==">http://localhost:9000<i class="fa fa-external-link-alt"></i></span> 或 <span class="exturl" data-url="aHR0cDovL2hvc3QtaXA6OTAwMC8=">http://host-ip:9000<i class="fa fa-external-link-alt"></i></span> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-redis:redis --link sentry-postgres:postgres sentry</span></span><br></pre></td></tr></table></figure>
@@ -121,7 +62,7 @@
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiMxMTI7JiN4NmM7JiN4NjU7JiN4NDA7JiMxMDk7JiM5NzsmIzEwNTsmI3g2YzsmI3gyZTsmIzk5OyYjeDZmOyYjMTA5Ow==">&#101;&#x78;&#97;&#109;&#112;&#x6c;&#x65;&#x40;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjOTc7JiMxMDk7JiN4NzA7JiN4NmM7JiMxMDE7JiM2NDsmI3g2ZDsmIzk3OyYjeDY5OyYjeDZjOyYjNDY7JiN4NjM7JiN4NmY7JiN4NmQ7">&#x65;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#64;&#x6d;&#97;&#x69;&#x6c;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -141,7 +82,7 @@
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjMTA5OyYjMTEyOyYjeDZjOyYjeDY1OyYjeDQwOyYjMTA5OyYjOTc7JiMxMDU7JiMxMDg7JiM0NjsmI3g2MzsmI3g2ZjsmI3g2ZDs=">&#101;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x40;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjMTAxOyYjeDQwOyYjeDZkOyYjOTc7JiN4Njk7JiN4NmM7JiN4MmU7JiN4NjM7JiMxMTE7JiMxMDk7">&#x65;&#x78;&#x61;&#x6d;&#112;&#108;&#101;&#x40;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -205,6 +146,65 @@
       <tags>
         <tag>sentry</tag>
         <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据可视化</title>
+    <url>/%E5%BC%80%E5%8F%91/javascript/%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
+<li>Leaflet|28.9K|适合移动设备</li>
+<li>Chartist.js|12.3K|创建响应式图表</li>
+<li>d3|93.6K|svg+canvas+html</li>
+<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
+<li>Echarts|42.8K|百度产品</li>
+<li>AntV|蚂蚁金服</li>
+<li>Highcharts|9.7K|可视化库，商用付费</li>
+</ul>
+<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
+<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
+</ul>
+<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
+<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
+<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
+<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
+</ul>
+<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
+<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
+<li>FineReport</li>
+<li>数字冰雹</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
+<li>recharts|14.7K|Redefined chart library built with React and D3</li>
+<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
+<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
+<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
+<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
+</ul>
+<hr>
+<p>选型</p>
+<blockquote>
+<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
+<p>开发：Echarts|AntV|D3</p>
+</blockquote>
+<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts&gt;antv</p>
+<hr>
+<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
+<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
+<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>javascript</category>
+        <category>可视化</category>
+      </categories>
+      <tags>
+        <tag>可视化</tag>
+        <tag>数据</tag>
       </tags>
   </entry>
 </search>
