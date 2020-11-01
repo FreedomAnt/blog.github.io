@@ -39,7 +39,7 @@
 <meta property="og:description" content="Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等组件，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。 如果你选择了通过 Docker 进行安装，其实还有更加便捷的方式 —— docker-compose 。在 github 上有一个开源项目用于部署 Sentry，可以直接运行 .&#x2F;install.sh 将 Se">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-31T08:06:01.000Z">
-<meta property="article:modified_time" content="2020-11-01T17:19:08.375Z">
+<meta property="article:modified_time" content="2020-11-01T17:23:44.050Z">
 <meta property="article:author" content="fanta">
 <meta property="article:tag" content="sentry">
 <meta property="article:tag" content="docker">
@@ -215,7 +215,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA-Redis-%E5%AE%B9%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">1.启动一个 Redis 容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA-Postgres-%E5%AE%B9%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">2.启动一个 Postgres 容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%94%9F%E6%88%90%E5%94%AF%E4%B8%80%E7%A7%98%E9%92%A5"><span class="nav-number">3.</span> <span class="nav-text">3.生成唯一秘钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E8%BF%9E%E6%8E%A5-Redis%E3%80%81Postgres-%E5%92%8C-Sentry"><span class="nav-number">4.</span> <span class="nav-text">4.连接 Redis、Postgres 和 Sentry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%90%AF%E5%8A%A8-Sentry-Server%EF%BC%8C%E5%90%8C%E6%97%B6%E6%B7%BB%E5%8A%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E3%80%82"><span class="nav-number">5.</span> <span class="nav-text">5.启动 Sentry Server，同时添加端口映射。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E4%B8%AD%E9%9C%80%E8%A6%81-Celery"><span class="nav-number">6.</span> <span class="nav-text">6.默认配置中需要 Celery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E7%99%BB%E5%BD%95-sentry"><span class="nav-number">7.</span> <span class="nav-text">7.登录 sentry</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA-Redis-%E5%AE%B9%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">启动一个 Redis 容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA-Postgres-%E5%AE%B9%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">启动一个 Postgres 容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%94%AF%E4%B8%80%E7%A7%98%E9%92%A5"><span class="nav-number">3.</span> <span class="nav-text">生成唯一秘钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5-Redis%E3%80%81Postgres-%E5%92%8C-Sentry"><span class="nav-number">4.</span> <span class="nav-text">连接 Redis、Postgres 和 Sentry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Sentry-Server%EF%BC%8C%E5%90%8C%E6%97%B6%E6%B7%BB%E5%8A%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E3%80%82"><span class="nav-number">5.</span> <span class="nav-text">启动 Sentry Server，同时添加端口映射。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E4%B8%AD%E9%9C%80%E8%A6%81-Celery"><span class="nav-number">6.</span> <span class="nav-text">默认配置中需要 Celery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BB%E5%BD%95-sentry"><span class="nav-number">7.</span> <span class="nav-text">登录 sentry</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -325,7 +325,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-02 01:19:08" itemprop="dateModified" datetime="2020-11-02T01:19:08+08:00">2020-11-02</time>
+        <time title="修改时间：2020-11-02 01:23:44" itemprop="dateModified" datetime="2020-11-02T01:23:44+08:00">2020-11-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -384,18 +384,18 @@
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/getsentry/onpremise.git</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="1-启动一个-Redis-容器"><a href="#1-启动一个-Redis-容器" class="headerlink" title="1.启动一个 Redis 容器"></a>1.启动一个 Redis 容器</h2><p>Start a Redis container</p>
+<h2 id="启动一个-Redis-容器"><a href="#启动一个-Redis-容器" class="headerlink" title="启动一个 Redis 容器"></a>启动一个 Redis 容器</h2><p>Start a Redis container</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name sentry-redis redis</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="2-启动一个-Postgres-容器"><a href="#2-启动一个-Postgres-容器" class="headerlink" title="2.启动一个 Postgres 容器"></a>2.启动一个 Postgres 容器</h2><p>Start a Postgres container</p>
+<h2 id="启动一个-Postgres-容器"><a href="#启动一个-Postgres-容器" class="headerlink" title="启动一个 Postgres 容器"></a>启动一个 Postgres 容器</h2><p>Start a Postgres container</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name sentry-postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_USER=sentry postgres</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="3-生成唯一秘钥"><a href="#3-生成唯一秘钥" class="headerlink" title="3.生成唯一秘钥"></a>3.生成唯一秘钥</h2><p>生成一个密钥，用于后面所有 sentry 容器之间握手。请记住这串密钥，在后面的 docker 命令中，密钥需要以环境变量形式传入</p>
+<h2 id="生成唯一秘钥"><a href="#生成唯一秘钥" class="headerlink" title="生成唯一秘钥"></a>生成唯一秘钥</h2><p>生成一个密钥，用于后面所有 sentry 容器之间握手。请记住这串密钥，在后面的 docker 命令中，密钥需要以环境变量形式传入</p>
 <p>Generate a new secret key to be shared by all <code>sentry</code> containers. This value will then be used as the <code>SENTRY_SECRET_KEY</code> environment variable.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run --rm sentry config generate-secret-key</span></span><br></pre></td></tr></table></figure>
 
 <p>密钥为<code>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code></p>
-<h2 id="4-连接-Redis、Postgres-和-Sentry"><a href="#4-连接-Redis、Postgres-和-Sentry" class="headerlink" title="4.连接 Redis、Postgres 和 Sentry"></a>4.连接 Redis、Postgres 和 Sentry</h2><p>运行后会自动执行初始化操作.</p>
+<h2 id="连接-Redis、Postgres-和-Sentry"><a href="#连接-Redis、Postgres-和-Sentry" class="headerlink" title="连接 Redis、Postgres 和 Sentry"></a>连接 Redis、Postgres 和 Sentry</h2><p>运行后会自动执行初始化操作.</p>
 <p>If this is a new database, you’ll need to run <code>upgrade</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -it --rm -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-postgres:postgres --link sentry-redis:redis sentry upgrade</span></span><br></pre></td></tr></table></figure>
 
@@ -403,16 +403,16 @@
 <blockquote>
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建： docker exec -it my-sentry /bin/sh ==&gt; sentry createuser</p>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjeDZkOyYjeDYxOyYjeDY5OyYjeDZjOyYjeDRlOyYjOTc7JiMxMDk7JiN4NjU7JiN4NDA7JiN4NzE7JiN4NzE7JiN4MmU7JiN4NjM7JiMxMTE7JiN4NmQ7">&#x6d;&#x61;&#x69;&#x6c;&#x4e;&#97;&#109;&#x65;&#x40;&#x71;&#x71;&#x2e;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
-<h2 id="5-启动-Sentry-Server，同时添加端口映射。"><a href="#5-启动-Sentry-Server，同时添加端口映射。" class="headerlink" title="5.启动 Sentry Server，同时添加端口映射。"></a>5.启动 Sentry Server，同时添加端口映射。</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 -p 9000:9000 参数，再启动后可以通过访问 <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MDAwLw==">http://localhost:9000<i class="fa fa-external-link-alt"></i></span> 或 <span class="exturl" data-url="aHR0cDovL2hvc3QtaXA6OTAwMC8=">http://host-ip:9000<i class="fa fa-external-link-alt"></i></span> 进入 Sentry 的 web 管理页面</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjeDZkOyYjOTc7JiN4Njk7JiMxMDg7JiM3ODsmIzk3OyYjeDZkOyYjMTAxOyYjNjQ7JiMxMTM7JiN4NzE7JiN4MmU7JiM5OTsmIzExMTsmIzEwOTs=">&#x6d;&#97;&#x69;&#108;&#78;&#97;&#x6d;&#101;&#64;&#113;&#x71;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h2 id="启动-Sentry-Server，同时添加端口映射。"><a href="#启动-Sentry-Server，同时添加端口映射。" class="headerlink" title="启动 Sentry Server，同时添加端口映射。"></a>启动 Sentry Server，同时添加端口映射。</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 -p 9000:9000 参数，再启动后可以通过访问 <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MDAwLw==">http://localhost:9000<i class="fa fa-external-link-alt"></i></span> 或 <span class="exturl" data-url="aHR0cDovL2hvc3QtaXA6OTAwMC8=">http://host-ip:9000<i class="fa fa-external-link-alt"></i></span> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-redis:redis --link sentry-postgres:postgres sentry</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="6-默认配置中需要-Celery"><a href="#6-默认配置中需要-Celery" class="headerlink" title="6.默认配置中需要 Celery"></a>6.默认配置中需要 Celery</h2><p>因此启动一个 Celery 主节点与执行节点（worker 节点可按需多启几个）：</p>
+<h2 id="默认配置中需要-Celery"><a href="#默认配置中需要-Celery" class="headerlink" title="默认配置中需要 Celery"></a>默认配置中需要 Celery</h2><p>因此启动一个 Celery 主节点与执行节点（worker 节点可按需多启几个）：</p>
 <p>The default config needs a celery beat and celery workers, start as many workers as you need (each with a unique name)</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name sentry-cron -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="7-登录-sentry"><a href="#7-登录-sentry" class="headerlink" title="7.登录 sentry"></a>7.登录 sentry</h2><ol>
+<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><ol>
 <li><p>地址:<span class="exturl" data-url="aHR0cDovLzEyNy4wLjAuMTo5MDAwJUVGJUJDJThDJUU4JUI0JUE2JUU1JThGJUI3JUU1JUFGJTg2JUU3JUEwJTgxJUU2JTk4JUFGJTYwbWFpbE5hbWVAcXEuY29tLzEyMzQ1NiU2MA==">http://127.0.0.1:9000，账号密码是`mailName@qq.com/123456`<i class="fa fa-external-link-alt"></i></span></p>
 </li>
 <li><p>修改邮箱配置可发邮箱</p>
@@ -437,7 +437,7 @@
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiN4NzA7JiMxMDg7JiMxMDE7JiN4NDA7JiN4NmQ7JiN4NjE7JiMxMDU7JiMxMDg7JiN4MmU7JiM5OTsmIzExMTsmI3g2ZDs=">&#101;&#x78;&#97;&#109;&#x70;&#108;&#101;&#x40;&#x6d;&#x61;&#105;&#108;&#x2e;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiMxMTI7JiN4NmM7JiN4NjU7JiN4NDA7JiMxMDk7JiM5NzsmIzEwNTsmI3g2YzsmI3gyZTsmIzk5OyYjeDZmOyYjMTA5Ow==">&#101;&#x78;&#97;&#109;&#112;&#x6c;&#x65;&#x40;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -457,7 +457,7 @@
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjOTc7JiN4NmQ7JiMxMTI7JiN4NmM7JiMxMDE7JiM2NDsmIzEwOTsmIzk3OyYjMTA1OyYjeDZjOyYjNDY7JiM5OTsmI3g2ZjsmI3g2ZDs=">&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#101;&#64;&#109;&#97;&#105;&#x6c;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjMTA5OyYjMTEyOyYjeDZjOyYjeDY1OyYjeDQwOyYjMTA5OyYjOTc7JiMxMDU7JiMxMDg7JiM0NjsmI3g2MzsmI3g2ZjsmI3g2ZDs=">&#101;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x40;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
