@@ -28,7 +28,7 @@
 <blockquote>
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建： docker exec -it my-sentry /bin/sh ==&gt; sentry createuser</p>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjeDYxOyYjMTA1OyYjeDZjOyYjNzg7JiN4NjE7JiN4NmQ7JiN4NjU7JiM2NDsmIzExMzsmI3g3MTsmI3gyZTsmIzk5OyYjeDZmOyYjeDZkOw==">&#109;&#x61;&#105;&#x6c;&#78;&#x61;&#x6d;&#x65;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjeDYxOyYjeDY5OyYjMTA4OyYjeDRlOyYjeDYxOyYjMTA5OyYjMTAxOyYjNjQ7JiN4NzE7JiN4NzE7JiN4MmU7JiM5OTsmI3g2ZjsmI3g2ZDs=">&#109;&#x61;&#x69;&#108;&#x4e;&#x61;&#109;&#101;&#64;&#x71;&#x71;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h2 id="启动-Sentry-Server，同时添加端口映射。"><a href="#启动-Sentry-Server，同时添加端口映射。" class="headerlink" title="启动 Sentry Server，同时添加端口映射。"></a>启动 Sentry Server，同时添加端口映射。</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 -p 9000:9000 参数，再启动后可以通过访问 <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MDAwLw==">http://localhost:9000<i class="fa fa-external-link-alt"></i></span> 或 <span class="exturl" data-url="aHR0cDovL2hvc3QtaXA6OTAwMC8=">http://host-ip:9000<i class="fa fa-external-link-alt"></i></span> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-redis:redis --link sentry-postgres:postgres sentry</span></span><br></pre></td></tr></table></figure>
@@ -62,7 +62,7 @@
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjOTc7JiMxMDk7JiN4NzA7JiN4NmM7JiMxMDE7JiM2NDsmI3g2ZDsmIzk3OyYjeDY5OyYjeDZjOyYjNDY7JiN4NjM7JiN4NmY7JiN4NmQ7">&#x65;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#64;&#x6d;&#97;&#x69;&#x6c;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjMTAxOyYjNjQ7JiN4NmQ7JiM5NzsmIzEwNTsmI3g2YzsmIzQ2OyYjOTk7JiN4NmY7JiN4NmQ7">&#101;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#64;&#x6d;&#97;&#105;&#x6c;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -82,7 +82,7 @@
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjMTAxOyYjeDQwOyYjeDZkOyYjOTc7JiN4Njk7JiN4NmM7JiN4MmU7JiN4NjM7JiMxMTE7JiMxMDk7">&#x65;&#x78;&#x61;&#x6d;&#112;&#108;&#101;&#x40;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjOTc7JiMxMDk7JiMxMTI7JiMxMDg7JiN4NjU7JiN4NDA7JiMxMDk7JiM5NzsmI3g2OTsmI3g2YzsmIzQ2OyYjOTk7JiN4NmY7JiN4NmQ7">&#101;&#120;&#97;&#109;&#112;&#108;&#x65;&#x40;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
