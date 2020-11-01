@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>数据可视化</title>
+    <url>/%E5%BC%80%E5%8F%91/javascript/%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="1-数据可视化工具"><a href="#1-数据可视化工具" class="headerlink" title="1.数据可视化工具"></a>1.数据可视化工具</h2><ul>
+<li>Leaflet|28.9K|适合移动设备</li>
+<li>Chartist.js|12.3K|创建响应式图表</li>
+<li>d3|93.6K|svg+canvas+html</li>
+<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
+</ul>
+<h2 id="2-纯可视化图表生成类"><a href="#2-纯可视化图表生成类" class="headerlink" title="2.纯可视化图表生成类"></a>2.纯可视化图表生成类</h2><ul>
+<li>Echarts|42.8K|百度产品</li>
+<li>AntV|蚂蚁金服</li>
+<li>Highcharts|9.7K|可视化库，商用付费</li>
+</ul>
+<h2 id="3-可视化报表类"><a href="#3-可视化报表类" class="headerlink" title="3.可视化报表类"></a>3.可视化报表类</h2><ul>
+<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
+</ul>
+<h2 id="4-商业智能分析"><a href="#4-商业智能分析" class="headerlink" title="4.商业智能分析"></a>4.商业智能分析</h2><ul>
+<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
+<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
+<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
+</ul>
+<h2 id="5-可视化大屏类"><a href="#5-可视化大屏类" class="headerlink" title="5.可视化大屏类"></a>5.可视化大屏类</h2><ul>
+<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
+<li>FineReport</li>
+<li>数字冰雹</li>
+</ul>
+<h2 id="6-其他"><a href="#6-其他" class="headerlink" title="6.其他"></a>6.其他</h2><ul>
+<li>Chart.js|50.2K|Simple HTML5 Charts using the <canvas> tag</li>
+<li>recharts|14.7K|Redefined chart library built with React and D3</li>
+<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
+<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
+<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
+<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
+</ul>
+<hr>
+<p>选型</p>
+<blockquote>
+<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
+<p>开发：Echarts|AntV|D3</p>
+</blockquote>
+<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts&gt;antv</p>
+<hr>
+<h3 id="1-WebGL"><a href="#1-WebGL" class="headerlink" title="1.WebGL"></a>1.WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
+<h3 id="2-Three-js"><a href="#2-Three-js" class="headerlink" title="2.Three.js"></a>2.Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
+<h3 id="3-Unity"><a href="#3-Unity" class="headerlink" title="3.Unity"></a>3.Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>javascript</category>
+        <category>可视化</category>
+      </categories>
+      <tags>
+        <tag>可视化</tag>
+        <tag>数据</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Sentry部署</title>
+    <url>/%E5%BC%80%E5%8F%91/javascript/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等组件，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
+<p>如果你选择了通过 Docker 进行安装，其实还有更加便捷的方式 —— docker-compose 。在 github 上有一个开源项目用于部署 Sentry，可以直接运行 <code>./install.sh</code> 将 Sentry 及其依赖都通过 docker 安装。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/getsentry/onpremise.git</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="1-启动一个-Redis-容器"><a href="#1-启动一个-Redis-容器" class="headerlink" title="1.启动一个 Redis 容器"></a>1.启动一个 Redis 容器</h2><p>Start a Redis container</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name sentry-redis redis</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-启动一个-Postgres-容器"><a href="#2-启动一个-Postgres-容器" class="headerlink" title="2.启动一个 Postgres 容器"></a>2.启动一个 Postgres 容器</h2><p>Start a Postgres container</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name sentry-postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_USER=sentry postgres</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-生成唯一秘钥"><a href="#3-生成唯一秘钥" class="headerlink" title="3.生成唯一秘钥"></a>3.生成唯一秘钥</h2><p>生成一个密钥，用于后面所有 sentry 容器之间握手。请记住这串密钥，在后面的 docker 命令中，密钥需要以环境变量形式传入</p>
+<p>Generate a new secret key to be shared by all <code>sentry</code> containers. This value will then be used as the <code>SENTRY_SECRET_KEY</code> environment variable.</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run --rm sentry config generate-secret-key</span></span><br></pre></td></tr></table></figure>
+
+<p>密钥为<code>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code></p>
+<h2 id="4-连接-Redis、Postgres-和-Sentry"><a href="#4-连接-Redis、Postgres-和-Sentry" class="headerlink" title="4.连接 Redis、Postgres 和 Sentry"></a>4.连接 Redis、Postgres 和 Sentry</h2><p>运行后会自动执行初始化操作.</p>
+<p>If this is a new database, you’ll need to run <code>upgrade</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -it --rm -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-postgres:postgres --link sentry-redis:redis sentry upgrade</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note: the <code>-it</code> is important as the initial upgrade will prompt to create an initial user and will fail without it</strong></p>
+<blockquote>
+<p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建： docker exec -it my-sentry /bin/sh ==&gt; sentry createuser</p>
+</blockquote>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjOTc7JiMxMDU7JiN4NmM7JiM3ODsmI3g2MTsmIzEwOTsmIzEwMTsmIzY0OyYjMTEzOyYjeDcxOyYjeDJlOyYjOTk7JiMxMTE7JiN4NmQ7">&#109;&#97;&#105;&#x6c;&#78;&#x61;&#109;&#101;&#64;&#113;&#x71;&#x2e;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h2 id="5-启动-Sentry-Server，同时添加端口映射。"><a href="#5-启动-Sentry-Server，同时添加端口映射。" class="headerlink" title="5.启动 Sentry Server，同时添加端口映射。"></a>5.启动 Sentry Server，同时添加端口映射。</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 -p 9000:9000 参数，再启动后可以通过访问 <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MDAwLw==">http://localhost:9000<i class="fa fa-external-link-alt"></i></span> 或 <span class="exturl" data-url="aHR0cDovL2hvc3QtaXA6OTAwMC8=">http://host-ip:9000<i class="fa fa-external-link-alt"></i></span> 进入 Sentry 的 web 管理页面</p>
+<p>Now start up Sentry server</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-redis:redis --link sentry-postgres:postgres sentry</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-默认配置中需要-Celery"><a href="#6-默认配置中需要-Celery" class="headerlink" title="6.默认配置中需要 Celery"></a>6.默认配置中需要 Celery</h2><p>因此启动一个 Celery 主节点与执行节点（worker 节点可按需多启几个）：</p>
+<p>The default config needs a celery beat and celery workers, start as many workers as you need (each with a unique name)</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name sentry-cron -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY=<span class="string">&#x27;&lt;secret-key&gt;&#x27;</span> --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="7-登录-sentry"><a href="#7-登录-sentry" class="headerlink" title="7.登录 sentry"></a>7.登录 sentry</h2><ol>
+<li><p>地址:<span class="exturl" data-url="aHR0cDovLzEyNy4wLjAuMTo5MDAwJUVGJUJDJThDJUU4JUI0JUE2JUU1JThGJUI3JUU1JUFGJTg2JUU3JUEwJTgxJUU2JTk4JUFGJTYwbWFpbE5hbWVAcXEuY29tLzEyMzQ1NiU2MA==">http://127.0.0.1:9000，账号密码是`mailName@qq.com/123456`<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>修改邮箱配置可发邮箱</p>
+<ol>
+<li><code>$ docker exec -it my-sentry bash</code>进入控制台</li>
+<li><code>$ vi /etc/sentry/config.yml </code></li>
+</ol>
+<p>腾讯示例：</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>作用</th>
+<th>腾讯企业邮</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SENTRY_EMAIL_HOST</td>
+<td>SMTP 服务器地址</td>
+<td>smtp.exmail.qq.com</td>
+</tr>
+<tr>
+<td>SENTRY_EMAIL_USER</td>
+<td>登录的邮箱账号</td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjMTA5OyYjMTEyOyYjMTA4OyYjMTAxOyYjeDQwOyYjMTA5OyYjeDYxOyYjeDY5OyYjeDZjOyYjNDY7JiN4NjM7JiMxMTE7JiN4NmQ7">&#x65;&#x78;&#x61;&#109;&#112;&#108;&#101;&#x40;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+</tr>
+<tr>
+<td>SENTRY_EMAIL_PASSWORD</td>
+<td>登录的邮箱密码</td>
+<td>password</td>
+</tr>
+<tr>
+<td>SENTRY_EMAIL_PORT</td>
+<td>登录的端口</td>
+<td>587</td>
+</tr>
+<tr>
+<td>SENTRY_EMAIL_USE_TLS</td>
+<td>是否使用 ssl 连接</td>
+<td>true</td>
+</tr>
+<tr>
+<td>SENTRY_SERVER_EMAIL</td>
+<td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjMTA5OyYjMTEyOyYjeDZjOyYjeDY1OyYjeDQwOyYjeDZkOyYjOTc7JiMxMDU7JiMxMDg7JiN4MmU7JiM5OTsmIzExMTsmI3g2ZDs=">&#x65;&#120;&#x61;&#109;&#112;&#x6c;&#x65;&#x40;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+</tr>
+</tbody></table>
+<p>​ 网易邮箱示例：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">mail.backend:</span> <span class="string">&quot;smtp&quot;</span></span><br><span class="line"><span class="attr">mail.host:</span> <span class="string">&quot;smtp.126.com&quot;</span></span><br><span class="line"><span class="attr">mail.port:</span> <span class="number">25</span></span><br><span class="line"><span class="attr">mail.username:</span> <span class="string">&quot;XXXX@126.com&quot;</span></span><br><span class="line"><span class="attr">mail.password:</span> <span class="string">&quot;XXXXX&quot;</span></span><br><span class="line"><span class="attr">mail.use-tls:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">mail.from:</span> <span class="string">&quot;XXXX@126.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>这里我们使用 vue 继承</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &quot;vue&quot;; import * as Sentry from &quot;@sentry&#x2F;browser&quot;; import &#123;</span><br><span class="line">Vue as VueIntegration &#125; from &quot;@sentry&#x2F;integrations&quot;; Sentry.init(&#123; dsn:</span><br><span class="line">&quot;http:&#x2F;&#x2F;d6168c0c5ba947f0b7fafbb288522b0e@127.0.0.1:9000&#x2F;2&quot;, integrations:</span><br><span class="line">[new VueIntegration(&#123; Vue, attachProps: true &#125;)], &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>​ 几个常见的参数解释</p>
+<ol>
+<li><p>传递 Vue 是可选的，如果不传递，则 window.Vue 必须存在。</p>
+</li>
+<li><p>传递<code>attachProps</code>是可选的，<code>true</code>如果没有提供，则为传递。如果将其设置为<code>false</code>，Sentry 将禁止发送所有 Vue 组件的道具进行记录。</p>
+</li>
+<li><p>传递<code>logErrors</code>是可选的，<code>false</code>如果没有提供，则为传递。如果将其设置为<code>true</code>，Sentry 也将调用原始 Vue<code>logError</code>函数。</p>
+<blockquote>
+<p>Vue 错误处理<br>请注意，如果启用此集成，则 Vue 不会在 logError 内部调用它。这意味着在 Vue 渲染器中发生的错误将不会显示在开发人员控制台中。如果要保留此功能，请确保通过该 logErrors: true 选项。</p>
+</blockquote>
+</li>
+<li><p>跟踪 Vue 应用程序的最基本配置（仅跟踪顶级组件）如下所示</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import * as Sentry from &quot;@sentry&#x2F;browser&quot;; import &#123; Vue as VueIntegration &#125;</span><br><span class="line">from &quot;@sentry&#x2F;integrations&quot;; import &#123; Integrations &#125; from &quot;@sentry&#x2F;tracing&quot;;</span><br><span class="line">import Vue from &quot;vue&quot;; Sentry.init(&#123; &#x2F;&#x2F; ... integrations: [ new</span><br><span class="line">Integrations.BrowserTracing(), new VueIntegration(&#123; Vue, tracing: true, &#125;),</span><br><span class="line">], tracesSampleRate: 1.0, &#x2F;&#x2F; Be sure to lower this in production &#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>如果要跟踪子组件，并查看有关渲染过程的更多详细信息，请配置集成以跟踪所有子组件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">new VueIntegration(&#123; Vue, tracing: true, tracingOptions: &#123; trackComponents:</span><br><span class="line">true, &#125;, &#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>environment 环境变量</p>
+</li>
+</ul>
+<ol start="5">
+<li><p>捕获 sorceMap</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install --save-dev @sentry/webpack-plugin</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const SentryWebpackPlugin &#x3D; require(&quot;@sentry&#x2F;webpack-plugin&quot;);</span><br><span class="line">module.exports &#x3D; &#123; &#x2F;&#x2F; other configuration configureWebpack: &#123; plugins: [</span><br><span class="line">new SentryWebpackPlugin(&#123; &#x2F;&#x2F; sentry-cli configuration authToken:</span><br><span class="line">process.env.SENTRY_AUTH_TOKEN, org: &quot;exmaple-org&quot;, project:</span><br><span class="line">&quot;example-project&quot;, &#x2F;&#x2F; webpack specific configuration include: &quot;.&quot;, ignore:</span><br><span class="line">[&quot;node_modules&quot;, &quot;webpack.config.js&quot;], &#125;), ], &#125;, &#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>In Vue 2.x, you should use vue.config.js instead of webpack.config.js, and use include: “./dist” instead of include: “.”</p>
+</blockquote>
+</li>
+<li><p>也可以通过配置文件的方式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">plugins:</span><br><span class="line">      process.env.NODE_ENV !&#x3D;&#x3D; &quot;development&quot;</span><br><span class="line">        ? [</span><br><span class="line">            new SentryWebpackPlugin(&#123;</span><br><span class="line">              release: Date.now(), &#x2F;&#x2F; 唯一标识，可以用其他的比如 hash</span><br><span class="line">              &#x2F;&#x2F; webpack specific configuration</span><br><span class="line">              include: &quot;.&#x2F;dist&quot;,</span><br><span class="line">              ignore: [&quot;node_modules&quot;, &quot;vue.config.js&quot;],</span><br><span class="line">              configFile: &quot;.sentryclirc&quot; &#x2F;&#x2F; 默认同级，如果不一样需要用node path模块处理一下</span><br><span class="line">            &#125;)</span><br><span class="line">          ]</span><br><span class="line">        : []</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>.sentryclirc</code>,其中 token 为左上角头像，点击<code>API keys-&gt;授权令牌</code>生成</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[defaults]</span><br><span class="line">### 你的域名</span><br><span class="line">url&#x3D;&#39;http:&#x2F;&#x2F;127.0.0.1:9000&#39;</span><br><span class="line">### 组织团队名默认是 sentry</span><br><span class="line">org&#x3D;sentry</span><br><span class="line">### 项目名称</span><br><span class="line">project&#x3D;vue</span><br><span class="line">### 步骤1创建的</span><br><span class="line">[auth]</span><br><span class="line">token&#x3D;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span><br></pre></td></tr></table></figure>
+
+<p><strong>docker 生成版本较低，建议 github 上下载或者直接用线上的 Saas 做。</strong></p>
+</li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>javascript</category>
+        <category>错误追踪</category>
+      </categories>
+      <tags>
+        <tag>sentry</tag>
+        <tag>docker</tag>
+      </tags>
+  </entry>
+</search>

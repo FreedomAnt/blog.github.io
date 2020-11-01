@@ -6,10 +6,11 @@
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.2.0">
 
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
   <meta http-equiv="Cache-Control" content="no-transform">
   <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -17,30 +18,32 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Microsoft+YaHei:300,300italic,400,400italic,700,700italic|Comic+Sans+MS:300,300italic,400,400italic,700,700italic|Input+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+    var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="a simple blog technology first">
+  <meta name="description" content="talk is cheap, show me the code">
 <meta property="og:type" content="website">
-<meta property="og:title" content="fanta&#39;s blog">
-<meta property="og:url" content="https://freedomant.github.io/categories/start/index.html">
-<meta property="og:site_name" content="fanta&#39;s blog">
-<meta property="og:description" content="a simple blog technology first">
+<meta property="og:title" content="fanta&#39;s blog✍️">
+<meta property="og:url" content="https://freedomant.github.io/tags/sentry/index.html">
+<meta property="og:site_name" content="fanta&#39;s blog✍️">
+<meta property="og:description" content="talk is cheap, show me the code">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="fanta">
 <meta property="article:tag" content="blog">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://freedomant.github.io/categories/start/">
+<link rel="canonical" href="https://freedomant.github.io/tags/sentry/">
 
 
 <script data-pjax class="page-configurations">
@@ -53,7 +56,7 @@
   };
 </script>
 
-  <title>分类: start | fanta's blog</title>
+  <title>标签: sentry | fanta's blog✍️</title>
   
 
 
@@ -116,13 +119,14 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">fanta's blog</h1>
+      <h1 class="site-title">fanta's blog✍️</h1>
       <i class="logo-line"></i>
     </a>
   </div>
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -136,19 +140,14 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">1</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">1</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
@@ -156,16 +155,38 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">2</span></a>
 
   </li>
-        <li class="menu-item menu-item-commonweal">
-
-    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
-
-  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
         
@@ -199,7 +220,7 @@
     <img class="site-author-image" itemprop="image" alt="fanta"
       src="/uploads/avatar.png">
   <p class="site-author-name" itemprop="name">fanta</p>
-  <div class="site-description" itemprop="description">a simple blog technology first</div>
+  <div class="site-description" itemprop="description">talk is cheap, show me the code</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
@@ -213,13 +234,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -234,7 +255,7 @@
   </div>
 
 
-
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="750" height="110" loading="lazy" sandbox="allow-popups allow-scripts allow-same-origin" src="https://www.xiami.com/webapp/embed-player?autoPlay=1&id=1774245424"></iframe>
         </section>
       </div>
     </div>
@@ -256,7 +277,7 @@
 </noscript>
 
 
-    <div class="main-inner category posts-collapse">
+    <div class="main-inner tag posts-collapse">
       
 
       
@@ -267,8 +288,8 @@
   <div class="post-block">
     <div class="post-content">
       <div class="collection-title">
-        <h2 class="collection-header">start
-          <small>分类</small>
+        <h2 class="collection-header">sentry
+          <small>标签</small>
         </h2>
       </div>
 
@@ -281,15 +302,15 @@
     <header class="post-header">
       <div class="post-meta-container">
         <time itemprop="dateCreated"
-              datetime="2020-10-31T12:27:46+08:00"
+              datetime="2020-10-31T16:06:01+08:00"
               content="2020-10-31">
           10-31
         </time>
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/hello-world/" itemprop="url">
-            <span itemprop="name">Hello World</span>
+          <a class="post-title-link" href="/%E5%BC%80%E5%8F%91/javascript/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/" itemprop="url">
+            <span itemprop="name">Sentry部署</span>
           </a>
       </div>
 
@@ -354,13 +375,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">0k</span>
+    <span title="站点总字数">7k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1 分钟</span>
+    <span title="站点阅读时长">6 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -442,6 +463,7 @@ document.addEventListener('pjax:success', () => {
 
 
 
+  <script src="/js/local-search.js"></script>
 
 
 
@@ -454,6 +476,27 @@ document.addEventListener('pjax:success', () => {
 
 
 
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
 
 
   

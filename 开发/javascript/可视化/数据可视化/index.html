@@ -31,21 +31,22 @@
     var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="talk is cheap, show me the code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="https://freedomant.github.io/categories/index.html">
+  <meta name="description" content="1.数据可视化工具 Leaflet|28.9K|适合移动设备 Chartist.js|12.3K|创建响应式图表 d3|93.6K|svg+canvas+html Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图  2.纯可视化图表生成类 Echarts|42.8K|百度产品 AntV|蚂蚁金服 Highcharts|9.7K|可视化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据可视化">
+<meta property="og:url" content="https://freedomant.github.io/%E5%BC%80%E5%8F%91/javascript/%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/index.html">
 <meta property="og:site_name" content="fanta&#39;s blog✍️">
-<meta property="og:description" content="talk is cheap, show me the code">
+<meta property="og:description" content="1.数据可视化工具 Leaflet|28.9K|适合移动设备 Chartist.js|12.3K|创建响应式图表 d3|93.6K|svg+canvas+html Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图  2.纯可视化图表生成类 Echarts|42.8K|百度产品 AntV|蚂蚁金服 Highcharts|9.7K|可视化">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-31T18:07:39.000Z">
-<meta property="article:modified_time" content="2020-10-31T18:07:50.958Z">
+<meta property="article:published_time" content="2020-11-01T17:14:43.000Z">
+<meta property="article:modified_time" content="2020-11-01T17:16:32.489Z">
 <meta property="article:author" content="fanta">
-<meta property="article:tag" content="blog">
+<meta property="article:tag" content="可视化">
+<meta property="article:tag" content="数据">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://freedomant.github.io/categories/">
+<link rel="canonical" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/javascript/%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/">
 
 
 <script data-pjax class="page-configurations">
@@ -53,13 +54,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>categories | fanta's blog✍️
-</title>
+  <title>数据可视化 | fanta's blog✍️</title>
   
 
 
@@ -202,7 +202,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -215,6 +215,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">1.数据可视化工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%BA%AF%E5%8F%AF%E8%A7%86%E5%8C%96%E5%9B%BE%E8%A1%A8%E7%94%9F%E6%88%90%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">2.纯可视化图表生成类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%8A%A5%E8%A1%A8%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">3.可视化报表类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%95%86%E4%B8%9A%E6%99%BA%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">4.商业智能分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%A4%A7%E5%B1%8F%E7%B1%BB"><span class="nav-number">5.</span> <span class="nav-text">5.可视化大屏类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%85%B6%E4%BB%96"><span class="nav-number">6.</span> <span class="nav-text">6.其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-WebGL"><span class="nav-number">6.1.</span> <span class="nav-text">1.WebGL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Three-js"><span class="nav-number">6.2.</span> <span class="nav-text">2.Three.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Unity"><span class="nav-number">6.3.</span> <span class="nav-text">3.Unity</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -280,53 +281,173 @@
 </noscript>
 
 
-    <div class="main-inner page posts-expand">
+    <div class="main-inner post posts-expand">
       
-  
-  
 
       
 
-    
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/javascript/%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="fanta">
+      <meta itemprop="description" content="talk is cheap, show me the code">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanta's blog✍️">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据可视化
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">categories
-</h1>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
 
-<div class="post-meta-container">
+      <time title="创建时间：2020-11-02 01:14:43 / 修改时间：01:16:32" itemprop="dateCreated datePublished" datetime="2020-11-02T01:14:43+08:00">2020-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/javascript/" itemprop="url" rel="index"><span itemprop="name">javascript</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/javascript/%E5%8F%AF%E8%A7%86%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">可视化</span></a>
+        </span>
+    </span>
+
   
-
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
 </div>
 
-</header>
+        </div>
+      </header>
 
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1-数据可视化工具"><a href="#1-数据可视化工具" class="headerlink" title="1.数据可视化工具"></a>1.数据可视化工具</h2><ul>
+<li>Leaflet|28.9K|适合移动设备</li>
+<li>Chartist.js|12.3K|创建响应式图表</li>
+<li>d3|93.6K|svg+canvas+html</li>
+<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
+</ul>
+<h2 id="2-纯可视化图表生成类"><a href="#2-纯可视化图表生成类" class="headerlink" title="2.纯可视化图表生成类"></a>2.纯可视化图表生成类</h2><ul>
+<li>Echarts|42.8K|百度产品</li>
+<li>AntV|蚂蚁金服</li>
+<li>Highcharts|9.7K|可视化库，商用付费</li>
+</ul>
+<h2 id="3-可视化报表类"><a href="#3-可视化报表类" class="headerlink" title="3.可视化报表类"></a>3.可视化报表类</h2><ul>
+<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
+</ul>
+<h2 id="4-商业智能分析"><a href="#4-商业智能分析" class="headerlink" title="4.商业智能分析"></a>4.商业智能分析</h2><ul>
+<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
+<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
+<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
+</ul>
+<h2 id="5-可视化大屏类"><a href="#5-可视化大屏类" class="headerlink" title="5.可视化大屏类"></a>5.可视化大屏类</h2><ul>
+<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
+<li>FineReport</li>
+<li>数字冰雹</li>
+</ul>
+<h2 id="6-其他"><a href="#6-其他" class="headerlink" title="6.其他"></a>6.其他</h2><ul>
+<li>Chart.js|50.2K|Simple HTML5 Charts using the <canvas> tag</li>
+<li>recharts|14.7K|Redefined chart library built with React and D3</li>
+<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
+<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
+<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
+<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
+</ul>
+<hr>
+<p>选型</p>
+<blockquote>
+<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
+<p>开发：Echarts|AntV|D3</p>
+</blockquote>
+<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts&gt;antv</p>
+<hr>
+<h3 id="1-WebGL"><a href="#1-WebGL" class="headerlink" title="1.WebGL"></a>1.WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
+<h3 id="2-Three-js"><a href="#2-Three-js" class="headerlink" title="2.Three.js"></a>2.Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
+<h3 id="3-Unity"><a href="#3-Unity" class="headerlink" title="3.Unity"></a>3.Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
+
+    </div>
+
+    
+    
+    
       
-      
-      
-      <div class="post-body">
-          <div class="category-all-page">
-  <div class="category-all-title">
-    目前共计 4 个分类
-  </div>
-  <div class="category-all">
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91/">开发</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91/javascript/">javascript</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91/javascript/%E5%8F%AF%E8%A7%86%E5%8C%96/">可视化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91/javascript/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/">错误追踪</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul>
-  </div>
-</div>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/" rel="tag"># 可视化</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE/" rel="tag"># 数据</a>
+          </div>
 
         
-      </div>
-      
-      
-      
-    </div>
-    
 
-    
-    
-    
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%BC%80%E5%8F%91/javascript/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/" rel="prev" title="Sentry部署">
+                  <i class="fa fa-chevron-left"></i> Sentry部署
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
 
 
       
