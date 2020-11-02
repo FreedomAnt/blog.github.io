@@ -489,6 +489,7 @@
 
 
       
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -673,6 +674,26 @@ document.addEventListener('pjax:success', () => {
   
 
   
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e3f3db5dd0cfab27f9f2',
+      clientSecret: '95e5182ba79ec76af28ce1ca2aebc12356b615b1',
+      repo        : 'freedomant.github.io',
+      owner       : 'FreedomAnt',
+      admin       : ['FreedomAnt'],
+      id          : '3cbee89675ac97a277928c10e0991219',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
     </div>
 </body>
