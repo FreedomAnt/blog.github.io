@@ -31,21 +31,21 @@
     var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="主要操作步骤 使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。  前言由于 docker 启动的 centos 不能使用 systemctl，包括安装 ser">
+  <meta name="description" content="主要操作步骤 使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker+gitlab-ci+ssh+gitlab-pages实现代码自动构建部署">
 <meta property="og:url" content="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="fanta&#39;s blog✍️">
-<meta property="og:description" content="主要操作步骤 使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。  前言由于 docker 启动的 centos 不能使用 systemctl，包括安装 ser">
+<meta property="og:description" content="主要操作步骤 使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-03T05:04:29.000Z">
-<meta property="article:modified_time" content="2020-11-03T07:41:18.820Z">
+<meta property="article:modified_time" content="2020-11-03T13:50:50.016Z">
 <meta property="article:author" content="fanta">
 <meta property="article:tag" content="docker">
 <meta property="article:tag" content="gitlab">
+<meta property="article:tag" content="ssh">
 <meta property="article:tag" content="gitlab-ci">
 <meta property="article:tag" content="gitlab-pages">
-<meta property="article:tag" content="ssh">
 <meta name="twitter:card" content="summary">
 
 
@@ -334,7 +334,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-11-03 13:04:29 / 修改时间：15:41:18" itemprop="dateCreated datePublished" datetime="2020-11-03T13:04:29+08:00">2020-11-03</time>
+      <time title="创建时间：2020-11-03 13:04:29 / 修改时间：21:50:50" itemprop="dateCreated datePublished" datetime="2020-11-03T13:04:29+08:00">2020-11-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -389,6 +389,8 @@
 <li><strong>运行 ssh-agent 以加载私钥。</strong></li>
 <li><strong>将公共密钥复制到您想要访问的服务器上（通常在 <code>~/.ssh/authorized_keys</code>中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。</strong></li>
 </ol>
+<a id="more"></a>
+
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>由于 docker 启动的 centos 不能使用 <code>systemctl</code>，包括安装 <code>server</code> 命令都不行，网上有解决方法如下：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos8 --privileged&#x3D;true centos &#x2F;sbin&#x2F;init<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -486,7 +488,7 @@ echo Agent pid 28162;<span aria-hidden="true" class="line-numbers-rows"><span></
 
 <p><strong>参数说明：<br>-s 生成 <code>Bourne shell</code> 风格的命令输出</strong></p>
 <h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p><code>echo &quot;$SSH_PRIVATE_KEY&quot; | tr -d &#39;\r&#39; | ssh-add -</code></p>
-<p>解释如下：<br>删除私钥字符串的空格（针对 <code>ed25519</code> 的一个 bug:bug:），然后作为输入传给 <code>ssh-add</code> 添加到 <code>ssh-agent</code> 代理中<br><strong>参数说明：<br>“tr”:用于转换或删除文件中的字符。<br>“-d”:<code>--delete</code>删除指令字符。<br>“-“:指令会从标准输入设备读取数据。</strong></p>
+<p>解释如下：<br>删除私钥字符串的空格（针对 <code>ed25519</code> 的一个 bug），然后作为输入传给 <code>ssh-add</code> 添加到 <code>ssh-agent</code> 代理中<br><strong>参数说明：<br>“tr”:用于转换或删除文件中的字符。<br>“-d”:<code>--delete</code>删除指令字符。<br>“-“:指令会从标准输入设备读取数据。</strong></p>
 <h3 id="ssh-keyscan"><a href="#ssh-keyscan" class="headerlink" title="ssh-keyscan"></a>ssh-keyscan</h3><p><code>ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~/.ssh/known_hosts</code></p>
 <p>解释如下：<br>将远程机器的公钥添加到 <code>runner</code> 机器的 <code>known_hosts</code> 中，目录在<code>/home/gitlab-runner/.ssh/known_hosts</code>。<br><code>ssh-keyscan</code> 的主要用途是用于批量获取机器的公钥，这样以后再用 <code>ssh</code> 登录到已经获取过公钥的服务器时，不需要再输入 <code>yes</code> 之类去保存公钥了。<br><strong>参数说明：<br>“-p”，端口。</strong></p>
 <h3 id="f-amp-amp-echo"><a href="#f-amp-amp-echo" class="headerlink" title="-f &amp;&amp; echo"></a>-f &amp;&amp; echo</h3><p><code>&#39;[[ -f /.dockerenv ]] &amp;&amp; echo -e &quot;Host *\n\tStrictHostKeyChecking no\n\n&quot; &gt;&gt; ~/.ssh/config&#39;</code></p>
@@ -574,9 +576,9 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
           <div class="post-tags">
               <a href="/tags/docker/" rel="tag"># docker</a>
               <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+              <a href="/tags/ssh/" rel="tag"># ssh</a>
               <a href="/tags/gitlab-ci/" rel="tag"># gitlab-ci</a>
               <a href="/tags/gitlab-pages/" rel="tag"># gitlab-pages</a>
-              <a href="/tags/ssh/" rel="tag"># ssh</a>
           </div>
 
         
