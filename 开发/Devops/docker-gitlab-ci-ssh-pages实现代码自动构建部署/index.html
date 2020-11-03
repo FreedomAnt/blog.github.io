@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="code-WzikV8hhdR">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Microsoft+YaHei:300,300italic,400,400italic,700,700italic|Comic+Sans+MS:300,300italic,400,400italic,700,700italic|Input+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="主要操作步骤 使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。  前言由于 docker 启动的 centos 不能使用 systemctl，包括安装 ser">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker+gitlab-ci+ssh+gitlab-pages实现代码自动构建部署">
+<meta property="og:url" content="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="fanta&#39;s blog✍️">
+<meta property="og:description" content="主要操作步骤 使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。  前言由于 docker 启动的 centos 不能使用 systemctl，包括安装 ser">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-03T05:04:29.000Z">
+<meta property="article:modified_time" content="2020-11-03T07:41:18.820Z">
+<meta property="article:author" content="fanta">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="gitlab">
+<meta property="article:tag" content="gitlab-ci">
+<meta property="article:tag" content="gitlab-pages">
+<meta property="article:tag" content="ssh">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>docker+gitlab-ci+ssh+gitlab-pages实现代码自动构建部署 | fanta's blog✍️</title>
+  
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2a76899220e9bd558b282e2d0b96bb91";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">fanta's blog✍️</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">15</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="750" height="110" loading="lazy" sandbox="allow-popups allow-scripts allow-same-origin" src="https://www.xiami.com/webapp/embed-player?autoPlay=0&id=1774245424"></iframe>
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.</span> <span class="nav-text">主要操作步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD-centos6-10-%E5%B9%B6%E8%BF%9B%E5%85%A5%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">1.2.</span> <span class="nav-text">下载 centos6.10 并进入控制台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-openssh-server"><span class="nav-number">1.3.</span> <span class="nav-text">安装 openssh-server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-ssh-%E5%85%81%E8%AE%B8-root-%E7%99%BB%E9%99%86"><span class="nav-number">1.4.</span> <span class="nav-text">设置 ssh 允许 root 登陆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF-ssh-%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.5.</span> <span class="nav-text">开启 ssh 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-rsync"><span class="nav-number">1.6.</span> <span class="nav-text">安装 rsync</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-root-%E5%AF%86%E7%A0%81"><span class="nav-number">1.7.</span> <span class="nav-text">修改 root 密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-gitlab-runner"><span class="nav-number">2.</span> <span class="nav-text">配置 gitlab-runner</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD-gitlab-runner-%E5%B9%B6%E8%BF%9B%E5%85%A5%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">2.1.</span> <span class="nav-text">下载 gitlab-runner 并进入控制台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C-gitlab-runner"><span class="nav-number">2.2.</span> <span class="nav-text">注册 gitlab-runner</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-CI-CD"><span class="nav-number">3.</span> <span class="nav-text">配置 CI&#x2F;CD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E6%9C%AC%E6%9C%BA%E7%94%9F%E6%88%90%E5%AF%86%E9%92%A5%E5%AF%B9"><span class="nav-number">3.1.</span> <span class="nav-text">在本机生成密钥对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E6%94%BE%E5%88%B0%E8%A6%81%E9%83%A8%E7%BD%B2%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">公钥放到要部署的服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%81%E9%92%A5%E9%85%8D%E7%BD%AE%E5%88%B0-gitlab-%E5%8F%98%E9%87%8F"><span class="nav-number">3.3.</span> <span class="nav-text">私钥配置到 gitlab 变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8-root-%E7%99%BB%E9%99%86-runner-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.4.</span> <span class="nav-text">用 root 登陆 runner 服务器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99-gitlab-ci-yml"><span class="nav-number">4.</span> <span class="nav-text">编写 gitlab-ci.yml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E8%A7%A3%E9%87%8A"><span class="nav-number">5.</span> <span class="nav-text">脚本解释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eval"><span class="nav-number">5.1.</span> <span class="nav-text">eval</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#echo"><span class="nav-number">5.2.</span> <span class="nav-text">echo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-keyscan"><span class="nav-number">5.3.</span> <span class="nav-text">ssh-keyscan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#f-amp-amp-echo"><span class="nav-number">5.4.</span> <span class="nav-text">-f &amp;&amp; echo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab-pages"><span class="nav-number">6.</span> <span class="nav-text">gitlab pages</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fanta"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">fanta</p>
+  <div class="site-description" itemprop="description">talk is cheap, show me the code</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0ZyZWVkb21BbnQ=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;FreedomAnt"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOjkyNTU4Mzg0OUBxcS5jb20=" title="E-Mail → mailto:925583849@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="fanta">
+      <meta itemprop="description" content="talk is cheap, show me the code">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanta's blog✍️">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          docker+gitlab-ci+ssh+gitlab-pages实现代码自动构建部署
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-03 13:04:29 / 修改时间：15:41:18" itemprop="dateCreated datePublished" datetime="2020-11-03T13:04:29+08:00">2020-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/Devops/" itemprop="url" rel="index"><span itemprop="name">Devops</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="主要操作步骤"><a href="#主要操作步骤" class="headerlink" title="主要操作步骤"></a>主要操作步骤</h2><ol>
+<li><strong>使用 ssh-keygen 在本地创建新的 SSH 密钥对。</strong></li>
+<li><strong>将私钥作为变量添加到您的项目中。</strong></li>
+<li><strong>运行 ssh-agent 以加载私钥。</strong></li>
+<li><strong>将公共密钥复制到您想要访问的服务器上（通常在 <code>~/.ssh/authorized_keys</code>中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。</strong></li>
+</ol>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>由于 docker 启动的 centos 不能使用 <code>systemctl</code>，包括安装 <code>server</code> 命令都不行，网上有解决方法如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos8 --privileged&#x3D;true centos &#x2F;sbin&#x2F;init<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>但不适合于 docker 的 windows 版本，所以这里安装 centos7 以下的版本，不使用 <code>systemctl</code>。</p>
+<h3 id="下载-centos6-10-并进入控制台"><a href="#下载-centos6-10-并进入控制台" class="headerlink" title="下载 centos6.10 并进入控制台"></a>下载 centos6.10 并进入控制台</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos6 centos:6.10 bash
+docker exec -it centos6 bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>这里直接 run 一个 <code>container</code> 。如果 run 之前没有 pull <code>centos6</code> 的话，在 run 的时候 docker 会自动去找相应的 image 去拉取，把 <code>22</code> 端口映射到宿主机的 <code>10022</code> 端口，方便 ssh。</p>
+<h3 id="安装-openssh-server"><a href="#安装-openssh-server" class="headerlink" title="安装 openssh-server"></a>安装 openssh-server</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ rpm -qa | grep ssh
+$ yum update -y &amp;&amp; yum install openssh-server -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="设置-ssh-允许-root-登陆"><a href="#设置-ssh-允许-root-登陆" class="headerlink" title="设置 ssh 允许 root 登陆"></a>设置 ssh 允许 root 登陆</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><code>PermitRootLogin</code>修改为<code>yes</code>。</p>
+<h3 id="开启-ssh-服务"><a href="#开启-ssh-服务" class="headerlink" title="开启 ssh 服务"></a>开启 ssh 服务</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ &#x2F;etc&#x2F;init.d&#x2F;sshd start<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 ssh 是否已经启动</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ps -ef|grep ssh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="安装-rsync"><a href="#安装-rsync" class="headerlink" title="安装 rsync"></a>安装 rsync</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ yum install rsync -y<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>如果用 <code>scp</code> 传的话本地和远程都需要安装 <code>openssh-client</code>，如果用 <code>rsync</code> 传的话本地和远程都需要安装 <code>rsync</code>。</strong></p>
+<h3 id="修改-root-密码"><a href="#修改-root-密码" class="headerlink" title="修改 root 密码"></a>修改 root 密码</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里设置为 <code>123456</code>，方便登陆验证。</p>
+<h2 id="配置-gitlab-runner"><a href="#配置-gitlab-runner" class="headerlink" title="配置 gitlab-runner"></a>配置 gitlab-runner</h2><h3 id="下载-gitlab-runner-并进入控制台"><a href="#下载-gitlab-runner-并进入控制台" class="headerlink" title="下载 gitlab-runner 并进入控制台"></a>下载 gitlab-runner 并进入控制台</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name gitlab-runner -v d:&#x2F;docker&#x2F;gitlab-runner&#x2F;config:&#x2F;etc&#x2F;gitlab-runner gitlab&#x2F;gitlab-runner:latest
+$ docker exec -it gitlab-runner bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="注册-gitlab-runner"><a href="#注册-gitlab-runner" class="headerlink" title="注册 gitlab-runner"></a>注册 gitlab-runner</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-runner register<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里注意填写下 <code>tags</code>，后面方便用到。执行环境选择的 <code>shell</code>，如果执行环境选 <code>docker</code>的话，相应的版本可以选 <code>alpine:latest</code>。<br>试过 <code>docker</code>，因为没有映射<code>/var/run/docker.sock</code>，用 <code>docker</code> 执行 jobs 有时候会报错。所以这里我改成了<code>shell</code>。</p>
+<h2 id="配置-CI-CD"><a href="#配置-CI-CD" class="headerlink" title="配置 CI/CD"></a>配置 CI/CD</h2><h3 id="在本机生成密钥对"><a href="#在本机生成密钥对" class="headerlink" title="在本机生成密钥对"></a>在本机生成密钥对</h3><p>在 runner 机器上生成密钥</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -t rsa -f runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里文件名称最好修改一下，避免生成的密钥文件将原来的覆盖掉。密钥的类型官方推荐是 <code>ed25519</code>，即</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -t ed25519 -f runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>但是 <code>centos6.10</code> 不支持 <code>ed25519</code>，这里还是换成 <code>rsa</code></p>
+<h3 id="公钥放到要部署的服务器"><a href="#公钥放到要部署的服务器" class="headerlink" title="公钥放到要部署的服务器"></a>公钥放到要部署的服务器</h3><p>公钥放到要部署的服务器的<code>~/.ssh/authorized_keys</code>文件里</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-copy-id -i runnerkey.pub root@remoteip -p port<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>按照提示输入密码就行了。</p>
+<h3 id="私钥配置到-gitlab-变量"><a href="#私钥配置到-gitlab-变量" class="headerlink" title="私钥配置到 gitlab 变量"></a>私钥配置到 gitlab 变量</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里可以把服务器地址、端口都配置上，路径为 gitlab 页面上项目里的<code>Setting =&gt; CI/CD =&gt; Variables =&gt; Add Variables</code>，key 就用<code>SSH_PRIVATE_KEY</code>和<code>SSH_KNOWN_HOSTS</code>、<code>SSH_KNOWN_HOSTS_PORT</code>。</p>
+<h3 id="用-root-登陆-runner-服务器"><a href="#用-root-登陆-runner-服务器" class="headerlink" title="用 root 登陆 runner 服务器"></a>用 root 登陆 runner 服务器</h3><p>用 root 登陆 runner 服务器并设置为可无密码切换到 root。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get install sudo -y
+$ apt-get install vim -y
+$ vim &#x2F;etc&#x2F;sudoers<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>添加以下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-runner ALL&#x3D;(ALL) NOPASSWD: ALL<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="编写-gitlab-ci-yml"><a href="#编写-gitlab-ci-yml" class="headerlink" title="编写 gitlab-ci.yml"></a>编写 gitlab-ci.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">stages</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> deploy
+<span class="token key atrule">deploy_by_192</span><span class="token punctuation">:</span>
+  stage<span class="token punctuation">:</span> deploy
+  before_script<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token string">'command -v ssh-agent || ( sudo apt-get update -y &amp;&amp; sudo apt-get install openssh-client -y )'</span>
+    <span class="token punctuation">-</span> eval $(ssh<span class="token punctuation">-</span>agent <span class="token punctuation">-</span>s)
+    <span class="token punctuation">-</span> echo "$SSH_PRIVATE_KEY" <span class="token punctuation">|</span> tr <span class="token punctuation">-</span>d '\r' <span class="token punctuation">|</span> ssh<span class="token punctuation">-</span>add <span class="token punctuation">-</span>
+    <span class="token punctuation">-</span> mkdir <span class="token punctuation">-</span>p ~/.ssh
+    <span class="token punctuation">-</span> chmod 700 ~/.ssh
+    <span class="token comment"># - '[[ -f /.dockerenv ]] &amp;&amp; echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config'</span>
+    <span class="token punctuation">-</span> ssh<span class="token punctuation">-</span>keyscan <span class="token punctuation">-</span>p "$SSH_KNOWN_HOSTS_PORT" "$SSH_KNOWN_HOSTS" <span class="token punctuation">></span><span class="token punctuation">></span> ~/.ssh/known_hosts
+    <span class="token punctuation">-</span> chmod 644 ~/.ssh/known_hosts
+    <span class="token punctuation">-</span> command <span class="token punctuation">-</span>v rsync <span class="token punctuation">|</span><span class="token punctuation">|</span> ( sudo apt<span class="token punctuation">-</span>get install rsync <span class="token punctuation">-</span>y )
+  script<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> rsync <span class="token punctuation">-</span>avze "ssh <span class="token punctuation">-</span>p $SSH_KNOWN_HOSTS_PORT" ./dist root@$SSH_KNOWN_HOSTS<span class="token punctuation">:</span>/home/
+  only<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> master
+  tags<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> testci<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里如果是用的 <code>docker</code>, 可以将上面文件中的部分代码</p>
+<pre class="line-numbers language-none"><code class="language-none">- ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~&#x2F;.ssh&#x2F;known_hosts
+- chmod 644 ~&#x2F;.ssh&#x2F;known_hosts<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>替换为</p>
+<pre class="line-numbers language-none"><code class="language-none">-&#39;[[ -f &#x2F;.dockerenv ]] &amp;&amp; echo -e &quot;Host *\n\tStrictHostKeyChecking no\n\n&quot; &gt;&gt; ~&#x2F;.ssh&#x2F;config&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="脚本解释"><a href="#脚本解释" class="headerlink" title="脚本解释"></a>脚本解释</h2><h3 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h3><p><code>eval $(ssh-agent -s)</code></p>
+<p>解释如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-agent
+SSH_AUTH_SOCK&#x3D;&#x2F;tmp&#x2F;ssh-GiORRAqMXEFt&#x2F;agent.28161; export SSH_AUTH_SOCK;
+SSH_AGENT_PID&#x3D;28162; export SSH_AGENT_PID;
+echo Agent pid 28162;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输出结果中明确说明了导出了几个环境变量，<strong>上面的 <code>ssh-agent</code> 尽管运行成功了，但是那两个环境变量并没有导出。所以更多时候，会使用 <code>eval</code> 来执行 <code>ssh-agent</code>，使得这些环境变量也被导出。</strong><br>如下两种方式均可启动 <code>ssh-gent</code>。</p>
+<p>方式一：创建子 shell，在子 shell 中运行 <code>ssh-agent</code> 进程，退出子 shell 自动结束代理。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-agent $SHELL<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>方式二：单独启动一个代理进程，退出当前 shell 时最好使用 <code>ssh-agent -k</code> 关闭对应代理</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ eval &#96;ssh-agent&#96;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>参数说明：<br>-s 生成 <code>Bourne shell</code> 风格的命令输出</strong></p>
+<h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p><code>echo &quot;$SSH_PRIVATE_KEY&quot; | tr -d &#39;\r&#39; | ssh-add -</code></p>
+<p>解释如下：<br>删除私钥字符串的空格（针对 <code>ed25519</code> 的一个 bug:bug:），然后作为输入传给 <code>ssh-add</code> 添加到 <code>ssh-agent</code> 代理中<br><strong>参数说明：<br>“tr”:用于转换或删除文件中的字符。<br>“-d”:<code>--delete</code>删除指令字符。<br>“-“:指令会从标准输入设备读取数据。</strong></p>
+<h3 id="ssh-keyscan"><a href="#ssh-keyscan" class="headerlink" title="ssh-keyscan"></a>ssh-keyscan</h3><p><code>ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~/.ssh/known_hosts</code></p>
+<p>解释如下：<br>将远程机器的公钥添加到 <code>runner</code> 机器的 <code>known_hosts</code> 中，目录在<code>/home/gitlab-runner/.ssh/known_hosts</code>。<br><code>ssh-keyscan</code> 的主要用途是用于批量获取机器的公钥，这样以后再用 <code>ssh</code> 登录到已经获取过公钥的服务器时，不需要再输入 <code>yes</code> 之类去保存公钥了。<br><strong>参数说明：<br>“-p”，端口。</strong></p>
+<h3 id="f-amp-amp-echo"><a href="#f-amp-amp-echo" class="headerlink" title="-f &amp;&amp; echo"></a>-f &amp;&amp; echo</h3><p><code>&#39;[[ -f /.dockerenv ]] &amp;&amp; echo -e &quot;Host *\n\tStrictHostKeyChecking no\n\n&quot; &gt;&gt; ~/.ssh/config&#39;</code></p>
+<p>解释如下：<br>如果存在 <code>/.dockerenv</code> 且为常规文件，则添加以下字符串到<code>~/.ssh/config</code> 文件，实现当第一次连接服务器时，自动接受新的公钥，不必询问。<br>但这里会一直往<code>~/.ssh/config</code> 里面写数据，并不是覆盖原有的数据，方式不太好</p>
+<pre class="line-numbers language-none"><code class="language-none">Host *
+  StrictHostKeyChecking no<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>如果服务器（系统重装，服务器间 IP 地址交换，DHCP，虚拟机重建，中间人劫持等），由于新连接服务器都需要进行公钥确认，可配置<code>StrictHostKeyChecking=no</code>绕过公钥检查<br>也可以用</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -l -f ~&#x2F;.ssh&#x2F;known_hosts
+$ ssh-keygen -R 服务器端的ip地址<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>来删除旧的地址</p>
+<p><strong>参数说明：<br>“[[]]”：这里相当于 test。<br>“-f”：如果 file 存在且是一个普通文件则为真。<br>“echo -e”：处理特殊字符，开启转义。</strong></p>
+<p><strong>如果配置了 ssh 一次都没有登陆过的话，第一次登陆是需要绕过公钥检查，也可以用 <code>ssh -o stricthostkeychecking=no</code> 来绕过。<br>用命令 <code>cat /etc/issue</code> 可以查看 <code>linux</code> 版本</strong></p>
+<p>执行之前最好到 <code>gitlab</code> 的 <code>pipelines</code> 用 <code>CI Lint</code> 验证下 <code>gitlab-ci.yml</code> 的格式是否正确，如果不正确是不触发 <code>jobs</code> 的。<br>到 <code>gitlab</code> 上该项目查看，<code>jobs</code> 执行成功 <code>passed</code>，到这里就大功告成。</p>
+<p>如果当前 runner 和需要部署的机器是一台的话可以直接用 cp 拷贝了。<br>可以用 <code>echo whoami</code> 和<code>echo pwd</code>查看当前用户和路径的。可以看到当前用户为 <code>gitlab-runner</code>，路径为<code>/home/gitlab-runner/builds/qmPHwZRG/0/userNameXXX/gitdirXXXX</code>，拷贝之前先执行</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ chown -R gitlab-runner:gitlab-runner .&#x2F;share<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>执行的时候前面添加 sudo，例如</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ sudo mkdir -p &#x2F;usr&#x2F;local&#x2F;share&#x2F;html
+$ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>就可以实现直接拷贝</p>
+<p><strong>即执行 <code>gitlab-ci.yml</code> 是用户 <code>gitlab-runner</code> 在 <code>runner</code> 注册的服务器上执行的。如果要部署在 <code>runner</code> 服务器，就直接 <code>cp</code> 拷贝，如果要部署到其他服务器，就设置 <code>ssh</code> 无密码登录再 <code>rsync</code> 或者 <code>scp</code> 都可以</strong></p>
+<h2 id="gitlab-pages"><a href="#gitlab-pages" class="headerlink" title="gitlab pages"></a>gitlab pages</h2><p><code>gitlab pages</code> 是 <code>gitlab</code> 的静态托管页面，只需要在 <code>gitlab-ci.yml</code> 重设置 <code>pages</code> 即可，只要采用了 <code>public</code> 文件夹，在提交的时候会默认把 <code>public</code> 里面的文件部署到 <code>pages</code> 作为静态页面。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">pages</span><span class="token punctuation">:</span>
+  stage<span class="token punctuation">:</span> deploy
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> mkdir .public
+    <span class="token punctuation">-</span> cp <span class="token punctuation">-</span>r ./<span class="token important">*.html</span> .public
+    <span class="token punctuation">-</span> mv .public public
+  <span class="token key atrule">artifacts</span><span class="token punctuation">:</span>
+    paths<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> public
+  <span class="token key atrule">when</span><span class="token punctuation">:</span> manual
+  only<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> master
+  tags<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> testci<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里设置了手动触发。<u><strong>特别需要注意的一点是顶层的 stages 名称，必须是 pages</strong></u>，不然 <code>gitlab</code> 的 <code>pages</code> 部署不会显示 <code>pages</code> 的地址。部署好了之后在 <code>gitlab</code> 中的 <code>Settings =&gt; Pages</code> 就可以看到部署的地址了，如果需要设置所有人可见的话，在单个项目的设置<code>Settings =&gt; General =&gt; Visibility</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee ☕</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="fanta 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="fanta 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fanta
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/" title="docker+gitlab-ci+ssh+gitlab-pages实现代码自动构建部署">https://freedomant.github.io/开发/Devops/docker-gitlab-ci-ssh-pages实现代码自动构建部署/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+              <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+              <a href="/tags/gitlab-ci/" rel="tag"># gitlab-ci</a>
+              <a href="/tags/gitlab-pages/" rel="tag"># gitlab-pages</a>
+              <a href="/tags/ssh/" rel="tag"># ssh</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/" rel="prev" title="使用docker+minio实现对象存储">
+                  <i class="fa fa-chevron-left"></i> 使用docker+minio实现对象存储
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/" rel="next" title="prometheus+grafana实现数据采集展示+邮件告警">
+                  prometheus+grafana实现数据采集展示+邮件告警 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fanta</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">22k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">20 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+  <script data-pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  const url = element.dataset.target;
+  const pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e3f3db5dd0cfab27f9f2',
+      clientSecret: '95e5182ba79ec76af28ce1ca2aebc12356b615b1',
+      repo        : 'freedomant.github.io',
+      owner       : 'FreedomAnt',
+      admin       : ['FreedomAnt'],
+      id          : '4c0e95b7f397e6d60a6b2b7c45521139',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

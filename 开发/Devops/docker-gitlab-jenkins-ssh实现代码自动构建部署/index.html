@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="code-WzikV8hhdR">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Microsoft+YaHei:300,300italic,400,400italic,700,700italic|Comic+Sans+MS:300,300italic,400,400italic,700,700italic|Input+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="安装 gitlab这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 gitlab&#x2F;gitlab-ce 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080 $ docker run -d -p 10080:80 --name gitlab">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker+gitlab+jenkins+ssh实现代码自动构建部署">
+<meta property="og:url" content="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="fanta&#39;s blog✍️">
+<meta property="og:description" content="安装 gitlab这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 gitlab&#x2F;gitlab-ce 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080 $ docker run -d -p 10080:80 --name gitlab">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-03T03:01:12.000Z">
+<meta property="article:modified_time" content="2020-11-03T07:41:11.747Z">
+<meta property="article:author" content="fanta">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="gitlab">
+<meta property="article:tag" content="ssh">
+<meta property="article:tag" content="devops">
+<meta property="article:tag" content="jenkins">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>docker+gitlab+jenkins+ssh实现代码自动构建部署 | fanta's blog✍️</title>
+  
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2a76899220e9bd558b282e2d0b96bb91";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">fanta's blog✍️</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">15</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="750" height="110" loading="lazy" sandbox="allow-popups allow-scripts allow-same-origin" src="https://www.xiami.com/webapp/embed-player?autoPlay=0&id=1774245424"></iframe>
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-gitlab"><span class="nav-number">1.</span> <span class="nav-text">安装 gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-jenkins"><span class="nav-number">2.</span> <span class="nav-text">安装 jenkins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-jenkins-%E6%8F%92%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">安装 jenkins 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-%E4%BB%A3%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">nginx 代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">修改配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jenkins-%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">jenkins 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%85%A8%E5%B1%80-jdk-%E5%92%8C-maven"><span class="nav-number">5.</span> <span class="nav-text">配置全局 jdk 和 maven</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87-SSH-%E9%83%A8%E7%BD%B2%E5%88%B0%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">6.</span> <span class="nav-text">通过 SSH 部署到远程服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E9%83%A8%E7%BD%B2"><span class="nav-number">6.1.</span> <span class="nav-text">前端部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF-jar-%E5%8C%85%E9%83%A8%E7%BD%B2"><span class="nav-number">6.2.</span> <span class="nav-text">后端 jar 包部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-gitlab-%E6%89%A7%E8%A1%8C%E8%87%AA%E5%8A%A8%E8%A7%A6%E5%8F%91%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2"><span class="nav-number">7.</span> <span class="nav-text">配置 gitlab 执行自动触发构建部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1%E7%9A%84-log"><span class="nav-number">8.</span> <span class="nav-text">查看任务的 log</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fanta"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">fanta</p>
+  <div class="site-description" itemprop="description">talk is cheap, show me the code</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0ZyZWVkb21BbnQ=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;FreedomAnt"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOjkyNTU4Mzg0OUBxcS5jb20=" title="E-Mail → mailto:925583849@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="fanta">
+      <meta itemprop="description" content="talk is cheap, show me the code">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanta's blog✍️">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          docker+gitlab+jenkins+ssh实现代码自动构建部署
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-03 11:01:12 / 修改时间：15:41:11" itemprop="dateCreated datePublished" datetime="2020-11-03T11:01:12+08:00">2020-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/Devops/" itemprop="url" rel="index"><span itemprop="name">Devops</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 <code>gitlab/gitlab-ce</code> 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 10080:80 --name gitlab twang2218&#x2F;gitlab-ce-zh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果是本机 windows 想要尝试社区镜像的，可以使用下面的代码</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker volume create gitlab-logs
+$ docker volume create gitlab-data
+$ docker run -d -p 10443:443 -p 10080:80 -p 10822:22 --name $ gitlab -v d:&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab -v gitlab-logs:&#x2F;var&#x2F;log&#x2F;gitlab -v gitlab-data:&#x2F;var&#x2F;opt&#x2F;gitlab gitlab&#x2F;gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>如果是 linux 的话要尝试社区镜像网上就很多了。<br>需要注意下 <strong>gitlab 的 webhook 配置的钩子地址是不允许内网的，比如 192.168、172.16 或者 10 开头的，这时候需要用 gitlab 的管理员账号（root）登陆去修改允许 webhook 的本地请求</strong>。<br>用 root 账号登陆之后左上角有一个小扳手的图标<code>Admin area =&gt; Settings =&gt; Network</code>勾选允许本地网络的请求即可。<br>这里就涉及到管理员账号的密码，网上很多参考说是系统默认的用户名：<code>root</code>，密码：<code>5iveL!fe</code>，试过了没有用，就只能自己去修改。这里可以参考官方<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvc2VjdXJpdHkvcmVzZXRfcm9vdF9wYXNzd29yZC5odG1sI2hvdy10by1yZXNldC15b3VyLXJvb3QtcGFzc3dvcmQ=">How to reset your root password<i class="fa fa-external-link-alt"></i></span><br>这里有坑的是安装社区版 <code>gitlab/gitlab-ce</code> 查不到用户。<br>进入 tty</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it gitlab bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>正常的修改密码代码如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">gitlab-rails console -e production
+user &#x3D; User.where(id: 1).first或者user &#x3D; User.find_by(email: &#39;admin@example.com&#39;)
+user.password &#x3D; 12345678
+user.password_confirmation &#x3D; 12345678
+user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里查询到的<code>User.where(id: 1).first</code>为 nil，就是 none 的意思，这里不知道怎么解决。还好汉化的那个版本可以直接设置 root 密码。<br>到这一步 gitlab 就可以使用了，但是 clone 的地址没有设置，clone 的地址目前是显示为一串字母。这里需要在<br><code>vi /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml</code>修改为需要暴露的 ip 和端口<br>然后<code>gitlab-ctl restart</code>重启 gitlab 即可。</p>
+<h2 id="安装-jenkins"><a href="#安装-jenkins" class="headerlink" title="安装 jenkins"></a>安装 jenkins</h2><p>安装 jenkins 就简便许多，端口映射到 18080，这里 jenkins 的配置文件后面都在<code>/var/jenkins_home/</code>这个文件夹下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 18080:8080 -p 50000:50000 --name jenkins -v d:&#x2F;docker&#x2F;jenkins:&#x2F;var&#x2F;jenkins_home jenkins&#x2F;jenkins:lts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>后面由于涉及到 maven 环境的安装，所以进入 bash 环境的时候可以指定账号</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u 0 jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里-u 可以指定 username 或者 uid，也可以写成</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u root jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>打开网页，需要输入首次的密码，可以在<code>/var/jenkins_home/secrets/initialAdminPassword</code>找到。<br>进入之后可以选择配置插件，也可以跳过后面再来配置。这里选择的跳过。<br><strong>如果退出之后不知道管理员的密码</strong>，可以打开<code>/var/jenkins_home/users/adminXXX</code>里面的 config.xml，找到 <code>passwordHash</code>，设置为<code>#jbcrypt:$2a$10$MiIVR0rr/UhQBqT.bBq0QehTiQVqgNpUGyWW2nJObaVAM/2xSQdSq</code><br>这个是编码过后的 123456，这样你的管理员账号就设置为了 123456.</p>
+<h2 id="安装-jenkins-插件"><a href="#安装-jenkins-插件" class="headerlink" title="安装 jenkins 插件"></a>安装 jenkins 插件</h2><p>安装插件这里由于官方的仓库比较慢而且经常失败，这里可以换其他源，这里可以选择清华大学的<code> https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/2.60/update-center.json</code><br>这里有个坑是清华是把这个文件镜像过来了，但是没有把里面的插件升级地址改成清华，所以下载还是有问题，这里解决方式有两种</p>
+<h3 id="nginx-代理"><a href="#nginx-代理" class="headerlink" title="nginx 代理"></a>nginx 代理</h3><p>将所有<code>http://updates.jenkins-ci.org/download</code>代理到<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code> 。</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>打开<code>/var/jenkins_home/updates/default.json</code>，将所有的<code>http://updates.jenkins-ci.org/download</code>,有的是<code>https://updates.jenkins.io/download</code>批量修改为<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code>，一劳永逸。</p>
+<p>这里添加几个常用的插件<strong>Maven Integration</strong>、<strong>GitLab</strong>、<strong>GitLab Hook</strong>、<strong>Publish Over SSH</strong></p>
+<h2 id="jenkins-配置"><a href="#jenkins-配置" class="headerlink" title="jenkins 配置"></a>jenkins 配置</h2><p>配置之前先添加两个凭据。</p>
+<ol>
+<li>用于 gitlab 的 <code>accessToken</code><br>首先登陆 gitlab<code>用户 =&gt; 设置 =&gt; accessToken</code>，填写名称和过期时间，勾选 api，点击生成 <code>accessToken</code>，这里要记录下 token，如果刷新了 token 就没了。<br>登陆到 jenkins，<code>Manage Jenkins =&gt; Manage Credentials</code>点击全局凭证，<code>Add Credentials</code>选择<code>Gitlab API token</code>，填写 accessToken。</li>
+<li>用于 gitlab 的登陆账号和密码<br>还是在全局凭证，点击添加凭证，类型选择<code>Username with password</code>，填写用户拉取代码的 gitlab 账号和用户名</li>
+</ol>
+<p>添加完成之后配置 gitlab 的连接地址和需要 ssh 部署的地址。<br>点击<code>Manage Jenkins =&gt; Configure System</code>里面的 gitlab 配置，填写你的 gitlab 名称 <code>Connection name</code>，gitlab 地址，我这里是<code>http://192.168.7.104:10080</code>，名称为”jenkins_for_gitlab”，凭证选择刚才新建的第一个凭证<code>Gitlab API token</code>，添加完成之后点击<code>Test Connection</code>测试，如果配置正确提示 <code>Success</code>。<br>然后添加 ssh 配置 <code>Publish over SSH</code>，<code>SSH Servers</code> 填写 ssh 的地址，账号，以及远程位置，这里可以直接设置为想要部署的位置，我这里设置为根目录<code>/</code>。<br>高级里面填写端口、密码，之后测试<code>Test Configuration</code>，之后 save 保存。</p>
+<h2 id="配置全局-jdk-和-maven"><a href="#配置全局-jdk-和-maven" class="headerlink" title="配置全局 jdk 和 maven"></a>配置全局 jdk 和 maven</h2><p>这一步需要安装 jenkins 的机器安装 jdk 和 maven。<br>一般安装 jenkins 的时候已经安装了 jdk，这里还需要安装 maven。<br>这里下载了压缩包到<code>/usr/local/</code>下面然后 <code>unzip</code> 解压，文件夹是 <code>apache-maven-3.6.3</code>。<br>需要修改环境变量，先下载一个 <code>vim</code>。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get update -y
+$ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>这里我 jdk 的文件名为 <code>openjdk-8</code>。<br>maven 和 jdk 都放在了<code>/usr/local</code> 下面。<br>安装完成后编辑环境变量<code>vi /etc/profile</code>，在文件末尾添加</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">MAVEN_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/apache-maven-3.6.3</span>
+<span class="token attr-name">JAVA_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/openjdk-8</span>
+<span class="token attr-name">CLASS_PATH</span><span class="token punctuation">=</span><span class="token attr-value">$JAVA_HOME/lib/</span>
+<span class="token attr-name">PATH</span><span class="token punctuation">=</span><span class="token attr-value">$PATH:$MAVEN_HOME/bin:$JAVA_HOME/bin</span>
+<span class="token attr-name">export</span> <span class="token attr-value">PATH MAVEN_HOME JAVA_HOME CLASS_PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>配置完成之后输入<code>source /etc/profile</code>使配置文件生效。到这里可以测试下安装是否成功</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mvn -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击<code>Manage Jenkins =&gt; Global Tool Configuration</code>。<br>选择 <code>JDK installations</code>，填写 jdk 名称和路径<code>/usr/local/openjdk-8</code>。<br>选择 Maven installations，填写 maven 的名称和路径<code>/usr/local/apache-maven-3.6.3</code>，然后 save 保存。</p>
+<h2 id="通过-SSH-部署到远程服务器"><a href="#通过-SSH-部署到远程服务器" class="headerlink" title="通过 SSH 部署到远程服务器"></a>通过 SSH 部署到远程服务器</h2><h3 id="前端部署"><a href="#前端部署" class="headerlink" title="前端部署"></a>前端部署</h3><p>到 jenkins 主界面，左侧导航栏选择 <code>New Item</code>,填写名称，选择 <code>Freestyle project</code>，在配置 <code>configure</code> 里面，</p>
+<ul>
+<li><p><code>General</code>—在 <code>Gitlab Connection</code> 选择在配置里面设置的 gitlab 的连接”jenkins for gitlab”。</p>
+</li>
+<li><p><code>Source Code Management</code>—选择 git，仓库地址填写需要部署的项目的仓库地址，凭证选择建立好的 gitlab 的登陆账号密码，分支这里测试是直接选的 master 分支，</p>
+</li>
+<li><p><code>Build Triggers</code>—勾选<code>Build when a change is pushed to GitLab. GitLab webhook URL: http://192.168.7.104:18080/project/testDist</code>，这里需要记录下这个 webhook 地址，填写到 gitlab 的时候需要。<br>点击高级选项，点击 Generate 生成 <code>Secret token</code>，这里我们记录下这个 token，<code>b3d5a618874a8335XXXXXXXXX</code></p>
+</li>
+<li><p><code>Build Environment</code>—这里可以配置在 build 之前或者 build 之后的操作，比如我们需要 build 之后将生成的<code>/dist</code> 文件夹通过 SSH 部署到远程服务器。<br><code>SSH Server</code> 选择配置的地址.<br><code>Source files</code> 填写<code>dist/</code>即为 dist 下面所有文件.<br><code>Remote directory</code> 填写<code>home/</code><br>意思是将 jenkins 下面 <code>workspace</code> 的文件拷贝到远程服务器的 <code>home</code> 文件夹下，其中 <code>Exec command</code> 还可以填写需要在远程服务器执行的操作，比如 tomcat 的关闭与启动等等。</p>
+</li>
+</ul>
+<h3 id="后端-jar-包部署"><a href="#后端-jar-包部署" class="headerlink" title="后端 jar 包部署"></a>后端 jar 包部署</h3><p>jar 包部署与前端部署一样，在 <code>Build Environment</code> 中 <code>Source files</code> 填写<code>target/*.jar</code>。<br><code>Remove prefix</code> 删除前缀这里填写<code>target</code>。<br><code>Remote directory</code> 填写需要部署打的 jar 包位置。<br>这里 build 可以设置打包命令为<code>mvn clear package</code>。<br><code>nohup java -jar XXXX.jar &amp;</code>启动 jar 包，也可以写一些执行脚本在服务器上运行。</p>
+<h2 id="配置-gitlab-执行自动触发构建部署"><a href="#配置-gitlab-执行自动触发构建部署" class="headerlink" title="配置 gitlab 执行自动触发构建部署"></a>配置 gitlab 执行自动触发构建部署</h2><p>进入 gitlab 选择需要部署的项目，<code>设置 =&gt; 集成</code>里面填写 <code>webhook</code>，链接填写为 <code>jenkins</code> 里面生成的链接，如<code>http://192.168.7.104:18080/project/testDist</code>，安全令牌填写<code>b3d5a618874a83358bc0aXXXXX</code>。<br>选择 push 触发，分支选择 master，这样 master 分支提交 push 的时候就会触发这个 webhook，保存之后可以 test 测试<code>Push events</code>，如果成功则提示<code> Hook executed successfully: HTTP 200</code>，如果提示<code> Requests to localhost are not allowed</code>，就需要登陆管理员账号开启内网请求权限，参照文章第一点<a href="#%E5%AE%89%E8%A3%85-gitlab">安装-gitlab</a></p>
+<h2 id="查看任务的-log"><a href="#查看任务的-log" class="headerlink" title="查看任务的 log"></a>查看任务的 log</h2><p>进入任务，左侧导航<code>Console Output</code>可查询 jenkins 日志。<br><strong>build 生成的文件可在 <code>/var/jenkins_home/workspace</code> 下面查看</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee ☕</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="fanta 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="fanta 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fanta
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/" title="docker+gitlab+jenkins+ssh实现代码自动构建部署">https://freedomant.github.io/开发/Devops/docker-gitlab-jenkins-ssh实现代码自动构建部署/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+              <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+              <a href="/tags/ssh/" rel="tag"># ssh</a>
+              <a href="/tags/devops/" rel="tag"># devops</a>
+              <a href="/tags/jenkins/" rel="tag"># jenkins</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/" rel="prev" title="数据可视化工具选型参考">
+                  <i class="fa fa-chevron-left"></i> 数据可视化工具选型参考
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/" rel="next" title="使用docker+minio实现对象存储">
+                  使用docker+minio实现对象存储 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fanta</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">22k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">20 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+  <script data-pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  const url = element.dataset.target;
+  const pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e3f3db5dd0cfab27f9f2',
+      clientSecret: '95e5182ba79ec76af28ce1ca2aebc12356b615b1',
+      repo        : 'freedomant.github.io',
+      owner       : 'FreedomAnt',
+      admin       : ['FreedomAnt'],
+      id          : '87269af4f9a2c018b7342d8b9c60842e',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

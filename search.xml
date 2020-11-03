@@ -1,10 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>docker+gitlab-ci+ssh+gitlab-pages实现代码自动构建部署</title>
+    <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h2 id="主要操作步骤"><a href="#主要操作步骤" class="headerlink" title="主要操作步骤"></a>主要操作步骤</h2><ol>
+<li><strong>使用 ssh-keygen 在本地创建新的 SSH 密钥对。</strong></li>
+<li><strong>将私钥作为变量添加到您的项目中。</strong></li>
+<li><strong>运行 ssh-agent 以加载私钥。</strong></li>
+<li><strong>将公共密钥复制到您想要访问的服务器上（通常在 <code>~/.ssh/authorized_keys</code>中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。</strong></li>
+</ol>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>由于 docker 启动的 centos 不能使用 <code>systemctl</code>，包括安装 <code>server</code> 命令都不行，网上有解决方法如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos8 --privileged&#x3D;true centos &#x2F;sbin&#x2F;init<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>但不适合于 docker 的 windows 版本，所以这里安装 centos7 以下的版本，不使用 <code>systemctl</code>。</p>
+<h3 id="下载-centos6-10-并进入控制台"><a href="#下载-centos6-10-并进入控制台" class="headerlink" title="下载 centos6.10 并进入控制台"></a>下载 centos6.10 并进入控制台</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos6 centos:6.10 bash
+docker exec -it centos6 bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>这里直接 run 一个 <code>container</code> 。如果 run 之前没有 pull <code>centos6</code> 的话，在 run 的时候 docker 会自动去找相应的 image 去拉取，把 <code>22</code> 端口映射到宿主机的 <code>10022</code> 端口，方便 ssh。</p>
+<h3 id="安装-openssh-server"><a href="#安装-openssh-server" class="headerlink" title="安装 openssh-server"></a>安装 openssh-server</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ rpm -qa | grep ssh
+$ yum update -y &amp;&amp; yum install openssh-server -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="设置-ssh-允许-root-登陆"><a href="#设置-ssh-允许-root-登陆" class="headerlink" title="设置 ssh 允许 root 登陆"></a>设置 ssh 允许 root 登陆</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><code>PermitRootLogin</code>修改为<code>yes</code>。</p>
+<h3 id="开启-ssh-服务"><a href="#开启-ssh-服务" class="headerlink" title="开启 ssh 服务"></a>开启 ssh 服务</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ &#x2F;etc&#x2F;init.d&#x2F;sshd start<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 ssh 是否已经启动</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ps -ef|grep ssh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="安装-rsync"><a href="#安装-rsync" class="headerlink" title="安装 rsync"></a>安装 rsync</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ yum install rsync -y<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>如果用 <code>scp</code> 传的话本地和远程都需要安装 <code>openssh-client</code>，如果用 <code>rsync</code> 传的话本地和远程都需要安装 <code>rsync</code>。</strong></p>
+<h3 id="修改-root-密码"><a href="#修改-root-密码" class="headerlink" title="修改 root 密码"></a>修改 root 密码</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里设置为 <code>123456</code>，方便登陆验证。</p>
+<h2 id="配置-gitlab-runner"><a href="#配置-gitlab-runner" class="headerlink" title="配置 gitlab-runner"></a>配置 gitlab-runner</h2><h3 id="下载-gitlab-runner-并进入控制台"><a href="#下载-gitlab-runner-并进入控制台" class="headerlink" title="下载 gitlab-runner 并进入控制台"></a>下载 gitlab-runner 并进入控制台</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name gitlab-runner -v d:&#x2F;docker&#x2F;gitlab-runner&#x2F;config:&#x2F;etc&#x2F;gitlab-runner gitlab&#x2F;gitlab-runner:latest
+$ docker exec -it gitlab-runner bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="注册-gitlab-runner"><a href="#注册-gitlab-runner" class="headerlink" title="注册 gitlab-runner"></a>注册 gitlab-runner</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-runner register<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里注意填写下 <code>tags</code>，后面方便用到。执行环境选择的 <code>shell</code>，如果执行环境选 <code>docker</code>的话，相应的版本可以选 <code>alpine:latest</code>。<br>试过 <code>docker</code>，因为没有映射<code>/var/run/docker.sock</code>，用 <code>docker</code> 执行 jobs 有时候会报错。所以这里我改成了<code>shell</code>。</p>
+<h2 id="配置-CI-CD"><a href="#配置-CI-CD" class="headerlink" title="配置 CI/CD"></a>配置 CI/CD</h2><h3 id="在本机生成密钥对"><a href="#在本机生成密钥对" class="headerlink" title="在本机生成密钥对"></a>在本机生成密钥对</h3><p>在 runner 机器上生成密钥</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -t rsa -f runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里文件名称最好修改一下，避免生成的密钥文件将原来的覆盖掉。密钥的类型官方推荐是 <code>ed25519</code>，即</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -t ed25519 -f runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>但是 <code>centos6.10</code> 不支持 <code>ed25519</code>，这里还是换成 <code>rsa</code></p>
+<h3 id="公钥放到要部署的服务器"><a href="#公钥放到要部署的服务器" class="headerlink" title="公钥放到要部署的服务器"></a>公钥放到要部署的服务器</h3><p>公钥放到要部署的服务器的<code>~/.ssh/authorized_keys</code>文件里</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-copy-id -i runnerkey.pub root@remoteip -p port<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>按照提示输入密码就行了。</p>
+<h3 id="私钥配置到-gitlab-变量"><a href="#私钥配置到-gitlab-变量" class="headerlink" title="私钥配置到 gitlab 变量"></a>私钥配置到 gitlab 变量</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里可以把服务器地址、端口都配置上，路径为 gitlab 页面上项目里的<code>Setting =&gt; CI/CD =&gt; Variables =&gt; Add Variables</code>，key 就用<code>SSH_PRIVATE_KEY</code>和<code>SSH_KNOWN_HOSTS</code>、<code>SSH_KNOWN_HOSTS_PORT</code>。</p>
+<h3 id="用-root-登陆-runner-服务器"><a href="#用-root-登陆-runner-服务器" class="headerlink" title="用 root 登陆 runner 服务器"></a>用 root 登陆 runner 服务器</h3><p>用 root 登陆 runner 服务器并设置为可无密码切换到 root。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get install sudo -y
+$ apt-get install vim -y
+$ vim &#x2F;etc&#x2F;sudoers<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>添加以下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-runner ALL&#x3D;(ALL) NOPASSWD: ALL<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="编写-gitlab-ci-yml"><a href="#编写-gitlab-ci-yml" class="headerlink" title="编写 gitlab-ci.yml"></a>编写 gitlab-ci.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">stages</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> deploy
+<span class="token key atrule">deploy_by_192</span><span class="token punctuation">:</span>
+  stage<span class="token punctuation">:</span> deploy
+  before_script<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token string">'command -v ssh-agent || ( sudo apt-get update -y &amp;&amp; sudo apt-get install openssh-client -y )'</span>
+    <span class="token punctuation">-</span> eval $(ssh<span class="token punctuation">-</span>agent <span class="token punctuation">-</span>s)
+    <span class="token punctuation">-</span> echo "$SSH_PRIVATE_KEY" <span class="token punctuation">|</span> tr <span class="token punctuation">-</span>d '\r' <span class="token punctuation">|</span> ssh<span class="token punctuation">-</span>add <span class="token punctuation">-</span>
+    <span class="token punctuation">-</span> mkdir <span class="token punctuation">-</span>p ~/.ssh
+    <span class="token punctuation">-</span> chmod 700 ~/.ssh
+    <span class="token comment"># - '[[ -f /.dockerenv ]] &amp;&amp; echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config'</span>
+    <span class="token punctuation">-</span> ssh<span class="token punctuation">-</span>keyscan <span class="token punctuation">-</span>p "$SSH_KNOWN_HOSTS_PORT" "$SSH_KNOWN_HOSTS" <span class="token punctuation">></span><span class="token punctuation">></span> ~/.ssh/known_hosts
+    <span class="token punctuation">-</span> chmod 644 ~/.ssh/known_hosts
+    <span class="token punctuation">-</span> command <span class="token punctuation">-</span>v rsync <span class="token punctuation">|</span><span class="token punctuation">|</span> ( sudo apt<span class="token punctuation">-</span>get install rsync <span class="token punctuation">-</span>y )
+  script<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> rsync <span class="token punctuation">-</span>avze "ssh <span class="token punctuation">-</span>p $SSH_KNOWN_HOSTS_PORT" ./dist root@$SSH_KNOWN_HOSTS<span class="token punctuation">:</span>/home/
+  only<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> master
+  tags<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> testci<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里如果是用的 <code>docker</code>, 可以将上面文件中的部分代码</p>
+<pre class="line-numbers language-none"><code class="language-none">- ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~&#x2F;.ssh&#x2F;known_hosts
+- chmod 644 ~&#x2F;.ssh&#x2F;known_hosts<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>替换为</p>
+<pre class="line-numbers language-none"><code class="language-none">-&#39;[[ -f &#x2F;.dockerenv ]] &amp;&amp; echo -e &quot;Host *\n\tStrictHostKeyChecking no\n\n&quot; &gt;&gt; ~&#x2F;.ssh&#x2F;config&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="脚本解释"><a href="#脚本解释" class="headerlink" title="脚本解释"></a>脚本解释</h2><h3 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h3><p><code>eval $(ssh-agent -s)</code></p>
+<p>解释如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-agent
+SSH_AUTH_SOCK&#x3D;&#x2F;tmp&#x2F;ssh-GiORRAqMXEFt&#x2F;agent.28161; export SSH_AUTH_SOCK;
+SSH_AGENT_PID&#x3D;28162; export SSH_AGENT_PID;
+echo Agent pid 28162;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输出结果中明确说明了导出了几个环境变量，<strong>上面的 <code>ssh-agent</code> 尽管运行成功了，但是那两个环境变量并没有导出。所以更多时候，会使用 <code>eval</code> 来执行 <code>ssh-agent</code>，使得这些环境变量也被导出。</strong><br>如下两种方式均可启动 <code>ssh-gent</code>。</p>
+<p>方式一：创建子 shell，在子 shell 中运行 <code>ssh-agent</code> 进程，退出子 shell 自动结束代理。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-agent $SHELL<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>方式二：单独启动一个代理进程，退出当前 shell 时最好使用 <code>ssh-agent -k</code> 关闭对应代理</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ eval &#96;ssh-agent&#96;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>参数说明：<br>-s 生成 <code>Bourne shell</code> 风格的命令输出</strong></p>
+<h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p><code>echo &quot;$SSH_PRIVATE_KEY&quot; | tr -d &#39;\r&#39; | ssh-add -</code></p>
+<p>解释如下：<br>删除私钥字符串的空格（针对 <code>ed25519</code> 的一个 bug:bug:），然后作为输入传给 <code>ssh-add</code> 添加到 <code>ssh-agent</code> 代理中<br><strong>参数说明：<br>“tr”:用于转换或删除文件中的字符。<br>“-d”:<code>--delete</code>删除指令字符。<br>“-“:指令会从标准输入设备读取数据。</strong></p>
+<h3 id="ssh-keyscan"><a href="#ssh-keyscan" class="headerlink" title="ssh-keyscan"></a>ssh-keyscan</h3><p><code>ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~/.ssh/known_hosts</code></p>
+<p>解释如下：<br>将远程机器的公钥添加到 <code>runner</code> 机器的 <code>known_hosts</code> 中，目录在<code>/home/gitlab-runner/.ssh/known_hosts</code>。<br><code>ssh-keyscan</code> 的主要用途是用于批量获取机器的公钥，这样以后再用 <code>ssh</code> 登录到已经获取过公钥的服务器时，不需要再输入 <code>yes</code> 之类去保存公钥了。<br><strong>参数说明：<br>“-p”，端口。</strong></p>
+<h3 id="f-amp-amp-echo"><a href="#f-amp-amp-echo" class="headerlink" title="-f &amp;&amp; echo"></a>-f &amp;&amp; echo</h3><p><code>&#39;[[ -f /.dockerenv ]] &amp;&amp; echo -e &quot;Host *\n\tStrictHostKeyChecking no\n\n&quot; &gt;&gt; ~/.ssh/config&#39;</code></p>
+<p>解释如下：<br>如果存在 <code>/.dockerenv</code> 且为常规文件，则添加以下字符串到<code>~/.ssh/config</code> 文件，实现当第一次连接服务器时，自动接受新的公钥，不必询问。<br>但这里会一直往<code>~/.ssh/config</code> 里面写数据，并不是覆盖原有的数据，方式不太好</p>
+<pre class="line-numbers language-none"><code class="language-none">Host *
+  StrictHostKeyChecking no<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>如果服务器（系统重装，服务器间 IP 地址交换，DHCP，虚拟机重建，中间人劫持等），由于新连接服务器都需要进行公钥确认，可配置<code>StrictHostKeyChecking=no</code>绕过公钥检查<br>也可以用</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -l -f ~&#x2F;.ssh&#x2F;known_hosts
+$ ssh-keygen -R 服务器端的ip地址<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>来删除旧的地址</p>
+<p><strong>参数说明：<br>“[[]]”：这里相当于 test。<br>“-f”：如果 file 存在且是一个普通文件则为真。<br>“echo -e”：处理特殊字符，开启转义。</strong></p>
+<p><strong>如果配置了 ssh 一次都没有登陆过的话，第一次登陆是需要绕过公钥检查，也可以用 <code>ssh -o stricthostkeychecking=no</code> 来绕过。<br>用命令 <code>cat /etc/issue</code> 可以查看 <code>linux</code> 版本</strong></p>
+<p>执行之前最好到 <code>gitlab</code> 的 <code>pipelines</code> 用 <code>CI Lint</code> 验证下 <code>gitlab-ci.yml</code> 的格式是否正确，如果不正确是不触发 <code>jobs</code> 的。<br>到 <code>gitlab</code> 上该项目查看，<code>jobs</code> 执行成功 <code>passed</code>，到这里就大功告成。</p>
+<p>如果当前 runner 和需要部署的机器是一台的话可以直接用 cp 拷贝了。<br>可以用 <code>echo whoami</code> 和<code>echo pwd</code>查看当前用户和路径的。可以看到当前用户为 <code>gitlab-runner</code>，路径为<code>/home/gitlab-runner/builds/qmPHwZRG/0/userNameXXX/gitdirXXXX</code>，拷贝之前先执行</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ chown -R gitlab-runner:gitlab-runner .&#x2F;share<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>执行的时候前面添加 sudo，例如</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ sudo mkdir -p &#x2F;usr&#x2F;local&#x2F;share&#x2F;html
+$ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>就可以实现直接拷贝</p>
+<p><strong>即执行 <code>gitlab-ci.yml</code> 是用户 <code>gitlab-runner</code> 在 <code>runner</code> 注册的服务器上执行的。如果要部署在 <code>runner</code> 服务器，就直接 <code>cp</code> 拷贝，如果要部署到其他服务器，就设置 <code>ssh</code> 无密码登录再 <code>rsync</code> 或者 <code>scp</code> 都可以</strong></p>
+<h2 id="gitlab-pages"><a href="#gitlab-pages" class="headerlink" title="gitlab pages"></a>gitlab pages</h2><p><code>gitlab pages</code> 是 <code>gitlab</code> 的静态托管页面，只需要在 <code>gitlab-ci.yml</code> 重设置 <code>pages</code> 即可，只要采用了 <code>public</code> 文件夹，在提交的时候会默认把 <code>public</code> 里面的文件部署到 <code>pages</code> 作为静态页面。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">pages</span><span class="token punctuation">:</span>
+  stage<span class="token punctuation">:</span> deploy
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> mkdir .public
+    <span class="token punctuation">-</span> cp <span class="token punctuation">-</span>r ./<span class="token important">*.html</span> .public
+    <span class="token punctuation">-</span> mv .public public
+  <span class="token key atrule">artifacts</span><span class="token punctuation">:</span>
+    paths<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> public
+  <span class="token key atrule">when</span><span class="token punctuation">:</span> manual
+  only<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> master
+  tags<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> testci<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里设置了手动触发。<u><strong>特别需要注意的一点是顶层的 stages 名称，必须是 pages</strong></u>，不然 <code>gitlab</code> 的 <code>pages</code> 部署不会显示 <code>pages</code> 的地址。部署好了之后在 <code>gitlab</code> 中的 <code>Settings =&gt; Pages</code> 就可以看到部署的地址了，如果需要设置所有人可见的话，在单个项目的设置<code>Settings =&gt; General =&gt; Visibility</code>。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Devops</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>gitlab</tag>
+        <tag>gitlab-ci</tag>
+        <tag>gitlab-pages</tag>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Sentry部署</title>
-    <url>/%E5%BC%80%E5%8F%91/javascript/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等组件，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
-<p>如果你选择了通过 Docker 进行安装，其实还有更加便捷的方式——docker-compose 。在 github 上有一个开源项目用于部署 Sentry，可以直接运行 <code>./install.sh</code> 将 Sentry 及其依赖都通过 docker 安装。</p>
+    <url>/%E5%BC%80%E5%8F%91/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
+<p>如果你选择了通过 Docker 进行安装，有更加便捷的方式——docker-compose 。在 github 上有一个开源项目用于部署 Sentry，可以直接运行该项目中 <code>./install.sh</code> 将 Sentry 及其依赖都通过 docker 安装。</p>
 <a id="more"></a>
 
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git clone https:&#x2F;&#x2F;github.com&#x2F;getsentry&#x2F;onpremise.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -29,8 +190,8 @@
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjeDZkOyYjOTc7JiMxMDU7JiN4NmM7JiMxMTA7JiN4NjE7JiN4NmQ7JiN4NjU7JiM2NDsmIzExMzsmIzExMzsmIzQ2OyYjeDYzOyYjMTExOyYjMTA5Ow==">&#x6d;&#97;&#105;&#x6c;&#110;&#x61;&#x6d;&#x65;&#64;&#113;&#113;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
-<h2 id="启动-Sentry-Server，同时添加端口映射。"><a href="#启动-Sentry-Server，同时添加端口映射。" class="headerlink" title="启动 Sentry Server，同时添加端口映射。"></a>启动 Sentry Server，同时添加端口映射。</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 -p 9000:9000 参数，再启动后可以通过访问 <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MDAwLw==">http://localhost:9000<i class="fa fa-external-link-alt"></i></span> 或 <span class="exturl" data-url="aHR0cDovL2hvc3QtaXA6OTAwMC8=">http://host-ip:9000<i class="fa fa-external-link-alt"></i></span> 进入 Sentry 的 web 管理页面</p>
+<p>创建账号密码<code>mailname@qq.com/123456</code></p>
+<h2 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -39,8 +200,8 @@
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
 $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<span class="exturl" data-url="aHR0cDovLzEyNy4wLjAuMTo5MDAwJUVGJUJDJThDJUU4JUI0JUE2JUU1JThGJUI3JUU1JUFGJTg2JUU3JUEwJTgxJUU2JTk4JUFGJTYwbWFpbG5hbWVAcXEuY29tLzEyMzQ1NiU2MA==">http://127.0.0.1:9000，账号密码是`mailname@qq.com/123456`<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="修改邮箱配置可发邮箱"><a href="#修改邮箱配置可发邮箱" class="headerlink" title="修改邮箱配置可发邮箱"></a>修改邮箱配置可发邮箱</h3><p><code>$ docker exec -it my-sentry bash</code>进入控制台</p>
+<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<code>mailname@qq.com/123456</code></p>
+<h3 id="配置邮箱告警"><a href="#配置邮箱告警" class="headerlink" title="配置邮箱告警"></a>配置邮箱告警</h3><p><code>$ docker exec -it my-sentry bash</code>进入控制台</p>
 <p><code>$ vi /etc/sentry/config.yml</code></p>
 <p>腾讯示例：</p>
 <table>
@@ -59,7 +220,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjMTAxOyYjeDQwOyYjeDZkOyYjOTc7JiMxMDU7JiN4NmM7JiM0NjsmI3g2MzsmI3g2ZjsmI3g2ZDs=">&#101;&#120;&#x61;&#x6d;&#112;&#108;&#101;&#x40;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjMTAxOyYjeDQwOyYjMTA5OyYjOTc7JiMxMDU7JiN4NmM7JiM0NjsmIzk5OyYjeDZmOyYjeDZkOw==">&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#x40;&#109;&#97;&#105;&#x6c;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -79,7 +240,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjMTA5OyYjeDcwOyYjMTA4OyYjeDY1OyYjeDQwOyYjMTA5OyYjeDYxOyYjeDY5OyYjMTA4OyYjNDY7JiN4NjM7JiN4NmY7JiN4NmQ7">&#x65;&#120;&#x61;&#109;&#x70;&#108;&#x65;&#x40;&#109;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjOTc7JiMxMDk7JiN4NzA7JiMxMDg7JiN4NjU7JiM2NDsmIzEwOTsmIzk3OyYjMTA1OyYjMTA4OyYjNDY7JiN4NjM7JiMxMTE7JiN4NmQ7">&#x65;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#64;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -102,15 +263,16 @@ Sentry<span class="token punctuation">.</span><span class="token function">init<
 <h4 id="参数解释"><a href="#参数解释" class="headerlink" title="参数解释"></a>参数解释</h4><ol>
 <li><p>传递 Vue 是可选的，如果不传递，则 window.Vue 必须存在。</p>
 </li>
-<li><p>传递<code>attachProps</code>是可选的，<code>true</code>如果没有提供，则为传递。如果将其设置为<code>false</code>，Sentry 将禁止发送所有 Vue 组件的道具进行记录。</p>
+<li><p>传递<code>attachProps</code>是可选的，默认<code>true</code>。如果将其设置为<code>false</code>，Sentry 将禁止发送所有 Vue 组件的道具进行记录。</p>
 </li>
-<li><p>传递<code>logErrors</code>是可选的，<code>false</code>如果没有提供，则为传递。如果将其设置为<code>true</code>，Sentry 也将调用原始 Vue<code>logError</code>函数。</p>
+<li><p>传递<code>logErrors</code>是可选的，默认<code>false</code>。如果将其设置为<code>true</code>，Sentry 也将调用原始 Vue<code>logError</code>函数。</p>
+</li>
+</ol>
 <blockquote>
 <p>Vue 错误处理<br>请注意，如果启用此集成，则 Vue 不会在 logError 内部调用它。这意味着在 Vue 渲染器中发生的错误将不会显示在开发人员控制台中。如果要保留此功能，请确保通过该 logErrors: true 选项。</p>
 </blockquote>
-</li>
-<li><p>跟踪 Vue 应用程序的最基本配置（仅跟踪顶级组件）如下所示</p>
-</li>
+<ol start="4">
+<li>跟踪 Vue 应用程序的最基本配置（仅跟踪顶级组件）如下所示</li>
 </ol>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> Sentry <span class="token keyword">from</span> <span class="token string">"@sentry/browser"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Vue <span class="token keyword">as</span> VueIntegration <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@sentry/integrations"</span><span class="token punctuation">;</span>
@@ -137,7 +299,7 @@ Sentry<span class="token punctuation">.</span><span class="token function">init<
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="environment-环境变量"><a href="#environment-环境变量" class="headerlink" title="environment 环境变量"></a>environment 环境变量</h3><h4 id="捕获-sorceMap"><a href="#捕获-sorceMap" class="headerlink" title="捕获 sorceMap"></a>捕获 sorceMap</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install --save-dev @sentry&#x2F;webpack-plugin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="启用-sourceMap-以方便定位-bug"><a href="#启用-sourceMap-以方便定位-bug" class="headerlink" title="启用 sourceMap 以方便定位 bug"></a>启用 sourceMap 以方便定位 bug</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install --save-dev @sentry&#x2F;webpack-plugin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> SentryWebpackPlugin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"@sentry/webpack-plugin"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -161,7 +323,8 @@ module<span class="token punctuation">.</span>exports <span class="token operato
 <blockquote>
 <p>In Vue 2.x, you should use vue.config.js instead of webpack.config.js, and use include: “./dist” instead of include: “.”</p>
 </blockquote>
-<h4 id="也可以通过配置文件的方式"><a href="#也可以通过配置文件的方式" class="headerlink" title="也可以通过配置文件的方式"></a>也可以通过配置文件的方式</h4><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">plugins<span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">"development"</span>
+<p>也可以通过配置文件的方式</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">plugins<span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">"development"</span>
   <span class="token operator">?</span> <span class="token punctuation">[</span>
       <span class="token keyword">new</span> <span class="token class-name">SentryWebpackPlugin</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
         release<span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// 唯一标识，可以用其他的比如 hash</span>
@@ -173,7 +336,7 @@ module<span class="token punctuation">.</span>exports <span class="token operato
     <span class="token punctuation">]</span>
   <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>其中<code>.sentryclirc</code>中的 token 为点击左上角头像，再点击<code>API keys-&gt;授权令牌</code>生成</p>
+<p><code>.sentryclirc</code>配置文件如下：<br><code>token</code>生成: 登陆 sentry 控制台页面，点击左上角头像，再点击<code>API keys-&gt;授权令牌</code></p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">[</span>defaults<span class="token punctuation">]</span>
 <span class="token comment">### 你的域名</span>
 url='http<span class="token punctuation">:</span>//127.0.0.1<span class="token punctuation">:</span>9000'
@@ -189,16 +352,337 @@ token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-number
 ]]></content>
       <categories>
         <category>开发</category>
-        <category>javascript</category>
         <category>错误追踪</category>
       </categories>
       <tags>
+        <tag>docker</tag>
         <tag>sentry</tag>
       </tags>
   </entry>
   <entry>
+    <title>使用docker+minio实现对象存储</title>
+    <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
+    <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
+<h2 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h2><p>创建 minio 服务器并设置账号密码为 <code>admin/2345678</code>，密码至少需要 8 位数。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9000:9000 --name minio -v d:\docker\minio\data:&#x2F;data -e &quot;MINIO_ACCESS_KEY&#x3D;admin&quot; -e &quot;MINIO_SECRET_KEY&#x3D;12345678&quot; minio&#x2F;minio server &#x2F;data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这时候打开浏览器<code> http://127.0.0.1:9000/</code>能访问到 minio，输入账号密码即可进入。<br>进入页面之后新建一个 bucket，取名 testpic，然后上传几张图片。</p>
+<h2 id="创建-minio-客户端"><a href="#创建-minio-客户端" class="headerlink" title="创建 minio 客户端"></a>创建 minio 客户端</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd --name minioclient --entrypoint&#x3D;&#x2F;bin&#x2F;sh minio&#x2F;mc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="配置对象外部访问"><a href="#配置对象外部访问" class="headerlink" title="配置对象外部访问"></a>配置对象外部访问</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it minioclient sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>启动客户端进入控制台<br>添加管理配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc config host add minio http:&#x2F;&#x2F;172.29.240.1:9000 admin 12345678 --api s3v4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p><strong>注意这里不能使用 127.0.0.1 地址。</strong></p>
+</blockquote>
+<p>添加完成后可通过</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat &#x2F;root&#x2F;.mc&#x2F;config.json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看配置文件如下</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"10"</span><span class="token punctuation">,</span>
+  <span class="token property">"aliases"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gcs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://storage.googleapis.com"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v2"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"local"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://localhost:9000"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"minio"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://172.29.240.1:9000"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"12345678"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"s3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"play"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://play.min.io"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"Q3AM3UQ867SPQQA43P2F"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"s3"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://s3.amazonaws.com"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这时候还不能通过外部访问到图片，如果输入<code>http://172.29.240.1:9000/testpic/avatar.png</code>会提示输入账号密码。<br>添加外部访问策略如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc policy set public minio&#x2F;testpic<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>添加成功之后即可实现外部访问图片。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>对象存储</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>minio</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>prometheus+grafana实现数据采集展示+邮件告警</title>
+    <url>/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/</url>
+    <content><![CDATA[<h2 id="prometheus-grafana-实现数据采集展示-邮件报警"><a href="#prometheus-grafana-实现数据采集展示-邮件报警" class="headerlink" title="prometheus+grafana 实现数据采集展示+邮件报警"></a>prometheus+grafana 实现数据采集展示+邮件报警</h2><p>这次的练习还是在 docker 上练习</p>
+<blockquote>
+<p><strong>Prometheus Server：Prometheus 服务的主服务器<br>Node Exporter：收集 Host 硬件和操作系统的信息<br>cAdvrisor：负责收集 Host 上运行的容器信息<br>Grafana：用来展示 Prometheus 监控操作界面（给我们提供一个友好的 web 界面）</strong></p>
+</blockquote>
+<h3 id="拉取并运行-node-exporter"><a href="#拉取并运行-node-exporter" class="headerlink" title="拉取并运行 node-exporter"></a>拉取并运行 node-exporter</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9100:9100 \
+--name nodeexporter \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;proc:&#x2F;host&#x2F;proc \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;sys:&#x2F;host&#x2F;sys \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;rootfs:&#x2F;rootfs \
+prom&#x2F;node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>建好之后进入 shell 环境</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it nodeexporter sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9100/</code>即可查看页面</p>
+<h3 id="拉取并运行-cadvisor"><a href="#拉取并运行-cadvisor" class="headerlink" title="拉取并运行 cadvisor"></a>拉取并运行 cadvisor</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 8080:8080 \
+--name cadvisor \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;rootfs:&#x2F;rootfs:ro \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;run:&#x2F;var&#x2F;run:rw \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;lib&#x2F;docker:&#x2F;var&#x2F;lib&#x2F;docker:ro \
+google&#x2F;cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:8080/</code>即可查看页面</p>
+<h3 id="拉取并运行-prometheus"><a href="#拉取并运行-prometheus" class="headerlink" title="拉取并运行 prometheus"></a>拉取并运行 prometheus</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>配置文件在<code>/etc/prometheus/prometheus.yml</code><br>可以直接进 <code>shell</code> 环境修改。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it prometheus sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>也可以修改了之后删除此 <code>container</code>，重新新建</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+-v d:&#x2F;docker&#x2F;prometheus&#x2F;opt&#x2F;prometheus.yml:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml  \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这样将配置文件映射出来，<strong>配置文件也可以单独拷贝出来</strong>，代码如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker cp prometheus:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>修改了配置文件之后可以用以下代码实现热加载</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ kill -HUP 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9090/</code>即可查看页面</p>
+<h3 id="拉取并运行-grafana"><a href="#拉取并运行-grafana" class="headerlink" title="拉取并运行 grafana"></a>拉取并运行 grafana</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 3000:3000 \
+--name grafana \
+-v d:&#x2F;docker&#x2F;grafana&#x2F;grafana-storage:&#x2F;var&#x2F;lib&#x2F;grafana \
+grafana&#x2F;grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:3000/</code>即可查看页面<br>初始密码为 <code>admin/admin</code>，首次登陆需要修改密码。</p>
+<h3 id="拉取并允许-alertmanager"><a href="#拉取并允许-alertmanager" class="headerlink" title="拉取并允许 alertmanager"></a>拉取并允许 alertmanager</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9093:9093 \
+--name alertmanager \
+prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9093/</code>即可查看页面<br>配置文件在<code>/etc/alertmanager/alertmanager.yml</code></p>
+<h3 id="数据展示"><a href="#数据展示" class="headerlink" title="数据展示"></a>数据展示</h3><p>修改 <code>prometheus</code> 的配置文件，其中 <code>scrape_configs</code> 的配置部分修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'prometheus'</span>
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9090'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'cadvisor'</span>
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:8080'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'node'</span>
+    scrape_interval<span class="token punctuation">:</span> 8s
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9100'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>kill -HUP 1</code>重新加载配置文件，输入<code>http://192.168.1.3:3000/</code>进入 <code>grafana</code> 控制台</p>
+<ol>
+<li>新增并配置 <code>datasource</code>，地址填写 <code>prometheus</code> 的地址即可</li>
+<li>进入 <code>grafana</code> 官网找 <code>dashboard</code> 的模板，记下模板号，到 <code>grafana</code> 页面的 <code>dashboard</code> 页面 <code>import</code> 即可。</li>
+</ol>
+<h3 id="邮件报警"><a href="#邮件报警" class="headerlink" title="邮件报警"></a>邮件报警</h3><p>修改 <code>prometheus</code> 的配置文件，其中部分配置修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">alerting</span><span class="token punctuation">:</span>
+  alertmanagers<span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 192.168.1.3<span class="token punctuation">:</span><span class="token number">9093</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">rule_files</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token string">"node_down.yml"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>在该配置文件的同级目录下新建<code>node_down.yml</code>文件</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">groups</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> node_down
+    rules<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> alert<span class="token punctuation">:</span> InstanceDown
+        expr<span class="token punctuation">:</span> up == 0
+        for<span class="token punctuation">:</span> 1m
+        labels<span class="token punctuation">:</span>
+          user<span class="token punctuation">:</span> test
+        annotations<span class="token punctuation">:</span>
+          summary<span class="token punctuation">:</span> <span class="token string">"Instance &#123;&#123; $labels.instance &#125;&#125; down"</span>
+          description<span class="token punctuation">:</span> <span class="token string">"&#123;&#123; $labels.instance &#125;&#125; of job &#123;&#123; $labels.job &#125;&#125; has been down for more than 1 minutes."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it alertmanager sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>进入 <code>alertmanager</code> 的 <code>shell</code>，配置 <code>alertmanager</code> 的配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;alertmanager&#x2F;alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">global</span><span class="token punctuation">:</span>
+  resolve_timeout<span class="token punctuation">:</span> 5m
+  smtp_from<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
+  smtp_smarthost<span class="token punctuation">:</span> <span class="token string">"smtp.126.com:25"</span>
+  smtp_auth_username<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
+  smtp_auth_password<span class="token punctuation">:</span> <span class="token string">"XXXXXXXXXXX"</span>
+  smtp_require_tls<span class="token punctuation">:</span> <span class="token boolean important">false</span>
+<span class="token key atrule">route</span><span class="token punctuation">:</span>
+  group_by<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">]</span>
+  group_wait<span class="token punctuation">:</span> 10s
+  group_interval<span class="token punctuation">:</span> 10s
+  repeat_interval<span class="token punctuation">:</span> 10m
+  receiver<span class="token punctuation">:</span> <span class="token string">"email"</span>
+<span class="token key atrule">receivers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> <span class="token string">"email"</span>
+    email_configs<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> to<span class="token punctuation">:</span> <span class="token string">"mailname@qq.com"</span>
+<span class="token key atrule">inhibit_rules</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> source_match<span class="token punctuation">:</span>
+      severity<span class="token punctuation">:</span> <span class="token string">"critical"</span>
+    target_match<span class="token punctuation">:</span>
+      severity<span class="token punctuation">:</span> <span class="token string">"warning"</span>
+    equal<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">,</span> <span class="token string">"dev"</span><span class="token punctuation">,</span> <span class="token string">"instance"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中<code>smtp_auth_password</code>为邮件地址，也可以配置 qq 邮箱的报警，还可以配置企业微信和钉钉相关的报警。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Devops</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>devops</tag>
+        <tag>prometheus</tag>
+        <tag>grafana</tag>
+        <tag>数据采集</tag>
+        <tag>邮件告警</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>docker+gitlab+jenkins+ssh实现代码自动构建部署</title>
+    <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 <code>gitlab/gitlab-ce</code> 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 10080:80 --name gitlab twang2218&#x2F;gitlab-ce-zh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果是本机 windows 想要尝试社区镜像的，可以使用下面的代码</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker volume create gitlab-logs
+$ docker volume create gitlab-data
+$ docker run -d -p 10443:443 -p 10080:80 -p 10822:22 --name $ gitlab -v d:&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab -v gitlab-logs:&#x2F;var&#x2F;log&#x2F;gitlab -v gitlab-data:&#x2F;var&#x2F;opt&#x2F;gitlab gitlab&#x2F;gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>如果是 linux 的话要尝试社区镜像网上就很多了。<br>需要注意下 <strong>gitlab 的 webhook 配置的钩子地址是不允许内网的，比如 192.168、172.16 或者 10 开头的，这时候需要用 gitlab 的管理员账号（root）登陆去修改允许 webhook 的本地请求</strong>。<br>用 root 账号登陆之后左上角有一个小扳手的图标<code>Admin area =&gt; Settings =&gt; Network</code>勾选允许本地网络的请求即可。<br>这里就涉及到管理员账号的密码，网上很多参考说是系统默认的用户名：<code>root</code>，密码：<code>5iveL!fe</code>，试过了没有用，就只能自己去修改。这里可以参考官方<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvc2VjdXJpdHkvcmVzZXRfcm9vdF9wYXNzd29yZC5odG1sI2hvdy10by1yZXNldC15b3VyLXJvb3QtcGFzc3dvcmQ=">How to reset your root password<i class="fa fa-external-link-alt"></i></span><br>这里有坑的是安装社区版 <code>gitlab/gitlab-ce</code> 查不到用户。<br>进入 tty</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it gitlab bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>正常的修改密码代码如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">gitlab-rails console -e production
+user &#x3D; User.where(id: 1).first或者user &#x3D; User.find_by(email: &#39;admin@example.com&#39;)
+user.password &#x3D; 12345678
+user.password_confirmation &#x3D; 12345678
+user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里查询到的<code>User.where(id: 1).first</code>为 nil，就是 none 的意思，这里不知道怎么解决。还好汉化的那个版本可以直接设置 root 密码。<br>到这一步 gitlab 就可以使用了，但是 clone 的地址没有设置，clone 的地址目前是显示为一串字母。这里需要在<br><code>vi /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml</code>修改为需要暴露的 ip 和端口<br>然后<code>gitlab-ctl restart</code>重启 gitlab 即可。</p>
+<h2 id="安装-jenkins"><a href="#安装-jenkins" class="headerlink" title="安装 jenkins"></a>安装 jenkins</h2><p>安装 jenkins 就简便许多，端口映射到 18080，这里 jenkins 的配置文件后面都在<code>/var/jenkins_home/</code>这个文件夹下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 18080:8080 -p 50000:50000 --name jenkins -v d:&#x2F;docker&#x2F;jenkins:&#x2F;var&#x2F;jenkins_home jenkins&#x2F;jenkins:lts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>后面由于涉及到 maven 环境的安装，所以进入 bash 环境的时候可以指定账号</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u 0 jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里-u 可以指定 username 或者 uid，也可以写成</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u root jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>打开网页，需要输入首次的密码，可以在<code>/var/jenkins_home/secrets/initialAdminPassword</code>找到。<br>进入之后可以选择配置插件，也可以跳过后面再来配置。这里选择的跳过。<br><strong>如果退出之后不知道管理员的密码</strong>，可以打开<code>/var/jenkins_home/users/adminXXX</code>里面的 config.xml，找到 <code>passwordHash</code>，设置为<code>#jbcrypt:$2a$10$MiIVR0rr/UhQBqT.bBq0QehTiQVqgNpUGyWW2nJObaVAM/2xSQdSq</code><br>这个是编码过后的 123456，这样你的管理员账号就设置为了 123456.</p>
+<h2 id="安装-jenkins-插件"><a href="#安装-jenkins-插件" class="headerlink" title="安装 jenkins 插件"></a>安装 jenkins 插件</h2><p>安装插件这里由于官方的仓库比较慢而且经常失败，这里可以换其他源，这里可以选择清华大学的<code> https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/2.60/update-center.json</code><br>这里有个坑是清华是把这个文件镜像过来了，但是没有把里面的插件升级地址改成清华，所以下载还是有问题，这里解决方式有两种</p>
+<h3 id="nginx-代理"><a href="#nginx-代理" class="headerlink" title="nginx 代理"></a>nginx 代理</h3><p>将所有<code>http://updates.jenkins-ci.org/download</code>代理到<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code> 。</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>打开<code>/var/jenkins_home/updates/default.json</code>，将所有的<code>http://updates.jenkins-ci.org/download</code>,有的是<code>https://updates.jenkins.io/download</code>批量修改为<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code>，一劳永逸。</p>
+<p>这里添加几个常用的插件<strong>Maven Integration</strong>、<strong>GitLab</strong>、<strong>GitLab Hook</strong>、<strong>Publish Over SSH</strong></p>
+<h2 id="jenkins-配置"><a href="#jenkins-配置" class="headerlink" title="jenkins 配置"></a>jenkins 配置</h2><p>配置之前先添加两个凭据。</p>
+<ol>
+<li>用于 gitlab 的 <code>accessToken</code><br>首先登陆 gitlab<code>用户 =&gt; 设置 =&gt; accessToken</code>，填写名称和过期时间，勾选 api，点击生成 <code>accessToken</code>，这里要记录下 token，如果刷新了 token 就没了。<br>登陆到 jenkins，<code>Manage Jenkins =&gt; Manage Credentials</code>点击全局凭证，<code>Add Credentials</code>选择<code>Gitlab API token</code>，填写 accessToken。</li>
+<li>用于 gitlab 的登陆账号和密码<br>还是在全局凭证，点击添加凭证，类型选择<code>Username with password</code>，填写用户拉取代码的 gitlab 账号和用户名</li>
+</ol>
+<p>添加完成之后配置 gitlab 的连接地址和需要 ssh 部署的地址。<br>点击<code>Manage Jenkins =&gt; Configure System</code>里面的 gitlab 配置，填写你的 gitlab 名称 <code>Connection name</code>，gitlab 地址，我这里是<code>http://192.168.7.104:10080</code>，名称为”jenkins_for_gitlab”，凭证选择刚才新建的第一个凭证<code>Gitlab API token</code>，添加完成之后点击<code>Test Connection</code>测试，如果配置正确提示 <code>Success</code>。<br>然后添加 ssh 配置 <code>Publish over SSH</code>，<code>SSH Servers</code> 填写 ssh 的地址，账号，以及远程位置，这里可以直接设置为想要部署的位置，我这里设置为根目录<code>/</code>。<br>高级里面填写端口、密码，之后测试<code>Test Configuration</code>，之后 save 保存。</p>
+<h2 id="配置全局-jdk-和-maven"><a href="#配置全局-jdk-和-maven" class="headerlink" title="配置全局 jdk 和 maven"></a>配置全局 jdk 和 maven</h2><p>这一步需要安装 jenkins 的机器安装 jdk 和 maven。<br>一般安装 jenkins 的时候已经安装了 jdk，这里还需要安装 maven。<br>这里下载了压缩包到<code>/usr/local/</code>下面然后 <code>unzip</code> 解压，文件夹是 <code>apache-maven-3.6.3</code>。<br>需要修改环境变量，先下载一个 <code>vim</code>。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get update -y
+$ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>这里我 jdk 的文件名为 <code>openjdk-8</code>。<br>maven 和 jdk 都放在了<code>/usr/local</code> 下面。<br>安装完成后编辑环境变量<code>vi /etc/profile</code>，在文件末尾添加</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">MAVEN_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/apache-maven-3.6.3</span>
+<span class="token attr-name">JAVA_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/openjdk-8</span>
+<span class="token attr-name">CLASS_PATH</span><span class="token punctuation">=</span><span class="token attr-value">$JAVA_HOME/lib/</span>
+<span class="token attr-name">PATH</span><span class="token punctuation">=</span><span class="token attr-value">$PATH:$MAVEN_HOME/bin:$JAVA_HOME/bin</span>
+<span class="token attr-name">export</span> <span class="token attr-value">PATH MAVEN_HOME JAVA_HOME CLASS_PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>配置完成之后输入<code>source /etc/profile</code>使配置文件生效。到这里可以测试下安装是否成功</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mvn -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击<code>Manage Jenkins =&gt; Global Tool Configuration</code>。<br>选择 <code>JDK installations</code>，填写 jdk 名称和路径<code>/usr/local/openjdk-8</code>。<br>选择 Maven installations，填写 maven 的名称和路径<code>/usr/local/apache-maven-3.6.3</code>，然后 save 保存。</p>
+<h2 id="通过-SSH-部署到远程服务器"><a href="#通过-SSH-部署到远程服务器" class="headerlink" title="通过 SSH 部署到远程服务器"></a>通过 SSH 部署到远程服务器</h2><h3 id="前端部署"><a href="#前端部署" class="headerlink" title="前端部署"></a>前端部署</h3><p>到 jenkins 主界面，左侧导航栏选择 <code>New Item</code>,填写名称，选择 <code>Freestyle project</code>，在配置 <code>configure</code> 里面，</p>
+<ul>
+<li><p><code>General</code>—在 <code>Gitlab Connection</code> 选择在配置里面设置的 gitlab 的连接”jenkins for gitlab”。</p>
+</li>
+<li><p><code>Source Code Management</code>—选择 git，仓库地址填写需要部署的项目的仓库地址，凭证选择建立好的 gitlab 的登陆账号密码，分支这里测试是直接选的 master 分支，</p>
+</li>
+<li><p><code>Build Triggers</code>—勾选<code>Build when a change is pushed to GitLab. GitLab webhook URL: http://192.168.7.104:18080/project/testDist</code>，这里需要记录下这个 webhook 地址，填写到 gitlab 的时候需要。<br>点击高级选项，点击 Generate 生成 <code>Secret token</code>，这里我们记录下这个 token，<code>b3d5a618874a8335XXXXXXXXX</code></p>
+</li>
+<li><p><code>Build Environment</code>—这里可以配置在 build 之前或者 build 之后的操作，比如我们需要 build 之后将生成的<code>/dist</code> 文件夹通过 SSH 部署到远程服务器。<br><code>SSH Server</code> 选择配置的地址.<br><code>Source files</code> 填写<code>dist/</code>即为 dist 下面所有文件.<br><code>Remote directory</code> 填写<code>home/</code><br>意思是将 jenkins 下面 <code>workspace</code> 的文件拷贝到远程服务器的 <code>home</code> 文件夹下，其中 <code>Exec command</code> 还可以填写需要在远程服务器执行的操作，比如 tomcat 的关闭与启动等等。</p>
+</li>
+</ul>
+<h3 id="后端-jar-包部署"><a href="#后端-jar-包部署" class="headerlink" title="后端 jar 包部署"></a>后端 jar 包部署</h3><p>jar 包部署与前端部署一样，在 <code>Build Environment</code> 中 <code>Source files</code> 填写<code>target/*.jar</code>。<br><code>Remove prefix</code> 删除前缀这里填写<code>target</code>。<br><code>Remote directory</code> 填写需要部署打的 jar 包位置。<br>这里 build 可以设置打包命令为<code>mvn clear package</code>。<br><code>nohup java -jar XXXX.jar &amp;</code>启动 jar 包，也可以写一些执行脚本在服务器上运行。</p>
+<h2 id="配置-gitlab-执行自动触发构建部署"><a href="#配置-gitlab-执行自动触发构建部署" class="headerlink" title="配置 gitlab 执行自动触发构建部署"></a>配置 gitlab 执行自动触发构建部署</h2><p>进入 gitlab 选择需要部署的项目，<code>设置 =&gt; 集成</code>里面填写 <code>webhook</code>，链接填写为 <code>jenkins</code> 里面生成的链接，如<code>http://192.168.7.104:18080/project/testDist</code>，安全令牌填写<code>b3d5a618874a83358bc0aXXXXX</code>。<br>选择 push 触发，分支选择 master，这样 master 分支提交 push 的时候就会触发这个 webhook，保存之后可以 test 测试<code>Push events</code>，如果成功则提示<code> Hook executed successfully: HTTP 200</code>，如果提示<code> Requests to localhost are not allowed</code>，就需要登陆管理员账号开启内网请求权限，参照文章第一点<a href="#%E5%AE%89%E8%A3%85-gitlab">安装-gitlab</a></p>
+<h2 id="查看任务的-log"><a href="#查看任务的-log" class="headerlink" title="查看任务的 log"></a>查看任务的 log</h2><p>进入任务，左侧导航<code>Console Output</code>可查询 jenkins 日志。<br><strong>build 生成的文件可在 <code>/var/jenkins_home/workspace</code> 下面查看</strong></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Devops</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>gitlab</tag>
+        <tag>ssh</tag>
+        <tag>devops</tag>
+        <tag>jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tabindex之焦点移动</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
+    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
+<h2 id="bug-bug-描述"><a href="#bug-bug-描述" class="headerlink" title="bug:bug:描述"></a>bug:bug:描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
+<h2 id="bug-bug-解决"><a href="#bug-bug-解决" class="headerlink" title="bug:bug:解决"></a>bug:bug:解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见<code>visibility:hidden</code>，焦点就不会自动移动过去了。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>tabindex</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>数据可视化工具选型参考</title>
-    <url>/%E5%BC%80%E5%8F%91/javascript/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
+    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
     <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
 <h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
 <li>Leaflet|28.9K|适合移动设备</li>
@@ -240,7 +724,7 @@ token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-number
 <p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
 <p>开发：Echarts|AntV|D3</p>
 </blockquote>
-<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts&gt;antv</p>
+<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
 <hr>
 <h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
 <h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
@@ -248,7 +732,6 @@ token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-number
 ]]></content>
       <categories>
         <category>开发</category>
-        <category>javascript</category>
         <category>数据可视化</category>
       </categories>
       <tags>
