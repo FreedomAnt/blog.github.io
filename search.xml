@@ -59,7 +59,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjeDY1OyYjeDQwOyYjeDZkOyYjeDYxOyYjMTA1OyYjMTA4OyYjNDY7JiN4NjM7JiMxMTE7JiMxMDk7">&#101;&#120;&#x61;&#109;&#x70;&#x6c;&#x65;&#x40;&#x6d;&#x61;&#105;&#108;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjeDZkOyYjeDcwOyYjMTA4OyYjeDY1OyYjNjQ7JiMxMDk7JiM5NzsmIzEwNTsmI3g2YzsmIzQ2OyYjeDYzOyYjeDZmOyYjMTA5Ow==">&#x65;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#64;&#109;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -79,7 +79,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjOTc7JiN4NmQ7JiN4NzA7JiMxMDg7JiN4NjU7JiN4NDA7JiMxMDk7JiM5NzsmI3g2OTsmI3g2YzsmI3gyZTsmIzk5OyYjMTExOyYjMTA5Ow==">&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#x40;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjeDZkOyYjMTEyOyYjeDZjOyYjMTAxOyYjNjQ7JiMxMDk7JiM5NzsmIzEwNTsmIzEwODsmI3gyZTsmIzk5OyYjeDZmOyYjMTA5Ow==">&#101;&#x78;&#x61;&#x6d;&#112;&#x6c;&#101;&#64;&#109;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -285,6 +285,150 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
       </tags>
   </entry>
   <entry>
+    <title>prometheus+grafana实现数据采集展示+邮件告警</title>
+    <url>/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/</url>
+    <content><![CDATA[<h2 id="prometheus-grafana-实现数据采集展示-邮件报警"><a href="#prometheus-grafana-实现数据采集展示-邮件报警" class="headerlink" title="prometheus+grafana 实现数据采集展示+邮件报警"></a>prometheus+grafana 实现数据采集展示+邮件报警</h2><p>这次的练习还是在 docker 上练习</p>
+<blockquote>
+<p><strong>Prometheus Server：Prometheus 服务的主服务器<br>Node Exporter：收集 Host 硬件和操作系统的信息<br>cAdvrisor：负责收集 Host 上运行的容器信息<br>Grafana：用来展示 Prometheus 监控操作界面（给我们提供一个友好的 web 界面）</strong></p>
+</blockquote>
+<h3 id="拉取并运行-node-exporter"><a href="#拉取并运行-node-exporter" class="headerlink" title="拉取并运行 node-exporter"></a>拉取并运行 node-exporter</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9100:9100 \
+--name nodeexporter \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;proc:&#x2F;host&#x2F;proc \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;sys:&#x2F;host&#x2F;sys \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;rootfs:&#x2F;rootfs \
+prom&#x2F;node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>建好之后进入 shell 环境</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it nodeexporter sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9100/</code>即可查看页面</p>
+<h3 id="拉取并运行-cadvisor"><a href="#拉取并运行-cadvisor" class="headerlink" title="拉取并运行 cadvisor"></a>拉取并运行 cadvisor</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 8080:8080 \
+--name cadvisor \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;rootfs:&#x2F;rootfs:ro \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;run:&#x2F;var&#x2F;run:rw \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;lib&#x2F;docker:&#x2F;var&#x2F;lib&#x2F;docker:ro \
+google&#x2F;cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:8080/</code>即可查看页面</p>
+<h3 id="拉取并运行-prometheus"><a href="#拉取并运行-prometheus" class="headerlink" title="拉取并运行 prometheus"></a>拉取并运行 prometheus</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>配置文件在<code>/etc/prometheus/prometheus.yml</code><br>可以直接进 <code>shell</code> 环境修改。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it prometheus sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>也可以修改了之后删除此 <code>container</code>，重新新建</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+-v d:&#x2F;docker&#x2F;prometheus&#x2F;opt&#x2F;prometheus.yml:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml  \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这样将配置文件映射出来，<strong>配置文件也可以单独拷贝出来</strong>，代码如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker cp prometheus:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>修改了配置文件之后可以用以下代码实现热加载</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ kill -HUP 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9090/</code>即可查看页面</p>
+<h3 id="拉取并运行-grafana"><a href="#拉取并运行-grafana" class="headerlink" title="拉取并运行 grafana"></a>拉取并运行 grafana</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 3000:3000 \
+--name grafana \
+-v d:&#x2F;docker&#x2F;grafana&#x2F;grafana-storage:&#x2F;var&#x2F;lib&#x2F;grafana \
+grafana&#x2F;grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:3000/</code>即可查看页面<br>初始密码为 <code>admin/admin</code>，首次登陆需要修改密码。</p>
+<h3 id="拉取并允许-alertmanager"><a href="#拉取并允许-alertmanager" class="headerlink" title="拉取并允许 alertmanager"></a>拉取并允许 alertmanager</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9093:9093 \
+--name alertmanager \
+prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9093/</code>即可查看页面<br>配置文件在<code>/etc/alertmanager/alertmanager.yml</code></p>
+<h3 id="数据展示"><a href="#数据展示" class="headerlink" title="数据展示"></a>数据展示</h3><p>修改 <code>prometheus</code> 的配置文件，其中 <code>scrape_configs</code> 的配置部分修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'prometheus'</span>
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9090'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'cadvisor'</span>
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:8080'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'node'</span>
+    scrape_interval<span class="token punctuation">:</span> 8s
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9100'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>kill -HUP 1</code>重新加载配置文件，输入<code>http://192.168.1.3:3000/</code>进入 <code>grafana</code> 控制台</p>
+<ol>
+<li>新增并配置 <code>datasource</code>，地址填写 <code>prometheus</code> 的地址即可</li>
+<li>进入 <code>grafana</code> 官网找 <code>dashboard</code> 的模板，记下模板号，到 <code>grafana</code> 页面的 <code>dashboard</code> 页面 <code>import</code> 即可。</li>
+</ol>
+<h3 id="邮件报警"><a href="#邮件报警" class="headerlink" title="邮件报警"></a>邮件报警</h3><p>修改 <code>prometheus</code> 的配置文件，其中部分配置修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">alerting</span><span class="token punctuation">:</span>
+  alertmanagers<span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 192.168.1.3<span class="token punctuation">:</span><span class="token number">9093</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">rule_files</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token string">"node_down.yml"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>在该配置文件的同级目录下新建<code>node_down.yml</code>文件</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">groups</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> node_down
+    rules<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> alert<span class="token punctuation">:</span> InstanceDown
+        expr<span class="token punctuation">:</span> up == 0
+        for<span class="token punctuation">:</span> 1m
+        labels<span class="token punctuation">:</span>
+          user<span class="token punctuation">:</span> test
+        annotations<span class="token punctuation">:</span>
+          summary<span class="token punctuation">:</span> <span class="token string">"Instance &#123;&#123; $labels.instance &#125;&#125; down"</span>
+          description<span class="token punctuation">:</span> <span class="token string">"&#123;&#123; $labels.instance &#125;&#125; of job &#123;&#123; $labels.job &#125;&#125; has been down for more than 1 minutes."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it alertmanager sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>进入 <code>alertmanager</code> 的 <code>shell</code>，配置 <code>alertmanager</code> 的配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;alertmanager&#x2F;alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">global</span><span class="token punctuation">:</span>
+  resolve_timeout<span class="token punctuation">:</span> 5m
+  smtp_from<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
+  smtp_smarthost<span class="token punctuation">:</span> <span class="token string">"smtp.126.com:25"</span>
+  smtp_auth_username<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
+  smtp_auth_password<span class="token punctuation">:</span> <span class="token string">"XXXXXXXXXXX"</span>
+  smtp_require_tls<span class="token punctuation">:</span> <span class="token boolean important">false</span>
+<span class="token key atrule">route</span><span class="token punctuation">:</span>
+  group_by<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">]</span>
+  group_wait<span class="token punctuation">:</span> 10s
+  group_interval<span class="token punctuation">:</span> 10s
+  repeat_interval<span class="token punctuation">:</span> 10m
+  receiver<span class="token punctuation">:</span> <span class="token string">"email"</span>
+<span class="token key atrule">receivers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> <span class="token string">"email"</span>
+    email_configs<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> to<span class="token punctuation">:</span> <span class="token string">"mailname@qq.com"</span>
+<span class="token key atrule">inhibit_rules</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> source_match<span class="token punctuation">:</span>
+      severity<span class="token punctuation">:</span> <span class="token string">"critical"</span>
+    target_match<span class="token punctuation">:</span>
+      severity<span class="token punctuation">:</span> <span class="token string">"warning"</span>
+    equal<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">,</span> <span class="token string">"dev"</span><span class="token punctuation">,</span> <span class="token string">"instance"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中<code>smtp_auth_password</code>为邮件地址，也可以配置 qq 邮箱的报警，还可以配置企业微信和钉钉相关的报警。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Devops</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>devops</tag>
+        <tag>prometheus</tag>
+        <tag>grafana</tag>
+        <tag>数据采集</tag>
+        <tag>邮件告警</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>docker+gitlab-ci+ssh+gitlab-pages实现代码自动构建部署</title>
     <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h2 id="主要操作步骤"><a href="#主要操作步骤" class="headerlink" title="主要操作步骤"></a>主要操作步骤</h2><ol>
@@ -446,164 +590,6 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
       </tags>
   </entry>
   <entry>
-    <title>prometheus+grafana实现数据采集展示+邮件告警</title>
-    <url>/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/</url>
-    <content><![CDATA[<h2 id="prometheus-grafana-实现数据采集展示-邮件报警"><a href="#prometheus-grafana-实现数据采集展示-邮件报警" class="headerlink" title="prometheus+grafana 实现数据采集展示+邮件报警"></a>prometheus+grafana 实现数据采集展示+邮件报警</h2><p>这次的练习还是在 docker 上练习</p>
-<blockquote>
-<p><strong>Prometheus Server：Prometheus 服务的主服务器<br>Node Exporter：收集 Host 硬件和操作系统的信息<br>cAdvrisor：负责收集 Host 上运行的容器信息<br>Grafana：用来展示 Prometheus 监控操作界面（给我们提供一个友好的 web 界面）</strong></p>
-</blockquote>
-<h3 id="拉取并运行-node-exporter"><a href="#拉取并运行-node-exporter" class="headerlink" title="拉取并运行 node-exporter"></a>拉取并运行 node-exporter</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9100:9100 \
---name nodeexporter \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;proc:&#x2F;host&#x2F;proc \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;sys:&#x2F;host&#x2F;sys \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;rootfs:&#x2F;rootfs \
-prom&#x2F;node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>建好之后进入 shell 环境</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it nodeexporter sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:9100/</code>即可查看页面</p>
-<h3 id="拉取并运行-cadvisor"><a href="#拉取并运行-cadvisor" class="headerlink" title="拉取并运行 cadvisor"></a>拉取并运行 cadvisor</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 8080:8080 \
---name cadvisor \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;rootfs:&#x2F;rootfs:ro \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;run:&#x2F;var&#x2F;run:rw \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;lib&#x2F;docker:&#x2F;var&#x2F;lib&#x2F;docker:ro \
-google&#x2F;cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:8080/</code>即可查看页面</p>
-<h3 id="拉取并运行-prometheus"><a href="#拉取并运行-prometheus" class="headerlink" title="拉取并运行 prometheus"></a>拉取并运行 prometheus</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
---name prometheus \
-prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>配置文件在<code>/etc/prometheus/prometheus.yml</code><br>可以直接进 <code>shell</code> 环境修改。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it prometheus sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>也可以修改了之后删除此 <code>container</code>，重新新建</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
---name prometheus \
--v d:&#x2F;docker&#x2F;prometheus&#x2F;opt&#x2F;prometheus.yml:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml  \
-prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这样将配置文件映射出来，<strong>配置文件也可以单独拷贝出来</strong>，代码如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker cp prometheus:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>修改了配置文件之后可以用以下代码实现热加载</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ kill -HUP 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:9090/</code>即可查看页面</p>
-<h3 id="拉取并运行-grafana"><a href="#拉取并运行-grafana" class="headerlink" title="拉取并运行 grafana"></a>拉取并运行 grafana</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 3000:3000 \
---name grafana \
--v d:&#x2F;docker&#x2F;grafana&#x2F;grafana-storage:&#x2F;var&#x2F;lib&#x2F;grafana \
-grafana&#x2F;grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:3000/</code>即可查看页面<br>初始密码为 <code>admin/admin</code>，首次登陆需要修改密码。</p>
-<h3 id="拉取并允许-alertmanager"><a href="#拉取并允许-alertmanager" class="headerlink" title="拉取并允许 alertmanager"></a>拉取并允许 alertmanager</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9093:9093 \
---name alertmanager \
-prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:9093/</code>即可查看页面<br>配置文件在<code>/etc/alertmanager/alertmanager.yml</code></p>
-<h3 id="数据展示"><a href="#数据展示" class="headerlink" title="数据展示"></a>数据展示</h3><p>修改 <code>prometheus</code> 的配置文件，其中 <code>scrape_configs</code> 的配置部分修改为</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'prometheus'</span>
-    static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9090'</span><span class="token punctuation">]</span>
-  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'cadvisor'</span>
-    static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:8080'</span><span class="token punctuation">]</span>
-  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'node'</span>
-    scrape_interval<span class="token punctuation">:</span> 8s
-    static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9100'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>kill -HUP 1</code>重新加载配置文件，输入<code>http://192.168.1.3:3000/</code>进入 <code>grafana</code> 控制台</p>
-<ol>
-<li>新增并配置 <code>datasource</code>，地址填写 <code>prometheus</code> 的地址即可</li>
-<li>进入 <code>grafana</code> 官网找 <code>dashboard</code> 的模板，记下模板号，到 <code>grafana</code> 页面的 <code>dashboard</code> 页面 <code>import</code> 即可。</li>
-</ol>
-<h3 id="邮件报警"><a href="#邮件报警" class="headerlink" title="邮件报警"></a>邮件报警</h3><p>修改 <code>prometheus</code> 的配置文件，其中部分配置修改为</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">alerting</span><span class="token punctuation">:</span>
-  alertmanagers<span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> 192.168.1.3<span class="token punctuation">:</span><span class="token number">9093</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">rule_files</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> <span class="token string">"node_down.yml"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>在该配置文件的同级目录下新建<code>node_down.yml</code>文件</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">groups</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> node_down
-    rules<span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> alert<span class="token punctuation">:</span> InstanceDown
-        expr<span class="token punctuation">:</span> up == 0
-        for<span class="token punctuation">:</span> 1m
-        labels<span class="token punctuation">:</span>
-          user<span class="token punctuation">:</span> test
-        annotations<span class="token punctuation">:</span>
-          summary<span class="token punctuation">:</span> <span class="token string">"Instance &#123;&#123; $labels.instance &#125;&#125; down"</span>
-          description<span class="token punctuation">:</span> <span class="token string">"&#123;&#123; $labels.instance &#125;&#125; of job &#123;&#123; $labels.job &#125;&#125; has been down for more than 1 minutes."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it alertmanager sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>进入 <code>alertmanager</code> 的 <code>shell</code>，配置 <code>alertmanager</code> 的配置文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;alertmanager&#x2F;alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>修改为</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">global</span><span class="token punctuation">:</span>
-  resolve_timeout<span class="token punctuation">:</span> 5m
-  smtp_from<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
-  smtp_smarthost<span class="token punctuation">:</span> <span class="token string">"smtp.126.com:25"</span>
-  smtp_auth_username<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
-  smtp_auth_password<span class="token punctuation">:</span> <span class="token string">"XXXXXXXXXXX"</span>
-  smtp_require_tls<span class="token punctuation">:</span> <span class="token boolean important">false</span>
-<span class="token key atrule">route</span><span class="token punctuation">:</span>
-  group_by<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">]</span>
-  group_wait<span class="token punctuation">:</span> 10s
-  group_interval<span class="token punctuation">:</span> 10s
-  repeat_interval<span class="token punctuation">:</span> 10m
-  receiver<span class="token punctuation">:</span> <span class="token string">"email"</span>
-<span class="token key atrule">receivers</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> <span class="token string">"email"</span>
-    email_configs<span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> to<span class="token punctuation">:</span> <span class="token string">"mailname@qq.com"</span>
-<span class="token key atrule">inhibit_rules</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> source_match<span class="token punctuation">:</span>
-      severity<span class="token punctuation">:</span> <span class="token string">"critical"</span>
-    target_match<span class="token punctuation">:</span>
-      severity<span class="token punctuation">:</span> <span class="token string">"warning"</span>
-    equal<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">,</span> <span class="token string">"dev"</span><span class="token punctuation">,</span> <span class="token string">"instance"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>其中<code>smtp_auth_password</code>为邮件地址，也可以配置 qq 邮箱的报警，还可以配置企业微信和钉钉相关的报警。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Devops</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>devops</tag>
-        <tag>prometheus</tag>
-        <tag>grafana</tag>
-        <tag>数据采集</tag>
-        <tag>邮件告警</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tabindex之焦点移动</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
-    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
-<h2 id="bug-bug-描述"><a href="#bug-bug-描述" class="headerlink" title="bug:bug:描述"></a>bug:bug:描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
-<h2 id="bug-bug-解决"><a href="#bug-bug-解决" class="headerlink" title="bug:bug:解决"></a>bug:bug:解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见<code>visibility:hidden</code>，焦点就不会自动移动过去了。</p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>tabindex</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用docker+minio实现对象存储</title>
     <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
     <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
@@ -678,6 +664,20 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       <tags>
         <tag>docker</tag>
         <tag>minio</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tabindex之焦点移动</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
+    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
+<h2 id="bug-bug-描述"><a href="#bug-bug-描述" class="headerlink" title="bug:bug:描述"></a>bug:bug:描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
+<h2 id="bug-bug-解决"><a href="#bug-bug-解决" class="headerlink" title="bug:bug:解决"></a>bug:bug:解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见<code>visibility:hidden</code>，焦点就不会自动移动过去了。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>tabindex</tag>
       </tags>
   </entry>
   <entry>
