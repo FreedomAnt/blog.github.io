@@ -59,7 +59,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjeDY1OyYjNjQ7JiMxMDk7JiM5NzsmIzEwNTsmIzEwODsmIzQ2OyYjeDYzOyYjeDZmOyYjMTA5Ow==">&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#64;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjOTc7JiMxMDk7JiMxMTI7JiMxMDg7JiN4NjU7JiM2NDsmIzEwOTsmI3g2MTsmI3g2OTsmI3g2YzsmIzQ2OyYjeDYzOyYjMTExOyYjMTA5Ow==">&#101;&#120;&#97;&#109;&#112;&#108;&#x65;&#64;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -79,7 +79,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiN4NzA7JiMxMDg7JiN4NjU7JiN4NDA7JiN4NmQ7JiN4NjE7JiN4Njk7JiN4NmM7JiM0NjsmIzk5OyYjeDZmOyYjMTA5Ow==">&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x40;&#x6d;&#x61;&#x69;&#x6c;&#46;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjeDZkOyYjMTEyOyYjeDZjOyYjeDY1OyYjeDQwOyYjMTA5OyYjOTc7JiN4Njk7JiMxMDg7JiM0NjsmIzk5OyYjMTExOyYjeDZkOw==">&#101;&#x78;&#x61;&#x6d;&#112;&#x6c;&#x65;&#x40;&#109;&#97;&#x69;&#108;&#46;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -362,6 +362,85 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
       </tags>
   </entry>
   <entry>
+    <title>使用docker+minio实现对象存储</title>
+    <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
+    <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
+<a id="more"></a>
+
+<h2 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h2><p>创建 minio 服务器并设置账号密码为 <code>admin/2345678</code>，密码至少需要 8 位数。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9000:9000 --name minio -v d:\docker\minio\data:&#x2F;data -e &quot;MINIO_ACCESS_KEY&#x3D;admin&quot; -e &quot;MINIO_SECRET_KEY&#x3D;12345678&quot; minio&#x2F;minio server &#x2F;data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这时候打开浏览器<code> http://127.0.0.1:9000/</code>能访问到 minio，输入账号密码即可进入。<br>进入页面之后新建一个 bucket，取名 testpic，然后上传几张图片。</p>
+<h2 id="创建-minio-客户端"><a href="#创建-minio-客户端" class="headerlink" title="创建 minio 客户端"></a>创建 minio 客户端</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd --name minioclient --entrypoint&#x3D;&#x2F;bin&#x2F;sh minio&#x2F;mc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="配置对象外部访问"><a href="#配置对象外部访问" class="headerlink" title="配置对象外部访问"></a>配置对象外部访问</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it minioclient sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>启动客户端进入控制台<br>添加管理配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc config host add minio http:&#x2F;&#x2F;172.29.240.1:9000 admin 12345678 --api s3v4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p><strong>注意这里不能使用 127.0.0.1 地址。</strong></p>
+</blockquote>
+<p>添加完成后可通过</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat &#x2F;root&#x2F;.mc&#x2F;config.json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看配置文件如下</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"10"</span><span class="token punctuation">,</span>
+  <span class="token property">"aliases"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gcs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://storage.googleapis.com"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v2"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"local"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://localhost:9000"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"minio"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://172.29.240.1:9000"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"12345678"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"s3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"play"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://play.min.io"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"Q3AM3UQ867SPQQA43P2F"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"s3"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://s3.amazonaws.com"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这时候还不能通过外部访问到图片，如果输入<code>http://172.29.240.1:9000/testpic/avatar.png</code>会提示输入账号密码。<br>添加外部访问策略如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc policy set public minio&#x2F;testpic<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>添加成功之后即可实现外部访问图片。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>对象存储</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>minio</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>docker+gitlab+jenkins+ssh实现代码自动构建部署</title>
     <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 <code>gitlab/gitlab-ce</code> 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080</p>
@@ -609,85 +688,6 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       </categories>
       <tags>
         <tag>tabindex</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用docker+minio实现对象存储</title>
-    <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
-    <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
-<a id="more"></a>
-
-<h2 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h2><p>创建 minio 服务器并设置账号密码为 <code>admin/2345678</code>，密码至少需要 8 位数。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9000:9000 --name minio -v d:\docker\minio\data:&#x2F;data -e &quot;MINIO_ACCESS_KEY&#x3D;admin&quot; -e &quot;MINIO_SECRET_KEY&#x3D;12345678&quot; minio&#x2F;minio server &#x2F;data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这时候打开浏览器<code> http://127.0.0.1:9000/</code>能访问到 minio，输入账号密码即可进入。<br>进入页面之后新建一个 bucket，取名 testpic，然后上传几张图片。</p>
-<h2 id="创建-minio-客户端"><a href="#创建-minio-客户端" class="headerlink" title="创建 minio 客户端"></a>创建 minio 客户端</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd --name minioclient --entrypoint&#x3D;&#x2F;bin&#x2F;sh minio&#x2F;mc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="配置对象外部访问"><a href="#配置对象外部访问" class="headerlink" title="配置对象外部访问"></a>配置对象外部访问</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it minioclient sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>启动客户端进入控制台<br>添加管理配置文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc config host add minio http:&#x2F;&#x2F;172.29.240.1:9000 admin 12345678 --api s3v4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<blockquote>
-<p><strong>注意这里不能使用 127.0.0.1 地址。</strong></p>
-</blockquote>
-<p>添加完成后可通过</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat &#x2F;root&#x2F;.mc&#x2F;config.json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看配置文件如下</p>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"10"</span><span class="token punctuation">,</span>
-  <span class="token property">"aliases"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"gcs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://storage.googleapis.com"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v2"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"local"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://localhost:9000"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"minio"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://172.29.240.1:9000"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"12345678"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"s3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"play"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://play.min.io"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"Q3AM3UQ867SPQQA43P2F"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"s3"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://s3.amazonaws.com"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这时候还不能通过外部访问到图片，如果输入<code>http://172.29.240.1:9000/testpic/avatar.png</code>会提示输入账号密码。<br>添加外部访问策略如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc policy set public minio&#x2F;testpic<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>添加成功之后即可实现外部访问图片。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>对象存储</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>minio</tag>
       </tags>
   </entry>
   <entry>
