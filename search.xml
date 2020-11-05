@@ -1,204 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Sentry部署</title>
-    <url>/%E5%BC%80%E5%8F%91/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
-<a id="more"></a>
-
-<p>如果你选择了通过 Docker 进行安装，有更加便捷的方式——docker-compose 。在 github 上有一个开源项目用于部署 Sentry，可以直接运行该项目中 <code>./install.sh</code> 将 Sentry 及其依赖都通过 docker 安装。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git clone https:&#x2F;&#x2F;github.com&#x2F;getsentry&#x2F;onpremise.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="启动一个-Redis-容器"><a href="#启动一个-Redis-容器" class="headerlink" title="启动一个 Redis 容器"></a>启动一个 Redis 容器</h2><p>Start a Redis container</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-redis redis<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="启动一个-Postgres-容器"><a href="#启动一个-Postgres-容器" class="headerlink" title="启动一个 Postgres 容器"></a>启动一个 Postgres 容器</h2><p>Start a Postgres container</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-postgres -e POSTGRES_PASSWORD&#x3D;secret -e POSTGRES_USER&#x3D;sentry postgres<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="生成唯一秘钥"><a href="#生成唯一秘钥" class="headerlink" title="生成唯一秘钥"></a>生成唯一秘钥</h2><p>生成一个密钥，用于后面所有 sentry 容器之间握手。请记住这串密钥，在后面的 docker 命令中，密钥需要以环境变量形式传入</p>
-<p>Generate a new secret key to be shared by all <code>sentry</code> containers. This value will then be used as the <code>SENTRY_SECRET_KEY</code> environment variable.</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run --rm sentry config generate-secret-key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>密钥为<code>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code></p>
-<h2 id="连接-Redis、Postgres-和-Sentry"><a href="#连接-Redis、Postgres-和-Sentry" class="headerlink" title="连接 Redis、Postgres 和 Sentry"></a>连接 Redis、Postgres 和 Sentry</h2><p>运行后会自动执行初始化操作.</p>
-<p>If this is a new database, you’ll need to run <code>upgrade</code></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -it --rm -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry upgrade<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><strong>Note: the <code>-it</code> is important as the initial upgrade will prompt to create an initial user and will fail without it</strong></p>
-<blockquote>
-<p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</blockquote>
-<p>创建账号密码<code>mailname@qq.com/123456</code></p>
-<h2 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
-<p>Now start up Sentry server</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="默认配置中需要-Celery"><a href="#默认配置中需要-Celery" class="headerlink" title="默认配置中需要 Celery"></a>默认配置中需要 Celery</h2><p>因此启动一个 Celery 主节点与执行节点（worker 节点可按需多启几个）：</p>
-<p>The default config needs a celery beat and celery workers, start as many workers as you need (each with a unique name)</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
-$ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<code>mailname@qq.com/123456</code></p>
-<h3 id="配置邮箱告警"><a href="#配置邮箱告警" class="headerlink" title="配置邮箱告警"></a>配置邮箱告警</h3><p><code>$ docker exec -it my-sentry bash</code>进入控制台</p>
-<p><code>$ vi /etc/sentry/config.yml</code></p>
-<p>腾讯示例：</p>
-<table>
-<thead>
-<tr>
-<th>配置项</th>
-<th>作用</th>
-<th>腾讯企业邮</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>SENTRY_EMAIL_HOST</td>
-<td>SMTP 服务器地址</td>
-<td>smtp.exmail.qq.com</td>
-</tr>
-<tr>
-<td>SENTRY_EMAIL_USER</td>
-<td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjOTc7JiMxMDk7JiN4NzA7JiN4NmM7JiMxMDE7JiN4NDA7JiMxMDk7JiM5NzsmIzEwNTsmIzEwODsmI3gyZTsmIzk5OyYjMTExOyYjMTA5Ow==">&#x65;&#120;&#97;&#109;&#x70;&#x6c;&#101;&#x40;&#109;&#97;&#105;&#108;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
-</tr>
-<tr>
-<td>SENTRY_EMAIL_PASSWORD</td>
-<td>登录的邮箱密码</td>
-<td>password</td>
-</tr>
-<tr>
-<td>SENTRY_EMAIL_PORT</td>
-<td>登录的端口</td>
-<td>587</td>
-</tr>
-<tr>
-<td>SENTRY_EMAIL_USE_TLS</td>
-<td>是否使用 ssl 连接</td>
-<td>true</td>
-</tr>
-<tr>
-<td>SENTRY_SERVER_EMAIL</td>
-<td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiMxMTI7JiN4NmM7JiN4NjU7JiN4NDA7JiMxMDk7JiN4NjE7JiN4Njk7JiN4NmM7JiN4MmU7JiN4NjM7JiMxMTE7JiMxMDk7">&#101;&#x78;&#97;&#109;&#112;&#x6c;&#x65;&#x40;&#109;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
-</tr>
-</tbody></table>
-<p>​ 网易邮箱示例：</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">mail.backend</span><span class="token punctuation">:</span> <span class="token string">"smtp"</span>
-<span class="token key atrule">mail.host</span><span class="token punctuation">:</span> <span class="token string">"smtp.126.com"</span>
-<span class="token key atrule">mail.port</span><span class="token punctuation">:</span> <span class="token number">25</span>
-<span class="token key atrule">mail.username</span><span class="token punctuation">:</span> <span class="token string">"XXXX@126.com"</span>
-<span class="token key atrule">mail.password</span><span class="token punctuation">:</span> <span class="token string">"XXXXX"</span>
-<span class="token key atrule">mail.use-tls</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
-<span class="token key atrule">mail.from</span><span class="token punctuation">:</span> <span class="token string">"XXXX@126.com"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="使用-vue-继承"><a href="#使用-vue-继承" class="headerlink" title="使用 vue 继承"></a>使用 vue 继承</h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> Sentry <span class="token keyword">from</span> <span class="token string">"@sentry/browser"</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Vue <span class="token keyword">as</span> VueIntegration <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@sentry/integrations"</span><span class="token punctuation">;</span>
-Sentry<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  dsn<span class="token operator">:</span> <span class="token string">"http://d6168c0c5ba947f0b7fafbb288522b0e@127.0.0.1:9000/2"</span><span class="token punctuation">,</span>
-  integrations<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token keyword">new</span> <span class="token class-name">VueIntegration</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> Vue<span class="token punctuation">,</span> attachProps<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="参数解释"><a href="#参数解释" class="headerlink" title="参数解释"></a>参数解释</h4><ol>
-<li><p>传递 Vue 是可选的，如果不传递，则 window.Vue 必须存在。</p>
-</li>
-<li><p>传递<code>attachProps</code>是可选的，默认<code>true</code>。如果将其设置为<code>false</code>，Sentry 将禁止发送所有 Vue 组件的道具进行记录。</p>
-</li>
-<li><p>传递<code>logErrors</code>是可选的，默认<code>false</code>。如果将其设置为<code>true</code>，Sentry 也将调用原始 Vue<code>logError</code>函数。</p>
-</li>
-</ol>
-<blockquote>
-<p>Vue 错误处理<br>请注意，如果启用此集成，则 Vue 不会在 logError 内部调用它。这意味着在 Vue 渲染器中发生的错误将不会显示在开发人员控制台中。如果要保留此功能，请确保通过该 logErrors: true 选项。</p>
-</blockquote>
-<ol start="4">
-<li>跟踪 Vue 应用程序的最基本配置（仅跟踪顶级组件）如下所示</li>
-</ol>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> Sentry <span class="token keyword">from</span> <span class="token string">"@sentry/browser"</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Vue <span class="token keyword">as</span> VueIntegration <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@sentry/integrations"</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Integrations <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@sentry/tracing"</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
-Sentry<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  <span class="token comment">// ...</span>
-  integrations<span class="token operator">:</span> <span class="token punctuation">[</span>
-    <span class="token keyword">new</span> <span class="token class-name">Integrations<span class="token punctuation">.</span>BrowserTracing</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token keyword">new</span> <span class="token class-name">VueIntegration</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-      Vue<span class="token punctuation">,</span>
-      tracing<span class="token operator">:</span> <span class="token boolean">true</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  tracesSampleRate<span class="token operator">:</span> <span class="token number">1.0</span> <span class="token comment">// Be sure to lower this in production</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>如果要跟踪子组件，并查看有关渲染过程的更多详细信息，请配置集成以跟踪所有子组件：</p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">new</span> <span class="token class-name">VueIntegration</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  Vue<span class="token punctuation">,</span>
-  tracing<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-  tracingOptions<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    trackComponents<span class="token operator">:</span> <span class="token boolean">true</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="启用-sourceMap-以方便定位-bug"><a href="#启用-sourceMap-以方便定位-bug" class="headerlink" title="启用 sourceMap 以方便定位 bug"></a>启用 sourceMap 以方便定位 bug</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install --save-dev @sentry&#x2F;webpack-plugin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> SentryWebpackPlugin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"@sentry/webpack-plugin"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token comment">// other configuration</span>
-  configureWebpack<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    plugins<span class="token operator">:</span> <span class="token punctuation">[</span>
-      <span class="token keyword">new</span> <span class="token class-name">SentryWebpackPlugin</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-        <span class="token comment">// sentry-cli configuration</span>
-        authToken<span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">SENTRY_AUTH_TOKEN</span><span class="token punctuation">,</span>
-        org<span class="token operator">:</span> <span class="token string">"exmaple-org"</span><span class="token punctuation">,</span>
-        project<span class="token operator">:</span> <span class="token string">"example-project"</span><span class="token punctuation">,</span>
-
-        <span class="token comment">// webpack specific configuration</span>
-        include<span class="token operator">:</span> <span class="token string">"."</span><span class="token punctuation">,</span>
-        ignore<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"node_modules"</span><span class="token punctuation">,</span> <span class="token string">"webpack.config.js"</span><span class="token punctuation">]</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-    <span class="token punctuation">]</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<blockquote>
-<p>In Vue 2.x, you should use vue.config.js instead of webpack.config.js, and use include: “./dist” instead of include: “.”</p>
-</blockquote>
-<p>也可以通过配置文件的方式</p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">plugins<span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">"development"</span>
-  <span class="token operator">?</span> <span class="token punctuation">[</span>
-      <span class="token keyword">new</span> <span class="token class-name">SentryWebpackPlugin</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-        release<span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// 唯一标识，可以用其他的比如 hash</span>
-        <span class="token comment">// webpack specific configuration</span>
-        include<span class="token operator">:</span> <span class="token string">"./dist"</span><span class="token punctuation">,</span>
-        ignore<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"node_modules"</span><span class="token punctuation">,</span> <span class="token string">"vue.config.js"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-        configFile<span class="token operator">:</span> <span class="token string">".sentryclirc"</span> <span class="token comment">// 默认同级，如果不一样需要用node path模块处理一下</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-    <span class="token punctuation">]</span>
-  <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p><code>.sentryclirc</code>配置文件如下：<br><code>token</code>生成: 登陆 sentry 控制台页面，点击左上角头像，再点击<code>API keys-&gt;授权令牌</code></p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">[</span>defaults<span class="token punctuation">]</span>
-<span class="token comment">### 你的域名</span>
-url='http<span class="token punctuation">:</span>//127.0.0.1<span class="token punctuation">:</span>9000'
-<span class="token comment">### 组织团队名默认是 sentry</span>
-org=sentry
-<span class="token comment">### 项目名称</span>
-project=vue
-<span class="token comment">### 步骤1创建的</span>
-<span class="token punctuation">[</span>auth<span class="token punctuation">]</span>
-token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p><strong>提示：docker 生成版本较低，建议 github 上下载或者直接用线上的 Saas 做。</strong></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>错误追踪</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>sentry</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>docker+gitlab-ci+ssh+gitlab-pages实现代码自动构建部署</title>
     <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h2 id="主要操作步骤"><a href="#主要操作步骤" class="headerlink" title="主要操作步骤"></a>主要操作步骤</h2><ol>
@@ -359,6 +161,204 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
         <tag>gitlab-ci</tag>
         <tag>gitlab-pages</tag>
         <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Sentry部署</title>
+    <url>/%E5%BC%80%E5%8F%91/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
+<a id="more"></a>
+
+<p>如果你选择了通过 Docker 进行安装，有更加便捷的方式——docker-compose 。在 github 上有一个开源项目用于部署 Sentry，可以直接运行该项目中 <code>./install.sh</code> 将 Sentry 及其依赖都通过 docker 安装。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git clone https:&#x2F;&#x2F;github.com&#x2F;getsentry&#x2F;onpremise.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="启动一个-Redis-容器"><a href="#启动一个-Redis-容器" class="headerlink" title="启动一个 Redis 容器"></a>启动一个 Redis 容器</h2><p>Start a Redis container</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-redis redis<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="启动一个-Postgres-容器"><a href="#启动一个-Postgres-容器" class="headerlink" title="启动一个 Postgres 容器"></a>启动一个 Postgres 容器</h2><p>Start a Postgres container</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-postgres -e POSTGRES_PASSWORD&#x3D;secret -e POSTGRES_USER&#x3D;sentry postgres<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="生成唯一秘钥"><a href="#生成唯一秘钥" class="headerlink" title="生成唯一秘钥"></a>生成唯一秘钥</h2><p>生成一个密钥，用于后面所有 sentry 容器之间握手。请记住这串密钥，在后面的 docker 命令中，密钥需要以环境变量形式传入</p>
+<p>Generate a new secret key to be shared by all <code>sentry</code> containers. This value will then be used as the <code>SENTRY_SECRET_KEY</code> environment variable.</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run --rm sentry config generate-secret-key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>密钥为<code>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code></p>
+<h2 id="连接-Redis、Postgres-和-Sentry"><a href="#连接-Redis、Postgres-和-Sentry" class="headerlink" title="连接 Redis、Postgres 和 Sentry"></a>连接 Redis、Postgres 和 Sentry</h2><p>运行后会自动执行初始化操作.</p>
+<p>If this is a new database, you’ll need to run <code>upgrade</code></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -it --rm -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry upgrade<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>Note: the <code>-it</code> is important as the initial upgrade will prompt to create an initial user and will fail without it</strong></p>
+<blockquote>
+<p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</blockquote>
+<p>创建账号密码<code>mailname@qq.com/123456</code></p>
+<h2 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
+<p>Now start up Sentry server</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="默认配置中需要-Celery"><a href="#默认配置中需要-Celery" class="headerlink" title="默认配置中需要 Celery"></a>默认配置中需要 Celery</h2><p>因此启动一个 Celery 主节点与执行节点（worker 节点可按需多启几个）：</p>
+<p>The default config needs a celery beat and celery workers, start as many workers as you need (each with a unique name)</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
+$ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<code>mailname@qq.com/123456</code></p>
+<h3 id="配置邮箱告警"><a href="#配置邮箱告警" class="headerlink" title="配置邮箱告警"></a>配置邮箱告警</h3><p><code>$ docker exec -it my-sentry bash</code>进入控制台</p>
+<p><code>$ vi /etc/sentry/config.yml</code></p>
+<p>腾讯示例：</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>作用</th>
+<th>腾讯企业邮</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SENTRY_EMAIL_HOST</td>
+<td>SMTP 服务器地址</td>
+<td>smtp.exmail.qq.com</td>
+</tr>
+<tr>
+<td>SENTRY_EMAIL_USER</td>
+<td>登录的邮箱账号</td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjeDY1OyYjeDQwOyYjMTA5OyYjeDYxOyYjMTA1OyYjeDZjOyYjeDJlOyYjOTk7JiMxMTE7JiMxMDk7">&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#x40;&#109;&#x61;&#105;&#x6c;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+</tr>
+<tr>
+<td>SENTRY_EMAIL_PASSWORD</td>
+<td>登录的邮箱密码</td>
+<td>password</td>
+</tr>
+<tr>
+<td>SENTRY_EMAIL_PORT</td>
+<td>登录的端口</td>
+<td>587</td>
+</tr>
+<tr>
+<td>SENTRY_EMAIL_USE_TLS</td>
+<td>是否使用 ssl 连接</td>
+<td>true</td>
+</tr>
+<tr>
+<td>SENTRY_SERVER_EMAIL</td>
+<td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjeDZkOyYjeDcwOyYjMTA4OyYjeDY1OyYjeDQwOyYjMTA5OyYjeDYxOyYjMTA1OyYjeDZjOyYjeDJlOyYjOTk7JiN4NmY7JiN4NmQ7">&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#x40;&#109;&#x61;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+</tr>
+</tbody></table>
+<p>​ 网易邮箱示例：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">mail.backend</span><span class="token punctuation">:</span> <span class="token string">"smtp"</span>
+<span class="token key atrule">mail.host</span><span class="token punctuation">:</span> <span class="token string">"smtp.126.com"</span>
+<span class="token key atrule">mail.port</span><span class="token punctuation">:</span> <span class="token number">25</span>
+<span class="token key atrule">mail.username</span><span class="token punctuation">:</span> <span class="token string">"XXXX@126.com"</span>
+<span class="token key atrule">mail.password</span><span class="token punctuation">:</span> <span class="token string">"XXXXX"</span>
+<span class="token key atrule">mail.use-tls</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+<span class="token key atrule">mail.from</span><span class="token punctuation">:</span> <span class="token string">"XXXX@126.com"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="使用-vue-继承"><a href="#使用-vue-继承" class="headerlink" title="使用 vue 继承"></a>使用 vue 继承</h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> Sentry <span class="token keyword">from</span> <span class="token string">"@sentry/browser"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Vue <span class="token keyword">as</span> VueIntegration <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@sentry/integrations"</span><span class="token punctuation">;</span>
+Sentry<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  dsn<span class="token operator">:</span> <span class="token string">"http://d6168c0c5ba947f0b7fafbb288522b0e@127.0.0.1:9000/2"</span><span class="token punctuation">,</span>
+  integrations<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token keyword">new</span> <span class="token class-name">VueIntegration</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> Vue<span class="token punctuation">,</span> attachProps<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="参数解释"><a href="#参数解释" class="headerlink" title="参数解释"></a>参数解释</h4><ol>
+<li><p>传递 Vue 是可选的，如果不传递，则 window.Vue 必须存在。</p>
+</li>
+<li><p>传递<code>attachProps</code>是可选的，默认<code>true</code>。如果将其设置为<code>false</code>，Sentry 将禁止发送所有 Vue 组件的道具进行记录。</p>
+</li>
+<li><p>传递<code>logErrors</code>是可选的，默认<code>false</code>。如果将其设置为<code>true</code>，Sentry 也将调用原始 Vue<code>logError</code>函数。</p>
+</li>
+</ol>
+<blockquote>
+<p>Vue 错误处理<br>请注意，如果启用此集成，则 Vue 不会在 logError 内部调用它。这意味着在 Vue 渲染器中发生的错误将不会显示在开发人员控制台中。如果要保留此功能，请确保通过该 logErrors: true 选项。</p>
+</blockquote>
+<ol start="4">
+<li>跟踪 Vue 应用程序的最基本配置（仅跟踪顶级组件）如下所示</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> Sentry <span class="token keyword">from</span> <span class="token string">"@sentry/browser"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Vue <span class="token keyword">as</span> VueIntegration <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@sentry/integrations"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Integrations <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@sentry/tracing"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
+Sentry<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  <span class="token comment">// ...</span>
+  integrations<span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token keyword">new</span> <span class="token class-name">Integrations<span class="token punctuation">.</span>BrowserTracing</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">new</span> <span class="token class-name">VueIntegration</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      Vue<span class="token punctuation">,</span>
+      tracing<span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  tracesSampleRate<span class="token operator">:</span> <span class="token number">1.0</span> <span class="token comment">// Be sure to lower this in production</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>如果要跟踪子组件，并查看有关渲染过程的更多详细信息，请配置集成以跟踪所有子组件：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">new</span> <span class="token class-name">VueIntegration</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  Vue<span class="token punctuation">,</span>
+  tracing<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  tracingOptions<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    trackComponents<span class="token operator">:</span> <span class="token boolean">true</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="启用-sourceMap-以方便定位-bug"><a href="#启用-sourceMap-以方便定位-bug" class="headerlink" title="启用 sourceMap 以方便定位 bug"></a>启用 sourceMap 以方便定位 bug</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install --save-dev @sentry&#x2F;webpack-plugin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> SentryWebpackPlugin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"@sentry/webpack-plugin"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// other configuration</span>
+  configureWebpack<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    plugins<span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token keyword">new</span> <span class="token class-name">SentryWebpackPlugin</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        <span class="token comment">// sentry-cli configuration</span>
+        authToken<span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">SENTRY_AUTH_TOKEN</span><span class="token punctuation">,</span>
+        org<span class="token operator">:</span> <span class="token string">"exmaple-org"</span><span class="token punctuation">,</span>
+        project<span class="token operator">:</span> <span class="token string">"example-project"</span><span class="token punctuation">,</span>
+
+        <span class="token comment">// webpack specific configuration</span>
+        include<span class="token operator">:</span> <span class="token string">"."</span><span class="token punctuation">,</span>
+        ignore<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"node_modules"</span><span class="token punctuation">,</span> <span class="token string">"webpack.config.js"</span><span class="token punctuation">]</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>In Vue 2.x, you should use vue.config.js instead of webpack.config.js, and use include: “./dist” instead of include: “.”</p>
+</blockquote>
+<p>也可以通过配置文件的方式</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">plugins<span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">!==</span> <span class="token string">"development"</span>
+  <span class="token operator">?</span> <span class="token punctuation">[</span>
+      <span class="token keyword">new</span> <span class="token class-name">SentryWebpackPlugin</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        release<span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// 唯一标识，可以用其他的比如 hash</span>
+        <span class="token comment">// webpack specific configuration</span>
+        include<span class="token operator">:</span> <span class="token string">"./dist"</span><span class="token punctuation">,</span>
+        ignore<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"node_modules"</span><span class="token punctuation">,</span> <span class="token string">"vue.config.js"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        configFile<span class="token operator">:</span> <span class="token string">".sentryclirc"</span> <span class="token comment">// 默认同级，如果不一样需要用node path模块处理一下</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">]</span>
+  <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>.sentryclirc</code>配置文件如下：<br><code>token</code>生成: 登陆 sentry 控制台页面，点击左上角头像，再点击<code>API keys-&gt;授权令牌</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">[</span>defaults<span class="token punctuation">]</span>
+<span class="token comment">### 你的域名</span>
+url='http<span class="token punctuation">:</span>//127.0.0.1<span class="token punctuation">:</span>9000'
+<span class="token comment">### 组织团队名默认是 sentry</span>
+org=sentry
+<span class="token comment">### 项目名称</span>
+project=vue
+<span class="token comment">### 步骤1创建的</span>
+<span class="token punctuation">[</span>auth<span class="token punctuation">]</span>
+token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>提示：docker 生成版本较低，建议 github 上下载或者直接用线上的 Saas 做。</strong></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>错误追踪</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>sentry</tag>
       </tags>
   </entry>
   <entry>
@@ -702,64 +702,6 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       </tags>
   </entry>
   <entry>
-    <title>数据可视化工具选型参考</title>
-    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
-<a id="more"></a>
-
-<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
-<li>Leaflet|28.9K|适合移动设备</li>
-<li>Chartist.js|12.3K|创建响应式图表</li>
-<li>d3|93.6K|svg+canvas+html</li>
-<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
-</ul>
-<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
-<li>Echarts|42.8K|百度产品</li>
-<li>AntV|蚂蚁金服</li>
-<li>Highcharts|9.7K|可视化库，商用付费</li>
-</ul>
-<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
-<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
-</ul>
-<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
-<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
-<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
-<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
-</ul>
-<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
-<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
-<li>FineReport</li>
-<li>数字冰雹</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
-<li>recharts|14.7K|Redefined chart library built with React and D3</li>
-<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
-<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
-<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
-<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
-</ul>
-<hr>
-<p>选型对比</p>
-<blockquote>
-<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
-<p>开发：Echarts|AntV|D3</p>
-</blockquote>
-<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
-<hr>
-<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
-<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
-<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>数据可视化</category>
-      </categories>
-      <tags>
-        <tag>数据可视化</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用docker+minio实现对象存储</title>
     <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
     <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
@@ -836,6 +778,64 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       <tags>
         <tag>docker</tag>
         <tag>minio</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据可视化工具选型参考</title>
+    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
+<a id="more"></a>
+
+<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
+<li>Leaflet|28.9K|适合移动设备</li>
+<li>Chartist.js|12.3K|创建响应式图表</li>
+<li>d3|93.6K|svg+canvas+html</li>
+<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
+</ul>
+<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
+<li>Echarts|42.8K|百度产品</li>
+<li>AntV|蚂蚁金服</li>
+<li>Highcharts|9.7K|可视化库，商用付费</li>
+</ul>
+<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
+<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
+</ul>
+<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
+<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
+<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
+<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
+</ul>
+<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
+<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
+<li>FineReport</li>
+<li>数字冰雹</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
+<li>recharts|14.7K|Redefined chart library built with React and D3</li>
+<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
+<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
+<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
+<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
+</ul>
+<hr>
+<p>选型对比</p>
+<blockquote>
+<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
+<p>开发：Echarts|AntV|D3</p>
+</blockquote>
+<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
+<hr>
+<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
+<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
+<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>数据可视化</category>
+      </categories>
+      <tags>
+        <tag>数据可视化</tag>
       </tags>
   </entry>
 </search>
