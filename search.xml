@@ -59,7 +59,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjOTc7JiN4NmQ7JiMxMTI7JiN4NmM7JiN4NjU7JiN4NDA7JiN4NmQ7JiM5NzsmI3g2OTsmIzEwODsmIzQ2OyYjeDYzOyYjeDZmOyYjeDZkOw==">&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#x65;&#x40;&#x6d;&#97;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjMTAxOyYjeDQwOyYjeDZkOyYjeDYxOyYjMTA1OyYjeDZjOyYjNDY7JiN4NjM7JiMxMTE7JiN4NmQ7">&#x65;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#x40;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -79,7 +79,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjMTA5OyYjMTEyOyYjeDZjOyYjeDY1OyYjeDQwOyYjeDZkOyYjOTc7JiMxMDU7JiMxMDg7JiN4MmU7JiN4NjM7JiMxMTE7JiMxMDk7">&#x65;&#120;&#x61;&#109;&#112;&#x6c;&#x65;&#x40;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjeDY1OyYjeDQwOyYjMTA5OyYjeDYxOyYjMTA1OyYjeDZjOyYjNDY7JiM5OTsmIzExMTsmI3g2ZDs=">&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#x40;&#109;&#x61;&#105;&#x6c;&#46;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -362,6 +362,97 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
       </tags>
   </entry>
   <entry>
+    <title>hexo+github-pages搭建个人博客</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
+<a id="more"></a>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>需要先安装好 nodejs、git，注册登录 github，熟悉一些 markdown 语法等暂且不表。</p>
+<h2 id="github-新建仓库"><a href="#github-新建仓库" class="headerlink" title="github 新建仓库"></a>github 新建仓库</h2><p>github 上新建一个仓库，名字为 <code>username.git.io</code>，仓库需要配置为 public。这里的 username 就是你 github 的名字，比如 github 用户名是 <code>FreedomAnt</code>，仓库就取名为 <code>freedomant.github.io</code>。<br>这样写的原因是 <code>github-pages</code> 能自动将该仓库用为 <code>github-pages</code> 的域名所在仓库，即后面不用跟项目名了。<br>进入该仓库，进入设置页面<code>Settings =&gt; Options</code>里面有一个<code>GitHub Pages</code>配置，如图所示:<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105171032.png" alt="github pages 设置截图"><br>这里可以设置分支，默认 github 是会新建一个<code>gh-pages</code>的分支。</p>
+<h2 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h2><p>这里使用的全局安装</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install -g hexo-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>新建一个项目，项目名就叫 blog。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo init blog<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>有几个快捷键比较常用</p>
+<ol>
+<li><code>hexo clean</code>清空生成的静态文件和缓存。</li>
+<li><code>hexo s</code>是<code>hexo server</code>的缩写，启动一个默认 4000 端口的本地服务。</li>
+<li><code>hexo n [name]</code>是<code>hexo new [name]</code>的缩写，新建一篇文章</li>
+<li><code>hexo g</code>是<code>hexo generate</code>的缩写，生成静态文件。</li>
+<li><code>hexo d</code>是<code>hexo deploy</code>的缩写，部署到配置的仓库或者服务器。</li>
+</ol>
+<p>生成静态文件和部署可以用一条命令表示<code>hexo g -d</code>或者<code>hexo d -g</code>。<br>安装完成之后有几个主要的文件和目录，配置文件<code>_config.yml</code>，<code>source</code>文件夹是放文章和样式图片等。<code>themes</code>是用于放主题文件。</p>
+<h2 id="Hexo-配置"><a href="#Hexo-配置" class="headerlink" title="Hexo 配置"></a>Hexo 配置</h2><p>安装完成之后在<code>_config.yml</code>配置。<br><code>theme: next</code>这里配置主题的名字，主题放<code>themes</code>文件夹下。这里配置的是 next 主题。<br>这里采用 git 方式部署博客，先安装一个<code>hexo-deployer-git</code>。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install hexo-deployer-git --save<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>安装完成之后在<code>_config.yml</code>里配置部署的服务。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> git
+  <span class="token key atrule">repo</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//github.com/FreedomAnt/freedomant.github.io.git
+  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里分支选择<code>gh-pages</code>，就是<a href="#github-%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93">github 新建仓库</a>里的生成分支。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo n [文章名称]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里写完文章以后依次输入以下命令：</p>
+<p>清空缓存</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>本地先跑一个服务看下效果</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>生成静态文件并部署</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo g -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样就生成了博客，在浏览器输入地址即可访问<code>https://freedomant.github.io</code>，如果你买了域名可以添加到 <code>source</code> 下面的<code>CNAME</code>文件。如果需要修改主题的配置文件，可以在项目根目录下面新建一个<code>_config.[theme name].yml</code>，将<code>themes/next/_config.yml</code>里面的内容复制到这个文件，修改主题就在这个文件修改就行。这里用的<code>next</code>主题<code>_config.next.yml</code>。这个文件里面的内容在静态页面生成的时候会覆盖掉<code>themes/next/_config.yml</code>的内容。</p>
+<h2 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h2><p>图床这里也是白 piao 的 github，先在 github 里面新建一个项目用于图床。<code>token</code>生成方式在 github 里面，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; Personal access tokens =&gt; Generate new token</code>这里注意勾选<code>repo</code>下的选项。如图所示：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105175136.png" alt="github 配置图床Token"><br>下载好 PicGGo 之后点击图床设置，选择<code>GitHub 图床</code>，配置如下：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105174115.png" alt="PicGGo中GitHub图床配置"><br>这里的自定义域名有讲究的，填写<code>https://cdn.jsdelivr.net/gh/FreedomAnt/image@main</code>，用<code>jsdelivr</code>的黑科技完成 CDN 加速。</p>
+<h2 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h2><p>这里我使用的 vscode 写的文章，vscode 安装插件<code>Markdown All in One</code>、<code>Markdwon Preview Enhanced</code>等。也安装有 typora 软件，typora 是一个所见即所得(<code>WYSIWYG</code>)的 markdown 软件，非常不错。而且 typora 集成 PicGo，typora 的<code>文件 =&gt; 偏好设置 =&gt; 图像 =&gt; 上传服务设定</code>里面选择<code>PicGo(app)</code>的方式，<code>PicGo-Core</code>的命令行的方式不是太方便。<br><strong>这里需要注意 PicGo 默认的服务端口开的是<code>36677</code>，在 PicGo 里<code>PicGo设置 =&gt; 设置Server</code>可设置监听端口，如果想要配置<code>typora</code>里面的 PicGo，需要注意测试 PicGo 连接的服务地址端口是不是<code>36677</code>。</strong></p>
+<h2 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h2><p>next 主题自带的评论插件里面有<code>changyan | disqus | disqusjs | gitalk | livere | valine</code>，这里我选择的 gitalk，对比了几个之后还是选择了 github 的黑科技。<code>valine</code>也不错，不过我看到 github 上面写<code>src</code>目录停止更新的信息，就还是选择了 gitalk。<br>gitalk 配置需要客户端的 id 和密钥。还是在 github 里面生成。<br>进入 github，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; OAuth Apps =&gt; new OAuth Apps</code>。<code>Homepage URL</code>和<code>Authorization callback URL</code>都填写<code>https://freedomant.github.io/</code>，生成的客户端 id 和密钥填到主题配置里面。</p>
+<h2 id="部署到-Vercel"><a href="#部署到-Vercel" class="headerlink" title="部署到 Vercel"></a>部署到 Vercel</h2><p><code>Vercel</code>是一个提供使用简单命令就可部署静态页面的服务，由于 github 访问速度慢的原因，在使用测速软件分别测试了很多常见的静态网页部署服务之后，发现比较快的就是国内的<code>coding</code>和<code>gitee</code>，再就是腾讯阿里的对象存储了，<code>Vercel</code>算是国外里面比较快的了，而且和<code>github</code>无缝对接。如果不想花钱买 CDN 加速或者对象存储，可以使用<code>Vercel</code>，<code>Vercel</code>以前叫<code>zeit</code>，安装了之后直接使用一行<code>now</code>命令就可完成部署。目前已经更名为<code>Vercel</code>。用 github 关联登录之后，点击<code>Import Preject =&gt; Import Git Repository =&gt; continue</code>填写你的仓库地址<code>https://github.com/FreedomAnt/freedomant.github.io.git</code>。部署命令那不用填写，默认就行。部署好之后就会生成访问的地址了。<br><code>Vercel</code>还支持修改默认的分支，进入到关联的项目，点击<code>Settings =&gt; Git =&gt; Production Branch</code>可以修改成博客所在的<code>gh-pages</code>分支。<br><code>Vercel</code>还支持自定义域名，点击<code>Settings =&gt; Domains</code>一般域名后缀填写<code>XXX.now.sh</code>或者<code>XXX.vercel.app</code>。前一个是<code>Vercel</code>未改名前的默认生成后缀，后一个是改名后的默认生成后缀。至此，部署到<code>Vercel</code>成功。<br>当调用命令<code>hexo g -d</code>部署到 github 时，会触发<code>Vercel</code>的部署，一键部署到两个地方，完美！</p>
+<p><strong>注意：博客原文件和静态页面的分开放两个仓库，博客原文件可以用私有仓库，里面有一些个人配置的信息</strong></p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>github</tag>
+        <tag>github-pages</tag>
+        <tag>gitalk</tag>
+        <tag>zeit</tag>
+        <tag>vercel</tag>
+        <tag>markdown</tag>
+        <tag>typora</tag>
+        <tag>picgo</tag>
+        <tag>图床</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>node+npm更新</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/node-npm%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
+<a id="more"></a>
+
+<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
+<p>查看 node 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 npm 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\fanta\AppData\Roaming</code>文件夹下有一个<code>npm</code>和<code>npm-cache</code>文件，这里应该有<code>npm</code>的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+        <tag>npm-cache</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>docker+gitlab+jenkins+ssh实现代码自动构建部署</title>
     <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 <code>gitlab/gitlab-ce</code> 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080</p>
@@ -450,71 +541,19 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
       </tags>
   </entry>
   <entry>
-    <title>hexo+github-pages搭建个人博客</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
+    <title>tabindex之焦点移动</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
+    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
 <a id="more"></a>
 
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>需要先安装好 nodejs、git，注册登录 github，熟悉一些 markdown 语法等暂且不表。</p>
-<h2 id="github-新建仓库"><a href="#github-新建仓库" class="headerlink" title="github 新建仓库"></a>github 新建仓库</h2><p>github 上新建一个仓库，名字为 <code>username.git.io</code>，仓库需要配置为 public。这里的 username 就是你 github 的名字，比如 github 用户名是 <code>FreedomAnt</code>，仓库就取名为 <code>freedomant.github.io</code>。<br>这样写的原因是 <code>github-pages</code> 能自动将该仓库用为 <code>github-pages</code> 的域名所在仓库，即后面不用跟项目名了。<br>进入该仓库，进入设置页面<code>Settings =&gt; Options</code>里面有一个<code>GitHub Pages</code>配置，如图所示:<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105171032.png" alt="github pages 设置截图"><br>这里可以设置分支，默认 github 是会新建一个<code>gh-pages</code>的分支。</p>
-<h2 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h2><p>这里使用的全局安装</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install -g hexo-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>新建一个项目，项目名就叫 blog。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo init blog<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>有几个快捷键比较常用</p>
-<ol>
-<li><code>hexo clean</code>清空生成的静态文件和缓存。</li>
-<li><code>hexo s</code>是<code>hexo server</code>的缩写，启动一个默认 4000 端口的本地服务。</li>
-<li><code>hexo n [name]</code>是<code>hexo new [name]</code>的缩写，新建一篇文章</li>
-<li><code>hexo g</code>是<code>hexo generate</code>的缩写，生成静态文件。</li>
-<li><code>hexo d</code>是<code>hexo deploy</code>的缩写，部署到配置的仓库或者服务器。</li>
-</ol>
-<p>生成静态文件和部署可以用一条命令表示<code>hexo g -d</code>或者<code>hexo d -g</code>。<br>安装完成之后有几个主要的文件和目录，配置文件<code>_config.yml</code>，<code>source</code>文件夹是放文章和样式图片等。<code>themes</code>是用于放主题文件。</p>
-<h2 id="Hexo-配置"><a href="#Hexo-配置" class="headerlink" title="Hexo 配置"></a>Hexo 配置</h2><p>安装完成之后在<code>_config.yml</code>配置。<br><code>theme: next</code>这里配置主题的名字，主题放<code>themes</code>文件夹下。这里配置的是 next 主题。<br>这里采用 git 方式部署博客，先安装一个<code>hexo-deployer-git</code>。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install hexo-deployer-git --save<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>安装完成之后在<code>_config.yml</code>里配置部署的服务。</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
-  <span class="token key atrule">type</span><span class="token punctuation">:</span> git
-  <span class="token key atrule">repo</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//github.com/FreedomAnt/freedomant.github.io.git
-  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里分支选择<code>gh-pages</code>，就是<a href="#github-%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93">github 新建仓库</a>里的生成分支。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo n [文章名称]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这里写完文章以后依次输入以下命令：</p>
-<p>清空缓存</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>本地先跑一个服务看下效果</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>生成静态文件并部署</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo g -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这样就生成了博客，在浏览器输入地址即可访问<code>https://freedomant.github.io</code>，如果你买了域名可以添加到 <code>source</code> 下面的<code>CNAME</code>文件。如果需要修改主题的配置文件，可以在项目根目录下面新建一个<code>_config.[theme name].yml</code>，将<code>themes/next/_config.yml</code>里面的内容复制到这个文件，修改主题就在这个文件修改就行。这里用的<code>next</code>主题<code>_config.next.yml</code>。这个文件里面的内容在静态页面生成的时候会覆盖掉<code>themes/next/_config.yml</code>的内容。</p>
-<h2 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h2><p>图床这里也是白 piao 的 github，先在 github 里面新建一个项目用于图床。<code>token</code>生成方式在 github 里面，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; Personal access tokens =&gt; Generate new token</code>这里注意勾选<code>repo</code>下的选项。如图所示：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105175136.png" alt="github 配置图床Token"><br>下载好 PicGGo 之后点击图床设置，选择<code>GitHub 图床</code>，配置如下：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105174115.png" alt="PicGGo中GitHub图床配置"><br>这里的自定义域名有讲究的，填写<code>https://cdn.jsdelivr.net/gh/FreedomAnt/image@main</code>，用<code>jsdelivr</code>的黑科技完成 CDN 加速。</p>
-<h2 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h2><p>这里我使用的 vscode 写的文章，vscode 安装插件<code>Markdown All in One</code>、<code>Markdwon Preview Enhanced</code>等。也安装有 typora 软件，typora 是一个所见即所得(<code>WYSIWYG</code>)的 markdown 软件，非常不错。而且 typora 集成 PicGo，typora 的<code>文件 =&gt; 偏好设置 =&gt; 图像 =&gt; 上传服务设定</code>里面选择<code>PicGo(app)</code>的方式，<code>PicGo-Core</code>的命令行的方式不是太方便。<br><strong>这里需要注意 PicGo 默认的服务端口开的是<code>36677</code>，在 PicGo 里<code>PicGo设置 =&gt; 设置Server</code>可设置监听端口，如果想要配置<code>typora</code>里面的 PicGo，需要注意测试 PicGo 连接的服务地址端口是不是<code>36677</code>。</strong></p>
-<h2 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h2><p>next 主题自带的评论插件里面有<code>changyan | disqus | disqusjs | gitalk | livere | valine</code>，这里我选择的 gitalk，对比了几个之后还是选择了 github 的黑科技。<code>valine</code>也不错，不过我看到 github 上面写<code>src</code>目录停止更新的信息，就还是选择了 gitalk。<br>gitalk 配置需要客户端的 id 和密钥。还是在 github 里面生成。<br>进入 github，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; OAuth Apps =&gt; new OAuth Apps</code>。<code>Homepage URL</code>和<code>Authorization callback URL</code>都填写<code>https://freedomant.github.io/</code>，生成的客户端 id 和密钥填到主题配置里面。</p>
-<h2 id="部署到-Vercel"><a href="#部署到-Vercel" class="headerlink" title="部署到 Vercel"></a>部署到 Vercel</h2><p><code>Vercel</code>是一个提供使用简单命令就可部署静态页面的服务，由于 github 访问速度慢的原因，在使用测速软件分别测试了很多常见的静态网页部署服务之后，发现比较快的就是国内的<code>coding</code>和<code>gitee</code>，再就是腾讯阿里的对象存储了，<code>Vercel</code>算是国外里面比较快的了，而且和<code>github</code>无缝对接。如果不想花钱买 CDN 加速或者对象存储，可以使用<code>Vercel</code>，<code>Vercel</code>以前叫<code>zeit</code>，安装了之后直接使用一行<code>now</code>命令就可完成部署。目前已经更名为<code>Vercel</code>。用 github 关联登录之后，点击<code>Import Preject =&gt; Import Git Repository =&gt; continue</code>填写你的仓库地址<code>https://github.com/FreedomAnt/freedomant.github.io.git</code>。部署命令那不用填写，默认就行。部署好之后就会生成访问的地址了。<br><code>Vercel</code>还支持修改默认的分支，进入到关联的项目，点击<code>Settings =&gt; Git =&gt; Production Branch</code>可以修改成博客所在的<code>gh-pages</code>分支。<br><code>Vercel</code>还支持自定义域名，点击<code>Settings =&gt; Domains</code>一般域名后缀填写<code>XXX.now.sh</code>或者<code>XXX.vercel.app</code>。前一个是<code>Vercel</code>未改名前的默认生成后缀，后一个是改名后的默认生成后缀。至此，部署到<code>Vercel</code>成功。<br>当调用命令<code>hexo g -d</code>部署到 github 时，会触发<code>Vercel</code>的部署，一键部署到两个地方，完美！</p>
-<p><strong>注意：博客原文件和静态页面的分开放两个仓库，博客原文件可以用私有仓库，里面有一些个人配置的信息</strong></p>
+<h2 id="bug-描述"><a href="#bug-描述" class="headerlink" title="bug 描述"></a>bug 描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
+<h2 id="bug-解决"><a href="#bug-解决" class="headerlink" title="bug 解决"></a>bug 解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见<code>visibility:hidden</code>，焦点就不会自动移动过去了。</p>
 ]]></content>
       <categories>
         <category>工作笔记</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
-        <tag>github</tag>
-        <tag>github-pages</tag>
-        <tag>gitalk</tag>
-        <tag>zeit</tag>
-        <tag>vercel</tag>
-        <tag>markdown</tag>
-        <tag>typora</tag>
-        <tag>picgo</tag>
-        <tag>图床</tag>
+        <tag>tabindex</tag>
       </tags>
   </entry>
   <entry>
@@ -663,26 +702,61 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       </tags>
   </entry>
   <entry>
-    <title>node+npm更新</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/node-npm%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
+    <title>数据可视化工具选型参考</title>
+    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
 <a id="more"></a>
 
-<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
-<p>查看 node 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看 npm 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\fanta\AppData\Roaming</code>文件夹下有一个<code>npm</code>和<code>npm-cache</code>文件，这里应该有<code>npm</code>的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
+<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
+<li>Leaflet|28.9K|适合移动设备</li>
+<li>Chartist.js|12.3K|创建响应式图表</li>
+<li>d3|93.6K|svg+canvas+html</li>
+<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
+</ul>
+<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
+<li>Echarts|42.8K|百度产品</li>
+<li>AntV|蚂蚁金服</li>
+<li>Highcharts|9.7K|可视化库，商用付费</li>
+</ul>
+<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
+<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
+</ul>
+<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
+<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
+<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
+<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
+</ul>
+<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
+<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
+<li>FineReport</li>
+<li>数字冰雹</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
+<li>recharts|14.7K|Redefined chart library built with React and D3</li>
+<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
+<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
+<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
+<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
+</ul>
+<hr>
+<p>选型对比</p>
+<blockquote>
+<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
+<p>开发：Echarts|AntV|D3</p>
+</blockquote>
+<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
+<hr>
+<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
+<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
+<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
 ]]></content>
       <categories>
-        <category>工作笔记</category>
+        <category>开发</category>
+        <category>数据可视化</category>
       </categories>
       <tags>
-        <tag>npm</tag>
-        <tag>npm-cache</tag>
+        <tag>数据可视化</tag>
       </tags>
   </entry>
   <entry>
@@ -762,80 +836,6 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       <tags>
         <tag>docker</tag>
         <tag>minio</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tabindex之焦点移动</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
-    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
-<a id="more"></a>
-
-<h2 id="bug-描述"><a href="#bug-描述" class="headerlink" title="bug 描述"></a>bug 描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
-<h2 id="bug-解决"><a href="#bug-解决" class="headerlink" title="bug 解决"></a>bug 解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见<code>visibility:hidden</code>，焦点就不会自动移动过去了。</p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>tabindex</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据可视化工具选型参考</title>
-    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
-<a id="more"></a>
-
-<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
-<li>Leaflet|28.9K|适合移动设备</li>
-<li>Chartist.js|12.3K|创建响应式图表</li>
-<li>d3|93.6K|svg+canvas+html</li>
-<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
-</ul>
-<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
-<li>Echarts|42.8K|百度产品</li>
-<li>AntV|蚂蚁金服</li>
-<li>Highcharts|9.7K|可视化库，商用付费</li>
-</ul>
-<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
-<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
-</ul>
-<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
-<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
-<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
-<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
-</ul>
-<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
-<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
-<li>FineReport</li>
-<li>数字冰雹</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
-<li>recharts|14.7K|Redefined chart library built with React and D3</li>
-<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
-<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
-<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
-<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
-</ul>
-<hr>
-<p>选型对比</p>
-<blockquote>
-<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
-<p>开发：Echarts|AntV|D3</p>
-</blockquote>
-<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
-<hr>
-<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
-<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
-<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>数据可视化</category>
-      </categories>
-      <tags>
-        <tag>数据可视化</tag>
       </tags>
   </entry>
 </search>
