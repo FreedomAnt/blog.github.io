@@ -59,7 +59,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjeDZkOyYjeDcwOyYjMTA4OyYjMTAxOyYjNjQ7JiN4NmQ7JiN4NjE7JiMxMDU7JiMxMDg7JiN4MmU7JiM5OTsmI3g2ZjsmI3g2ZDs=">&#x65;&#120;&#x61;&#x6d;&#x70;&#108;&#101;&#64;&#x6d;&#x61;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjOTc7JiMxMDk7JiN4NzA7JiN4NmM7JiMxMDE7JiN4NDA7JiMxMDk7JiM5NzsmIzEwNTsmIzEwODsmI3gyZTsmIzk5OyYjMTExOyYjMTA5Ow==">&#x65;&#120;&#97;&#109;&#x70;&#x6c;&#101;&#x40;&#109;&#97;&#105;&#108;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -79,7 +79,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiMxMTI7JiN4NmM7JiN4NjU7JiN4NDA7JiN4NmQ7JiN4NjE7JiN4Njk7JiN4NmM7JiN4MmU7JiM5OTsmIzExMTsmI3g2ZDs=">&#101;&#x78;&#97;&#109;&#112;&#x6c;&#x65;&#x40;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiMxMTI7JiN4NmM7JiN4NjU7JiN4NDA7JiMxMDk7JiN4NjE7JiN4Njk7JiN4NmM7JiN4MmU7JiN4NjM7JiMxMTE7JiMxMDk7">&#101;&#x78;&#97;&#109;&#112;&#x6c;&#x65;&#x40;&#109;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -450,6 +450,29 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
       </tags>
   </entry>
   <entry>
+    <title>node+npm更新</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/node-npm%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
+<a id="more"></a>
+
+<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
+<p>查看 node 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 npm 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\fanta\AppData\Roaming</code>文件夹下有一个<code>npm</code>和<code>npm-cache</code>文件，这里应该有<code>npm</code>的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+        <tag>npm-cache</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo+github-pages搭建个人博客</title>
     <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
@@ -515,29 +538,6 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
         <tag>typora</tag>
         <tag>picgo</tag>
         <tag>图床</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>node+npm更新</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/node-npm%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
-<a id="more"></a>
-
-<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
-<p>查看 node 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看 npm 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\fanta\AppData\Roaming</code>文件夹下有一个<code>npm</code>和<code>npm-cache</code>文件，这里应该有<code>npm</code>的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>npm</tag>
-        <tag>npm-cache</tag>
       </tags>
   </entry>
   <entry>
@@ -702,6 +702,64 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       </tags>
   </entry>
   <entry>
+    <title>数据可视化工具选型参考</title>
+    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
+<a id="more"></a>
+
+<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
+<li>Leaflet|28.9K|适合移动设备</li>
+<li>Chartist.js|12.3K|创建响应式图表</li>
+<li>d3|93.6K|svg+canvas+html</li>
+<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
+</ul>
+<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
+<li>Echarts|42.8K|百度产品</li>
+<li>AntV|蚂蚁金服</li>
+<li>Highcharts|9.7K|可视化库，商用付费</li>
+</ul>
+<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
+<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
+</ul>
+<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
+<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
+<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
+<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
+</ul>
+<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
+<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
+<li>FineReport</li>
+<li>数字冰雹</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
+<li>recharts|14.7K|Redefined chart library built with React and D3</li>
+<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
+<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
+<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
+<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
+</ul>
+<hr>
+<p>选型对比</p>
+<blockquote>
+<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
+<p>开发：Echarts|AntV|D3</p>
+</blockquote>
+<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
+<hr>
+<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
+<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
+<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>数据可视化</category>
+      </categories>
+      <tags>
+        <tag>数据可视化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用docker+minio实现对象存储</title>
     <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
     <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
@@ -778,64 +836,6 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       <tags>
         <tag>docker</tag>
         <tag>minio</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据可视化工具选型参考</title>
-    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
-<a id="more"></a>
-
-<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
-<li>Leaflet|28.9K|适合移动设备</li>
-<li>Chartist.js|12.3K|创建响应式图表</li>
-<li>d3|93.6K|svg+canvas+html</li>
-<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
-</ul>
-<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
-<li>Echarts|42.8K|百度产品</li>
-<li>AntV|蚂蚁金服</li>
-<li>Highcharts|9.7K|可视化库，商用付费</li>
-</ul>
-<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
-<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
-</ul>
-<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
-<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
-<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
-<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
-</ul>
-<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
-<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
-<li>FineReport</li>
-<li>数字冰雹</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
-<li>recharts|14.7K|Redefined chart library built with React and D3</li>
-<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
-<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
-<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
-<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
-</ul>
-<hr>
-<p>选型对比</p>
-<blockquote>
-<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
-<p>开发：Echarts|AntV|D3</p>
-</blockquote>
-<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
-<hr>
-<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
-<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
-<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>数据可视化</category>
-      </categories>
-      <tags>
-        <tag>数据可视化</tag>
       </tags>
   </entry>
 </search>
