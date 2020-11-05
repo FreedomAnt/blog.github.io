@@ -59,7 +59,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjMTA5OyYjMTEyOyYjMTA4OyYjeDY1OyYjeDQwOyYjeDZkOyYjeDYxOyYjMTA1OyYjeDZjOyYjNDY7JiN4NjM7JiN4NmY7JiMxMDk7">&#x65;&#x78;&#x61;&#109;&#112;&#108;&#x65;&#x40;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjMTA5OyYjMTEyOyYjeDZjOyYjeDY1OyYjNjQ7JiN4NmQ7JiM5NzsmIzEwNTsmI3g2YzsmIzQ2OyYjOTk7JiMxMTE7JiN4NmQ7">&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#64;&#x6d;&#97;&#105;&#x6c;&#46;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -79,7 +79,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjOTc7JiMxMDk7JiN4NzA7JiN4NmM7JiMxMDE7JiN4NDA7JiN4NmQ7JiN4NjE7JiMxMDU7JiMxMDg7JiM0NjsmI3g2MzsmI3g2ZjsmI3g2ZDs=">&#x65;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#x40;&#x6d;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjeDY1OyYjeDQwOyYjeDZkOyYjOTc7JiN4Njk7JiMxMDg7JiN4MmU7JiN4NjM7JiN4NmY7JiN4NmQ7">&#x65;&#120;&#x61;&#109;&#x70;&#x6c;&#x65;&#x40;&#x6d;&#97;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -196,6 +196,359 @@ token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-number
       <tags>
         <tag>docker</tag>
         <tag>sentry</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git push 报错解决</title>
+    <url>/uncategorized/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>记一次 git push 报错解决。</p>
+<a id="more"></a>
+
+<h2 id="错误描述"><a href="#错误描述" class="headerlink" title="错误描述"></a>错误描述</h2><p>用 hexo 写博客提交的时候报错<code>fatal: TaskCanceledException encountered.</code>，有时候是这个<code>fatal: HttpRequestException encountered.</code><br>使用网上的方式均不管用，下载了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9HaXQtQ3JlZGVudGlhbC1NYW5hZ2VyLWZvci1XaW5kb3dzL3JlbGVhc2Vz">凭证管理<i class="fa fa-external-link-alt"></i></span>安装完成，也下载了新版本的 git 并更新。用以下命令行的方式也试过。</p>
+<p>配置<code>credential.helper</code>为<code>manager</code>。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>试过了，不行。</p>
+<p>删除系统级别的<code>credential.helper</code>。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>也不行。</p>
+<h2 id="错误解决"><a href="#错误解决" class="headerlink" title="错误解决"></a>错误解决</h2><p>git 的配置指令有 3 个层级，详细信息可参考 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS8=">git-scm.com<i class="fa fa-external-link-alt"></i></span> 的 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span>。<br>分别是</p>
+<ul>
+<li>system（系统级别）</li>
+<li>global（用户级别）</li>
+<li>local（仓库级别）</li>
+</ul>
+<p>优先级为 local &gt; global &gt; system。</p>
+<p>读取配置命令分别为：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --list
+$ git config --global --list
+$ git config --system --list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>查找<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyL0dpdC0lRTUlQjclQTUlRTUlODUlQjctJUU1JTg3JUFEJUU4JUFGJTgxJUU1JUFEJTk4JUU1JTgyJUE4">Git 的系统凭证管理<i class="fa fa-external-link-alt"></i></span>，<code>credential.helper</code>可选的存储方式为:</p>
+<h3 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h3><p>将凭证存放在内存中一段时间。 密码永远不会被存储在磁盘中，并且在 15 分钟后从内存中清除。</p>
+<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p>将凭证用明文的形式存放在磁盘中，并且永不过期。 这意味着除非你修改了你在 Git 服务器上的密码，否则你永远不需要再次输入你的凭证信息。 这种方式的缺点是你的密码是用明文的方式存放在你的 home 目录下。</p>
+<h3 id="osxkeychain"><a href="#osxkeychain" class="headerlink" title="osxkeychain"></a>osxkeychain</h3><p>如果你使用的是 Mac，Git 还有一种 “osxkeychain” 模式，它会将凭证缓存到你系统用户的钥匙串中。 这种方式将凭证存放在磁盘中，并且永不过期，但是是被加密的，这种加密方式与存放 HTTPS 凭证以及 Safari 的自动填写是相同的。</p>
+<h3 id="manager"><a href="#manager" class="headerlink" title="manager"></a>manager</h3><p>如果你使用的是 Windows，你可以安装一个叫做 “Git Credential Manager for Windows” 的辅助工具。 这和上面说的 <code>osxkeychain</code>十分类似，但是是使用 <code>Windows Credential Store</code> 来控制敏感信息。 可以在<code>https://github.com/Microsoft/Git-Credential-Manager-for-Windows</code> 下载。</p>
+<p>git 在本地有多种方式来存储本地凭证。存储方式有三种：<code>manager</code>、<code>wincred</code> 和 <code>store</code>，可以在<code>/%GitPath%/mingw64/libexec/git-core</code> 路径下找到对应的 exe 文件：<code>git-credential-manager</code>、<code>git-credential-wincred</code> 和 <code>git-credential-store</code>。</p>
+<p>其中用 manager 会把用户信息加密，<code>wincred</code>则不会。可能我以前的信息是存储在<code>wincred</code>模式下的，我这里用<code>wincred</code>可以解决。</p>
+<p>这里可以先把原有的<code>credential.helper</code>删除</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后再配置<code>credential.helper</code></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper wincred<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>问题解决。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>hexo+github-pages搭建个人博客</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
+<a id="more"></a>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>需要先安装好 nodejs、git，注册登录 github，熟悉一些 markdown 语法等暂且不表。</p>
+<h2 id="github-新建仓库"><a href="#github-新建仓库" class="headerlink" title="github 新建仓库"></a>github 新建仓库</h2><p>github 上新建一个仓库，名字为 <code>username.git.io</code>，仓库需要配置为 public。这里的 username 就是你 github 的名字，比如 github 用户名是 <code>FreedomAnt</code>，仓库就取名为 <code>freedomant.github.io</code>。<br>这样写的原因是 <code>github-pages</code> 能自动将该仓库用为 <code>github-pages</code> 的域名所在仓库，即后面不用跟项目名了。<br>进入该仓库，进入设置页面<code>Settings =&gt; Options</code>里面有一个<code>GitHub Pages</code>配置，如图所示:<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105171032.png" alt="github pages 设置截图"><br>这里可以设置分支，默认 github 是会新建一个<code>gh-pages</code>的分支。</p>
+<h2 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h2><p>这里使用的全局安装</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install -g hexo-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>新建一个项目，项目名就叫 blog。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo init blog<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>有几个快捷键比较常用</p>
+<ol>
+<li><code>hexo clean</code>清空生成的静态文件和缓存。</li>
+<li><code>hexo s</code>是<code>hexo server</code>的缩写，启动一个默认 4000 端口的本地服务。</li>
+<li><code>hexo n [name]</code>是<code>hexo new [name]</code>的缩写，新建一篇文章</li>
+<li><code>hexo g</code>是<code>hexo generate</code>的缩写，生成静态文件。</li>
+<li><code>hexo d</code>是<code>hexo deploy</code>的缩写，部署到配置的仓库或者服务器。</li>
+</ol>
+<p>生成静态文件和部署可以用一条命令表示<code>hexo g -d</code>或者<code>hexo d -g</code>。<br>安装完成之后有几个主要的文件和目录，配置文件<code>_config.yml</code>，<code>source</code>文件夹是放文章和样式图片等。<code>themes</code>是用于放主题文件。</p>
+<h2 id="Hexo-配置"><a href="#Hexo-配置" class="headerlink" title="Hexo 配置"></a>Hexo 配置</h2><p>安装完成之后在<code>_config.yml</code>配置。<br><code>theme: next</code>这里配置主题的名字，主题放<code>themes</code>文件夹下。这里配置的是 next 主题。<br>这里采用 git 方式部署博客，先安装一个<code>hexo-deployer-git</code>。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install hexo-deployer-git --save<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>安装完成之后在<code>_config.yml</code>里配置部署的服务。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> git
+  <span class="token key atrule">repo</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//github.com/FreedomAnt/freedomant.github.io.git
+  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里分支选择<code>gh-pages</code>，就是<a href="#github-%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93">github 新建仓库</a>里的生成分支。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo n [文章名称]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里写完文章以后依次输入以下命令：</p>
+<p>清空缓存</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>本地先跑一个服务看下效果</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>生成静态文件并部署</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo g -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样就生成了博客，在浏览器输入地址即可访问<code>https://freedomant.github.io</code>，如果你买了域名可以添加到 <code>source</code> 下面的<code>CNAME</code>文件。如果需要修改主题的配置文件，可以在项目根目录下面新建一个<code>_config.[theme name].yml</code>，将<code>themes/next/_config.yml</code>里面的内容复制到这个文件，修改主题就在这个文件修改就行。这里用的<code>next</code>主题<code>_config.next.yml</code>。这个文件里面的内容在静态页面生成的时候会覆盖掉<code>themes/next/_config.yml</code>的内容。</p>
+<h2 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h2><p>图床这里也是白 piao 的 github，先在 github 里面新建一个项目用于图床。<code>token</code>生成方式在 github 里面，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; Personal access tokens =&gt; Generate new token</code>这里注意勾选<code>repo</code>下的选项。如图所示：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105175136.png" alt="github 配置图床Token"><br>下载好 PicGGo 之后点击图床设置，选择<code>GitHub 图床</code>，配置如下：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105174115.png" alt="PicGGo中GitHub图床配置"><br>这里的自定义域名有讲究的，填写<code>https://cdn.jsdelivr.net/gh/FreedomAnt/image@main</code>，用<code>jsdelivr</code>的黑科技完成 CDN 加速。</p>
+<h2 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h2><p>这里我使用的 vscode 写的文章，vscode 安装插件<code>Markdown All in One</code>、<code>Markdwon Preview Enhanced</code>等。也安装有 typora 软件，typora 是一个所见即所得(<code>WYSIWYG</code>)的 markdown 软件，非常不错。而且 typora 集成 PicGo，typora 的<code>文件 =&gt; 偏好设置 =&gt; 图像 =&gt; 上传服务设定</code>里面选择<code>PicGo(app)</code>的方式，<code>PicGo-Core</code>的命令行的方式不是太方便。<br><strong>这里需要注意 PicGo 默认的服务端口开的是<code>36677</code>，在 PicGo 里<code>PicGo设置 =&gt; 设置Server</code>可设置监听端口，如果想要配置<code>typora</code>里面的 PicGo，需要注意测试 PicGo 连接的服务地址端口是不是<code>36677</code>。</strong></p>
+<h2 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h2><p>next 主题自带的评论插件里面有<code>changyan | disqus | disqusjs | gitalk | livere | valine</code>，这里我选择的 gitalk，对比了几个之后还是选择了 github 的黑科技。<code>valine</code>也不错，不过我看到 github 上面写<code>src</code>目录停止更新的信息，就还是选择了 gitalk。<br>gitalk 配置需要客户端的 id 和密钥。还是在 github 里面生成。<br>进入 github，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; OAuth Apps =&gt; new OAuth Apps</code>。<code>Homepage URL</code>和<code>Authorization callback URL</code>都填写<code>https://freedomant.github.io/</code>，生成的客户端 id 和密钥填到主题配置里面。</p>
+<h2 id="部署到-Vercel"><a href="#部署到-Vercel" class="headerlink" title="部署到 Vercel"></a>部署到 Vercel</h2><p><code>Vercel</code>是一个提供使用简单命令就可部署静态页面的服务，由于 github 访问速度慢的原因，在使用测速软件分别测试了很多常见的静态网页部署服务之后，发现比较快的就是国内的<code>coding</code>和<code>gitee</code>，再就是腾讯阿里的对象存储了，<code>Vercel</code>算是国外里面比较快的了，而且和<code>github</code>无缝对接。如果不想花钱买 CDN 加速或者对象存储，可以使用<code>Vercel</code>，<code>Vercel</code>以前叫<code>zeit</code>，安装了之后直接使用一行<code>now</code>命令就可完成部署。目前已经更名为<code>Vercel</code>。用 github 关联登录之后，点击<code>Import Preject =&gt; Import Git Repository =&gt; continue</code>填写你的仓库地址<code>https://github.com/FreedomAnt/freedomant.github.io.git</code>。部署命令那不用填写，默认就行。部署好之后就会生成访问的地址了。<br><code>Vercel</code>还支持修改默认的分支，进入到关联的项目，点击<code>Settings =&gt; Git =&gt; Production Branch</code>可以修改成博客所在的<code>gh-pages</code>分支。<br><code>Vercel</code>还支持自定义域名，点击<code>Settings =&gt; Domains</code>一般域名后缀填写<code>XXX.now.sh</code>或者<code>XXX.vercel.app</code>。前一个是<code>Vercel</code>未改名前的默认生成后缀，后一个是改名后的默认生成后缀。至此，部署到<code>Vercel</code>成功。<br>当调用命令<code>hexo g -d</code>部署到 github 时，会触发<code>Vercel</code>的部署，一键部署到两个地方，完美！</p>
+<p><strong>注意：博客原文件和静态页面的分开放两个仓库，博客原文件可以用私有仓库，里面有一些个人配置的信息</strong></p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>github</tag>
+        <tag>github-pages</tag>
+        <tag>gitalk</tag>
+        <tag>zeit</tag>
+        <tag>vercel</tag>
+        <tag>markdown</tag>
+        <tag>typora</tag>
+        <tag>picgo</tag>
+        <tag>图床</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>node+npm更新</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/node-npm%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
+<a id="more"></a>
+
+<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
+<p>查看 node 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 npm 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\fanta\AppData\Roaming</code>文件夹下有一个<code>npm</code>和<code>npm-cache</code>文件，这里应该有<code>npm</code>的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+        <tag>npm-cache</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>prometheus+grafana实现数据采集展示+邮件告警</title>
+    <url>/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/</url>
+    <content><![CDATA[<h2 id="prometheus-grafana实现数据采集展示-邮件告警"><a href="#prometheus-grafana实现数据采集展示-邮件告警" class="headerlink" title="prometheus+grafana实现数据采集展示+邮件告警"></a>prometheus+grafana实现数据采集展示+邮件告警</h2><blockquote>
+<p><strong>Prometheus Server：Prometheus 服务的主服务器<br>Node Exporter：收集 Host 硬件和操作系统的信息<br>cAdvrisor：负责收集 Host 上运行的容器信息<br>Grafana：用来展示 Prometheus 监控操作界面（给我们提供一个友好的 web 界面）</strong></p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="拉取并运行-node-exporter"><a href="#拉取并运行-node-exporter" class="headerlink" title="拉取并运行 node-exporter"></a>拉取并运行 node-exporter</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9100:9100 \
+--name nodeexporter \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;proc:&#x2F;host&#x2F;proc \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;sys:&#x2F;host&#x2F;sys \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;rootfs:&#x2F;rootfs \
+prom&#x2F;node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>建好之后进入 shell 环境</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it nodeexporter sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9100/</code>即可查看页面</p>
+<h3 id="拉取并运行-cadvisor"><a href="#拉取并运行-cadvisor" class="headerlink" title="拉取并运行 cadvisor"></a>拉取并运行 cadvisor</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 8080:8080 \
+--name cadvisor \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;rootfs:&#x2F;rootfs:ro \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;run:&#x2F;var&#x2F;run:rw \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;lib&#x2F;docker:&#x2F;var&#x2F;lib&#x2F;docker:ro \
+google&#x2F;cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:8080/</code>即可查看页面</p>
+<h3 id="拉取并运行-prometheus"><a href="#拉取并运行-prometheus" class="headerlink" title="拉取并运行 prometheus"></a>拉取并运行 prometheus</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>配置文件在<code>/etc/prometheus/prometheus.yml</code><br>可以直接进 <code>shell</code> 环境修改。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it prometheus sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>也可以修改了之后删除此 <code>container</code>，重新新建</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+-v d:&#x2F;docker&#x2F;prometheus&#x2F;opt&#x2F;prometheus.yml:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml  \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这样将配置文件映射出来，<strong>配置文件也可以单独拷贝出来</strong>，代码如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker cp prometheus:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>修改了配置文件之后可以用以下代码实现热加载</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ kill -HUP 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9090/</code>即可查看页面</p>
+<h3 id="拉取并运行-grafana"><a href="#拉取并运行-grafana" class="headerlink" title="拉取并运行 grafana"></a>拉取并运行 grafana</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 3000:3000 \
+--name grafana \
+-v d:&#x2F;docker&#x2F;grafana&#x2F;grafana-storage:&#x2F;var&#x2F;lib&#x2F;grafana \
+grafana&#x2F;grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:3000/</code>即可查看页面<br>初始密码为 <code>admin/admin</code>，首次登陆需要修改密码。</p>
+<h3 id="拉取并允许-alertmanager"><a href="#拉取并允许-alertmanager" class="headerlink" title="拉取并允许 alertmanager"></a>拉取并允许 alertmanager</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9093:9093 \
+--name alertmanager \
+prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9093/</code>即可查看页面<br>配置文件在<code>/etc/alertmanager/alertmanager.yml</code></p>
+<h3 id="数据展示"><a href="#数据展示" class="headerlink" title="数据展示"></a>数据展示</h3><p>修改 <code>prometheus</code> 的配置文件，其中 <code>scrape_configs</code> 的配置部分修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'prometheus'</span>
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9090'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'cadvisor'</span>
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:8080'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'node'</span>
+    scrape_interval<span class="token punctuation">:</span> 8s
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9100'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>kill -HUP 1</code>重新加载配置文件，输入<code>http://192.168.1.3:3000/</code>进入 <code>grafana</code> 控制台</p>
+<ol>
+<li>新增并配置 <code>datasource</code>，地址填写 <code>prometheus</code> 的地址即可</li>
+<li>进入 <code>grafana</code> 官网找 <code>dashboard</code> 的模板，记下模板号，到 <code>grafana</code> 页面的 <code>dashboard</code> 页面 <code>import</code> 即可。</li>
+</ol>
+<h3 id="邮件报警"><a href="#邮件报警" class="headerlink" title="邮件报警"></a>邮件报警</h3><p>修改 <code>prometheus</code> 的配置文件，其中部分配置修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">alerting</span><span class="token punctuation">:</span>
+  alertmanagers<span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 192.168.1.3<span class="token punctuation">:</span><span class="token number">9093</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">rule_files</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token string">"node_down.yml"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>在该配置文件的同级目录下新建<code>node_down.yml</code>文件</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">groups</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> node_down
+    rules<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> alert<span class="token punctuation">:</span> InstanceDown
+        expr<span class="token punctuation">:</span> up == 0
+        for<span class="token punctuation">:</span> 1m
+        labels<span class="token punctuation">:</span>
+          user<span class="token punctuation">:</span> test
+        annotations<span class="token punctuation">:</span>
+          summary<span class="token punctuation">:</span> <span class="token string">"Instance &#123;&#123; $labels.instance &#125;&#125; down"</span>
+          description<span class="token punctuation">:</span> <span class="token string">"&#123;&#123; $labels.instance &#125;&#125; of job &#123;&#123; $labels.job &#125;&#125; has been down for more than 1 minutes."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it alertmanager sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>进入 <code>alertmanager</code> 的 <code>shell</code>，配置 <code>alertmanager</code> 的配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;alertmanager&#x2F;alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">global</span><span class="token punctuation">:</span>
+  resolve_timeout<span class="token punctuation">:</span> 5m
+  smtp_from<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
+  smtp_smarthost<span class="token punctuation">:</span> <span class="token string">"smtp.126.com:25"</span>
+  smtp_auth_username<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
+  smtp_auth_password<span class="token punctuation">:</span> <span class="token string">"XXXXXXXXXXX"</span>
+  smtp_require_tls<span class="token punctuation">:</span> <span class="token boolean important">false</span>
+<span class="token key atrule">route</span><span class="token punctuation">:</span>
+  group_by<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">]</span>
+  group_wait<span class="token punctuation">:</span> 10s
+  group_interval<span class="token punctuation">:</span> 10s
+  repeat_interval<span class="token punctuation">:</span> 10m
+  receiver<span class="token punctuation">:</span> <span class="token string">"email"</span>
+<span class="token key atrule">receivers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> <span class="token string">"email"</span>
+    email_configs<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> to<span class="token punctuation">:</span> <span class="token string">"mailname@qq.com"</span>
+<span class="token key atrule">inhibit_rules</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> source_match<span class="token punctuation">:</span>
+      severity<span class="token punctuation">:</span> <span class="token string">"critical"</span>
+    target_match<span class="token punctuation">:</span>
+      severity<span class="token punctuation">:</span> <span class="token string">"warning"</span>
+    equal<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">,</span> <span class="token string">"dev"</span><span class="token punctuation">,</span> <span class="token string">"instance"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中<code>smtp_auth_password</code>为邮件地址，也可以配置 qq 邮箱的报警，还可以配置企业微信和钉钉相关的报警。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Devops</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>devops</tag>
+        <tag>prometheus</tag>
+        <tag>grafana</tag>
+        <tag>数据采集</tag>
+        <tag>邮件告警</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tabindex之焦点移动</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
+    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
+<a id="more"></a>
+
+<h2 id="bug-描述"><a href="#bug-描述" class="headerlink" title="bug 描述"></a>bug 描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
+<h2 id="bug-解决"><a href="#bug-解决" class="headerlink" title="bug 解决"></a>bug 解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见<code>visibility:hidden</code>，焦点就不会自动移动过去了。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>tabindex</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据可视化工具选型参考</title>
+    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
+<a id="more"></a>
+
+<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
+<li>Leaflet|28.9K|适合移动设备</li>
+<li>Chartist.js|12.3K|创建响应式图表</li>
+<li>d3|93.6K|svg+canvas+html</li>
+<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
+</ul>
+<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
+<li>Echarts|42.8K|百度产品</li>
+<li>AntV|蚂蚁金服</li>
+<li>Highcharts|9.7K|可视化库，商用付费</li>
+</ul>
+<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
+<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
+</ul>
+<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
+<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
+<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
+<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
+</ul>
+<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
+<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
+<li>FineReport</li>
+<li>数字冰雹</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
+<li>recharts|14.7K|Redefined chart library built with React and D3</li>
+<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
+<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
+<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
+<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
+</ul>
+<hr>
+<p>选型对比</p>
+<blockquote>
+<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
+<p>开发：Echarts|AntV|D3</p>
+</blockquote>
+<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
+<hr>
+<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
+<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
+<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>数据可视化</category>
+      </categories>
+      <tags>
+        <tag>数据可视化</tag>
       </tags>
   </entry>
   <entry>
@@ -362,71 +715,82 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
       </tags>
   </entry>
   <entry>
-    <title>hexo+github-pages搭建个人博客</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
+    <title>使用docker+minio实现对象存储</title>
+    <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
+    <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
 <a id="more"></a>
 
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>需要先安装好 nodejs、git，注册登录 github，熟悉一些 markdown 语法等暂且不表。</p>
-<h2 id="github-新建仓库"><a href="#github-新建仓库" class="headerlink" title="github 新建仓库"></a>github 新建仓库</h2><p>github 上新建一个仓库，名字为 <code>username.git.io</code>，仓库需要配置为 public。这里的 username 就是你 github 的名字，比如 github 用户名是 <code>FreedomAnt</code>，仓库就取名为 <code>freedomant.github.io</code>。<br>这样写的原因是 <code>github-pages</code> 能自动将该仓库用为 <code>github-pages</code> 的域名所在仓库，即后面不用跟项目名了。<br>进入该仓库，进入设置页面<code>Settings =&gt; Options</code>里面有一个<code>GitHub Pages</code>配置，如图所示:<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105171032.png" alt="github pages 设置截图"><br>这里可以设置分支，默认 github 是会新建一个<code>gh-pages</code>的分支。</p>
-<h2 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h2><p>这里使用的全局安装</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install -g hexo-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h2><p>创建 minio 服务器并设置账号密码为 <code>admin/2345678</code>，密码至少需要 8 位数。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9000:9000 --name minio -v d:\docker\minio\data:&#x2F;data -e &quot;MINIO_ACCESS_KEY&#x3D;admin&quot; -e &quot;MINIO_SECRET_KEY&#x3D;12345678&quot; minio&#x2F;minio server &#x2F;data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>新建一个项目，项目名就叫 blog。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo init blog<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这时候打开浏览器<code> http://127.0.0.1:9000/</code>能访问到 minio，输入账号密码即可进入。<br>进入页面之后新建一个 bucket，取名 testpic，然后上传几张图片。</p>
+<h2 id="创建-minio-客户端"><a href="#创建-minio-客户端" class="headerlink" title="创建 minio 客户端"></a>创建 minio 客户端</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd --name minioclient --entrypoint&#x3D;&#x2F;bin&#x2F;sh minio&#x2F;mc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>有几个快捷键比较常用</p>
-<ol>
-<li><code>hexo clean</code>清空生成的静态文件和缓存。</li>
-<li><code>hexo s</code>是<code>hexo server</code>的缩写，启动一个默认 4000 端口的本地服务。</li>
-<li><code>hexo n [name]</code>是<code>hexo new [name]</code>的缩写，新建一篇文章</li>
-<li><code>hexo g</code>是<code>hexo generate</code>的缩写，生成静态文件。</li>
-<li><code>hexo d</code>是<code>hexo deploy</code>的缩写，部署到配置的仓库或者服务器。</li>
-</ol>
-<p>生成静态文件和部署可以用一条命令表示<code>hexo g -d</code>或者<code>hexo d -g</code>。<br>安装完成之后有几个主要的文件和目录，配置文件<code>_config.yml</code>，<code>source</code>文件夹是放文章和样式图片等。<code>themes</code>是用于放主题文件。</p>
-<h2 id="Hexo-配置"><a href="#Hexo-配置" class="headerlink" title="Hexo 配置"></a>Hexo 配置</h2><p>安装完成之后在<code>_config.yml</code>配置。<br><code>theme: next</code>这里配置主题的名字，主题放<code>themes</code>文件夹下。这里配置的是 next 主题。<br>这里采用 git 方式部署博客，先安装一个<code>hexo-deployer-git</code>。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install hexo-deployer-git --save<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="配置对象外部访问"><a href="#配置对象外部访问" class="headerlink" title="配置对象外部访问"></a>配置对象外部访问</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it minioclient sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>安装完成之后在<code>_config.yml</code>里配置部署的服务。</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
-  <span class="token key atrule">type</span><span class="token punctuation">:</span> git
-  <span class="token key atrule">repo</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//github.com/FreedomAnt/freedomant.github.io.git
-  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>启动客户端进入控制台<br>添加管理配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc config host add minio http:&#x2F;&#x2F;172.29.240.1:9000 admin 12345678 --api s3v4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里分支选择<code>gh-pages</code>，就是<a href="#github-%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93">github 新建仓库</a>里的生成分支。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo n [文章名称]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p><strong>注意这里不能使用 127.0.0.1 地址。</strong></p>
+</blockquote>
+<p>添加完成后可通过</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat &#x2F;root&#x2F;.mc&#x2F;config.json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里写完文章以后依次输入以下命令：</p>
-<p>清空缓存</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>查看配置文件如下</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"10"</span><span class="token punctuation">,</span>
+  <span class="token property">"aliases"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gcs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://storage.googleapis.com"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v2"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"local"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://localhost:9000"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"minio"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://172.29.240.1:9000"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"12345678"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"s3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"play"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://play.min.io"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"Q3AM3UQ867SPQQA43P2F"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"s3"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://s3.amazonaws.com"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>本地先跑一个服务看下效果</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这时候还不能通过外部访问到图片，如果输入<code>http://172.29.240.1:9000/testpic/avatar.png</code>会提示输入账号密码。<br>添加外部访问策略如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc policy set public minio&#x2F;testpic<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>生成静态文件并部署</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo g -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这样就生成了博客，在浏览器输入地址即可访问<code>https://freedomant.github.io</code>，如果你买了域名可以添加到 <code>source</code> 下面的<code>CNAME</code>文件。如果需要修改主题的配置文件，可以在项目根目录下面新建一个<code>_config.[theme name].yml</code>，将<code>themes/next/_config.yml</code>里面的内容复制到这个文件，修改主题就在这个文件修改就行。这里用的<code>next</code>主题<code>_config.next.yml</code>。这个文件里面的内容在静态页面生成的时候会覆盖掉<code>themes/next/_config.yml</code>的内容。</p>
-<h2 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h2><p>图床这里也是白 piao 的 github，先在 github 里面新建一个项目用于图床。<code>token</code>生成方式在 github 里面，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; Personal access tokens =&gt; Generate new token</code>这里注意勾选<code>repo</code>下的选项。如图所示：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105175136.png" alt="github 配置图床Token"><br>下载好 PicGGo 之后点击图床设置，选择<code>GitHub 图床</code>，配置如下：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105174115.png" alt="PicGGo中GitHub图床配置"><br>这里的自定义域名有讲究的，填写<code>https://cdn.jsdelivr.net/gh/FreedomAnt/image@main</code>，用<code>jsdelivr</code>的黑科技完成 CDN 加速。</p>
-<h2 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h2><p>这里我使用的 vscode 写的文章，vscode 安装插件<code>Markdown All in One</code>、<code>Markdwon Preview Enhanced</code>等。也安装有 typora 软件，typora 是一个所见即所得(<code>WYSIWYG</code>)的 markdown 软件，非常不错。而且 typora 集成 PicGo，typora 的<code>文件 =&gt; 偏好设置 =&gt; 图像 =&gt; 上传服务设定</code>里面选择<code>PicGo(app)</code>的方式，<code>PicGo-Core</code>的命令行的方式不是太方便。<br><strong>这里需要注意 PicGo 默认的服务端口开的是<code>36677</code>，在 PicGo 里<code>PicGo设置 =&gt; 设置Server</code>可设置监听端口，如果想要配置<code>typora</code>里面的 PicGo，需要注意测试 PicGo 连接的服务地址端口是不是<code>36677</code>。</strong></p>
-<h2 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h2><p>next 主题自带的评论插件里面有<code>changyan | disqus | disqusjs | gitalk | livere | valine</code>，这里我选择的 gitalk，对比了几个之后还是选择了 github 的黑科技。<code>valine</code>也不错，不过我看到 github 上面写<code>src</code>目录停止更新的信息，就还是选择了 gitalk。<br>gitalk 配置需要客户端的 id 和密钥。还是在 github 里面生成。<br>进入 github，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; OAuth Apps =&gt; new OAuth Apps</code>。<code>Homepage URL</code>和<code>Authorization callback URL</code>都填写<code>https://freedomant.github.io/</code>，生成的客户端 id 和密钥填到主题配置里面。</p>
-<h2 id="部署到-Vercel"><a href="#部署到-Vercel" class="headerlink" title="部署到 Vercel"></a>部署到 Vercel</h2><p><code>Vercel</code>是一个提供使用简单命令就可部署静态页面的服务，由于 github 访问速度慢的原因，在使用测速软件分别测试了很多常见的静态网页部署服务之后，发现比较快的就是国内的<code>coding</code>和<code>gitee</code>，再就是腾讯阿里的对象存储了，<code>Vercel</code>算是国外里面比较快的了，而且和<code>github</code>无缝对接。如果不想花钱买 CDN 加速或者对象存储，可以使用<code>Vercel</code>，<code>Vercel</code>以前叫<code>zeit</code>，安装了之后直接使用一行<code>now</code>命令就可完成部署。目前已经更名为<code>Vercel</code>。用 github 关联登录之后，点击<code>Import Preject =&gt; Import Git Repository =&gt; continue</code>填写你的仓库地址<code>https://github.com/FreedomAnt/freedomant.github.io.git</code>。部署命令那不用填写，默认就行。部署好之后就会生成访问的地址了。<br><code>Vercel</code>还支持修改默认的分支，进入到关联的项目，点击<code>Settings =&gt; Git =&gt; Production Branch</code>可以修改成博客所在的<code>gh-pages</code>分支。<br><code>Vercel</code>还支持自定义域名，点击<code>Settings =&gt; Domains</code>一般域名后缀填写<code>XXX.now.sh</code>或者<code>XXX.vercel.app</code>。前一个是<code>Vercel</code>未改名前的默认生成后缀，后一个是改名后的默认生成后缀。至此，部署到<code>Vercel</code>成功。<br>当调用命令<code>hexo g -d</code>部署到 github 时，会触发<code>Vercel</code>的部署，一键部署到两个地方，完美！</p>
-<p><strong>注意：博客原文件和静态页面的分开放两个仓库，博客原文件可以用私有仓库，里面有一些个人配置的信息</strong></p>
+<p>添加成功之后即可实现外部访问图片。</p>
 ]]></content>
       <categories>
-        <category>工作笔记</category>
+        <category>开发</category>
+        <category>对象存储</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
-        <tag>github</tag>
-        <tag>github-pages</tag>
-        <tag>gitalk</tag>
-        <tag>zeit</tag>
-        <tag>vercel</tag>
-        <tag>markdown</tag>
-        <tag>typora</tag>
-        <tag>picgo</tag>
-        <tag>图床</tag>
+        <tag>docker</tag>
+        <tag>minio</tag>
       </tags>
   </entry>
   <entry>
@@ -511,366 +875,10 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
       </categories>
       <tags>
         <tag>docker</tag>
+        <tag>devops</tag>
         <tag>gitlab</tag>
         <tag>ssh</tag>
-        <tag>devops</tag>
         <tag>jenkins</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>prometheus+grafana实现数据采集展示+邮件告警</title>
-    <url>/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/</url>
-    <content><![CDATA[<h2 id="prometheus-grafana实现数据采集展示-邮件告警"><a href="#prometheus-grafana实现数据采集展示-邮件告警" class="headerlink" title="prometheus+grafana实现数据采集展示+邮件告警"></a>prometheus+grafana实现数据采集展示+邮件告警</h2><blockquote>
-<p><strong>Prometheus Server：Prometheus 服务的主服务器<br>Node Exporter：收集 Host 硬件和操作系统的信息<br>cAdvrisor：负责收集 Host 上运行的容器信息<br>Grafana：用来展示 Prometheus 监控操作界面（给我们提供一个友好的 web 界面）</strong></p>
-</blockquote>
-<a id="more"></a>
-
-<h3 id="拉取并运行-node-exporter"><a href="#拉取并运行-node-exporter" class="headerlink" title="拉取并运行 node-exporter"></a>拉取并运行 node-exporter</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9100:9100 \
---name nodeexporter \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;proc:&#x2F;host&#x2F;proc \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;sys:&#x2F;host&#x2F;sys \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;rootfs:&#x2F;rootfs \
-prom&#x2F;node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>建好之后进入 shell 环境</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it nodeexporter sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:9100/</code>即可查看页面</p>
-<h3 id="拉取并运行-cadvisor"><a href="#拉取并运行-cadvisor" class="headerlink" title="拉取并运行 cadvisor"></a>拉取并运行 cadvisor</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 8080:8080 \
---name cadvisor \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;rootfs:&#x2F;rootfs:ro \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;run:&#x2F;var&#x2F;run:rw \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;lib&#x2F;docker:&#x2F;var&#x2F;lib&#x2F;docker:ro \
-google&#x2F;cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:8080/</code>即可查看页面</p>
-<h3 id="拉取并运行-prometheus"><a href="#拉取并运行-prometheus" class="headerlink" title="拉取并运行 prometheus"></a>拉取并运行 prometheus</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
---name prometheus \
-prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>配置文件在<code>/etc/prometheus/prometheus.yml</code><br>可以直接进 <code>shell</code> 环境修改。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it prometheus sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>也可以修改了之后删除此 <code>container</code>，重新新建</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
---name prometheus \
--v d:&#x2F;docker&#x2F;prometheus&#x2F;opt&#x2F;prometheus.yml:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml  \
-prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这样将配置文件映射出来，<strong>配置文件也可以单独拷贝出来</strong>，代码如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker cp prometheus:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>修改了配置文件之后可以用以下代码实现热加载</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ kill -HUP 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:9090/</code>即可查看页面</p>
-<h3 id="拉取并运行-grafana"><a href="#拉取并运行-grafana" class="headerlink" title="拉取并运行 grafana"></a>拉取并运行 grafana</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 3000:3000 \
---name grafana \
--v d:&#x2F;docker&#x2F;grafana&#x2F;grafana-storage:&#x2F;var&#x2F;lib&#x2F;grafana \
-grafana&#x2F;grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:3000/</code>即可查看页面<br>初始密码为 <code>admin/admin</code>，首次登陆需要修改密码。</p>
-<h3 id="拉取并允许-alertmanager"><a href="#拉取并允许-alertmanager" class="headerlink" title="拉取并允许 alertmanager"></a>拉取并允许 alertmanager</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9093:9093 \
---name alertmanager \
-prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:9093/</code>即可查看页面<br>配置文件在<code>/etc/alertmanager/alertmanager.yml</code></p>
-<h3 id="数据展示"><a href="#数据展示" class="headerlink" title="数据展示"></a>数据展示</h3><p>修改 <code>prometheus</code> 的配置文件，其中 <code>scrape_configs</code> 的配置部分修改为</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'prometheus'</span>
-    static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9090'</span><span class="token punctuation">]</span>
-  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'cadvisor'</span>
-    static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:8080'</span><span class="token punctuation">]</span>
-  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'node'</span>
-    scrape_interval<span class="token punctuation">:</span> 8s
-    static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9100'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>kill -HUP 1</code>重新加载配置文件，输入<code>http://192.168.1.3:3000/</code>进入 <code>grafana</code> 控制台</p>
-<ol>
-<li>新增并配置 <code>datasource</code>，地址填写 <code>prometheus</code> 的地址即可</li>
-<li>进入 <code>grafana</code> 官网找 <code>dashboard</code> 的模板，记下模板号，到 <code>grafana</code> 页面的 <code>dashboard</code> 页面 <code>import</code> 即可。</li>
-</ol>
-<h3 id="邮件报警"><a href="#邮件报警" class="headerlink" title="邮件报警"></a>邮件报警</h3><p>修改 <code>prometheus</code> 的配置文件，其中部分配置修改为</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">alerting</span><span class="token punctuation">:</span>
-  alertmanagers<span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> 192.168.1.3<span class="token punctuation">:</span><span class="token number">9093</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">rule_files</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> <span class="token string">"node_down.yml"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>在该配置文件的同级目录下新建<code>node_down.yml</code>文件</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">groups</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> node_down
-    rules<span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> alert<span class="token punctuation">:</span> InstanceDown
-        expr<span class="token punctuation">:</span> up == 0
-        for<span class="token punctuation">:</span> 1m
-        labels<span class="token punctuation">:</span>
-          user<span class="token punctuation">:</span> test
-        annotations<span class="token punctuation">:</span>
-          summary<span class="token punctuation">:</span> <span class="token string">"Instance &#123;&#123; $labels.instance &#125;&#125; down"</span>
-          description<span class="token punctuation">:</span> <span class="token string">"&#123;&#123; $labels.instance &#125;&#125; of job &#123;&#123; $labels.job &#125;&#125; has been down for more than 1 minutes."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it alertmanager sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>进入 <code>alertmanager</code> 的 <code>shell</code>，配置 <code>alertmanager</code> 的配置文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;alertmanager&#x2F;alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>修改为</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">global</span><span class="token punctuation">:</span>
-  resolve_timeout<span class="token punctuation">:</span> 5m
-  smtp_from<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
-  smtp_smarthost<span class="token punctuation">:</span> <span class="token string">"smtp.126.com:25"</span>
-  smtp_auth_username<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
-  smtp_auth_password<span class="token punctuation">:</span> <span class="token string">"XXXXXXXXXXX"</span>
-  smtp_require_tls<span class="token punctuation">:</span> <span class="token boolean important">false</span>
-<span class="token key atrule">route</span><span class="token punctuation">:</span>
-  group_by<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">]</span>
-  group_wait<span class="token punctuation">:</span> 10s
-  group_interval<span class="token punctuation">:</span> 10s
-  repeat_interval<span class="token punctuation">:</span> 10m
-  receiver<span class="token punctuation">:</span> <span class="token string">"email"</span>
-<span class="token key atrule">receivers</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> <span class="token string">"email"</span>
-    email_configs<span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> to<span class="token punctuation">:</span> <span class="token string">"mailname@qq.com"</span>
-<span class="token key atrule">inhibit_rules</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> source_match<span class="token punctuation">:</span>
-      severity<span class="token punctuation">:</span> <span class="token string">"critical"</span>
-    target_match<span class="token punctuation">:</span>
-      severity<span class="token punctuation">:</span> <span class="token string">"warning"</span>
-    equal<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">,</span> <span class="token string">"dev"</span><span class="token punctuation">,</span> <span class="token string">"instance"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>其中<code>smtp_auth_password</code>为邮件地址，也可以配置 qq 邮箱的报警，还可以配置企业微信和钉钉相关的报警。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Devops</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>devops</tag>
-        <tag>prometheus</tag>
-        <tag>grafana</tag>
-        <tag>数据采集</tag>
-        <tag>邮件告警</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tabindex之焦点移动</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
-    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
-<a id="more"></a>
-
-<h2 id="bug-描述"><a href="#bug-描述" class="headerlink" title="bug 描述"></a>bug 描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
-<h2 id="bug-解决"><a href="#bug-解决" class="headerlink" title="bug 解决"></a>bug 解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见<code>visibility:hidden</code>，焦点就不会自动移动过去了。</p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>tabindex</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>node+npm更新</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/node-npm%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
-<a id="more"></a>
-
-<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
-<p>查看 node 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看 npm 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\fanta\AppData\Roaming</code>文件夹下有一个<code>npm</code>和<code>npm-cache</code>文件，这里应该有<code>npm</code>的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>npm</tag>
-        <tag>npm-cache</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用docker+minio实现对象存储</title>
-    <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
-    <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
-<a id="more"></a>
-
-<h2 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h2><p>创建 minio 服务器并设置账号密码为 <code>admin/2345678</code>，密码至少需要 8 位数。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9000:9000 --name minio -v d:\docker\minio\data:&#x2F;data -e &quot;MINIO_ACCESS_KEY&#x3D;admin&quot; -e &quot;MINIO_SECRET_KEY&#x3D;12345678&quot; minio&#x2F;minio server &#x2F;data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这时候打开浏览器<code> http://127.0.0.1:9000/</code>能访问到 minio，输入账号密码即可进入。<br>进入页面之后新建一个 bucket，取名 testpic，然后上传几张图片。</p>
-<h2 id="创建-minio-客户端"><a href="#创建-minio-客户端" class="headerlink" title="创建 minio 客户端"></a>创建 minio 客户端</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd --name minioclient --entrypoint&#x3D;&#x2F;bin&#x2F;sh minio&#x2F;mc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="配置对象外部访问"><a href="#配置对象外部访问" class="headerlink" title="配置对象外部访问"></a>配置对象外部访问</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it minioclient sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>启动客户端进入控制台<br>添加管理配置文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc config host add minio http:&#x2F;&#x2F;172.29.240.1:9000 admin 12345678 --api s3v4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<blockquote>
-<p><strong>注意这里不能使用 127.0.0.1 地址。</strong></p>
-</blockquote>
-<p>添加完成后可通过</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat &#x2F;root&#x2F;.mc&#x2F;config.json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看配置文件如下</p>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"10"</span><span class="token punctuation">,</span>
-  <span class="token property">"aliases"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"gcs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://storage.googleapis.com"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v2"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"local"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://localhost:9000"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"minio"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://172.29.240.1:9000"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"12345678"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"s3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"play"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://play.min.io"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"Q3AM3UQ867SPQQA43P2F"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"s3"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://s3.amazonaws.com"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这时候还不能通过外部访问到图片，如果输入<code>http://172.29.240.1:9000/testpic/avatar.png</code>会提示输入账号密码。<br>添加外部访问策略如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc policy set public minio&#x2F;testpic<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>添加成功之后即可实现外部访问图片。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>对象存储</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>minio</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据可视化工具选型参考</title>
-    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
-<a id="more"></a>
-
-<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
-<li>Leaflet|28.9K|适合移动设备</li>
-<li>Chartist.js|12.3K|创建响应式图表</li>
-<li>d3|93.6K|svg+canvas+html</li>
-<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
-</ul>
-<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
-<li>Echarts|42.8K|百度产品</li>
-<li>AntV|蚂蚁金服</li>
-<li>Highcharts|9.7K|可视化库，商用付费</li>
-</ul>
-<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
-<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
-</ul>
-<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
-<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
-<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
-<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
-</ul>
-<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
-<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
-<li>FineReport</li>
-<li>数字冰雹</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
-<li>recharts|14.7K|Redefined chart library built with React and D3</li>
-<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
-<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
-<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
-<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
-</ul>
-<hr>
-<p>选型对比</p>
-<blockquote>
-<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
-<p>开发：Echarts|AntV|D3</p>
-</blockquote>
-<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
-<hr>
-<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
-<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
-<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>数据可视化</category>
-      </categories>
-      <tags>
-        <tag>数据可视化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git push 报错解决</title>
-    <url>/uncategorized/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<p>记一次 git push 报错解决。</p>
-<a id="more"></a>
-
-<h2 id="错误描述"><a href="#错误描述" class="headerlink" title="错误描述"></a>错误描述</h2><p>用 hexo 写博客提交的时候报错<code>fatal: TaskCanceledException encountered.</code>，有时候是这个<code>fatal: HttpRequestException encountered.</code><br>使用网上的方式均不管用，下载了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9HaXQtQ3JlZGVudGlhbC1NYW5hZ2VyLWZvci1XaW5kb3dzL3JlbGVhc2Vz">凭证管理<i class="fa fa-external-link-alt"></i></span>安装完成，也下载了新版本的 git 并更新。用以下命令行的方式也试过。</p>
-<p>配置<code>credential.helper</code>为<code>manager</code>。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>试过了，不行。</p>
-<p>删除系统级别的<code>credential.helper</code>。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>也不行。</p>
-<h2 id="错误解决"><a href="#错误解决" class="headerlink" title="错误解决"></a>错误解决</h2><p>git 的配置指令有 3 个层级，详细信息可参考 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS8=">git-scm.com<i class="fa fa-external-link-alt"></i></span> 的 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span>。<br>分别是</p>
-<ul>
-<li>system（系统级别）</li>
-<li>global（用户级别）</li>
-<li>local（仓库级别）</li>
-</ul>
-<p>优先级为 local &gt; global &gt; system。</p>
-<p>读取配置命令分别为：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --list
-$ git config --global --list
-$ git config --system --list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>查找<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyL0dpdC0lRTUlQjclQTUlRTUlODUlQjctJUU1JTg3JUFEJUU4JUFGJTgxJUU1JUFEJTk4JUU1JTgyJUE4">Git 的系统凭证管理<i class="fa fa-external-link-alt"></i></span>，<code>credential.helper</code>可选的存储方式为:</p>
-<h3 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h3><p>将凭证存放在内存中一段时间。 密码永远不会被存储在磁盘中，并且在 15 分钟后从内存中清除。</p>
-<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p>将凭证用明文的形式存放在磁盘中，并且永不过期。 这意味着除非你修改了你在 Git 服务器上的密码，否则你永远不需要再次输入你的凭证信息。 这种方式的缺点是你的密码是用明文的方式存放在你的 home 目录下。</p>
-<h3 id="osxkeychain"><a href="#osxkeychain" class="headerlink" title="osxkeychain"></a>osxkeychain</h3><p>如果你使用的是 Mac，Git 还有一种 “osxkeychain” 模式，它会将凭证缓存到你系统用户的钥匙串中。 这种方式将凭证存放在磁盘中，并且永不过期，但是是被加密的，这种加密方式与存放 HTTPS 凭证以及 Safari 的自动填写是相同的。</p>
-<h3 id="manager"><a href="#manager" class="headerlink" title="manager"></a>manager</h3><p>如果你使用的是 Windows，你可以安装一个叫做 “Git Credential Manager for Windows” 的辅助工具。 这和上面说的 <code>osxkeychain</code>十分类似，但是是使用 <code>Windows Credential Store</code> 来控制敏感信息。 可以在<code>https://github.com/Microsoft/Git-Credential-Manager-for-Windows</code> 下载。</p>
-<p>git 在本地有多种方式来存储本地凭证。存储方式有三种：<code>mananger</code>、<code>wincred</code> 和 <code>store</code>，可以在<code>/%GitPath%/mingw64/libexec/git-core</code> 路径下找到对应的 exe 文件：<code>git-credential-manager</code>、<code>git-credential-wincred</code> 和 <code>git-credential-store</code>。</p>
-]]></content>
   </entry>
 </search>
