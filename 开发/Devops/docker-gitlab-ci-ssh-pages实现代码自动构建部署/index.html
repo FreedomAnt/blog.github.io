@@ -39,13 +39,13 @@
 <meta property="og:description" content="主要操作步骤 使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-03T05:04:29.000Z">
-<meta property="article:modified_time" content="2020-11-03T13:50:50.016Z">
+<meta property="article:modified_time" content="2020-11-06T11:11:12.545Z">
 <meta property="article:author" content="Marco">
 <meta property="article:tag" content="docker">
 <meta property="article:tag" content="gitlab">
-<meta property="article:tag" content="ssh">
 <meta property="article:tag" content="gitlab-ci">
 <meta property="article:tag" content="gitlab-pages">
+<meta property="article:tag" content="ssh">
 <meta name="twitter:card" content="summary">
 
 
@@ -157,17 +157,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">30</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">38</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">15</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -243,20 +243,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -332,10 +332,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-11-03 13:04:29 / 修改时间：21:50:50" itemprop="dateCreated datePublished" datetime="2020-11-03T13:04:29+08:00">2020-11-03</time>
+      <time title="创建时间：2020-11-03 13:04:29" itemprop="dateCreated datePublished" datetime="2020-11-03T13:04:29+08:00">2020-11-03</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-06 19:11:12" itemprop="dateModified" datetime="2020-11-06T19:11:12+08:00">2020-11-06</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -391,20 +397,20 @@
 </ol>
 <a id="more"></a>
 
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>由于 docker 启动的 centos 不能使用 <code>systemctl</code>，包括安装 <code>server</code> 命令都不行，网上有解决方法如下：</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>由于 docker 启动的 centos 不能使用 systemctl，包括安装 server 命令都不行，网上有解决方法如下：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos8 --privileged&#x3D;true centos &#x2F;sbin&#x2F;init<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>但不适合于 docker 的 windows 版本，所以这里安装 centos7 以下的版本，不使用 <code>systemctl</code>。</p>
+<p>但不适合于 docker 的 windows 版本，所以这里安装 centos7 以下的版本，不使用 systemctl。</p>
 <h3 id="下载-centos6-10-并进入控制台"><a href="#下载-centos6-10-并进入控制台" class="headerlink" title="下载 centos6.10 并进入控制台"></a>下载 centos6.10 并进入控制台</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos6 centos:6.10 bash
 docker exec -it centos6 bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<p>这里直接 run 一个 <code>container</code> 。如果 run 之前没有 pull <code>centos6</code> 的话，在 run 的时候 docker 会自动去找相应的 image 去拉取，把 <code>22</code> 端口映射到宿主机的 <code>10022</code> 端口，方便 ssh。</p>
+<p>这里直接 run 一个 container 。如果 run 之前没有 pull centos6 的话，在 run 的时候 docker 会自动去找相应的 image 去拉取，把 22 端口映射到宿主机的 10022 端口，方便 ssh。</p>
 <h3 id="安装-openssh-server"><a href="#安装-openssh-server" class="headerlink" title="安装 openssh-server"></a>安装 openssh-server</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ rpm -qa | grep ssh
 $ yum update -y &amp;&amp; yum install openssh-server -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h3 id="设置-ssh-允许-root-登陆"><a href="#设置-ssh-允许-root-登陆" class="headerlink" title="设置 ssh 允许 root 登陆"></a>设置 ssh 允许 root 登陆</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><code>PermitRootLogin</code>修改为<code>yes</code>。</p>
+<p>PermitRootLogin 修改为 yes。</p>
 <h3 id="开启-ssh-服务"><a href="#开启-ssh-服务" class="headerlink" title="开启 ssh 服务"></a>开启 ssh 服务</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ &#x2F;etc&#x2F;init.d&#x2F;sshd start<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>查看 ssh 是否已经启动</p>
@@ -412,23 +418,23 @@ $ yum update -y &amp;&amp; yum install openssh-server -y<span aria-hidden="true"
 
 <h3 id="安装-rsync"><a href="#安装-rsync" class="headerlink" title="安装 rsync"></a>安装 rsync</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ yum install rsync -y<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><strong>如果用 <code>scp</code> 传的话本地和远程都需要安装 <code>openssh-client</code>，如果用 <code>rsync</code> 传的话本地和远程都需要安装 <code>rsync</code>。</strong></p>
+<p><strong>如果用 scp 传的话本地和远程都需要安装 openssh-client，如果用 rsync 传的话本地和远程都需要安装 rsync。</strong></p>
 <h3 id="修改-root-密码"><a href="#修改-root-密码" class="headerlink" title="修改 root 密码"></a>修改 root 密码</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里设置为 <code>123456</code>，方便登陆验证。</p>
+<p>这里设置为 123456，方便登陆验证。</p>
 <h2 id="配置-gitlab-runner"><a href="#配置-gitlab-runner" class="headerlink" title="配置 gitlab-runner"></a>配置 gitlab-runner</h2><h3 id="下载-gitlab-runner-并进入控制台"><a href="#下载-gitlab-runner-并进入控制台" class="headerlink" title="下载 gitlab-runner 并进入控制台"></a>下载 gitlab-runner 并进入控制台</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name gitlab-runner -v d:&#x2F;docker&#x2F;gitlab-runner&#x2F;config:&#x2F;etc&#x2F;gitlab-runner gitlab&#x2F;gitlab-runner:latest
 $ docker exec -it gitlab-runner bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h3 id="注册-gitlab-runner"><a href="#注册-gitlab-runner" class="headerlink" title="注册 gitlab-runner"></a>注册 gitlab-runner</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-runner register<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里注意填写下 <code>tags</code>，后面方便用到。执行环境选择的 <code>shell</code>，如果执行环境选 <code>docker</code>的话，相应的版本可以选 <code>alpine:latest</code>。<br>试过 <code>docker</code>，因为没有映射<code>/var/run/docker.sock</code>，用 <code>docker</code> 执行 jobs 有时候会报错。所以这里我改成了<code>shell</code>。</p>
+<p>这里注意填写下 tags，后面方便用到。执行环境选择的 shell，如果执行环境选 docker 的话，相应的版本可以选 alpine:latest。<br>试过 docker，因为没有映射<code>/var/run/docker.sock</code>，用 docker 执行 jobs 有时候会报错。所以这里我改成了 shell。</p>
 <h2 id="配置-CI-CD"><a href="#配置-CI-CD" class="headerlink" title="配置 CI/CD"></a>配置 CI/CD</h2><h3 id="在本机生成密钥对"><a href="#在本机生成密钥对" class="headerlink" title="在本机生成密钥对"></a>在本机生成密钥对</h3><p>在 runner 机器上生成密钥</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -t rsa -f runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里文件名称最好修改一下，避免生成的密钥文件将原来的覆盖掉。密钥的类型官方推荐是 <code>ed25519</code>，即</p>
+<p>这里文件名称最好修改一下，避免生成的密钥文件将原来的覆盖掉。密钥的类型官方推荐是 ed25519，即</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -t ed25519 -f runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>但是 <code>centos6.10</code> 不支持 <code>ed25519</code>，这里还是换成 <code>rsa</code></p>
+<p>但是 centos6.10 不支持 ed25519，这里还是换成 rsa。</p>
 <h3 id="公钥放到要部署的服务器"><a href="#公钥放到要部署的服务器" class="headerlink" title="公钥放到要部署的服务器"></a>公钥放到要部署的服务器</h3><p>公钥放到要部署的服务器的<code>~/.ssh/authorized_keys</code>文件里</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-copy-id -i runnerkey.pub root@remoteip -p port<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -465,7 +471,7 @@ $ vim &#x2F;etc&#x2F;sudoers<span aria-hidden="true" class="line-numbers-rows"><
   tags<span class="token punctuation">:</span>
     <span class="token punctuation">-</span> testci<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>这里如果是用的 <code>docker</code>, 可以将上面文件中的部分代码</p>
+<p>这里如果是用的 docker, 可以将上面文件中的部分代码</p>
 <pre class="line-numbers language-none"><code class="language-none">- ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~&#x2F;.ssh&#x2F;known_hosts
 - chmod 644 ~&#x2F;.ssh&#x2F;known_hosts<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
@@ -479,18 +485,18 @@ SSH_AUTH_SOCK&#x3D;&#x2F;tmp&#x2F;ssh-GiORRAqMXEFt&#x2F;agent.28161; export SSH_
 SSH_AGENT_PID&#x3D;28162; export SSH_AGENT_PID;
 echo Agent pid 28162;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>输出结果中明确说明了导出了几个环境变量，<strong>上面的 <code>ssh-agent</code> 尽管运行成功了，但是那两个环境变量并没有导出。所以更多时候，会使用 <code>eval</code> 来执行 <code>ssh-agent</code>，使得这些环境变量也被导出。</strong><br>如下两种方式均可启动 <code>ssh-gent</code>。</p>
-<p>方式一：创建子 shell，在子 shell 中运行 <code>ssh-agent</code> 进程，退出子 shell 自动结束代理。</p>
+<p>输出结果中明确说明了导出了几个环境变量，<strong>上面的 ssh-agent 尽管运行成功了，但是那两个环境变量并没有导出。所以更多时候，会使用 eval 来执行 ssh-agent，使得这些环境变量也被导出。</strong><br>如下两种方式均可启动 ssh-gent。</p>
+<p>方式一：创建子 shell，在子 shell 中运行 ssh-agent 进程，退出子 shell 自动结束代理。</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-agent $SHELL<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>方式二：单独启动一个代理进程，退出当前 shell 时最好使用 <code>ssh-agent -k</code> 关闭对应代理</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ eval &#96;ssh-agent&#96;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><strong>参数说明：<br>-s 生成 <code>Bourne shell</code> 风格的命令输出</strong></p>
+<p><strong>参数说明：<br>-s 生成 Bourne shell 风格的命令输出</strong></p>
 <h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p><code>echo &quot;$SSH_PRIVATE_KEY&quot; | tr -d &#39;\r&#39; | ssh-add -</code></p>
-<p>解释如下：<br>删除私钥字符串的空格（针对 <code>ed25519</code> 的一个 bug），然后作为输入传给 <code>ssh-add</code> 添加到 <code>ssh-agent</code> 代理中<br><strong>参数说明：<br>“tr”:用于转换或删除文件中的字符。<br>“-d”:<code>--delete</code>删除指令字符。<br>“-“:指令会从标准输入设备读取数据。</strong></p>
+<p>解释如下：<br>删除私钥字符串的空格（针对 ed25519 的一个 bug），然后作为输入传给 ssh-add 添加到 ssh-agent 代理中<br><strong>参数说明：<br>“tr”:用于转换或删除文件中的字符。<br>“-d”:–delete 删除指令字符。<br>“-“:指令会从标准输入设备读取数据。</strong></p>
 <h3 id="ssh-keyscan"><a href="#ssh-keyscan" class="headerlink" title="ssh-keyscan"></a>ssh-keyscan</h3><p><code>ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~/.ssh/known_hosts</code></p>
-<p>解释如下：<br>将远程机器的公钥添加到 <code>runner</code> 机器的 <code>known_hosts</code> 中，目录在<code>/home/gitlab-runner/.ssh/known_hosts</code>。<br><code>ssh-keyscan</code> 的主要用途是用于批量获取机器的公钥，这样以后再用 <code>ssh</code> 登录到已经获取过公钥的服务器时，不需要再输入 <code>yes</code> 之类去保存公钥了。<br><strong>参数说明：<br>“-p”，端口。</strong></p>
+<p>解释如下：<br>将远程机器的公钥添加到 runner 机器的 known_hosts 中，目录在<code>/home/gitlab-runner/.ssh/known_hosts</code>。<br>ssh-keyscan 的主要用途是用于批量获取机器的公钥，这样以后再用 ssh 登录到已经获取过公钥的服务器时，不需要再输入 yes 之类去保存公钥了。<br><strong>参数说明：<br>“-p”，端口。</strong></p>
 <h3 id="f-amp-amp-echo"><a href="#f-amp-amp-echo" class="headerlink" title="-f &amp;&amp; echo"></a>-f &amp;&amp; echo</h3><p><code>&#39;[[ -f /.dockerenv ]] &amp;&amp; echo -e &quot;Host *\n\tStrictHostKeyChecking no\n\n&quot; &gt;&gt; ~/.ssh/config&#39;</code></p>
 <p>解释如下：<br>如果存在 <code>/.dockerenv</code> 且为常规文件，则添加以下字符串到<code>~/.ssh/config</code> 文件，实现当第一次连接服务器时，自动接受新的公钥，不必询问。<br>但这里会一直往<code>~/.ssh/config</code> 里面写数据，并不是覆盖原有的数据，方式不太好</p>
 <pre class="line-numbers language-none"><code class="language-none">Host *
@@ -502,9 +508,9 @@ $ ssh-keygen -R 服务器端的ip地址<span aria-hidden="true" class="line-numb
 
 <p>来删除旧的地址</p>
 <p><strong>参数说明：<br>“[[]]”：这里相当于 test。<br>“-f”：如果 file 存在且是一个普通文件则为真。<br>“echo -e”：处理特殊字符，开启转义。</strong></p>
-<p><strong>如果配置了 ssh 一次都没有登陆过的话，第一次登陆是需要绕过公钥检查，也可以用 <code>ssh -o stricthostkeychecking=no</code> 来绕过。<br>用命令 <code>cat /etc/issue</code> 可以查看 <code>linux</code> 版本</strong></p>
-<p>执行之前最好到 <code>gitlab</code> 的 <code>pipelines</code> 用 <code>CI Lint</code> 验证下 <code>gitlab-ci.yml</code> 的格式是否正确，如果不正确是不触发 <code>jobs</code> 的。<br>到 <code>gitlab</code> 上该项目查看，<code>jobs</code> 执行成功 <code>passed</code>，到这里就大功告成。</p>
-<p>如果当前 runner 和需要部署的机器是一台的话可以直接用 cp 拷贝了。<br>可以用 <code>echo whoami</code> 和<code>echo pwd</code>查看当前用户和路径的。可以看到当前用户为 <code>gitlab-runner</code>，路径为<code>/home/gitlab-runner/builds/qmPHwZRG/0/userNameXXX/gitdirXXXX</code>，拷贝之前先执行</p>
+<p><strong>如果配置了 ssh 一次都没有登陆过的话，第一次登陆是需要绕过公钥检查，也可以用 <code>ssh -o stricthostkeychecking=no</code> 来绕过。<br>用命令 <code>cat /etc/issue</code> 可以查看 linux 版本</strong></p>
+<p>执行之前最好到 gitlab 的 pipelines 用 CI Lint 验证下 gitlab-ci.yml 的格式是否正确，如果不正确是不触发 jobs 的。<br>到 gitlab 上该项目查看，jobs 执行成功 passed，到这里就大功告成。</p>
+<p>如果当前 runner 和需要部署的机器是一台的话可以直接用 cp 拷贝了。<br>可以用 <code>echo whoami</code> 和<code>echo pwd</code>查看当前用户和路径的。可以看到当前用户为 gitlab-runner，路径为<code>/home/gitlab-runner/builds/qmPHwZRG/0/userNameXXX/gitdirXXXX</code>，拷贝之前先执行</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ chown -R gitlab-runner:gitlab-runner .&#x2F;share<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>执行的时候前面添加 sudo，例如</p>
@@ -512,8 +518,8 @@ $ ssh-keygen -R 服务器端的ip地址<span aria-hidden="true" class="line-numb
 $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>就可以实现直接拷贝</p>
-<p><strong>即执行 <code>gitlab-ci.yml</code> 是用户 <code>gitlab-runner</code> 在 <code>runner</code> 注册的服务器上执行的。如果要部署在 <code>runner</code> 服务器，就直接 <code>cp</code> 拷贝，如果要部署到其他服务器，就设置 <code>ssh</code> 无密码登录再 <code>rsync</code> 或者 <code>scp</code> 都可以</strong></p>
-<h2 id="gitlab-pages"><a href="#gitlab-pages" class="headerlink" title="gitlab pages"></a>gitlab pages</h2><p><code>gitlab pages</code> 是 <code>gitlab</code> 的静态托管页面，只需要在 <code>gitlab-ci.yml</code> 重设置 <code>pages</code> 即可，只要采用了 <code>public</code> 文件夹，在提交的时候会默认把 <code>public</code> 里面的文件部署到 <code>pages</code> 作为静态页面。</p>
+<p><strong>即执行 gitlab-ci.yml 是用户 gitlab-runner 在 runner 注册的服务器上执行的。如果要部署在 runner 服务器，就直接 cp 拷贝，如果要部署到其他服务器，就设置 ssh 无密码登录再 rsync 或者 scp 都可以</strong></p>
+<h2 id="gitlab-pages"><a href="#gitlab-pages" class="headerlink" title="gitlab pages"></a>gitlab pages</h2><p>gitlab pages 是 gitlab 的静态托管页面，只需要在 gitlab-ci.yml 重设置 pages 即可，只要采用了 public 文件夹，在提交的时候会默认把 public 里面的文件部署到 pages 作为静态页面。</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">pages</span><span class="token punctuation">:</span>
   stage<span class="token punctuation">:</span> deploy
   <span class="token key atrule">script</span><span class="token punctuation">:</span>
@@ -529,7 +535,7 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
   tags<span class="token punctuation">:</span>
     <span class="token punctuation">-</span> testci<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>这里设置了手动触发。<u><strong>特别需要注意的一点是顶层的 stages 名称，必须是 pages</strong></u>，不然 <code>gitlab</code> 的 <code>pages</code> 部署不会显示 <code>pages</code> 的地址。部署好了之后在 <code>gitlab</code> 中的 <code>Settings =&gt; Pages</code> 就可以看到部署的地址了，如果需要设置所有人可见的话，在单个项目的设置<code>Settings =&gt; General =&gt; Visibility</code>。</p>
+<p>这里设置了手动触发。<u><strong>特别需要注意的一点是顶层的 stages 名称，必须是 pages</strong></u>，不然 gitlab 的 pages 部署不会显示 pages 的地址。部署好了之后在 gitlab 中的 <code>Settings =&gt; Pages</code> 就可以看到部署的地址了，如果需要设置所有人可见的话，在单个项目的设置<code>Settings =&gt; General =&gt; Visibility</code>。</p>
 
     </div>
 
@@ -576,9 +582,9 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
           <div class="post-tags">
               <a href="/tags/docker/" rel="tag"># docker</a>
               <a href="/tags/gitlab/" rel="tag"># gitlab</a>
-              <a href="/tags/ssh/" rel="tag"># ssh</a>
               <a href="/tags/gitlab-ci/" rel="tag"># gitlab-ci</a>
               <a href="/tags/gitlab-pages/" rel="tag"># gitlab-pages</a>
+              <a href="/tags/ssh/" rel="tag"># ssh</a>
           </div>
 
         
@@ -652,13 +658,13 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">27k</span>
+    <span title="站点总字数">30k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">24 分钟</span>
+    <span title="站点阅读时长">27 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

@@ -34,18 +34,18 @@
   <meta name="description" content="记一次 tabindex 的焦点移动问题解决">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tabindex之焦点移动">
-<meta property="og:url" content="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/index.html">
+<meta property="og:url" content="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/index.html">
 <meta property="og:site_name" content="Marco&#39;s blog✍️">
 <meta property="og:description" content="记一次 tabindex 的焦点移动问题解决">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-03T13:07:44.000Z">
-<meta property="article:modified_time" content="2020-11-03T13:51:35.508Z">
+<meta property="article:modified_time" content="2020-11-06T11:11:00.484Z">
 <meta property="article:author" content="Marco">
 <meta property="article:tag" content="tabindex">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/">
+<link rel="canonical" href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/">
 
 
 <script data-pjax class="page-configurations">
@@ -153,17 +153,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">30</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">38</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">15</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -223,7 +223,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#bug-%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">bug 描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bug-%E8%A7%A3%E5%86%B3"><span class="nav-number">2.</span> <span class="nav-text">bug 解决</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -239,20 +239,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -305,7 +305,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -328,17 +328,27 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-11-03 21:07:44 / 修改时间：21:51:35" itemprop="dateCreated datePublished" datetime="2020-11-03T21:07:44+08:00">2020-11-03</time>
+      <time title="创建时间：2020-11-03 21:07:44" itemprop="dateCreated datePublished" datetime="2020-11-03T21:07:44+08:00">2020-11-03</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-06 19:11:00" itemprop="dateModified" datetime="2020-11-06T19:11:00+08:00">2020-11-06</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">工作笔记</span></a>
+          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/" itemprop="url" rel="index"><span itemprop="name">Bug解决</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
         </span>
     </span>
 
@@ -357,7 +367,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>376</span>
+      <span>370</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -378,8 +388,8 @@
         <p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
 <a id="more"></a>
 
-<h2 id="bug-描述"><a href="#bug-描述" class="headerlink" title="bug 描述"></a>bug 描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
-<h2 id="bug-解决"><a href="#bug-解决" class="headerlink" title="bug 解决"></a>bug 解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见<code>visibility:hidden</code>，焦点就不会自动移动过去了。</p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见 visibility:hidden，焦点就不会自动移动过去了。</p>
 
     </div>
 
@@ -415,7 +425,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/" title="tabindex之焦点移动">https://freedomant.github.io/工作笔记/tabindex之焦点移动/</a>
+      <a href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/" title="tabindex之焦点移动">https://freedomant.github.io/Bug解决/Javascript/tabindex之焦点移动/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -498,13 +508,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">27k</span>
+    <span title="站点总字数">30k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">24 分钟</span>
+    <span title="站点阅读时长">27 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -668,7 +678,7 @@ NexT.utils.loadComments('#gitalk-container', () => {
       repo        : 'freedomant.github.io',
       owner       : 'FreedomAnt',
       admin       : ['FreedomAnt'],
-      id          : '5161d761669ed4e02e9bd7bbebb2e909',
+      id          : 'b25d1e6d57935e31052e154f4f9a6dbc',
         language: 'zh-CN',
       distractionFreeMode: true
     });
