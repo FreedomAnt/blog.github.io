@@ -31,21 +31,24 @@
     var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="记一次 tabindex 的焦点移动问题解决">
+  <meta name="description" content="近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="tabindex之焦点移动">
-<meta property="og:url" content="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/index.html">
+<meta property="og:title" content="使用puppeteer实现自动登录和测试页面">
+<meta property="og:url" content="https://freedomant.github.io/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/index.html">
 <meta property="og:site_name" content="Marco&#39;s blog✍️">
-<meta property="og:description" content="记一次 tabindex 的焦点移动问题解决">
+<meta property="og:description" content="近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-03T13:07:44.000Z">
-<meta property="article:modified_time" content="2020-11-20T07:41:10.087Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165028.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165029.png">
+<meta property="article:published_time" content="2020-12-02T08:10:06.000Z">
+<meta property="article:modified_time" content="2020-12-02T09:38:06.443Z">
 <meta property="article:author" content="Marco">
-<meta property="article:tag" content="tabindex">
+<meta property="article:tag" content="puppeteer">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165028.png">
 
 
-<link rel="canonical" href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/">
+<link rel="canonical" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/">
 
 
 <script data-pjax class="page-configurations">
@@ -58,7 +61,7 @@
   };
 </script>
 
-  <title>tabindex之焦点移动 | Marco's blog✍️</title>
+  <title>使用puppeteer实现自动登录和测试页面 | Marco's blog✍️</title>
   
 
 
@@ -223,7 +226,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96-Browser-%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">获取 Browser 实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">测试自动登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%8C%89%E9%94%AE"><span class="nav-number">3.</span> <span class="nav-text">测试按键</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -305,7 +308,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -318,7 +321,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          tabindex之焦点移动
+          使用puppeteer实现自动登录和测试页面
         </h1>
 
         <div class="post-meta-container">
@@ -328,27 +331,21 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-11-03 21:07:44" itemprop="dateCreated datePublished" datetime="2020-11-03T21:07:44+08:00">2020-11-03</time>
+      <time title="创建时间：2020-12-02 16:10:06 / 修改时间：17:38:06" itemprop="dateCreated datePublished" datetime="2020-12-02T16:10:06+08:00">2020-12-02</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-20 15:41:10" itemprop="dateModified" datetime="2020-11-20T15:41:10+08:00">2020-11-20</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/" itemprop="url" rel="index"><span itemprop="name">Bug解决</span></a>
+          <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+          <a href="/categories/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
         </span>
     </span>
 
@@ -367,14 +364,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>370</span>
+      <span>2.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -385,11 +382,80 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
+        <p>近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。</p>
 <a id="more"></a>
 
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见 visibility:hidden，焦点就不会自动移动过去了。</p>
+<h2 id="获取-Browser-实例"><a href="#获取-Browser-实例" class="headerlink" title="获取 Browser 实例"></a>获取 Browser 实例</h2><p>关于 puppeteer 的文档可以查看<span class="exturl" data-url="aHR0cHM6Ly96aGFvcWl6ZS5naXRodWIuaW8vcHVwcGV0ZWVyLWFwaS16aF9DTi8=">Puppeteer<i class="fa fa-external-link-alt"></i></span><br>首先引入 puppeteer 库，这里我们选择的是 puppeteer 而不是 puppeteer-core，简单是说区别就是</p>
+<ol>
+<li>puppeteer-core 不会自动下载 Chromium</li>
+<li>puppeteer-core 会忽略 PUPPETEER_*环境变量</li>
+</ol>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> browser <span class="token operator">=</span> <span class="token keyword">await</span> puppeteer<span class="token punctuation">.</span><span class="token function">launch</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  headless<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  args<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--start-maximized"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  ignoreDefaultArgs<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--enable-automation"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  defaultViewport<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>参数解释：</p>
+<ul>
+<li><code>headless: false</code><br>为了更好的看到现象，采用的非 headless，默认情况 headless 是 true</li>
+<li><code>args: [&quot;--start-maximized&quot;]</code>内容铺满视频框。</li>
+<li><code>ignoreDefaultArgs: [&quot;--enable-automation&quot;]</code>不显示测试环境控制的提示。</li>
+<li><code>defaultViewport: null</code> 视口大小设置为全屏，默认是 800X600 的框。</li>
+</ul>
+<p>更多参数可参考<span class="exturl" data-url="aHR0cHM6Ly9wZXRlci5zaC9leHBlcmltZW50cy9jaHJvbWl1bS1jb21tYW5kLWxpbmUtc3dpdGNoZXMv">List Of Chromium Command Line Switches<i class="fa fa-external-link-alt"></i></span></p>
+<p>这里是用 launch 的方式创建的 Browser 实例，也可以用 connect 方式</p>
+<ul>
+<li>puppeteer.connect: 连接一个已经开启浏览器 websoket 链接的 Chrome 实例</li>
+<li>puppeteer.launch: 每次都启动一个 Chrome 实例</li>
+</ul>
+<p>connect 方式需要以 <code>remote-debugging-port</code> 参数启动 Chrome，具体参数参照<span class="exturl" data-url="aHR0cHM6Ly9jaHJvbWVkZXZ0b29scy5naXRodWIuaW8vZGV2dG9vbHMtcHJvdG9jb2wvI2hvdy1kby1pLWFjY2Vzcy10aGUtYnJvd3Nlci10YXJnZXQ=">Chrome DevTools Protocol<i class="fa fa-external-link-alt"></i></span></p>
+<ol>
+<li><p>以 <code>remote-debugging-port</code> 参数启动 Chrome</p>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165028.png" style="zoom:50%" />
+</li>
+<li><p>通过<code>http://$&#123;host&#125;:$&#123;port&#125;/json/version</code>获取到浏览器的一些信息。其中有 webSocketDebuggerUrl<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165029.png" alt="查看Chrome信息"></p>
+</li>
+<li><p>实现连接</p>
+</li>
+</ol>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">puppeteer<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  browserWSEndpoint<span class="token operator">:</span> webSocketDebuggerUrl<span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="测试自动登录"><a href="#测试自动登录" class="headerlink" title="测试自动登录"></a>测试自动登录</h2><p>由于我们项目采用了验证码，一般情况下有验证码的自动登录比较麻烦，如果验证码复杂的话需要借助验证码识别平台来做，如果用程序来破解涉及到灰度化，二值化，去除噪点，字符分割，训练模型，识别等等一系列的东西，用 OCR 识别等。这里我们就采用简单的方式来做，在申请验证码的时候接口返回了验证码的 base64 字符，我们获取到这个字符来解码。</p>
+<p>代码如下</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> bPage <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">pages</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/pages/login.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> finalResponse <span class="token operator">=</span> <span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForResponse</span><span class="token punctuation">(</span>
+  <span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+    response<span class="token punctuation">.</span><span class="token function">url</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/getVerify"</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">0</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> finalResponse<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> codeStr <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>data<span class="token punctuation">.</span>code<span class="token punctuation">,</span> <span class="token string">"base64"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">,</span> codeStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">[</span>responseStr<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  bPage<span class="token punctuation">.</span><span class="token function">waitForNavigation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  bPage<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token string">"button[lay-submit]"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="测试按键"><a href="#测试按键" class="headerlink" title="测试按键"></a>测试按键</h2><p>我们前端项目是在 TV 端，需要使用按键来测试页面。这里我们测试了之后保存页面的截图。<br>需要注意的是由于 js 在页面加载之后执行，这里做了一个延时 2s 的操作，具体的按键名称可以在 puppeteer 仓库中搜索<code>Keyboard</code>查找到<code>USKeyboardLayout.ts</code>，里面有详细按键名称。</p>
+<p>代码如下：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> fPage <span class="token operator">=</span> <span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">newPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/page/index.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"Enter"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">screenshot</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> path<span class="token operator">:</span> <span class="token string">"screenshot.png"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
     </div>
 
@@ -425,7 +491,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/" title="tabindex之焦点移动">https://freedomant.github.io/Bug解决/Javascript/tabindex之焦点移动/</a>
+      <a href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/" title="使用puppeteer实现自动登录和测试页面">https://freedomant.github.io/开发/测试/使用puppeteer实现自动登录和测试页面/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -434,21 +500,18 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/tabindex/" rel="tag"># tabindex</a>
+              <a href="/tags/puppeteer/" rel="tag"># puppeteer</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/" rel="prev" title="prometheus+grafana实现数据采集展示+邮件告警">
-                  <i class="fa fa-chevron-left"></i> prometheus+grafana实现数据采集展示+邮件告警
+                <a href="/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/" rel="prev" title="回车换行问题">
+                  <i class="fa fa-chevron-left"></i> 回车换行问题
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="next" title="hexo+github-pages搭建个人博客">
-                  hexo+github-pages搭建个人博客 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -678,7 +741,7 @@ NexT.utils.loadComments('#gitalk-container', () => {
       repo        : 'freedomant.github.io',
       owner       : 'FreedomAnt',
       admin       : ['FreedomAnt'],
-      id          : 'b25d1e6d57935e31052e154f4f9a6dbc',
+      id          : 'f7417ce2a0a75b906fce47bf9b30c08c',
         language: 'zh-CN',
       distractionFreeMode: true
     });
