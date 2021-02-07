@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Android 7.0 以上网络安全配置</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android-7-0-%E4%BB%A5%E4%B8%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>开发中遇到 Android 模拟器跑项目一直请求不到网络链接。Android 版本 9.0 API28</p>
+<a id="more"></a>
+
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>在 Android 7.0 以上的系统中，Google 引入了一种名为网络安全配置（Network Security Configuration）的功能。<br>全面禁止了非安全的加密，如果要使用非加密的链接，需要配置 network_security_config.xml</p>
+<ol>
+<li>在 res/xml 下面新建一个 xml 文件，取名为 network_security_config.xml<br>配置如下<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>network-security-config</span><span class="token punctuation">></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>base-config</span> <span class="token attr-name">cleartextTrafficPermitted</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>network-security-config</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>在 res 下面的 AndroidManifest.xml 中的 application 标签中 添加<code>android:networkSecurityConfig=&quot;@xml/network_security_config&quot;</code></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
+        <tag>network</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Android上canvas不显示</title>
     <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android%E4%B8%8Acanvas%E4%B8%8D%E6%98%BE%E7%A4%BA/</url>
     <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>这次遇到的问题是 echarts 的图形在 android 模拟器中不显示，Android 版本 9.0 API28</p>
@@ -29,27 +53,98 @@
       </tags>
   </entry>
   <entry>
-    <title>Android 7.0 以上网络安全配置</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android-7-0-%E4%BB%A5%E4%B8%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>开发中遇到 Android 模拟器跑项目一直请求不到网络链接。Android 版本 9.0 API28</p>
+    <title>git push 报错解决</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Git/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>记一次 <code>git push</code> 的报错解决。</p>
 <a id="more"></a>
 
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>在 Android 7.0 以上的系统中，Google 引入了一种名为网络安全配置（Network Security Configuration）的功能。<br>全面禁止了非安全的加密，如果要使用非加密的链接，需要配置 network_security_config.xml</p>
-<ol>
-<li>在 res/xml 下面新建一个 xml 文件，取名为 network_security_config.xml<br>配置如下<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>network-security-config</span><span class="token punctuation">></span></span>
- <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>base-config</span> <span class="token attr-name">cleartextTrafficPermitted</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>network-security-config</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li>在 res 下面的 AndroidManifest.xml 中的 application 标签中 添加<code>android:networkSecurityConfig=&quot;@xml/network_security_config&quot;</code></li>
-</ol>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>用 hexo 写博客提交的时候报错了 fatal: TaskCanceledException encountered.，有时候是这个 fatal: HttpRequestException encountered.<br>使用网上的方式均不管用，下载了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9HaXQtQ3JlZGVudGlhbC1NYW5hZ2VyLWZvci1XaW5kb3dzL3JlbGVhc2Vz">凭证管理<i class="fa fa-external-link-alt"></i></span>安装完成，也下载了新版本的 git 并更新。用以下命令行的方式也试过。</p>
+<p>配置 credential.helper 为 manager。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>试过了，不行。</p>
+<p>删除系统级别的 credential.helper。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>也不行。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>git 的配置指令有 3 个层级，详细信息可参考 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS8=">git-scm.com<i class="fa fa-external-link-alt"></i></span> 的 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span>。<br>分别是</p>
+<ul>
+<li>system（系统级别）</li>
+<li>global（用户级别）</li>
+<li>local（仓库级别）</li>
+</ul>
+<p>优先级为 local &gt; global &gt; system。local 位置在项目的<code>.git/config</code>，global 位置在每个用户的<code>~/.gitconfig</code>，system 位置在 git 安装目录的<code>etc/gitconfig</code>。我们可以直接修改文件，或者用命令行的方式修改。详细查看<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyLyVFOCU4NyVBQSVFNSVBRSU5QSVFNCVCOSU4OS1HaXQtJUU5JTg1JThEJUU3JUJEJUFFLUdpdA==">自定义 Git - 配置 Git<i class="fa fa-external-link-alt"></i></span></p>
+<p>读取配置命令分别为：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --list
+$ git config --global --list
+$ git config --system --list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>查找<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyL0dpdC0lRTUlQjclQTUlRTUlODUlQjctJUU1JTg3JUFEJUU4JUFGJTgxJUU1JUFEJTk4JUU1JTgyJUE4">Git 的系统凭证管理<i class="fa fa-external-link-alt"></i></span>，credential.helper 可选的存储方式为:</p>
+<h3 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h3><p>将凭证存放在内存中一段时间。 密码永远不会被存储在磁盘中，并且在 15 分钟后从内存中清除。</p>
+<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p>将凭证用明文的形式存放在磁盘中，并且永不过期。 这意味着除非你修改了你在 Git 服务器上的密码，否则你永远不需要再次输入你的凭证信息。 这种方式的缺点是你的密码是用明文的方式存放在你的 home 目录下。</p>
+<h3 id="osxkeychain"><a href="#osxkeychain" class="headerlink" title="osxkeychain"></a>osxkeychain</h3><p>如果你使用的是 Mac，Git 还有一种 “osxkeychain” 模式，它会将凭证缓存到你系统用户的钥匙串中。 这种方式将凭证存放在磁盘中，并且永不过期，但是是被加密的，这种加密方式与存放 HTTPS 凭证以及 Safari 的自动填写是相同的。</p>
+<h3 id="manager"><a href="#manager" class="headerlink" title="manager"></a>manager</h3><p>如果你使用的是 Windows，你可以安装一个叫做 “Git Credential Manager for Windows” 的辅助工具。 这和上面说的 <code>osxkeychain</code>十分类似，但是是使用 <code>Windows Credential Store</code> 来控制敏感信息。 可以在<code>https://github.com/Microsoft/Git-Credential-Manager-for-Windows</code> 下载。</p>
+<p>git 在本地有多种方式来存储本地凭证。存储方式有三种：manager、wincred 和 store，可以在 git 安装目录的<code>mingw64/libexec/git-core</code> 路径下找到对应的 exe 文件：<code>git-credential-manager</code>、<code>git-credential-store</code> 和 <code>git-credential-wincred</code>。wincred 是 Windows 默认的凭证存储模式，其中 manager 模式也是采用的 store 的方式来存储。</p>
+<p>其中用 manager 会把用户信息加密，wincred 则不会。</p>
+<p>这里可以先把原有的 credential.helper 删除</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --unset credential.helper
+$ git config --global --unset credential.helper
+$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>然后再配置 credential.helper 为 manager</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看是否配置成功</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global --list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>问题解决。</p>
 ]]></content>
       <categories>
         <category>Bug解决</category>
-        <category>Android</category>
+        <category>Git</category>
       </categories>
       <tags>
-        <tag>android</tag>
-        <tag>network</tag>
+        <tag>git</tag>
+        <tag>credential</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>github图片加载不出来问题解决</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/github%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>最近 github 上图片一直加载不出来，以前是用的 Chrome 插件 Ghelper，最近 Ghelper 开启之后 github 无法访问，这里用了另外一种解决方法。</p>
+<a id="more"></a>
+
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>github 上面图片加载有问题。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>这里我们设置域名指定 ip，以 Windwos 系统为例，文件位置在<code>C:\Windows\System32\drivers\etc</code>，打开之后添加以下代码</p>
+<pre class="line-numbers language-none"><code class="language-none"># GitHub Start
+192.30.255.112	gist.github.com
+192.30.255.112	github.com
+192.30.255.112	www.github.com
+151.101.56.133	avatars0.githubusercontent.com
+151.101.56.133	avatars1.githubusercontent.com
+151.101.56.133	avatars2.githubusercontent.com
+151.101.56.133	avatars3.githubusercontent.com
+151.101.56.133	avatars4.githubusercontent.com
+151.101.56.133	avatars5.githubusercontent.com
+151.101.56.133	avatars6.githubusercontent.com
+151.101.56.133	avatars7.githubusercontent.com
+151.101.56.133	avatars8.githubusercontent.com
+151.101.56.133	camo.githubusercontent.com
+151.101.56.133	cloud.githubusercontent.com
+151.101.56.133	gist.githubusercontent.com
+151.101.56.133	marketplace-screenshots.githubusercontent.com
+151.101.56.133	raw.githubusercontent.com
+151.101.56.133	repository-images.githubusercontent.com
+151.101.56.133	user-images.githubusercontent.com
+# GitHub End<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>再去打开 github，图片加载成功。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
       </tags>
   </entry>
   <entry>
@@ -81,7 +176,7 @@
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjOTc7JiN4Njk7JiN4NmM7JiN4NmU7JiM5NzsmIzEwOTsmI3g2NTsmIzY0OyYjeDcxOyYjMTEzOyYjNDY7JiM5OTsmI3g2ZjsmI3g2ZDs=">&#109;&#97;&#x69;&#x6c;&#x6e;&#97;&#109;&#x65;&#64;&#x71;&#113;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjOTc7JiMxMDU7JiMxMDg7JiN4NmU7JiN4NjE7JiN4NmQ7JiN4NjU7JiN4NDA7JiN4NzE7JiMxMTM7JiM0NjsmI3g2MzsmI3g2ZjsmIzEwOTs=">&#109;&#97;&#105;&#108;&#x6e;&#x61;&#x6d;&#x65;&#x40;&#x71;&#113;&#46;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h2 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -91,7 +186,7 @@
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
 $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjeDZkOyYjeDYxOyYjeDY5OyYjMTA4OyYjMTEwOyYjeDYxOyYjeDZkOyYjMTAxOyYjeDQwOyYjeDcxOyYjMTEzOyYjeDJlOyYjeDYzOyYjeDZmOyYjeDZkOw==">&#x6d;&#x61;&#x69;&#108;&#110;&#x61;&#x6d;&#101;&#x40;&#x71;&#113;&#x2e;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjOTc7JiN4Njk7JiN4NmM7JiMxMTA7JiN4NjE7JiMxMDk7JiMxMDE7JiN4NDA7JiMxMTM7JiN4NzE7JiM0NjsmIzk5OyYjeDZmOyYjeDZkOw==">&#109;&#97;&#x69;&#x6c;&#110;&#x61;&#109;&#101;&#x40;&#113;&#x71;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h3 id="配置邮箱告警"><a href="#配置邮箱告警" class="headerlink" title="配置邮箱告警"></a>配置邮箱告警</h3><p><code>$ docker exec -it my-sentry bash</code>进入控制台</p>
 <p><code>$ vi /etc/sentry/config.yml</code></p>
 <p>腾讯示例：</p>
@@ -111,7 +206,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjOTc7JiN4NmQ7JiN4NzA7JiMxMDg7JiMxMDE7JiM2NDsmI3g2ZDsmI3g2MTsmIzEwNTsmI3g2YzsmIzQ2OyYjOTk7JiN4NmY7JiN4NmQ7">&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#64;&#x6d;&#x61;&#105;&#x6c;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiN4NzA7JiN4NmM7JiN4NjU7JiN4NDA7JiN4NmQ7JiM5NzsmI3g2OTsmI3g2YzsmI3gyZTsmIzk5OyYjMTExOyYjMTA5Ow==">&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#x65;&#x40;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -131,7 +226,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjeDZkOyYjeDcwOyYjMTA4OyYjeDY1OyYjeDQwOyYjMTA5OyYjeDYxOyYjMTA1OyYjMTA4OyYjNDY7JiN4NjM7JiN4NmY7JiN4NmQ7">&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#x40;&#109;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjOTc7JiN4NmQ7JiN4NzA7JiMxMDg7JiN4NjU7JiM2NDsmIzEwOTsmIzk3OyYjMTA1OyYjeDZjOyYjeDJlOyYjeDYzOyYjMTExOyYjMTA5Ow==">&#101;&#120;&#97;&#x6d;&#x70;&#108;&#x65;&#64;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -414,59 +509,148 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
       </tags>
   </entry>
   <entry>
-    <title>git push 报错解决</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Git/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<p>记一次 <code>git push</code> 的报错解决。</p>
+    <title>prometheus+grafana实现数据采集展示+邮件告警</title>
+    <url>/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/</url>
+    <content><![CDATA[<h2 id="prometheus-grafana-实现数据采集展示-邮件告警"><a href="#prometheus-grafana-实现数据采集展示-邮件告警" class="headerlink" title="prometheus+grafana 实现数据采集展示+邮件告警"></a>prometheus+grafana 实现数据采集展示+邮件告警</h2><blockquote>
+<p><strong>Prometheus Server：Prometheus 服务的主服务器<br>Node Exporter：收集 Host 硬件和操作系统的信息<br>cAdvrisor：负责收集 Host 上运行的容器信息<br>Grafana：用来展示 Prometheus 监控操作界面（给我们提供一个友好的 web 界面）</strong></p>
+</blockquote>
 <a id="more"></a>
 
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>用 hexo 写博客提交的时候报错了 fatal: TaskCanceledException encountered.，有时候是这个 fatal: HttpRequestException encountered.<br>使用网上的方式均不管用，下载了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9HaXQtQ3JlZGVudGlhbC1NYW5hZ2VyLWZvci1XaW5kb3dzL3JlbGVhc2Vz">凭证管理<i class="fa fa-external-link-alt"></i></span>安装完成，也下载了新版本的 git 并更新。用以下命令行的方式也试过。</p>
-<p>配置 credential.helper 为 manager。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="拉取并运行-node-exporter"><a href="#拉取并运行-node-exporter" class="headerlink" title="拉取并运行 node-exporter"></a>拉取并运行 node-exporter</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9100:9100 \
+--name nodeexporter \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;proc:&#x2F;host&#x2F;proc \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;sys:&#x2F;host&#x2F;sys \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;rootfs:&#x2F;rootfs \
+prom&#x2F;node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>试过了，不行。</p>
-<p>删除系统级别的 credential.helper。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>建好之后进入 shell 环境</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it nodeexporter sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>也不行。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>git 的配置指令有 3 个层级，详细信息可参考 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS8=">git-scm.com<i class="fa fa-external-link-alt"></i></span> 的 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span>。<br>分别是</p>
-<ul>
-<li>system（系统级别）</li>
-<li>global（用户级别）</li>
-<li>local（仓库级别）</li>
-</ul>
-<p>优先级为 local &gt; global &gt; system。local 位置在项目的<code>.git/config</code>，global 位置在每个用户的<code>~/.gitconfig</code>，system 位置在 git 安装目录的<code>etc/gitconfig</code>。我们可以直接修改文件，或者用命令行的方式修改。详细查看<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyLyVFOCU4NyVBQSVFNSVBRSU5QSVFNCVCOSU4OS1HaXQtJUU5JTg1JThEJUU3JUJEJUFFLUdpdA==">自定义 Git - 配置 Git<i class="fa fa-external-link-alt"></i></span></p>
-<p>读取配置命令分别为：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --list
-$ git config --global --list
-$ git config --system --list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>输入<code>http://192.168.1.3:9100/</code>即可查看页面</p>
+<h3 id="拉取并运行-cadvisor"><a href="#拉取并运行-cadvisor" class="headerlink" title="拉取并运行 cadvisor"></a>拉取并运行 cadvisor</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 8080:8080 \
+--name cadvisor \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;rootfs:&#x2F;rootfs:ro \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;run:&#x2F;var&#x2F;run:rw \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;lib&#x2F;docker:&#x2F;var&#x2F;lib&#x2F;docker:ro \
+google&#x2F;cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>查找<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyL0dpdC0lRTUlQjclQTUlRTUlODUlQjctJUU1JTg3JUFEJUU4JUFGJTgxJUU1JUFEJTk4JUU1JTgyJUE4">Git 的系统凭证管理<i class="fa fa-external-link-alt"></i></span>，credential.helper 可选的存储方式为:</p>
-<h3 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h3><p>将凭证存放在内存中一段时间。 密码永远不会被存储在磁盘中，并且在 15 分钟后从内存中清除。</p>
-<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p>将凭证用明文的形式存放在磁盘中，并且永不过期。 这意味着除非你修改了你在 Git 服务器上的密码，否则你永远不需要再次输入你的凭证信息。 这种方式的缺点是你的密码是用明文的方式存放在你的 home 目录下。</p>
-<h3 id="osxkeychain"><a href="#osxkeychain" class="headerlink" title="osxkeychain"></a>osxkeychain</h3><p>如果你使用的是 Mac，Git 还有一种 “osxkeychain” 模式，它会将凭证缓存到你系统用户的钥匙串中。 这种方式将凭证存放在磁盘中，并且永不过期，但是是被加密的，这种加密方式与存放 HTTPS 凭证以及 Safari 的自动填写是相同的。</p>
-<h3 id="manager"><a href="#manager" class="headerlink" title="manager"></a>manager</h3><p>如果你使用的是 Windows，你可以安装一个叫做 “Git Credential Manager for Windows” 的辅助工具。 这和上面说的 <code>osxkeychain</code>十分类似，但是是使用 <code>Windows Credential Store</code> 来控制敏感信息。 可以在<code>https://github.com/Microsoft/Git-Credential-Manager-for-Windows</code> 下载。</p>
-<p>git 在本地有多种方式来存储本地凭证。存储方式有三种：manager、wincred 和 store，可以在 git 安装目录的<code>mingw64/libexec/git-core</code> 路径下找到对应的 exe 文件：<code>git-credential-manager</code>、<code>git-credential-store</code> 和 <code>git-credential-wincred</code>。wincred 是 Windows 默认的凭证存储模式，其中 manager 模式也是采用的 store 的方式来存储。</p>
-<p>其中用 manager 会把用户信息加密，wincred 则不会。</p>
-<p>这里可以先把原有的 credential.helper 删除</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --unset credential.helper
-$ git config --global --unset credential.helper
-$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>输入<code>http://192.168.1.3:8080/</code>即可查看页面</p>
+<h3 id="拉取并运行-prometheus"><a href="#拉取并运行-prometheus" class="headerlink" title="拉取并运行 prometheus"></a>拉取并运行 prometheus</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<p>然后再配置 credential.helper 为 manager</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>配置文件在<code>/etc/prometheus/prometheus.yml</code><br>可以直接进 shell 环境修改。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it prometheus sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>查看是否配置成功</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global --list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>也可以修改了之后删除此 container，重新新建</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+-v d:&#x2F;docker&#x2F;prometheus&#x2F;opt&#x2F;prometheus.yml:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml  \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>问题解决。</p>
+<p>这样将配置文件映射出来，<strong>配置文件也可以单独拷贝出来</strong>，代码如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker cp prometheus:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>修改了配置文件之后可以用以下代码实现热加载</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ kill -HUP 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9090/</code>即可查看页面</p>
+<h3 id="拉取并运行-grafana"><a href="#拉取并运行-grafana" class="headerlink" title="拉取并运行 grafana"></a>拉取并运行 grafana</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 3000:3000 \
+--name grafana \
+-v d:&#x2F;docker&#x2F;grafana&#x2F;grafana-storage:&#x2F;var&#x2F;lib&#x2F;grafana \
+grafana&#x2F;grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:3000/</code>即可查看页面<br>初始密码为 admin/admin，首次登陆需要修改密码。</p>
+<h3 id="拉取并允许-alertmanager"><a href="#拉取并允许-alertmanager" class="headerlink" title="拉取并允许 alertmanager"></a>拉取并允许 alertmanager</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9093:9093 \
+--name alertmanager \
+prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>http://192.168.1.3:9093/</code>即可查看页面<br>配置文件在<code>/etc/alertmanager/alertmanager.yml</code></p>
+<h3 id="数据展示"><a href="#数据展示" class="headerlink" title="数据展示"></a>数据展示</h3><p>修改 prometheus 的配置文件，其中 scrape_configs 的配置部分修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'prometheus'</span>
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9090'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'cadvisor'</span>
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:8080'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'node'</span>
+    scrape_interval<span class="token punctuation">:</span> 8s
+    static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9100'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入<code>kill -HUP 1</code>重新加载配置文件，输入<code>http://192.168.1.3:3000/</code>进入 grafana 控制台</p>
+<ol>
+<li>新增并配置 datasource，地址填写 prometheus 的地址即可</li>
+<li>进入 grafana 官网找 dashboard 的模板，记下模板号，到 grafana 页面的 dashboard 页面 import 即可。</li>
+</ol>
+<h3 id="邮件报警"><a href="#邮件报警" class="headerlink" title="邮件报警"></a>邮件报警</h3><p>修改 prometheus 的配置文件，其中部分配置修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">alerting</span><span class="token punctuation">:</span>
+  alertmanagers<span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> static_configs<span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 192.168.1.3<span class="token punctuation">:</span><span class="token number">9093</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">rule_files</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token string">"node_down.yml"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>在该配置文件的同级目录下新建 node_down.yml 文件</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">groups</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> node_down
+    rules<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> alert<span class="token punctuation">:</span> InstanceDown
+        expr<span class="token punctuation">:</span> up == 0
+        for<span class="token punctuation">:</span> 1m
+        labels<span class="token punctuation">:</span>
+          user<span class="token punctuation">:</span> test
+        annotations<span class="token punctuation">:</span>
+          summary<span class="token punctuation">:</span> <span class="token string">"Instance &#123;&#123; $labels.instance &#125;&#125; down"</span>
+          description<span class="token punctuation">:</span> <span class="token string">"&#123;&#123; $labels.instance &#125;&#125; of job &#123;&#123; $labels.job &#125;&#125; has been down for more than 1 minutes."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it alertmanager sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>进入 alertmanager 的 shell，配置 alertmanager 的配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;alertmanager&#x2F;alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>修改为</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">global</span><span class="token punctuation">:</span>
+  resolve_timeout<span class="token punctuation">:</span> 5m
+  smtp_from<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
+  smtp_smarthost<span class="token punctuation">:</span> <span class="token string">"smtp.126.com:25"</span>
+  smtp_auth_username<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
+  smtp_auth_password<span class="token punctuation">:</span> <span class="token string">"XXXXXXXXXXX"</span>
+  smtp_require_tls<span class="token punctuation">:</span> <span class="token boolean important">false</span>
+<span class="token key atrule">route</span><span class="token punctuation">:</span>
+  group_by<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">]</span>
+  group_wait<span class="token punctuation">:</span> 10s
+  group_interval<span class="token punctuation">:</span> 10s
+  repeat_interval<span class="token punctuation">:</span> 10m
+  receiver<span class="token punctuation">:</span> <span class="token string">"email"</span>
+<span class="token key atrule">receivers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> <span class="token string">"email"</span>
+    email_configs<span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> to<span class="token punctuation">:</span> <span class="token string">"mailname@qq.com"</span>
+<span class="token key atrule">inhibit_rules</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> source_match<span class="token punctuation">:</span>
+      severity<span class="token punctuation">:</span> <span class="token string">"critical"</span>
+    target_match<span class="token punctuation">:</span>
+      severity<span class="token punctuation">:</span> <span class="token string">"warning"</span>
+    equal<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">,</span> <span class="token string">"dev"</span><span class="token punctuation">,</span> <span class="token string">"instance"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中 smtp_auth_password 为邮件地址，也可以配置 qq 邮箱的报警，还可以配置企业微信和钉钉相关的报警。</p>
 ]]></content>
       <categories>
-        <category>Bug解决</category>
-        <category>Git</category>
+        <category>开发</category>
+        <category>Devops</category>
       </categories>
       <tags>
-        <tag>git</tag>
-        <tag>credential</tag>
+        <tag>docker</tag>
+        <tag>devops</tag>
+        <tag>prometheus</tag>
+        <tag>grafana</tag>
+        <tag>数据采集</tag>
+        <tag>邮件告警</tag>
       </tags>
   </entry>
   <entry>
@@ -613,8 +797,8 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
         <category>工作笔记</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>github</tag>
+        <tag>hexo</tag>
         <tag>github-pages</tag>
         <tag>gitalk</tag>
         <tag>zeit</tag>
@@ -626,198 +810,12 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
       </tags>
   </entry>
   <entry>
-    <title>node+npm更新</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-npm%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
-<p>查看 node 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看 npm 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\用户名\AppData\Roaming</code>文件夹下有一个 npm 和 npm-cache 文件，这里应该有 npm 的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Node</category>
-      </categories>
-      <tags>
-        <tag>npm</tag>
-        <tag>npm-cache</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>prometheus+grafana实现数据采集展示+邮件告警</title>
-    <url>/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/</url>
-    <content><![CDATA[<h2 id="prometheus-grafana-实现数据采集展示-邮件告警"><a href="#prometheus-grafana-实现数据采集展示-邮件告警" class="headerlink" title="prometheus+grafana 实现数据采集展示+邮件告警"></a>prometheus+grafana 实现数据采集展示+邮件告警</h2><blockquote>
-<p><strong>Prometheus Server：Prometheus 服务的主服务器<br>Node Exporter：收集 Host 硬件和操作系统的信息<br>cAdvrisor：负责收集 Host 上运行的容器信息<br>Grafana：用来展示 Prometheus 监控操作界面（给我们提供一个友好的 web 界面）</strong></p>
-</blockquote>
-<a id="more"></a>
-
-<h3 id="拉取并运行-node-exporter"><a href="#拉取并运行-node-exporter" class="headerlink" title="拉取并运行 node-exporter"></a>拉取并运行 node-exporter</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9100:9100 \
---name nodeexporter \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;proc:&#x2F;host&#x2F;proc \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;sys:&#x2F;host&#x2F;sys \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;rootfs:&#x2F;rootfs \
-prom&#x2F;node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>建好之后进入 shell 环境</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it nodeexporter sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:9100/</code>即可查看页面</p>
-<h3 id="拉取并运行-cadvisor"><a href="#拉取并运行-cadvisor" class="headerlink" title="拉取并运行 cadvisor"></a>拉取并运行 cadvisor</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 8080:8080 \
---name cadvisor \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;rootfs:&#x2F;rootfs:ro \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;run:&#x2F;var&#x2F;run:rw \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;lib&#x2F;docker:&#x2F;var&#x2F;lib&#x2F;docker:ro \
-google&#x2F;cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:8080/</code>即可查看页面</p>
-<h3 id="拉取并运行-prometheus"><a href="#拉取并运行-prometheus" class="headerlink" title="拉取并运行 prometheus"></a>拉取并运行 prometheus</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
---name prometheus \
-prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>配置文件在<code>/etc/prometheus/prometheus.yml</code><br>可以直接进 shell 环境修改。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it prometheus sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>也可以修改了之后删除此 container，重新新建</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
---name prometheus \
--v d:&#x2F;docker&#x2F;prometheus&#x2F;opt&#x2F;prometheus.yml:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml  \
-prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这样将配置文件映射出来，<strong>配置文件也可以单独拷贝出来</strong>，代码如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker cp prometheus:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>修改了配置文件之后可以用以下代码实现热加载</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ kill -HUP 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:9090/</code>即可查看页面</p>
-<h3 id="拉取并运行-grafana"><a href="#拉取并运行-grafana" class="headerlink" title="拉取并运行 grafana"></a>拉取并运行 grafana</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 3000:3000 \
---name grafana \
--v d:&#x2F;docker&#x2F;grafana&#x2F;grafana-storage:&#x2F;var&#x2F;lib&#x2F;grafana \
-grafana&#x2F;grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:3000/</code>即可查看页面<br>初始密码为 admin/admin，首次登陆需要修改密码。</p>
-<h3 id="拉取并允许-alertmanager"><a href="#拉取并允许-alertmanager" class="headerlink" title="拉取并允许 alertmanager"></a>拉取并允许 alertmanager</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9093:9093 \
---name alertmanager \
-prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>http://192.168.1.3:9093/</code>即可查看页面<br>配置文件在<code>/etc/alertmanager/alertmanager.yml</code></p>
-<h3 id="数据展示"><a href="#数据展示" class="headerlink" title="数据展示"></a>数据展示</h3><p>修改 prometheus 的配置文件，其中 scrape_configs 的配置部分修改为</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'prometheus'</span>
-    static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9090'</span><span class="token punctuation">]</span>
-  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'cadvisor'</span>
-    static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:8080'</span><span class="token punctuation">]</span>
-  <span class="token punctuation">-</span> job_name<span class="token punctuation">:</span> <span class="token string">'node'</span>
-    scrape_interval<span class="token punctuation">:</span> 8s
-    static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'192.168.1.3:9100'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入<code>kill -HUP 1</code>重新加载配置文件，输入<code>http://192.168.1.3:3000/</code>进入 grafana 控制台</p>
-<ol>
-<li>新增并配置 datasource，地址填写 prometheus 的地址即可</li>
-<li>进入 grafana 官网找 dashboard 的模板，记下模板号，到 grafana 页面的 dashboard 页面 import 即可。</li>
-</ol>
-<h3 id="邮件报警"><a href="#邮件报警" class="headerlink" title="邮件报警"></a>邮件报警</h3><p>修改 prometheus 的配置文件，其中部分配置修改为</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">alerting</span><span class="token punctuation">:</span>
-  alertmanagers<span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> static_configs<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> targets<span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> 192.168.1.3<span class="token punctuation">:</span><span class="token number">9093</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">rule_files</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> <span class="token string">"node_down.yml"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>在该配置文件的同级目录下新建 node_down.yml 文件</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">groups</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> node_down
-    rules<span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> alert<span class="token punctuation">:</span> InstanceDown
-        expr<span class="token punctuation">:</span> up == 0
-        for<span class="token punctuation">:</span> 1m
-        labels<span class="token punctuation">:</span>
-          user<span class="token punctuation">:</span> test
-        annotations<span class="token punctuation">:</span>
-          summary<span class="token punctuation">:</span> <span class="token string">"Instance &#123;&#123; $labels.instance &#125;&#125; down"</span>
-          description<span class="token punctuation">:</span> <span class="token string">"&#123;&#123; $labels.instance &#125;&#125; of job &#123;&#123; $labels.job &#125;&#125; has been down for more than 1 minutes."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>输入</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it alertmanager sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>进入 alertmanager 的 shell，配置 alertmanager 的配置文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;alertmanager&#x2F;alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>修改为</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">global</span><span class="token punctuation">:</span>
-  resolve_timeout<span class="token punctuation">:</span> 5m
-  smtp_from<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
-  smtp_smarthost<span class="token punctuation">:</span> <span class="token string">"smtp.126.com:25"</span>
-  smtp_auth_username<span class="token punctuation">:</span> <span class="token string">"mailname@126.com"</span>
-  smtp_auth_password<span class="token punctuation">:</span> <span class="token string">"XXXXXXXXXXX"</span>
-  smtp_require_tls<span class="token punctuation">:</span> <span class="token boolean important">false</span>
-<span class="token key atrule">route</span><span class="token punctuation">:</span>
-  group_by<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">]</span>
-  group_wait<span class="token punctuation">:</span> 10s
-  group_interval<span class="token punctuation">:</span> 10s
-  repeat_interval<span class="token punctuation">:</span> 10m
-  receiver<span class="token punctuation">:</span> <span class="token string">"email"</span>
-<span class="token key atrule">receivers</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> name<span class="token punctuation">:</span> <span class="token string">"email"</span>
-    email_configs<span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> to<span class="token punctuation">:</span> <span class="token string">"mailname@qq.com"</span>
-<span class="token key atrule">inhibit_rules</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> source_match<span class="token punctuation">:</span>
-      severity<span class="token punctuation">:</span> <span class="token string">"critical"</span>
-    target_match<span class="token punctuation">:</span>
-      severity<span class="token punctuation">:</span> <span class="token string">"warning"</span>
-    equal<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"alertname"</span><span class="token punctuation">,</span> <span class="token string">"dev"</span><span class="token punctuation">,</span> <span class="token string">"instance"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>其中 smtp_auth_password 为邮件地址，也可以配置 qq 邮箱的报警，还可以配置企业微信和钉钉相关的报警。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Devops</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>devops</tag>
-        <tag>prometheus</tag>
-        <tag>grafana</tag>
-        <tag>数据采集</tag>
-        <tag>邮件告警</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tabindex之焦点移动</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
-    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见 visibility:hidden，焦点就不会自动移动过去了。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Javascript</category>
-      </categories>
-      <tags>
-        <tag>tabindex</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用docker+minio实现对象存储</title>
     <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
     <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
 <a id="more"></a>
 
-<h2 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h2><p>创建 minio 服务器并设置账号密码为 admin/2345678，密码至少需要 8 位数。</p>
+<h2 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h2><p>创建 minio 服务器并设置账号密码为 admin/12345678，密码至少需要 8 位数。</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9000:9000 --name minio -v d:\docker\minio\data:&#x2F;data -e &quot;MINIO_ACCESS_KEY&#x3D;admin&quot; -e &quot;MINIO_SECRET_KEY&#x3D;12345678&quot; minio&#x2F;minio server &#x2F;data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这时候打开浏览器输入<code>http://127.0.0.1:9000/</code>能访问到 minio，输入账号密码即可进入。<br>进入页面之后新建一个 bucket，取名 testpic，然后上传几张图片。</p>
@@ -977,6 +975,30 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       </tags>
   </entry>
   <entry>
+    <title>node+npm更新</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-npm%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
+<a id="more"></a>
+
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
+<p>查看 node 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 npm 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\用户名\AppData\Roaming</code>文件夹下有一个 npm 和 npm-cache 文件，这里应该有 npm 的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Node</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+        <tag>npm-cache</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>回车换行问题</title>
     <url>/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p>记录一次换行符引发的问题。</p>
@@ -1030,6 +1052,23 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
         <tag>autocrlf</tag>
         <tag>crlf</tag>
         <tag>lf</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tabindex之焦点移动</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
+    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
+<a id="more"></a>
+
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见 visibility:hidden，焦点就不会自动移动过去了。</p>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Javascript</category>
+      </categories>
+      <tags>
+        <tag>tabindex</tag>
       </tags>
   </entry>
   <entry>
