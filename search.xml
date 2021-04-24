@@ -53,101 +53,6 @@
       </tags>
   </entry>
   <entry>
-    <title>git push 报错解决</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Git/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<p>记一次 <code>git push</code> 的报错解决。</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>用 hexo 写博客提交的时候报错了 fatal: TaskCanceledException encountered.，有时候是这个 fatal: HttpRequestException encountered.<br>使用网上的方式均不管用，下载了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9HaXQtQ3JlZGVudGlhbC1NYW5hZ2VyLWZvci1XaW5kb3dzL3JlbGVhc2Vz">凭证管理<i class="fa fa-external-link-alt"></i></span>安装完成，也下载了新版本的 git 并更新。用以下命令行的方式也试过。</p>
-<p>配置 credential.helper 为 manager。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>试过了，不行。</p>
-<p>删除系统级别的 credential.helper。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>也不行。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>git 的配置指令有 3 个层级，详细信息可参考 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS8=">git-scm.com<i class="fa fa-external-link-alt"></i></span> 的 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span>。<br>分别是</p>
-<ul>
-<li>system（系统级别）</li>
-<li>global（用户级别）</li>
-<li>local（仓库级别）</li>
-</ul>
-<p>优先级为 local &gt; global &gt; system。local 位置在项目的<code>.git/config</code>，global 位置在每个用户的<code>~/.gitconfig</code>，system 位置在 git 安装目录的<code>etc/gitconfig</code>。我们可以直接修改文件，或者用命令行的方式修改。详细查看<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyLyVFOCU4NyVBQSVFNSVBRSU5QSVFNCVCOSU4OS1HaXQtJUU5JTg1JThEJUU3JUJEJUFFLUdpdA==">自定义 Git - 配置 Git<i class="fa fa-external-link-alt"></i></span></p>
-<p>读取配置命令分别为：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --list
-$ git config --global --list
-$ git config --system --list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>查找<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyL0dpdC0lRTUlQjclQTUlRTUlODUlQjctJUU1JTg3JUFEJUU4JUFGJTgxJUU1JUFEJTk4JUU1JTgyJUE4">Git 的系统凭证管理<i class="fa fa-external-link-alt"></i></span>，credential.helper 可选的存储方式为:</p>
-<h3 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h3><p>将凭证存放在内存中一段时间。 密码永远不会被存储在磁盘中，并且在 15 分钟后从内存中清除。</p>
-<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p>将凭证用明文的形式存放在磁盘中，并且永不过期。 这意味着除非你修改了你在 Git 服务器上的密码，否则你永远不需要再次输入你的凭证信息。 这种方式的缺点是你的密码是用明文的方式存放在你的 home 目录下。</p>
-<h3 id="osxkeychain"><a href="#osxkeychain" class="headerlink" title="osxkeychain"></a>osxkeychain</h3><p>如果你使用的是 Mac，Git 还有一种 “osxkeychain” 模式，它会将凭证缓存到你系统用户的钥匙串中。 这种方式将凭证存放在磁盘中，并且永不过期，但是是被加密的，这种加密方式与存放 HTTPS 凭证以及 Safari 的自动填写是相同的。</p>
-<h3 id="manager"><a href="#manager" class="headerlink" title="manager"></a>manager</h3><p>如果你使用的是 Windows，你可以安装一个叫做 “Git Credential Manager for Windows” 的辅助工具。 这和上面说的 <code>osxkeychain</code>十分类似，但是是使用 <code>Windows Credential Store</code> 来控制敏感信息。 可以在<code>https://github.com/Microsoft/Git-Credential-Manager-for-Windows</code> 下载。</p>
-<p>git 在本地有多种方式来存储本地凭证。存储方式有三种：manager、wincred 和 store，可以在 git 安装目录的<code>mingw64/libexec/git-core</code> 路径下找到对应的 exe 文件：<code>git-credential-manager</code>、<code>git-credential-store</code> 和 <code>git-credential-wincred</code>。wincred 是 Windows 默认的凭证存储模式，其中 manager 模式也是采用的 store 的方式来存储。</p>
-<p>其中用 manager 会把用户信息加密，wincred 则不会。</p>
-<p>这里可以先把原有的 credential.helper 删除</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --unset credential.helper
-$ git config --global --unset credential.helper
-$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>然后再配置 credential.helper 为 manager</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看是否配置成功</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global --list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>问题解决。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-        <tag>credential</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>github图片加载不出来问题解决</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/github%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<p>最近 github 上图片一直加载不出来，以前是用的 Chrome 插件 Ghelper，最近 Ghelper 开启之后 github 无法访问，这里用了另外一种解决方法。</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>github 上面图片加载有问题。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>这里我们设置域名指定 ip，以 Windwos 系统为例，文件位置在<code>C:\Windows\System32\drivers\etc</code>，打开之后添加以下代码</p>
-<pre class="line-numbers language-none"><code class="language-none"># GitHub Start
-192.30.255.112	gist.github.com
-192.30.255.112	github.com
-192.30.255.112	www.github.com
-151.101.56.133	avatars0.githubusercontent.com
-151.101.56.133	avatars1.githubusercontent.com
-151.101.56.133	avatars2.githubusercontent.com
-151.101.56.133	avatars3.githubusercontent.com
-151.101.56.133	avatars4.githubusercontent.com
-151.101.56.133	avatars5.githubusercontent.com
-151.101.56.133	avatars6.githubusercontent.com
-151.101.56.133	avatars7.githubusercontent.com
-151.101.56.133	avatars8.githubusercontent.com
-151.101.56.133	camo.githubusercontent.com
-151.101.56.133	cloud.githubusercontent.com
-151.101.56.133	gist.githubusercontent.com
-151.101.56.133	marketplace-screenshots.githubusercontent.com
-151.101.56.133	raw.githubusercontent.com
-151.101.56.133	repository-images.githubusercontent.com
-151.101.56.133	user-images.githubusercontent.com
-# GitHub End<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>再去打开 github，图片加载成功。</p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>github</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Sentry部署</title>
     <url>/%E5%BC%80%E5%8F%91/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p>Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
@@ -176,7 +81,7 @@ $ git config --system --unset credential.helper<span aria-hidden="true" class="l
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjOTc7JiMxMDU7JiMxMDg7JiN4NmU7JiN4NjE7JiN4NmQ7JiN4NjU7JiN4NDA7JiN4NzE7JiMxMTM7JiM0NjsmI3g2MzsmI3g2ZjsmIzEwOTs=">&#109;&#97;&#105;&#108;&#x6e;&#x61;&#x6d;&#x65;&#x40;&#x71;&#113;&#46;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjeDYxOyYjMTA1OyYjeDZjOyYjeDZlOyYjeDYxOyYjMTA5OyYjeDY1OyYjeDQwOyYjMTEzOyYjeDcxOyYjeDJlOyYjOTk7JiN4NmY7JiMxMDk7">&#109;&#x61;&#105;&#x6c;&#x6e;&#x61;&#109;&#x65;&#x40;&#113;&#x71;&#x2e;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h2 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -186,7 +91,7 @@ $ git config --system --unset credential.helper<span aria-hidden="true" class="l
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
 $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjOTc7JiN4Njk7JiN4NmM7JiMxMTA7JiN4NjE7JiMxMDk7JiMxMDE7JiN4NDA7JiMxMTM7JiN4NzE7JiM0NjsmIzk5OyYjeDZmOyYjeDZkOw==">&#109;&#97;&#x69;&#x6c;&#110;&#x61;&#109;&#101;&#x40;&#113;&#x71;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjeDZkOyYjOTc7JiN4Njk7JiMxMDg7JiN4NmU7JiN4NjE7JiMxMDk7JiMxMDE7JiN4NDA7JiMxMTM7JiN4NzE7JiN4MmU7JiM5OTsmI3g2ZjsmIzEwOTs=">&#x6d;&#97;&#x69;&#108;&#x6e;&#x61;&#109;&#101;&#x40;&#113;&#x71;&#x2e;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h3 id="配置邮箱告警"><a href="#配置邮箱告警" class="headerlink" title="配置邮箱告警"></a>配置邮箱告警</h3><p><code>$ docker exec -it my-sentry bash</code>进入控制台</p>
 <p><code>$ vi /etc/sentry/config.yml</code></p>
 <p>腾讯示例：</p>
@@ -206,7 +111,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiN4NzA7JiN4NmM7JiN4NjU7JiN4NDA7JiN4NmQ7JiM5NzsmI3g2OTsmI3g2YzsmI3gyZTsmIzk5OyYjMTExOyYjMTA5Ow==">&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#x65;&#x40;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjMTA5OyYjMTEyOyYjeDZjOyYjMTAxOyYjeDQwOyYjMTA5OyYjeDYxOyYjeDY5OyYjMTA4OyYjeDJlOyYjOTk7JiN4NmY7JiN4NmQ7">&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x40;&#109;&#x61;&#x69;&#108;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -226,7 +131,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjOTc7JiN4NmQ7JiN4NzA7JiMxMDg7JiN4NjU7JiM2NDsmIzEwOTsmIzk3OyYjMTA1OyYjeDZjOyYjeDJlOyYjeDYzOyYjMTExOyYjMTA5Ow==">&#101;&#120;&#97;&#x6d;&#x70;&#108;&#x65;&#64;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjMTA5OyYjeDcwOyYjMTA4OyYjMTAxOyYjNjQ7JiN4NmQ7JiM5NzsmI3g2OTsmI3g2YzsmI3gyZTsmIzk5OyYjMTExOyYjeDZkOw==">&#101;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#64;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -509,6 +414,281 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
       </tags>
   </entry>
   <entry>
+    <title>docker+gitlab+jenkins+ssh实现代码自动构建部署</title>
+    <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 gitlab/gitlab-ce 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080</p>
+<a id="more"></a>
+
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 10080:80 --name gitlab twang2218&#x2F;gitlab-ce-zh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果是本机 windows 想要尝试社区镜像的，可以使用下面的代码</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker volume create gitlab-logs
+$ docker volume create gitlab-data
+$ docker run -d -p 10443:443 -p 10080:80 -p 10822:22 --name $ gitlab -v d:&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab -v gitlab-logs:&#x2F;var&#x2F;log&#x2F;gitlab -v gitlab-data:&#x2F;var&#x2F;opt&#x2F;gitlab gitlab&#x2F;gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>如果是 linux 的话要尝试社区镜像网上就很多了。<br>需要注意下 <strong>gitlab 的 webhook 配置的钩子地址是不允许内网的，比如 192.168、172.16 或者 10 开头的，这时候需要用 gitlab 的管理员账号（root）登陆去修改允许 webhook 的本地请求</strong>。<br>用 root 账号登陆之后左上角有一个小扳手的图标<code>Admin area =&gt; Settings =&gt; Network</code>勾选允许本地网络的请求即可。<br>这里就涉及到管理员账号的密码，网上很多参考说是系统默认的用户名：<code>root</code>，密码：<code>5iveL!fe</code>，试过了没有用，就只能自己去修改。这里可以参考官方<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvc2VjdXJpdHkvcmVzZXRfcm9vdF9wYXNzd29yZC5odG1sI2hvdy10by1yZXNldC15b3VyLXJvb3QtcGFzc3dvcmQ=">How to reset your root password<i class="fa fa-external-link-alt"></i></span><br>这里有坑的是安装社区版 gitlab/gitlab-ce 查不到用户。<br>进入 tty</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it gitlab bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>正常的修改密码代码如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">gitlab-rails console -e production
+user &#x3D; User.where(id: 1).first或者user &#x3D; User.find_by(email: &#39;admin@example.com&#39;)
+user.password &#x3D; 12345678
+user.password_confirmation &#x3D; 12345678
+user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里查询到的<code>User.where(id: 1).first</code>为 nil，就是 none 的意思，这里不知道怎么解决。还好汉化的那个版本可以直接设置 root 密码。<br>到这一步 gitlab 就可以使用了，但是 clone 的地址没有设置，clone 的地址目前是显示为一串字母。这里需要在<br><code>vi /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml</code>修改为需要暴露的 ip 和端口<br>然后<code>gitlab-ctl restart</code>重启 gitlab 即可。</p>
+<h2 id="安装-jenkins"><a href="#安装-jenkins" class="headerlink" title="安装 jenkins"></a>安装 jenkins</h2><p>安装 jenkins 就简便许多，端口映射到 18080，这里 jenkins 的配置文件后面都在<code>/var/jenkins_home/</code>这个文件夹下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 18080:8080 -p 50000:50000 --name jenkins -v d:&#x2F;docker&#x2F;jenkins:&#x2F;var&#x2F;jenkins_home jenkins&#x2F;jenkins:lts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>后面由于涉及到 maven 环境的安装，所以进入 bash 环境的时候可以指定账号</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u 0 jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里-u 可以指定 username 或者 uid，也可以写成</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u root jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>打开网页，需要输入首次的密码，可以在<code>/var/jenkins_home/secrets/initialAdminPassword</code>找到。<br>进入之后可以选择配置插件，也可以跳过后面再来配置。这里选择的跳过。<br><strong>如果退出之后不知道管理员的密码</strong>，可以打开<code>/var/jenkins_home/users/adminXXX</code>里面的 config.xml，找到 passwordHash，设置为<code>#jbcrypt:$2a$10$MiIVR0rr/UhQBqT.bBq0QehTiQVqgNpUGyWW2nJObaVAM/2xSQdSq</code><br>这个是编码过后的 123456，这样你的管理员账号就设置为了 123456.</p>
+<h2 id="安装-jenkins-插件"><a href="#安装-jenkins-插件" class="headerlink" title="安装 jenkins 插件"></a>安装 jenkins 插件</h2><p>安装插件这里由于官方的仓库比较慢而且经常失败，这里可以换其他源，这里可以选择清华大学的<code> https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/2.60/update-center.json</code><br>这里有个坑是清华是把这个文件镜像过来了，但是没有把里面的插件升级地址改成清华，所以下载还是有问题，这里解决方式有两种</p>
+<h3 id="nginx-代理"><a href="#nginx-代理" class="headerlink" title="nginx 代理"></a>nginx 代理</h3><p>将所有<code>http://updates.jenkins-ci.org/download</code>代理到<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code> 。</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>打开<code>/var/jenkins_home/updates/default.json</code>，将所有的<code>http://updates.jenkins-ci.org/download</code>,有的是<code>https://updates.jenkins.io/download</code>批量修改为<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code>，一劳永逸。</p>
+<p>这里添加几个常用的插件<strong>Maven Integration</strong>、<strong>GitLab</strong>、<strong>GitLab Hook</strong>、<strong>Publish Over SSH</strong></p>
+<h2 id="jenkins-配置"><a href="#jenkins-配置" class="headerlink" title="jenkins 配置"></a>jenkins 配置</h2><p>配置之前先添加两个凭据。</p>
+<ol>
+<li>用于 gitlab 的 accessToken<br>首先登陆 gitlab<code>用户 =&gt; 设置 =&gt; accessToken</code>，填写名称和过期时间，勾选 api，点击生成 accessToken，这里要记录下 token，如果刷新了 token 就没了。<br>登陆到 jenkins，<code>Manage Jenkins =&gt; Manage Credentials</code>点击全局凭证，<code>Add Credentials</code>选择<code>Gitlab API token</code>，填写 accessToken。</li>
+<li>用于 gitlab 的登陆账号和密码<br>还是在全局凭证，点击添加凭证，类型选择<code>Username with password</code>，填写用户拉取代码的 gitlab 账号和用户名</li>
+</ol>
+<p>添加完成之后配置 gitlab 的连接地址和需要 ssh 部署的地址。<br>点击<code>Manage Jenkins =&gt; Configure System</code>里面的 gitlab 配置，填写你的 gitlab 名称 <code>Connection name</code>，gitlab 地址，我这里是<code>http://192.168.7.104:10080</code>，名称为”jenkins_for_gitlab”，凭证选择刚才新建的第一个凭证<code>Gitlab API token</code>，添加完成之后点击<code>Test Connection</code>测试，如果配置正确提示 Success。<br>然后添加 ssh 配置 <code>Publish over SSH</code>，<code>SSH Servers</code> 填写 ssh 的地址，账号，以及远程位置，这里可以直接设置为想要部署的位置，我这里设置为根目录<code>/</code>。<br>高级里面填写端口、密码，之后测试<code>Test Configuration</code>，之后 save 保存。</p>
+<h2 id="配置全局-jdk-和-maven"><a href="#配置全局-jdk-和-maven" class="headerlink" title="配置全局 jdk 和 maven"></a>配置全局 jdk 和 maven</h2><p>这一步需要安装 jenkins 的机器安装 jdk 和 maven。<br>一般安装 jenkins 的时候已经安装了 jdk，这里还需要安装 maven。<br>这里下载了压缩包到<code>/usr/local/</code>下面然后 unzip 解压，文件夹是 apache-maven-3.6.3。<br>需要修改环境变量，先下载一个 vim。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get update -y
+$ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>这里我 jdk 的文件名为 openjdk-8。<br>maven 和 jdk 都放在了<code>/usr/local</code> 下面。<br>安装完成后编辑环境变量<code>vi /etc/profile</code>，在文件末尾添加</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">MAVEN_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/apache-maven-3.6.3</span>
+<span class="token attr-name">JAVA_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/openjdk-8</span>
+<span class="token attr-name">CLASS_PATH</span><span class="token punctuation">=</span><span class="token attr-value">$JAVA_HOME/lib/</span>
+<span class="token attr-name">PATH</span><span class="token punctuation">=</span><span class="token attr-value">$PATH:$MAVEN_HOME/bin:$JAVA_HOME/bin</span>
+<span class="token attr-name">export</span> <span class="token attr-value">PATH MAVEN_HOME JAVA_HOME CLASS_PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>配置完成之后输入<code>source /etc/profile</code>使配置文件生效。到这里可以测试下安装是否成功</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mvn -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击<code>Manage Jenkins =&gt; Global Tool Configuration</code>。<br>选择 <code>JDK installations</code>，填写 jdk 名称和路径<code>/usr/local/openjdk-8</code>。<br>选择 Maven installations，填写 maven 的名称和路径<code>/usr/local/apache-maven-3.6.3</code>，然后 save 保存。</p>
+<h2 id="通过-SSH-部署到远程服务器"><a href="#通过-SSH-部署到远程服务器" class="headerlink" title="通过 SSH 部署到远程服务器"></a>通过 SSH 部署到远程服务器</h2><h3 id="前端部署"><a href="#前端部署" class="headerlink" title="前端部署"></a>前端部署</h3><p>到 jenkins 主界面，左侧导航栏选择 <code>New Item</code>,填写名称，选择 <code>Freestyle project</code>，在配置 <code>configure</code> 里面，</p>
+<ul>
+<li><p><code>General</code>—在 <code>Gitlab Connection</code> 选择在配置里面设置的 gitlab 的连接”jenkins for gitlab”。</p>
+</li>
+<li><p><code>Source Code Management</code>—选择 git，仓库地址填写需要部署的项目的仓库地址，凭证选择建立好的 gitlab 的登陆账号密码，分支这里测试是直接选的 master 分支，</p>
+</li>
+<li><p><code>Build Triggers</code>—勾选<code>Build when a change is pushed to GitLab. GitLab webhook URL: http://192.168.7.104:18080/project/testDist</code>，这里需要记录下这个 webhook 地址，填写到 gitlab 的时候需要。<br>点击高级选项，点击 Generate 生成 <code>Secret token</code>，这里我们记录下这个 token，<code>b3d5a618874a8335XXXXXXXXX</code></p>
+</li>
+<li><p><code>Build Environment</code>—这里可以配置在 build 之前或者 build 之后的操作，比如我们需要 build 之后将生成的<code>/dist</code> 文件夹通过 SSH 部署到远程服务器。<br><code>SSH Server</code> 选择配置的地址.<br><code>Source files</code> 填写<code>dist/</code>即为 dist 下面所有文件.<br><code>Remote directory</code> 填写<code>home/</code><br>意思是将 jenkins 下面 workspace 的文件拷贝到远程服务器的 home 文件夹下，其中 <code>Exec command</code> 还可以填写需要在远程服务器执行的操作，比如 tomcat 的关闭与启动等等。</p>
+</li>
+</ul>
+<h3 id="后端-jar-包部署"><a href="#后端-jar-包部署" class="headerlink" title="后端 jar 包部署"></a>后端 jar 包部署</h3><p>jar 包部署与前端部署一样，在 <code>Build Environment</code> 中 <code>Source files</code> 填写<code>target/*.jar</code>。<br><code>Remove prefix</code> 删除前缀这里填写<code>target</code>。<br><code>Remote directory</code> 填写需要部署打的 jar 包位置。<br>这里 build 可以设置打包命令为<code>mvn clear package</code>。<br><code>nohup java -jar XXXX.jar &amp;</code>启动 jar 包，也可以写一些执行脚本在服务器上运行。</p>
+<h2 id="配置-gitlab-执行自动触发构建部署"><a href="#配置-gitlab-执行自动触发构建部署" class="headerlink" title="配置 gitlab 执行自动触发构建部署"></a>配置 gitlab 执行自动触发构建部署</h2><p>进入 gitlab 选择需要部署的项目，<code>设置 =&gt; 集成</code>里面填写 webhook，链接填写为 jenkins 里面生成的链接，如<code>http://192.168.7.104:18080/project/testDist</code>，安全令牌填写<code>b3d5a618874a83358bc0aXXXXX</code>。<br>选择 push 触发，分支选择 master，这样 master 分支提交 push 的时候就会触发这个 webhook，保存之后可以 test 测试<code>Push events</code>，如果成功则提示<code> Hook executed successfully: HTTP 200</code>，如果提示<code> Requests to localhost are not allowed</code>，就需要登陆管理员账号开启内网请求权限，参照文章第一点<a href="#%E5%AE%89%E8%A3%85-gitlab">安装-gitlab</a></p>
+<h2 id="查看任务的-log"><a href="#查看任务的-log" class="headerlink" title="查看任务的 log"></a>查看任务的 log</h2><p>进入任务，左侧导航<code>Console Output</code>可查询 jenkins 日志。<br><strong>build 生成的文件可在 <code>/var/jenkins_home/workspace</code> 下面查看</strong></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Devops</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>gitlab</tag>
+        <tag>ssh</tag>
+        <tag>devops</tag>
+        <tag>jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>github图片加载不出来问题解决</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/github%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>最近 github 上图片一直加载不出来，以前是用的 Chrome 插件 Ghelper，最近 Ghelper 开启之后 github 无法访问，这里用了另外一种解决方法。</p>
+<a id="more"></a>
+
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>github 上面图片加载有问题。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>这里我们设置域名指定 ip，以 Windwos 系统为例，文件位置在<code>C:\Windows\System32\drivers\etc</code>，打开之后添加以下代码</p>
+<pre class="line-numbers language-none"><code class="language-none"># GitHub Start
+192.30.255.112	gist.github.com
+192.30.255.112	github.com
+192.30.255.112	www.github.com
+151.101.56.133	avatars0.githubusercontent.com
+151.101.56.133	avatars1.githubusercontent.com
+151.101.56.133	avatars2.githubusercontent.com
+151.101.56.133	avatars3.githubusercontent.com
+151.101.56.133	avatars4.githubusercontent.com
+151.101.56.133	avatars5.githubusercontent.com
+151.101.56.133	avatars6.githubusercontent.com
+151.101.56.133	avatars7.githubusercontent.com
+151.101.56.133	avatars8.githubusercontent.com
+151.101.56.133	camo.githubusercontent.com
+151.101.56.133	cloud.githubusercontent.com
+151.101.56.133	gist.githubusercontent.com
+151.101.56.133	marketplace-screenshots.githubusercontent.com
+151.101.56.133	raw.githubusercontent.com
+151.101.56.133	repository-images.githubusercontent.com
+151.101.56.133	user-images.githubusercontent.com
+# GitHub End<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>再去打开 github，图片加载成功。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git push 报错解决</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Git/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>记一次 <code>git push</code> 的报错解决。</p>
+<a id="more"></a>
+
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>用 hexo 写博客提交的时候报错了 fatal: TaskCanceledException encountered.，有时候是这个 fatal: HttpRequestException encountered.<br>使用网上的方式均不管用，下载了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9HaXQtQ3JlZGVudGlhbC1NYW5hZ2VyLWZvci1XaW5kb3dzL3JlbGVhc2Vz">凭证管理<i class="fa fa-external-link-alt"></i></span>安装完成，也下载了新版本的 git 并更新。用以下命令行的方式也试过。</p>
+<p>配置 credential.helper 为 manager。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>试过了，不行。</p>
+<p>删除系统级别的 credential.helper。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>也不行。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>git 的配置指令有 3 个层级，详细信息可参考 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS8=">git-scm.com<i class="fa fa-external-link-alt"></i></span> 的 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span>。<br>分别是</p>
+<ul>
+<li>system（系统级别）</li>
+<li>global（用户级别）</li>
+<li>local（仓库级别）</li>
+</ul>
+<p>优先级为 local &gt; global &gt; system。local 位置在项目的<code>.git/config</code>，global 位置在每个用户的<code>~/.gitconfig</code>，system 位置在 git 安装目录的<code>etc/gitconfig</code>。我们可以直接修改文件，或者用命令行的方式修改。详细查看<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyLyVFOCU4NyVBQSVFNSVBRSU5QSVFNCVCOSU4OS1HaXQtJUU5JTg1JThEJUU3JUJEJUFFLUdpdA==">自定义 Git - 配置 Git<i class="fa fa-external-link-alt"></i></span></p>
+<p>读取配置命令分别为：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --list
+$ git config --global --list
+$ git config --system --list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>查找<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyL0dpdC0lRTUlQjclQTUlRTUlODUlQjctJUU1JTg3JUFEJUU4JUFGJTgxJUU1JUFEJTk4JUU1JTgyJUE4">Git 的系统凭证管理<i class="fa fa-external-link-alt"></i></span>，credential.helper 可选的存储方式为:</p>
+<h3 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h3><p>将凭证存放在内存中一段时间。 密码永远不会被存储在磁盘中，并且在 15 分钟后从内存中清除。</p>
+<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p>将凭证用明文的形式存放在磁盘中，并且永不过期。 这意味着除非你修改了你在 Git 服务器上的密码，否则你永远不需要再次输入你的凭证信息。 这种方式的缺点是你的密码是用明文的方式存放在你的 home 目录下。</p>
+<h3 id="osxkeychain"><a href="#osxkeychain" class="headerlink" title="osxkeychain"></a>osxkeychain</h3><p>如果你使用的是 Mac，Git 还有一种 “osxkeychain” 模式，它会将凭证缓存到你系统用户的钥匙串中。 这种方式将凭证存放在磁盘中，并且永不过期，但是是被加密的，这种加密方式与存放 HTTPS 凭证以及 Safari 的自动填写是相同的。</p>
+<h3 id="manager"><a href="#manager" class="headerlink" title="manager"></a>manager</h3><p>如果你使用的是 Windows，你可以安装一个叫做 “Git Credential Manager for Windows” 的辅助工具。 这和上面说的 <code>osxkeychain</code>十分类似，但是是使用 <code>Windows Credential Store</code> 来控制敏感信息。 可以在<code>https://github.com/Microsoft/Git-Credential-Manager-for-Windows</code> 下载。</p>
+<p>git 在本地有多种方式来存储本地凭证。存储方式有三种：manager、wincred 和 store，可以在 git 安装目录的<code>mingw64/libexec/git-core</code> 路径下找到对应的 exe 文件：<code>git-credential-manager</code>、<code>git-credential-store</code> 和 <code>git-credential-wincred</code>。wincred 是 Windows 默认的凭证存储模式，其中 manager 模式也是采用的 store 的方式来存储。</p>
+<p>其中用 manager 会把用户信息加密，wincred 则不会。</p>
+<p>这里可以先把原有的 credential.helper 删除</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --unset credential.helper
+$ git config --global --unset credential.helper
+$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>然后再配置 credential.helper 为 manager</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看是否配置成功</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global --list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>问题解决。</p>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>credential</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo+github-pages搭建个人博客</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
+<a id="more"></a>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>需要先安装好 nodejs、git，注册登录 github，熟悉一些 markdown 语法等暂且不表。</p>
+<h2 id="github-新建仓库"><a href="#github-新建仓库" class="headerlink" title="github 新建仓库"></a>github 新建仓库</h2><p>github 上新建一个仓库，名字为 <code>username.git.io</code>，仓库需要配置为 public。这里的 username 就是你 github 的名字，比如 github 用户名是 FreedomAnt，仓库就取名为 <code>freedomant.github.io</code>。<br>这样写的原因是 github-pages 能自动将该仓库用为 github-pages 的域名所在仓库，即后面不用跟项目名了。<br>进入该仓库，进入设置页面<code>Settings =&gt; Options</code>里面有一个<code>GitHub Pages</code>配置，如图所示:<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105171032.png" alt="github pages 设置截图"><br>这里可以设置分支，默认 github 是会新建一个 gh-pages 的分支。</p>
+<h2 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h2><p>这里使用的全局安装</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install -g hexo-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>新建一个项目，项目名就叫 blog。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo init blog<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>有几个快捷键比较常用</p>
+<ol>
+<li><code>hexo clean</code>清空生成的静态文件和缓存。</li>
+<li><code>hexo s</code>是<code>hexo server</code>的缩写，启动一个默认 4000 端口的本地服务。</li>
+<li><code>hexo n [name]</code>是<code>hexo new [name]</code>的缩写，新建一篇文章</li>
+<li><code>hexo g</code>是<code>hexo generate</code>的缩写，生成静态文件。</li>
+<li><code>hexo d</code>是<code>hexo deploy</code>的缩写，部署到配置的仓库或者服务器。</li>
+</ol>
+<p>生成静态文件和部署可以用一条命令表示<code>hexo g -d</code>或者<code>hexo d -g</code>。<br>安装完成之后有几个主要的文件和目录，配置文件<code>_config.yml</code>，<code>source</code>文件夹是放文章和样式图片等。<code>themes</code>是用于放主题文件。</p>
+<h2 id="Hexo-配置"><a href="#Hexo-配置" class="headerlink" title="Hexo 配置"></a>Hexo 配置</h2><p>安装完成之后在<code>_config.yml</code>配置。<br><code>theme: next</code>这里配置主题的名字，主题放 themes 文件夹下。这里配置的是 next 主题。<br>这里采用 git 方式部署博客，先安装一个 hexo-deployer-git。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install hexo-deployer-git --save<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>安装完成之后在<code>_config.yml</code>里配置部署的服务。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> git
+  <span class="token key atrule">repo</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//github.com/FreedomAnt/freedomant.github.io.git
+  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里分支选择 gh-pages，就是<a href="#github-%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93">github 新建仓库</a>里的生成分支。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo n [文章名称]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里写完文章以后依次输入以下命令：</p>
+<p>清空缓存</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>本地先跑一个服务看下效果</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>生成静态文件并部署</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo g -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样就生成了博客，在浏览器输入地址即可访问<code>https://freedomant.github.io</code>，如果你买了域名可以添加到 source 下面的 CNAME 文件。如果需要修改主题的配置文件，可以在项目根目录下面新建一个<code>_config.[theme name].yml</code>，将<code>themes/next/_config.yml</code>里面的内容复制到这个文件，修改主题就在这个文件修改就行。这里用的 next 主题<code>_config.next.yml</code>。这个文件里面的内容在静态页面生成的时候会覆盖掉<code>themes/next/_config.yml</code>的内容。</p>
+<h2 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h2><p>图床这里也是白 piao 的 github，先在 github 里面新建一个项目用于图床。token 生成方式在 github 里面，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; Personal access tokens =&gt; Generate new token</code>这里注意勾选 repo 下的选项。如图所示：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105175136.png" alt="github 配置图床Token"><br>下载好 PicGGo 之后点击图床设置，选择 GitHub 图床，配置如下：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105174115.png" alt="PicGGo中GitHub图床配置"><br>这里的自定义域名有讲究的，填写<code>https://cdn.jsdelivr.net/gh/FreedomAnt/image@main</code>，用 jsdelivr 的黑科技完成 CDN 加速。</p>
+<h2 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h2><p>这里我使用的 vscode 写的文章，vscode 安装插件<code>Markdown All in One</code>、<code>Markdwon Preview Enhanced</code>等。也安装有 typora 软件，typora 是一个所见即所得(WYSIWYG)的 markdown 软件，非常不错。而且 typora 集成 PicGo，typora 的<code>文件 =&gt; 偏好设置 =&gt; 图像 =&gt; 上传服务设定</code>里面选择 PicGo(app)的方式，PicGo-Core 的命令行的方式不是太方便。<br><strong>这里需要注意 PicGo 默认的服务端口开的是 36677，在 PicGo 里<code>PicGo设置 =&gt; 设置Server</code>可设置监听端口，如果想要配置 typora 里面的 PicGo，需要注意测试 PicGo 连接的服务地址端口是不是 36677。</strong></p>
+<h2 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h2><p>next 主题自带的评论插件里面有<code>changyan | disqus | disqusjs | gitalk | livere | valine</code>，这里我选择的 gitalk，对比了几个之后还是选择了 github 的黑科技。valine 也不错，不过我看到 github 上面写 src 目录停止更新的信息，就还是选择了 gitalk。<br>gitalk 配置需要客户端的 id 和密钥。还是在 github 里面生成。<br>进入 github，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; OAuth Apps =&gt; new OAuth Apps</code>。<code>Homepage URL</code>和<code>Authorization callback URL</code>都填写<code>https://freedomant.github.io/</code>，生成的客户端 id 和密钥填到主题配置里面。</p>
+<h2 id="部署到-Vercel"><a href="#部署到-Vercel" class="headerlink" title="部署到 Vercel"></a>部署到 Vercel</h2><p>Vercel 是一个提供使用简单命令就可部署静态页面的服务，由于 github 访问速度慢的原因，在使用测速软件分别测试了很多常见的静态网页部署服务之后，发现比较快的就是国内的 coding 和 gitee，再就是腾讯阿里的对象存储了，Vercel 算是国外里面比较快的了，而且和 github 无缝对接。如果不想花钱买 CDN 加速或者对象存储，可以使用 Vercel，Vercel 以前叫 zeit，安装了之后直接使用一行<code>now XXXX</code>命令就可完成部署。目前已经更名为 Vercel。用 github 关联登录之后，点击<code>Import Preject =&gt; Import Git Repository =&gt; continue</code>填写你的仓库地址<code>https://github.com/FreedomAnt/freedomant.github.io.git</code>。部署命令那不用填写，默认就行。部署好之后就会生成访问的地址了。<br>Vercel 还支持修改默认的分支，进入到关联的项目，点击<code>Settings =&gt; Git =&gt; Production Branch</code>可以修改成博客所在的 gh-pages 分支。<br>Vercel 还支持自定义域名，点击<code>Settings =&gt; Domains</code>一般域名后缀填写 XXX.now.sh 或者 XXX.vercel.app。前一个是 Vercel 未改名前的默认生成后缀，后一个是改名后的默认生成后缀。至此，部署到 Vercel 成功。<br>当调用命令<code>hexo g -d</code>部署到 github 时，会触发 Vercel 的部署，一键部署到两个地方，完美！</p>
+<p><strong>注意：博客原文件和静态页面的分开放两个仓库，博客原文件可以用私有仓库，里面有一些个人配置的信息</strong></p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+        <tag>hexo</tag>
+        <tag>github-pages</tag>
+        <tag>gitalk</tag>
+        <tag>zeit</tag>
+        <tag>vercel</tag>
+        <tag>markdown</tag>
+        <tag>typora</tag>
+        <tag>picgo</tag>
+        <tag>图床</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>node+npm更新</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-npm%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
+<a id="more"></a>
+
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
+<p>查看 node 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 npm 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\用户名\AppData\Roaming</code>文件夹下有一个 npm 和 npm-cache 文件，这里应该有 npm 的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Node</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+        <tag>npm-cache</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>prometheus+grafana实现数据采集展示+邮件告警</title>
     <url>/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/</url>
     <content><![CDATA[<h2 id="prometheus-grafana-实现数据采集展示-邮件告警"><a href="#prometheus-grafana-实现数据采集展示-邮件告警" class="headerlink" title="prometheus+grafana 实现数据采集展示+邮件告警"></a>prometheus+grafana 实现数据采集展示+邮件告警</h2><blockquote>
@@ -654,159 +834,20 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       </tags>
   </entry>
   <entry>
-    <title>docker+gitlab+jenkins+ssh实现代码自动构建部署</title>
-    <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 gitlab/gitlab-ce 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080</p>
+    <title>tabindex之焦点移动</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
+    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
 <a id="more"></a>
 
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 10080:80 --name gitlab twang2218&#x2F;gitlab-ce-zh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>如果是本机 windows 想要尝试社区镜像的，可以使用下面的代码</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker volume create gitlab-logs
-$ docker volume create gitlab-data
-$ docker run -d -p 10443:443 -p 10080:80 -p 10822:22 --name $ gitlab -v d:&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab -v gitlab-logs:&#x2F;var&#x2F;log&#x2F;gitlab -v gitlab-data:&#x2F;var&#x2F;opt&#x2F;gitlab gitlab&#x2F;gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>如果是 linux 的话要尝试社区镜像网上就很多了。<br>需要注意下 <strong>gitlab 的 webhook 配置的钩子地址是不允许内网的，比如 192.168、172.16 或者 10 开头的，这时候需要用 gitlab 的管理员账号（root）登陆去修改允许 webhook 的本地请求</strong>。<br>用 root 账号登陆之后左上角有一个小扳手的图标<code>Admin area =&gt; Settings =&gt; Network</code>勾选允许本地网络的请求即可。<br>这里就涉及到管理员账号的密码，网上很多参考说是系统默认的用户名：<code>root</code>，密码：<code>5iveL!fe</code>，试过了没有用，就只能自己去修改。这里可以参考官方<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvc2VjdXJpdHkvcmVzZXRfcm9vdF9wYXNzd29yZC5odG1sI2hvdy10by1yZXNldC15b3VyLXJvb3QtcGFzc3dvcmQ=">How to reset your root password<i class="fa fa-external-link-alt"></i></span><br>这里有坑的是安装社区版 gitlab/gitlab-ce 查不到用户。<br>进入 tty</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it gitlab bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>正常的修改密码代码如下：</p>
-<pre class="line-numbers language-none"><code class="language-none">gitlab-rails console -e production
-user &#x3D; User.where(id: 1).first或者user &#x3D; User.find_by(email: &#39;admin@example.com&#39;)
-user.password &#x3D; 12345678
-user.password_confirmation &#x3D; 12345678
-user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里查询到的<code>User.where(id: 1).first</code>为 nil，就是 none 的意思，这里不知道怎么解决。还好汉化的那个版本可以直接设置 root 密码。<br>到这一步 gitlab 就可以使用了，但是 clone 的地址没有设置，clone 的地址目前是显示为一串字母。这里需要在<br><code>vi /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml</code>修改为需要暴露的 ip 和端口<br>然后<code>gitlab-ctl restart</code>重启 gitlab 即可。</p>
-<h2 id="安装-jenkins"><a href="#安装-jenkins" class="headerlink" title="安装 jenkins"></a>安装 jenkins</h2><p>安装 jenkins 就简便许多，端口映射到 18080，这里 jenkins 的配置文件后面都在<code>/var/jenkins_home/</code>这个文件夹下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 18080:8080 -p 50000:50000 --name jenkins -v d:&#x2F;docker&#x2F;jenkins:&#x2F;var&#x2F;jenkins_home jenkins&#x2F;jenkins:lts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>后面由于涉及到 maven 环境的安装，所以进入 bash 环境的时候可以指定账号</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u 0 jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这里-u 可以指定 username 或者 uid，也可以写成</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u root jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>打开网页，需要输入首次的密码，可以在<code>/var/jenkins_home/secrets/initialAdminPassword</code>找到。<br>进入之后可以选择配置插件，也可以跳过后面再来配置。这里选择的跳过。<br><strong>如果退出之后不知道管理员的密码</strong>，可以打开<code>/var/jenkins_home/users/adminXXX</code>里面的 config.xml，找到 passwordHash，设置为<code>#jbcrypt:$2a$10$MiIVR0rr/UhQBqT.bBq0QehTiQVqgNpUGyWW2nJObaVAM/2xSQdSq</code><br>这个是编码过后的 123456，这样你的管理员账号就设置为了 123456.</p>
-<h2 id="安装-jenkins-插件"><a href="#安装-jenkins-插件" class="headerlink" title="安装 jenkins 插件"></a>安装 jenkins 插件</h2><p>安装插件这里由于官方的仓库比较慢而且经常失败，这里可以换其他源，这里可以选择清华大学的<code> https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/2.60/update-center.json</code><br>这里有个坑是清华是把这个文件镜像过来了，但是没有把里面的插件升级地址改成清华，所以下载还是有问题，这里解决方式有两种</p>
-<h3 id="nginx-代理"><a href="#nginx-代理" class="headerlink" title="nginx 代理"></a>nginx 代理</h3><p>将所有<code>http://updates.jenkins-ci.org/download</code>代理到<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code> 。</p>
-<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>打开<code>/var/jenkins_home/updates/default.json</code>，将所有的<code>http://updates.jenkins-ci.org/download</code>,有的是<code>https://updates.jenkins.io/download</code>批量修改为<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code>，一劳永逸。</p>
-<p>这里添加几个常用的插件<strong>Maven Integration</strong>、<strong>GitLab</strong>、<strong>GitLab Hook</strong>、<strong>Publish Over SSH</strong></p>
-<h2 id="jenkins-配置"><a href="#jenkins-配置" class="headerlink" title="jenkins 配置"></a>jenkins 配置</h2><p>配置之前先添加两个凭据。</p>
-<ol>
-<li>用于 gitlab 的 accessToken<br>首先登陆 gitlab<code>用户 =&gt; 设置 =&gt; accessToken</code>，填写名称和过期时间，勾选 api，点击生成 accessToken，这里要记录下 token，如果刷新了 token 就没了。<br>登陆到 jenkins，<code>Manage Jenkins =&gt; Manage Credentials</code>点击全局凭证，<code>Add Credentials</code>选择<code>Gitlab API token</code>，填写 accessToken。</li>
-<li>用于 gitlab 的登陆账号和密码<br>还是在全局凭证，点击添加凭证，类型选择<code>Username with password</code>，填写用户拉取代码的 gitlab 账号和用户名</li>
-</ol>
-<p>添加完成之后配置 gitlab 的连接地址和需要 ssh 部署的地址。<br>点击<code>Manage Jenkins =&gt; Configure System</code>里面的 gitlab 配置，填写你的 gitlab 名称 <code>Connection name</code>，gitlab 地址，我这里是<code>http://192.168.7.104:10080</code>，名称为”jenkins_for_gitlab”，凭证选择刚才新建的第一个凭证<code>Gitlab API token</code>，添加完成之后点击<code>Test Connection</code>测试，如果配置正确提示 Success。<br>然后添加 ssh 配置 <code>Publish over SSH</code>，<code>SSH Servers</code> 填写 ssh 的地址，账号，以及远程位置，这里可以直接设置为想要部署的位置，我这里设置为根目录<code>/</code>。<br>高级里面填写端口、密码，之后测试<code>Test Configuration</code>，之后 save 保存。</p>
-<h2 id="配置全局-jdk-和-maven"><a href="#配置全局-jdk-和-maven" class="headerlink" title="配置全局 jdk 和 maven"></a>配置全局 jdk 和 maven</h2><p>这一步需要安装 jenkins 的机器安装 jdk 和 maven。<br>一般安装 jenkins 的时候已经安装了 jdk，这里还需要安装 maven。<br>这里下载了压缩包到<code>/usr/local/</code>下面然后 unzip 解压，文件夹是 apache-maven-3.6.3。<br>需要修改环境变量，先下载一个 vim。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get update -y
-$ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>这里我 jdk 的文件名为 openjdk-8。<br>maven 和 jdk 都放在了<code>/usr/local</code> 下面。<br>安装完成后编辑环境变量<code>vi /etc/profile</code>，在文件末尾添加</p>
-<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">MAVEN_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/apache-maven-3.6.3</span>
-<span class="token attr-name">JAVA_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/openjdk-8</span>
-<span class="token attr-name">CLASS_PATH</span><span class="token punctuation">=</span><span class="token attr-value">$JAVA_HOME/lib/</span>
-<span class="token attr-name">PATH</span><span class="token punctuation">=</span><span class="token attr-value">$PATH:$MAVEN_HOME/bin:$JAVA_HOME/bin</span>
-<span class="token attr-name">export</span> <span class="token attr-value">PATH MAVEN_HOME JAVA_HOME CLASS_PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>配置完成之后输入<code>source /etc/profile</code>使配置文件生效。到这里可以测试下安装是否成功</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mvn -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>点击<code>Manage Jenkins =&gt; Global Tool Configuration</code>。<br>选择 <code>JDK installations</code>，填写 jdk 名称和路径<code>/usr/local/openjdk-8</code>。<br>选择 Maven installations，填写 maven 的名称和路径<code>/usr/local/apache-maven-3.6.3</code>，然后 save 保存。</p>
-<h2 id="通过-SSH-部署到远程服务器"><a href="#通过-SSH-部署到远程服务器" class="headerlink" title="通过 SSH 部署到远程服务器"></a>通过 SSH 部署到远程服务器</h2><h3 id="前端部署"><a href="#前端部署" class="headerlink" title="前端部署"></a>前端部署</h3><p>到 jenkins 主界面，左侧导航栏选择 <code>New Item</code>,填写名称，选择 <code>Freestyle project</code>，在配置 <code>configure</code> 里面，</p>
-<ul>
-<li><p><code>General</code>—在 <code>Gitlab Connection</code> 选择在配置里面设置的 gitlab 的连接”jenkins for gitlab”。</p>
-</li>
-<li><p><code>Source Code Management</code>—选择 git，仓库地址填写需要部署的项目的仓库地址，凭证选择建立好的 gitlab 的登陆账号密码，分支这里测试是直接选的 master 分支，</p>
-</li>
-<li><p><code>Build Triggers</code>—勾选<code>Build when a change is pushed to GitLab. GitLab webhook URL: http://192.168.7.104:18080/project/testDist</code>，这里需要记录下这个 webhook 地址，填写到 gitlab 的时候需要。<br>点击高级选项，点击 Generate 生成 <code>Secret token</code>，这里我们记录下这个 token，<code>b3d5a618874a8335XXXXXXXXX</code></p>
-</li>
-<li><p><code>Build Environment</code>—这里可以配置在 build 之前或者 build 之后的操作，比如我们需要 build 之后将生成的<code>/dist</code> 文件夹通过 SSH 部署到远程服务器。<br><code>SSH Server</code> 选择配置的地址.<br><code>Source files</code> 填写<code>dist/</code>即为 dist 下面所有文件.<br><code>Remote directory</code> 填写<code>home/</code><br>意思是将 jenkins 下面 workspace 的文件拷贝到远程服务器的 home 文件夹下，其中 <code>Exec command</code> 还可以填写需要在远程服务器执行的操作，比如 tomcat 的关闭与启动等等。</p>
-</li>
-</ul>
-<h3 id="后端-jar-包部署"><a href="#后端-jar-包部署" class="headerlink" title="后端 jar 包部署"></a>后端 jar 包部署</h3><p>jar 包部署与前端部署一样，在 <code>Build Environment</code> 中 <code>Source files</code> 填写<code>target/*.jar</code>。<br><code>Remove prefix</code> 删除前缀这里填写<code>target</code>。<br><code>Remote directory</code> 填写需要部署打的 jar 包位置。<br>这里 build 可以设置打包命令为<code>mvn clear package</code>。<br><code>nohup java -jar XXXX.jar &amp;</code>启动 jar 包，也可以写一些执行脚本在服务器上运行。</p>
-<h2 id="配置-gitlab-执行自动触发构建部署"><a href="#配置-gitlab-执行自动触发构建部署" class="headerlink" title="配置 gitlab 执行自动触发构建部署"></a>配置 gitlab 执行自动触发构建部署</h2><p>进入 gitlab 选择需要部署的项目，<code>设置 =&gt; 集成</code>里面填写 webhook，链接填写为 jenkins 里面生成的链接，如<code>http://192.168.7.104:18080/project/testDist</code>，安全令牌填写<code>b3d5a618874a83358bc0aXXXXX</code>。<br>选择 push 触发，分支选择 master，这样 master 分支提交 push 的时候就会触发这个 webhook，保存之后可以 test 测试<code>Push events</code>，如果成功则提示<code> Hook executed successfully: HTTP 200</code>，如果提示<code> Requests to localhost are not allowed</code>，就需要登陆管理员账号开启内网请求权限，参照文章第一点<a href="#%E5%AE%89%E8%A3%85-gitlab">安装-gitlab</a></p>
-<h2 id="查看任务的-log"><a href="#查看任务的-log" class="headerlink" title="查看任务的 log"></a>查看任务的 log</h2><p>进入任务，左侧导航<code>Console Output</code>可查询 jenkins 日志。<br><strong>build 生成的文件可在 <code>/var/jenkins_home/workspace</code> 下面查看</strong></p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见 visibility:hidden，焦点就不会自动移动过去了。</p>
 ]]></content>
       <categories>
-        <category>开发</category>
-        <category>Devops</category>
+        <category>Bug解决</category>
+        <category>Javascript</category>
       </categories>
       <tags>
-        <tag>docker</tag>
-        <tag>gitlab</tag>
-        <tag>ssh</tag>
-        <tag>devops</tag>
-        <tag>jenkins</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo+github-pages搭建个人博客</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
-<a id="more"></a>
-
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>需要先安装好 nodejs、git，注册登录 github，熟悉一些 markdown 语法等暂且不表。</p>
-<h2 id="github-新建仓库"><a href="#github-新建仓库" class="headerlink" title="github 新建仓库"></a>github 新建仓库</h2><p>github 上新建一个仓库，名字为 <code>username.git.io</code>，仓库需要配置为 public。这里的 username 就是你 github 的名字，比如 github 用户名是 FreedomAnt，仓库就取名为 <code>freedomant.github.io</code>。<br>这样写的原因是 github-pages 能自动将该仓库用为 github-pages 的域名所在仓库，即后面不用跟项目名了。<br>进入该仓库，进入设置页面<code>Settings =&gt; Options</code>里面有一个<code>GitHub Pages</code>配置，如图所示:<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105171032.png" alt="github pages 设置截图"><br>这里可以设置分支，默认 github 是会新建一个 gh-pages 的分支。</p>
-<h2 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h2><p>这里使用的全局安装</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install -g hexo-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>新建一个项目，项目名就叫 blog。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo init blog<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>有几个快捷键比较常用</p>
-<ol>
-<li><code>hexo clean</code>清空生成的静态文件和缓存。</li>
-<li><code>hexo s</code>是<code>hexo server</code>的缩写，启动一个默认 4000 端口的本地服务。</li>
-<li><code>hexo n [name]</code>是<code>hexo new [name]</code>的缩写，新建一篇文章</li>
-<li><code>hexo g</code>是<code>hexo generate</code>的缩写，生成静态文件。</li>
-<li><code>hexo d</code>是<code>hexo deploy</code>的缩写，部署到配置的仓库或者服务器。</li>
-</ol>
-<p>生成静态文件和部署可以用一条命令表示<code>hexo g -d</code>或者<code>hexo d -g</code>。<br>安装完成之后有几个主要的文件和目录，配置文件<code>_config.yml</code>，<code>source</code>文件夹是放文章和样式图片等。<code>themes</code>是用于放主题文件。</p>
-<h2 id="Hexo-配置"><a href="#Hexo-配置" class="headerlink" title="Hexo 配置"></a>Hexo 配置</h2><p>安装完成之后在<code>_config.yml</code>配置。<br><code>theme: next</code>这里配置主题的名字，主题放 themes 文件夹下。这里配置的是 next 主题。<br>这里采用 git 方式部署博客，先安装一个 hexo-deployer-git。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install hexo-deployer-git --save<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>安装完成之后在<code>_config.yml</code>里配置部署的服务。</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
-  <span class="token key atrule">type</span><span class="token punctuation">:</span> git
-  <span class="token key atrule">repo</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//github.com/FreedomAnt/freedomant.github.io.git
-  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里分支选择 gh-pages，就是<a href="#github-%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93">github 新建仓库</a>里的生成分支。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo n [文章名称]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这里写完文章以后依次输入以下命令：</p>
-<p>清空缓存</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>本地先跑一个服务看下效果</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>生成静态文件并部署</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo g -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这样就生成了博客，在浏览器输入地址即可访问<code>https://freedomant.github.io</code>，如果你买了域名可以添加到 source 下面的 CNAME 文件。如果需要修改主题的配置文件，可以在项目根目录下面新建一个<code>_config.[theme name].yml</code>，将<code>themes/next/_config.yml</code>里面的内容复制到这个文件，修改主题就在这个文件修改就行。这里用的 next 主题<code>_config.next.yml</code>。这个文件里面的内容在静态页面生成的时候会覆盖掉<code>themes/next/_config.yml</code>的内容。</p>
-<h2 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h2><p>图床这里也是白 piao 的 github，先在 github 里面新建一个项目用于图床。token 生成方式在 github 里面，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; Personal access tokens =&gt; Generate new token</code>这里注意勾选 repo 下的选项。如图所示：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105175136.png" alt="github 配置图床Token"><br>下载好 PicGGo 之后点击图床设置，选择 GitHub 图床，配置如下：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105174115.png" alt="PicGGo中GitHub图床配置"><br>这里的自定义域名有讲究的，填写<code>https://cdn.jsdelivr.net/gh/FreedomAnt/image@main</code>，用 jsdelivr 的黑科技完成 CDN 加速。</p>
-<h2 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h2><p>这里我使用的 vscode 写的文章，vscode 安装插件<code>Markdown All in One</code>、<code>Markdwon Preview Enhanced</code>等。也安装有 typora 软件，typora 是一个所见即所得(WYSIWYG)的 markdown 软件，非常不错。而且 typora 集成 PicGo，typora 的<code>文件 =&gt; 偏好设置 =&gt; 图像 =&gt; 上传服务设定</code>里面选择 PicGo(app)的方式，PicGo-Core 的命令行的方式不是太方便。<br><strong>这里需要注意 PicGo 默认的服务端口开的是 36677，在 PicGo 里<code>PicGo设置 =&gt; 设置Server</code>可设置监听端口，如果想要配置 typora 里面的 PicGo，需要注意测试 PicGo 连接的服务地址端口是不是 36677。</strong></p>
-<h2 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h2><p>next 主题自带的评论插件里面有<code>changyan | disqus | disqusjs | gitalk | livere | valine</code>，这里我选择的 gitalk，对比了几个之后还是选择了 github 的黑科技。valine 也不错，不过我看到 github 上面写 src 目录停止更新的信息，就还是选择了 gitalk。<br>gitalk 配置需要客户端的 id 和密钥。还是在 github 里面生成。<br>进入 github，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; OAuth Apps =&gt; new OAuth Apps</code>。<code>Homepage URL</code>和<code>Authorization callback URL</code>都填写<code>https://freedomant.github.io/</code>，生成的客户端 id 和密钥填到主题配置里面。</p>
-<h2 id="部署到-Vercel"><a href="#部署到-Vercel" class="headerlink" title="部署到 Vercel"></a>部署到 Vercel</h2><p>Vercel 是一个提供使用简单命令就可部署静态页面的服务，由于 github 访问速度慢的原因，在使用测速软件分别测试了很多常见的静态网页部署服务之后，发现比较快的就是国内的 coding 和 gitee，再就是腾讯阿里的对象存储了，Vercel 算是国外里面比较快的了，而且和 github 无缝对接。如果不想花钱买 CDN 加速或者对象存储，可以使用 Vercel，Vercel 以前叫 zeit，安装了之后直接使用一行<code>now XXXX</code>命令就可完成部署。目前已经更名为 Vercel。用 github 关联登录之后，点击<code>Import Preject =&gt; Import Git Repository =&gt; continue</code>填写你的仓库地址<code>https://github.com/FreedomAnt/freedomant.github.io.git</code>。部署命令那不用填写，默认就行。部署好之后就会生成访问的地址了。<br>Vercel 还支持修改默认的分支，进入到关联的项目，点击<code>Settings =&gt; Git =&gt; Production Branch</code>可以修改成博客所在的 gh-pages 分支。<br>Vercel 还支持自定义域名，点击<code>Settings =&gt; Domains</code>一般域名后缀填写 XXX.now.sh 或者 XXX.vercel.app。前一个是 Vercel 未改名前的默认生成后缀，后一个是改名后的默认生成后缀。至此，部署到 Vercel 成功。<br>当调用命令<code>hexo g -d</code>部署到 github 时，会触发 Vercel 的部署，一键部署到两个地方，完美！</p>
-<p><strong>注意：博客原文件和静态页面的分开放两个仓库，博客原文件可以用私有仓库，里面有一些个人配置的信息</strong></p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>github</tag>
-        <tag>hexo</tag>
-        <tag>github-pages</tag>
-        <tag>gitalk</tag>
-        <tag>zeit</tag>
-        <tag>vercel</tag>
-        <tag>markdown</tag>
-        <tag>typora</tag>
-        <tag>picgo</tag>
-        <tag>图床</tag>
+        <tag>tabindex</tag>
       </tags>
   </entry>
   <entry>
@@ -886,6 +927,171 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
       <tags>
         <tag>docker</tag>
         <tag>minio</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>rocket.chat开源聊天服务器搭建</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/rocket-chat%E5%BC%80%E6%BA%90%E8%81%8A%E5%A4%A9%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>近日使用 Rocket.Chat 搭建了一个聊天服务器，踩坑较多，写下以备后期查阅。</p>
+<a id="more"></a>
+
+<h1 id="启动一个数据库"><a href="#启动一个数据库" class="headerlink" title="启动一个数据库"></a>启动一个数据库</h1><ol>
+<li><p>启动一个 mongo 实例并初始化 replicaSet</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run --name db -d mongo:4.0 --smallfiles --replSet rs0 --oplogSize <span class="token number">128</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker <span class="token builtin class-name">exec</span> -ti db mongo --eval <span class="token string">"printjson(rs.initiate())"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+</li>
+</ol>
+<h1 id="启动-Rocket-Chat"><a href="#启动-Rocket-Chat" class="headerlink" title="启动 Rocket.Chat"></a>启动 Rocket.Chat</h1><ol>
+<li><p>启动一个 Rocket.Chat 并连接到 mongo 的实例上</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run -p <span class="token number">3000</span>:3000 --name rocketchat --link db --env <span class="token assign-left variable">MONGO_OPLOG_URL</span><span class="token operator">=</span>mongodb://db:27017/local -d rocket.chat<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+</li>
+</ol>
+<h1 id="配置网页端"><a href="#配置网页端" class="headerlink" title="配置网页端"></a>配置网页端</h1><ol>
+<li><p>打开浏览器<code>http://localhost:3000</code></p>
+</li>
+<li><p>配置账号邮箱密码<code>admin/123456</code>，成功之后再增加一个 admin2 的账号<code>admin2/123456</code></p>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424001637.png" />
+
+</li>
+</ol>
+<h1 id="配置手机端"><a href="#配置手机端" class="headerlink" title="配置手机端"></a>配置手机端</h1><p>由于 Rocket.Chat 的手机端需要配置 https 的服务器，nginx 配置 https 则需要 CA 证书，CA 证书的申请 CSR 的字段<code>common name</code>需要配置具体的域名，这里将域名定为<code>test.fanta.cn</code>并配置解析到本机。</p>
+<h2 id="配置域名解析"><a href="#配置域名解析" class="headerlink" title="配置域名解析"></a>配置域名解析</h2><ol>
+<li><p>电脑打开<code>C:\Windows\System32\drivers\etc\hosts</code>，增加以下代码</p>
+<pre class="line-numbers language-none"><code class="language-none">127.0.0.1       test.fanta.cn<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果编辑之后保存不了，将当前用户的权限提高，右键点击<code>hosts</code>–&gt;属性–&gt;安全–&gt;编辑，选中当前用户，勾选允许</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424201050.png"></p>
+</li>
+</ol>
+<h2 id="配置-Nginx"><a href="#配置-Nginx" class="headerlink" title="配置 Nginx"></a>配置 Nginx</h2><h3 id="生成自签名证书"><a href="#生成自签名证书" class="headerlink" title="生成自签名证书"></a>生成自签名证书</h3><ol>
+<li><p>检测下是否安装 openssl</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>生成私钥</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl genrsa -des3 -out server.pass.key <span class="token number">2048</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入密码</p>
+</li>
+<li><p>去除私钥中的密码</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl rsa -in server.pass.key -out server.key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>生成 CSR(证书签名请求)</p>
+<blockquote>
+<p><strong>注意自签名请求 csr 中的 Common Name 必须写域名(这里写 test.fanta.cn)，如果是测试，可以写 localhost</strong></p>
+</blockquote>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl req -new -key server.key -out server.csr<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424202317.png"></p>
+</li>
+<li><p>生成自签名 SSL 证书</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># -days 证书有效期</span>
+$ openssl x509 -req -days <span class="token number">365</span> -in server.csr -signkey server.key -out server.crt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li><p>拷贝密钥和 CA 证书到 Nginx</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">cp</span> server.key /etc/nginx/certificate.key
+$ <span class="token function">cp</span> server.crt /etc/nginx/certificate.crt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li><p>设置秘钥文件权限</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">chmod</span> <span class="token number">400</span> /etc/nginx/certificate.key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>生成 ssl_dhparam 文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl dhparam -out /etc/nginx/dhparams.pem <span class="token number">2048</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+</li>
+</ol>
+<h3 id="配置反向代理"><a href="#配置反向代理" class="headerlink" title="配置反向代理"></a>配置反向代理</h3><ol>
+<li><p>编辑<code>nginx.conf</code>文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">vi</span> /etc/nginx/nginx.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>参考<span class="exturl" data-url="aHR0cHM6Ly9yb2NrZXQuY2hhdC9kb2NzL2luc3RhbGxhdGlvbi9kb2NrZXItY29udGFpbmVycy8jNWItc2VsZi1zaWduZWQtc3Ns">官方文档<i class="fa fa-external-link-alt"></i></span></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># HTTPS Server</span>
+    <span class="token keyword">server</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">listen</span> <span class="token number">443</span> <span class="token keyword">ssl</span><span class="token punctuation">;</span>
+        <span class="token keyword">server_name</span> test<span class="token punctuation">.</span>fanta<span class="token punctuation">.</span>cn<span class="token punctuation">;</span>
+
+        <span class="token keyword">error_log</span> <span class="token operator">/</span>var<span class="token operator">/</span>log<span class="token operator">/</span>nginx<span class="token operator">/</span>rocketchat_error<span class="token punctuation">.</span>log<span class="token punctuation">;</span>
+
+        <span class="token keyword">ssl_certificate</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>certificate<span class="token punctuation">.</span>crt<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_certificate_key</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>certificate<span class="token punctuation">.</span>key<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_dhparam</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>dhparams<span class="token punctuation">.</span>pem<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_protocols</span> TLSv1<span class="token punctuation">.</span><span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_ciphers</span> <span class="token string">'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_prefer_server_ciphers</span> on<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_cache</span> shared<span class="token punctuation">:</span><span class="token keyword">SSL</span><span class="token punctuation">:</span><span class="token number">20</span>m<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_timeout</span> <span class="token number">180</span>m<span class="token punctuation">;</span>
+
+        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">proxy_pass</span> <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">192.168</span><span class="token number">.1</span><span class="token number">.4</span><span class="token punctuation">:</span><span class="token number">3000</span><span class="token operator">/</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_http_version</span> <span class="token number">1.1</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> Upgrade <span class="token variable">$http_upgrade</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> Connection <span class="token string">"upgrade"</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> Host <span class="token variable">$http_host</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Real<span class="token operator">-</span>IP <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>For <span class="token variable">$proxy_add_x_forwarded_for</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>Proto <span class="token keyword">https</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Nginx<span class="token operator">-</span><span class="token keyword">Proxy</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_redirect</span> off<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>测试 nginx 配置文件是否正确</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ nginx -t<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>启动 nginx</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">service</span> nginx start<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+</li>
+</ol>
+<p>这时候电脑端打开链接<code>https://test.fanta.cn</code>，Nginx 会报 502 的错误。这里需要防火墙需要打开 3000 端口。如果没有错误，则跳过下面防火墙放开 3000 端口这一步。</p>
+<p><strong>我测试的环境用的 Nginx 是安装在 windows 的 wsl 的 ubuntu 系统里面，而我的 docker 是 windows 版本的直接安装在 windows 的，这里需要注意：docker 开放的 3000 端口只是对宿主机(windows10)开放，windows 里面的子系统 wsl 是读不到 docker 里面启动的 RocketChat 的，在 windows 里面<code>ipconfig</code>能看到 windows 的 ip 地址前缀为 192.168，docker 的前缀为 172.24，wsl 的前缀为 172.31。</strong></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424203602.png"></p>
+<h2 id="放开-3000-端口"><a href="#放开-3000-端口" class="headerlink" title="放开 3000 端口"></a>放开 3000 端口</h2><p>这时候手机端也是连接不上电脑端的 3000 端口（可以用<code>JuiceSSH</code>本地连接手机之后 telnet 一下电脑的 3000 端口），需要在防火墙侧增加一个 3000 端口开放的规则（这里电脑系统为 win10）。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424194951.jpg"></p>
+<ol>
+<li>按下<code>win+s</code>键，搜索“防火墙”。</li>
+<li>打开高级安全 Windows Defender 防火墙</li>
+<li>新建“入站规则”，选择端口</li>
+</ol>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424181725.png" />
+
+<ol start="4">
+<li>选择特定端口 3000</li>
+</ol>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424181931.png"></p>
+<ol start="5">
+<li>下一步到完成。</li>
+</ol>
+<p>这时候电脑端打开<code>https://test.fanta.cn</code>则可以打开 Rocket.Chat</p>
+<h2 id="连接服务器"><a href="#连接服务器" class="headerlink" title="连接服务器"></a>连接服务器</h2><h3 id="下载-App"><a href="#下载-App" class="headerlink" title="下载 App"></a>下载 App</h3><p>Android 端 APP 并安装到手机，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY2tldENoYXQvUm9ja2V0LkNoYXQuUmVhY3ROYXRpdmUvcmVsZWFzZXM=">下载地址<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="打开-APP"><a href="#打开-APP" class="headerlink" title="打开 APP"></a>打开 APP</h3><p>填写服务器端地址</p>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424193747.jpg" alt="1" style="width:50%;height:50%" />
+
+<h3 id="配置代理"><a href="#配置代理" class="headerlink" title="配置代理"></a>配置代理</h3><p>手机和电脑端连接同一个 wifi，由于电脑端本地开启了域名解析，手机端也需要开启域名解析才行。这里采用 Fiddle 设置代理的方式把手机连接到电脑，这样手机也有了电脑的域名解析。</p>
+<ol>
+<li><p>电脑端下载 Fiddle，<span class="exturl" data-url="aHR0cHM6Ly93d3cudGVsZXJpay5jb20vZG93bmxvYWQvZmlkZGxlcg==">下载地址<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>设置 Fiddle</p>
+<p>Tools–&gt;Options–&gt;Connections，记住端口号，并勾选<code>Allow remote computers to connect</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424194243.png"></p>
+</li>
+<li><p>手机端在 wifi 里面设置手动代理，地址填写电脑端的地址<code>192.168.1.4</code>，端口填写<code>18888</code>，保存修改</p>
+</li>
+<li><p>这样就实现了手机都走电脑的代理。就实现了手机端域名解析<code>test.fanta.cn</code></p>
+</li>
+</ol>
+<h3 id="配置完成"><a href="#配置完成" class="headerlink" title="配置完成"></a>配置完成</h3><p>点击连接到电脑的服务器，输入网友端申请的账号密码<code>admin2/123456</code>，就可以与 web 端或者 pc 端的 Rocket.Chat 通信了，对于 Rocket.Chat 还是有很多不了解的地方，用于生产环境的话还需要细细探索。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>rocket.chat</tag>
+        <tag>nginx</tag>
+        <tag>openssl</tag>
+        <tag>fiddle</tag>
       </tags>
   </entry>
   <entry>
@@ -975,103 +1181,6 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
       </tags>
   </entry>
   <entry>
-    <title>node+npm更新</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-npm%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
-<p>查看 node 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看 npm 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\用户名\AppData\Roaming</code>文件夹下有一个 npm 和 npm-cache 文件，这里应该有 npm 的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Node</category>
-      </categories>
-      <tags>
-        <tag>npm</tag>
-        <tag>npm-cache</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>回车换行问题</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>记录一次换行符引发的问题。</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>使用 git 提交的时候报错提示如下：<br>warning: LF will be replaced by CRLF in js/utils.js.<br>The file will have its original line endings in your working directory</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ul>
-<li>CR (Carriage Return) 回车</li>
-<li>LR (Line Feed) 换行</li>
-<li>CRLF (Carriage Return Line Feed) 回车换行</li>
-</ul>
-<p>早期的 MAC 系统使用 CR 进行换行，现在统一成 LF，Uninx 系统都是使用的 LF 换行，而 Windows 系统使用的 CRLF 当作换行。所以在多人协同开发的时候会造成兼容性问题。</p>
-<h3 id="core-autocrlf"><a href="#core-autocrlf" class="headerlink" title="core.autocrlf"></a>core.autocrlf</h3><p>git 提供了一个<code>core.autocrlf</code>的配置，可以自动完成换行的转换，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span></p>
-<ul>
-<li>true<br>自动完成转换，在 push 的时候自动将换行符从 CRLF 换成 LF，在 pull 的时候将 LF 换成 CRLF。</li>
-<li>input<br>push 转换，pull 不转换</li>
-<li>false<br>都不转换</li>
-</ul>
-<p>这里设置全局<code>--global</code> 里的 <code>core.autocrlf</code> 为 false。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global core.autocrlf false<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这样设置之后有些可能有 LF 和 CRLF 混乱的问题，即出现 CRLF 和 LF 共同出现的情况。</p>
-<h3 id="gitattributes"><a href="#gitattributes" class="headerlink" title=".gitattributes"></a>.gitattributes</h3><p>git 提供一个<code>.gitattributes</code>文件用于配置该项目一些属性配置，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdGF0dHJpYnV0ZXM=">gitattributes<i class="fa fa-external-link-alt"></i></span></p>
-<p>每行的格式为<code>pattern attr1 attr2 ...</code><br>pattern 配置</p>
-<pre class="line-numbers language-none"><code class="language-none">* 匹配所有文件
-*.txt 匹配所有 txt 文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h4 id="text"><a href="#text" class="headerlink" title="text"></a>text</h4><p>其中 text 属性可以启用并控制行尾规范化</p>
-<ul>
-<li>text<br>在路径上设置属性可启用行尾规范化并将路径标记为文本文件。行尾转换不会猜测内容类型。</li>
-<li>-text<br>Git 在签入或签出时不要尝试任何行尾转换。</li>
-<li>auto<br>标记该路径以进行自动行尾转换。如果 Git 决定内容为文本，则其行尾在签入时转换为 LF。使用 CRLF 提交文件后，不会进行任何转换。</li>
-<li>未指定<br>如果 text 未指定该属性，则 Git 使用 core.autocrlf 配置变量来确定是否应转换文件。</li>
-</ul>
-<h4 id="eol"><a href="#eol" class="headerlink" title="eol"></a>eol</h4><p>属性设置在工作目录中使用的特定行尾样式。</p>
-<ul>
-<li>crlf<br>此设置强制 Git 在签入时对此文件的行尾进行规范化，并在签出文件时将其转换为 CRLF。</li>
-<li>lf<br>此设置强制 Git 在签入时将行尾标准化为 LF，并在签出文件时阻止转换为 CRLF。</li>
-</ul>
-<p>可设置如下</p>
-<pre class="line-numbers language-none"><code class="language-none">* text eol&#x3D;lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="editorconfig"><a href="#editorconfig" class="headerlink" title="editorconfig"></a>editorconfig</h3><p>也可以设置一个 <span class="exturl" data-url="aHR0cHM6Ly9lZGl0b3Jjb25maWcub3JnLw==">editorconfig<i class="fa fa-external-link-alt"></i></span> 来解决行尾转换的问题。这样在保存的时候自动规范化文件的内容。<br>editorconfig 的配置如下：</p>
-<pre class="line-numbers language-none"><code class="language-none">end_of_line &#x3D; lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>autocrlf</tag>
-        <tag>crlf</tag>
-        <tag>lf</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tabindex之焦点移动</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
-    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见 visibility:hidden，焦点就不会自动移动过去了。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Javascript</category>
-      </categories>
-      <tags>
-        <tag>tabindex</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数据可视化工具选型参考</title>
     <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
     <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
@@ -1130,20 +1239,59 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
       </tags>
   </entry>
   <entry>
-    <title>数据库字符集不匹配</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Database/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8D%E5%8C%B9%E9%85%8D/</url>
-    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>开发中遇到一个数据库字符集的问题 Caused by: java.sql.SQLException: Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation ‘=’</p>
+    <title>回车换行问题</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>记录一次换行符引发的问题。</p>
 <a id="more"></a>
 
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>设置数据库的字符集为 utf-8</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ALTER table action CONVERT TO CHARACTER SET utf8;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>使用 git 提交的时候报错提示如下：<br>warning: LF will be replaced by CRLF in js/utils.js.<br>The file will have its original line endings in your working directory</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ul>
+<li>CR (Carriage Return) 回车</li>
+<li>LR (Line Feed) 换行</li>
+<li>CRLF (Carriage Return Line Feed) 回车换行</li>
+</ul>
+<p>早期的 MAC 系统使用 CR 进行换行，现在统一成 LF，Uninx 系统都是使用的 LF 换行，而 Windows 系统使用的 CRLF 当作换行。所以在多人协同开发的时候会造成兼容性问题。</p>
+<h3 id="core-autocrlf"><a href="#core-autocrlf" class="headerlink" title="core.autocrlf"></a>core.autocrlf</h3><p>git 提供了一个<code>core.autocrlf</code>的配置，可以自动完成换行的转换，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span></p>
+<ul>
+<li>true<br>自动完成转换，在 push 的时候自动将换行符从 CRLF 换成 LF，在 pull 的时候将 LF 换成 CRLF。</li>
+<li>input<br>push 转换，pull 不转换</li>
+<li>false<br>都不转换</li>
+</ul>
+<p>这里设置全局<code>--global</code> 里的 <code>core.autocrlf</code> 为 false。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> config --global core.autocrlf <span class="token boolean">false</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样设置之后有些可能有 LF 和 CRLF 混乱的问题，即出现 CRLF 和 LF 共同出现的情况。</p>
+<h3 id="gitattributes"><a href="#gitattributes" class="headerlink" title=".gitattributes"></a>.gitattributes</h3><p>git 提供一个<code>.gitattributes</code>文件用于配置该项目一些属性配置，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdGF0dHJpYnV0ZXM=">gitattributes<i class="fa fa-external-link-alt"></i></span></p>
+<p>每行的格式为<code>pattern attr1 attr2 ...</code><br>pattern 配置</p>
+<pre class="line-numbers language-none"><code class="language-none">* 匹配所有文件
+*.txt 匹配所有 txt 文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h4 id="text"><a href="#text" class="headerlink" title="text"></a>text</h4><p>其中 text 属性可以启用并控制行尾规范化</p>
+<ul>
+<li>text<br>在路径上设置属性可启用行尾规范化并将路径标记为文本文件。行尾转换不会猜测内容类型。</li>
+<li>-text<br>Git 在签入或签出时不要尝试任何行尾转换。</li>
+<li>auto<br>标记该路径以进行自动行尾转换。如果 Git 决定内容为文本，则其行尾在签入时转换为 LF。使用 CRLF 提交文件后，不会进行任何转换。</li>
+<li>未指定<br>如果 text 未指定该属性，则 Git 使用 core.autocrlf 配置变量来确定是否应转换文件。</li>
+</ul>
+<h4 id="eol"><a href="#eol" class="headerlink" title="eol"></a>eol</h4><p>属性设置在工作目录中使用的特定行尾样式。</p>
+<ul>
+<li>crlf<br>此设置强制 Git 在签入时对此文件的行尾进行规范化，并在签出文件时将其转换为 CRLF。</li>
+<li>lf<br>此设置强制 Git 在签入时将行尾标准化为 LF，并在签出文件时阻止转换为 CRLF。</li>
+</ul>
+<p>可设置如下</p>
+<pre class="line-numbers language-none"><code class="language-none">* text eol&#x3D;lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="editorconfig"><a href="#editorconfig" class="headerlink" title="editorconfig"></a>editorconfig</h3><p>也可以设置一个 <span class="exturl" data-url="aHR0cHM6Ly9lZGl0b3Jjb25maWcub3JnLw==">editorconfig<i class="fa fa-external-link-alt"></i></span> 来解决行尾转换的问题。这样在保存的时候自动规范化文件的内容。<br>editorconfig 的配置如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">end_of_line &#x3D; lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 ]]></content>
       <categories>
         <category>Bug解决</category>
-        <category>Database</category>
+        <category>Git</category>
       </categories>
       <tags>
-        <tag>database</tag>
+        <tag>autocrlf</tag>
+        <tag>crlf</tag>
+        <tag>lf</tag>
       </tags>
   </entry>
   <entry>
@@ -1175,6 +1323,23 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
       <tags>
         <tag>office</tag>
         <tag>preview</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据库字符集不匹配</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Database/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8D%E5%8C%B9%E9%85%8D/</url>
+    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>开发中遇到一个数据库字符集的问题 Caused by: java.sql.SQLException: Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation ‘=’</p>
+<a id="more"></a>
+
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>设置数据库的字符集为 utf-8</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ALTER table action CONVERT TO CHARACTER SET utf8<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Database</category>
+      </categories>
+      <tags>
+        <tag>database</tag>
       </tags>
   </entry>
 </search>
