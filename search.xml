@@ -81,7 +81,7 @@
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjeDYxOyYjMTA1OyYjeDZjOyYjeDZlOyYjeDYxOyYjMTA5OyYjeDY1OyYjeDQwOyYjMTEzOyYjeDcxOyYjeDJlOyYjOTk7JiN4NmY7JiMxMDk7">&#109;&#x61;&#105;&#x6c;&#x6e;&#x61;&#109;&#x65;&#x40;&#113;&#x71;&#x2e;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjOTc7JiMxMDU7JiN4NmM7JiMxMTA7JiN4NjE7JiMxMDk7JiN4NjU7JiN4NDA7JiMxMTM7JiMxMTM7JiM0NjsmI3g2MzsmIzExMTsmIzEwOTs=">&#109;&#97;&#105;&#x6c;&#110;&#x61;&#109;&#x65;&#x40;&#113;&#113;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h2 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -91,7 +91,7 @@
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
 $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjeDZkOyYjOTc7JiN4Njk7JiMxMDg7JiN4NmU7JiN4NjE7JiMxMDk7JiMxMDE7JiN4NDA7JiMxMTM7JiN4NzE7JiN4MmU7JiM5OTsmI3g2ZjsmIzEwOTs=">&#x6d;&#97;&#x69;&#108;&#x6e;&#x61;&#109;&#101;&#x40;&#113;&#x71;&#x2e;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjeDZkOyYjeDYxOyYjMTA1OyYjMTA4OyYjeDZlOyYjOTc7JiMxMDk7JiN4NjU7JiM2NDsmIzExMzsmI3g3MTsmIzQ2OyYjOTk7JiMxMTE7JiN4NmQ7">&#x6d;&#x61;&#105;&#108;&#x6e;&#97;&#109;&#x65;&#64;&#113;&#x71;&#46;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h3 id="配置邮箱告警"><a href="#配置邮箱告警" class="headerlink" title="配置邮箱告警"></a>配置邮箱告警</h3><p><code>$ docker exec -it my-sentry bash</code>进入控制台</p>
 <p><code>$ vi /etc/sentry/config.yml</code></p>
 <p>腾讯示例：</p>
@@ -111,7 +111,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjMTA5OyYjMTEyOyYjeDZjOyYjMTAxOyYjeDQwOyYjMTA5OyYjeDYxOyYjeDY5OyYjMTA4OyYjeDJlOyYjOTk7JiN4NmY7JiN4NmQ7">&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x40;&#109;&#x61;&#x69;&#108;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjeDY1OyYjeDQwOyYjeDZkOyYjeDYxOyYjeDY5OyYjMTA4OyYjeDJlOyYjOTk7JiN4NmY7JiMxMDk7">&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#x40;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -131,7 +131,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjMTA5OyYjeDcwOyYjMTA4OyYjMTAxOyYjNjQ7JiN4NmQ7JiM5NzsmI3g2OTsmI3g2YzsmI3gyZTsmIzk5OyYjMTExOyYjeDZkOw==">&#101;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#64;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjOTc7JiN4NmQ7JiMxMTI7JiMxMDg7JiMxMDE7JiN4NDA7JiMxMDk7JiM5NzsmIzEwNTsmI3g2YzsmIzQ2OyYjeDYzOyYjMTExOyYjeDZkOw==">&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#x40;&#109;&#97;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <p>​ 网易邮箱示例：</p>
@@ -248,6 +248,189 @@ token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-number
       <tags>
         <tag>docker</tag>
         <tag>sentry</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>docker+gitlab+jenkins+ssh实现代码自动构建部署</title>
+    <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 gitlab/gitlab-ce 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080</p>
+<a id="more"></a>
+
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 10080:80 --name gitlab twang2218&#x2F;gitlab-ce-zh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果是本机 windows 想要尝试社区镜像的，可以使用下面的代码</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker volume create gitlab-logs
+$ docker volume create gitlab-data
+$ docker run -d -p 10443:443 -p 10080:80 -p 10822:22 --name gitlab -v d:&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab -v gitlab-logs:&#x2F;var&#x2F;log&#x2F;gitlab -v gitlab-data:&#x2F;var&#x2F;opt&#x2F;gitlab gitlab&#x2F;gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>如果是 linux 的话要尝试社区镜像网上就很多了。<br>需要注意下 <strong>gitlab 的 webhook 配置的钩子地址是不允许内网的，比如 192.168、172.16 或者 10 开头的，这时候需要用 gitlab 的管理员账号（root）登陆去修改允许 webhook 的本地请求</strong>。<br>用 root 账号登陆之后左上角有一个小扳手的图标<code>Admin area =&gt; Settings =&gt; Network</code>勾选允许本地网络的请求即可。<br>这里就涉及到管理员账号的密码，网上很多参考说是系统默认的用户名：<code>root</code>，密码：<code>5iveL!fe</code>，试过了没有用，就只能自己去修改。这里可以参考官方<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvc2VjdXJpdHkvcmVzZXRfcm9vdF9wYXNzd29yZC5odG1sI2hvdy10by1yZXNldC15b3VyLXJvb3QtcGFzc3dvcmQ=">How to reset your root password<i class="fa fa-external-link-alt"></i></span><br>这里有坑的是安装社区版 gitlab/gitlab-ce 查不到用户。<br>进入 tty</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it gitlab bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>正常的修改密码代码如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">gitlab-rails console -e production
+user &#x3D; User.where(id: 1).first或者user &#x3D; User.find_by(email: &#39;admin@example.com&#39;)
+user.password &#x3D; 12345678
+user.password_confirmation &#x3D; 12345678
+user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里查询到的<code>User.where(id: 1).first</code>为 nil，就是 none 的意思，这里不知道怎么解决。还好汉化的那个版本可以直接设置 root 密码。<br>到这一步 gitlab 就可以使用了，但是 clone 的地址没有设置，clone 的地址目前是显示为一串字母。这里需要在<br><code>vi /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml</code>修改为需要暴露的 ip 和端口<br>然后<code>gitlab-ctl restart</code>重启 gitlab 即可。</p>
+<h2 id="安装-jenkins"><a href="#安装-jenkins" class="headerlink" title="安装 jenkins"></a>安装 jenkins</h2><p>安装 jenkins 就简便许多，端口映射到 18080，这里 jenkins 的配置文件后面都在<code>/var/jenkins_home/</code>这个文件夹下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 18080:8080 -p 50000:50000 --name jenkins -v d:&#x2F;docker&#x2F;jenkins:&#x2F;var&#x2F;jenkins_home jenkins&#x2F;jenkins:lts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>后面由于涉及到 maven 环境的安装，所以进入 bash 环境的时候可以指定账号</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u 0 jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里-u 可以指定 username 或者 uid，也可以写成</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u root jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>打开网页，需要输入首次的密码，可以在<code>/var/jenkins_home/secrets/initialAdminPassword</code>找到。<br>进入之后可以选择配置插件，也可以跳过后面再来配置。这里选择的跳过。<br><strong>如果退出之后不知道管理员的密码</strong>，可以打开<code>/var/jenkins_home/users/adminXXX</code>里面的 config.xml，找到 passwordHash，设置为<code>#jbcrypt:$2a$10$MiIVR0rr/UhQBqT.bBq0QehTiQVqgNpUGyWW2nJObaVAM/2xSQdSq</code><br>这个是编码过后的 123456，这样你的管理员账号就设置为了 123456.</p>
+<h2 id="安装-jenkins-插件"><a href="#安装-jenkins-插件" class="headerlink" title="安装 jenkins 插件"></a>安装 jenkins 插件</h2><p>安装插件这里由于官方的仓库比较慢而且经常失败，这里可以换其他源，这里可以选择清华大学的<code> https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/2.60/update-center.json</code><br>这里有个坑是清华是把这个文件镜像过来了，但是没有把里面的插件升级地址改成清华，所以下载还是有问题，这里解决方式有两种</p>
+<h3 id="nginx-代理"><a href="#nginx-代理" class="headerlink" title="nginx 代理"></a>nginx 代理</h3><p>将所有<code>http://updates.jenkins-ci.org/download</code>代理到<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code> 。</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>打开<code>/var/jenkins_home/updates/default.json</code>，将所有的<code>http://updates.jenkins-ci.org/download</code>,有的是<code>https://updates.jenkins.io/download</code>批量修改为<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code>，一劳永逸。</p>
+<p>这里添加几个常用的插件<strong>Maven Integration</strong>、<strong>GitLab</strong>、<strong>GitLab Hook</strong>、<strong>Publish Over SSH</strong></p>
+<h2 id="jenkins-配置"><a href="#jenkins-配置" class="headerlink" title="jenkins 配置"></a>jenkins 配置</h2><p>配置之前先添加两个凭据。</p>
+<ol>
+<li>用于 gitlab 的 accessToken<br>首先登陆 gitlab<code>用户 =&gt; 设置 =&gt; accessToken</code>，填写名称和过期时间，勾选 api，点击生成 accessToken，这里要记录下 token，如果刷新了 token 就没了。<br>登陆到 jenkins，<code>Manage Jenkins =&gt; Manage Credentials</code>点击全局凭证，<code>Add Credentials</code>选择<code>Gitlab API token</code>，填写 accessToken。</li>
+<li>用于 gitlab 的登陆账号和密码<br>还是在全局凭证，点击添加凭证，类型选择<code>Username with password</code>，填写用户拉取代码的 gitlab 账号和用户名</li>
+</ol>
+<p>添加完成之后配置 gitlab 的连接地址和需要 ssh 部署的地址。<br>点击<code>Manage Jenkins =&gt; Configure System</code>里面的 gitlab 配置，填写你的 gitlab 名称 <code>Connection name</code>，gitlab 地址，我这里是<code>http://192.168.7.104:10080</code>，名称为”jenkins_for_gitlab”，凭证选择刚才新建的第一个凭证<code>Gitlab API token</code>，添加完成之后点击<code>Test Connection</code>测试，如果配置正确提示 Success。<br>然后添加 ssh 配置 <code>Publish over SSH</code>，<code>SSH Servers</code> 填写 ssh 的地址，账号，以及远程位置，这里可以直接设置为想要部署的位置，我这里设置为根目录<code>/</code>。<br>高级里面填写端口、密码，之后测试<code>Test Configuration</code>，之后 save 保存。</p>
+<h2 id="配置全局-jdk-和-maven"><a href="#配置全局-jdk-和-maven" class="headerlink" title="配置全局 jdk 和 maven"></a>配置全局 jdk 和 maven</h2><p>这一步需要安装 jenkins 的机器安装 jdk 和 maven。<br>一般安装 jenkins 的时候已经安装了 jdk，这里还需要安装 maven。<br>这里下载了压缩包到<code>/usr/local/</code>下面然后 unzip 解压，文件夹是 apache-maven-3.6.3。<br>需要修改环境变量，先下载一个 vim。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get update -y
+$ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>这里我 jdk 的文件名为 openjdk-8。<br>maven 和 jdk 都放在了<code>/usr/local</code> 下面。<br>安装完成后编辑环境变量<code>vi /etc/profile</code>，在文件末尾添加</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">MAVEN_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/apache-maven-3.6.3</span>
+<span class="token attr-name">JAVA_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/openjdk-8</span>
+<span class="token attr-name">CLASS_PATH</span><span class="token punctuation">=</span><span class="token attr-value">$JAVA_HOME/lib/</span>
+<span class="token attr-name">PATH</span><span class="token punctuation">=</span><span class="token attr-value">$PATH:$MAVEN_HOME/bin:$JAVA_HOME/bin</span>
+<span class="token attr-name">export</span> <span class="token attr-value">PATH MAVEN_HOME JAVA_HOME CLASS_PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>配置完成之后输入<code>source /etc/profile</code>使配置文件生效。到这里可以测试下安装是否成功</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mvn -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击<code>Manage Jenkins =&gt; Global Tool Configuration</code>。<br>选择 <code>JDK installations</code>，填写 jdk 名称和路径<code>/usr/local/openjdk-8</code>。<br>选择 Maven installations，填写 maven 的名称和路径<code>/usr/local/apache-maven-3.6.3</code>，然后 save 保存。</p>
+<h2 id="通过-SSH-部署到远程服务器"><a href="#通过-SSH-部署到远程服务器" class="headerlink" title="通过 SSH 部署到远程服务器"></a>通过 SSH 部署到远程服务器</h2><h3 id="前端部署"><a href="#前端部署" class="headerlink" title="前端部署"></a>前端部署</h3><p>到 jenkins 主界面，左侧导航栏选择 <code>New Item</code>,填写名称，选择 <code>Freestyle project</code>，在配置 <code>configure</code> 里面，</p>
+<ul>
+<li><p><code>General</code>—在 <code>Gitlab Connection</code> 选择在配置里面设置的 gitlab 的连接”jenkins for gitlab”。</p>
+</li>
+<li><p><code>Source Code Management</code>—选择 git，仓库地址填写需要部署的项目的仓库地址，凭证选择建立好的 gitlab 的登陆账号密码，分支这里测试是直接选的 master 分支，</p>
+</li>
+<li><p><code>Build Triggers</code>—勾选<code>Build when a change is pushed to GitLab. GitLab webhook URL: http://192.168.7.104:18080/project/testDist</code>，这里需要记录下这个 webhook 地址，填写到 gitlab 的时候需要。<br>点击高级选项，点击 Generate 生成 <code>Secret token</code>，这里我们记录下这个 token，<code>b3d5a618874a8335XXXXXXXXX</code></p>
+</li>
+<li><p><code>Build Environment</code>—这里可以配置在 build 之前或者 build 之后的操作，比如我们需要 build 之后将生成的<code>/dist</code> 文件夹通过 SSH 部署到远程服务器。<br><code>SSH Server</code> 选择配置的地址.<br><code>Source files</code> 填写<code>dist/</code>即为 dist 下面所有文件.<br><code>Remote directory</code> 填写<code>home/</code><br>意思是将 jenkins 下面 workspace 的文件拷贝到远程服务器的 home 文件夹下，其中 <code>Exec command</code> 还可以填写需要在远程服务器执行的操作，比如 tomcat 的关闭与启动等等。</p>
+</li>
+</ul>
+<h3 id="后端-jar-包部署"><a href="#后端-jar-包部署" class="headerlink" title="后端 jar 包部署"></a>后端 jar 包部署</h3><p>jar 包部署与前端部署一样，在 <code>Build Environment</code> 中 <code>Source files</code> 填写<code>target/*.jar</code>。<br><code>Remove prefix</code> 删除前缀这里填写<code>target</code>。<br><code>Remote directory</code> 填写需要部署打的 jar 包位置。<br>这里 build 可以设置打包命令为<code>mvn clear package</code>。<br><code>nohup java -jar XXXX.jar &amp;</code>启动 jar 包，也可以写一些执行脚本在服务器上运行。</p>
+<h2 id="配置-gitlab-执行自动触发构建部署"><a href="#配置-gitlab-执行自动触发构建部署" class="headerlink" title="配置 gitlab 执行自动触发构建部署"></a>配置 gitlab 执行自动触发构建部署</h2><p>进入 gitlab 选择需要部署的项目，<code>设置 =&gt; 集成</code>里面填写 webhook，链接填写为 jenkins 里面生成的链接，如<code>http://192.168.7.104:18080/project/testDist</code>，安全令牌填写<code>b3d5a618874a83358bc0aXXXXX</code>。<br>选择 push 触发，分支选择 master，这样 master 分支提交 push 的时候就会触发这个 webhook，保存之后可以 test 测试<code>Push events</code>，如果成功则提示<code> Hook executed successfully: HTTP 200</code>，如果提示<code> Requests to localhost are not allowed</code>，就需要登陆管理员账号开启内网请求权限，参照文章第一点<a href="#%E5%AE%89%E8%A3%85-gitlab">安装-gitlab</a></p>
+<h2 id="查看任务的-log"><a href="#查看任务的-log" class="headerlink" title="查看任务的 log"></a>查看任务的 log</h2><p>进入任务，左侧导航<code>Console Output</code>可查询 jenkins 日志。<br><strong>build 生成的文件可在 <code>/var/jenkins_home/workspace</code> 下面查看</strong></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Devops</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>devops</tag>
+        <tag>gitlab</tag>
+        <tag>jenkins</tag>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>github图片加载不出来问题解决</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/github%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>最近 github 上图片一直加载不出来，以前是用的 Chrome 插件 Ghelper，最近 Ghelper 开启之后 github 无法访问，这里用了另外一种解决方法。</p>
+<a id="more"></a>
+
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>github 上面图片加载有问题。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>这里我们设置域名指定 ip，以 Windwos 系统为例，文件位置在<code>C:\Windows\System32\drivers\etc</code>，打开之后添加以下代码</p>
+<pre class="line-numbers language-none"><code class="language-none"># GitHub Start
+192.30.255.112	gist.github.com
+192.30.255.112	github.com
+192.30.255.112	www.github.com
+151.101.56.133	avatars0.githubusercontent.com
+151.101.56.133	avatars1.githubusercontent.com
+151.101.56.133	avatars2.githubusercontent.com
+151.101.56.133	avatars3.githubusercontent.com
+151.101.56.133	avatars4.githubusercontent.com
+151.101.56.133	avatars5.githubusercontent.com
+151.101.56.133	avatars6.githubusercontent.com
+151.101.56.133	avatars7.githubusercontent.com
+151.101.56.133	avatars8.githubusercontent.com
+151.101.56.133	camo.githubusercontent.com
+151.101.56.133	cloud.githubusercontent.com
+151.101.56.133	gist.githubusercontent.com
+151.101.56.133	marketplace-screenshots.githubusercontent.com
+151.101.56.133	raw.githubusercontent.com
+151.101.56.133	repository-images.githubusercontent.com
+151.101.56.133	user-images.githubusercontent.com
+# GitHub End<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>再去打开 github，图片加载成功。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git push 报错解决</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Git/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>记一次 <code>git push</code> 的报错解决。</p>
+<a id="more"></a>
+
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>用 hexo 写博客提交的时候报错了 fatal: TaskCanceledException encountered.，有时候是这个 fatal: HttpRequestException encountered.<br>使用网上的方式均不管用，下载了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9HaXQtQ3JlZGVudGlhbC1NYW5hZ2VyLWZvci1XaW5kb3dzL3JlbGVhc2Vz">凭证管理<i class="fa fa-external-link-alt"></i></span>安装完成，也下载了新版本的 git 并更新。用以下命令行的方式也试过。</p>
+<p>配置 credential.helper 为 manager。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>试过了，不行。</p>
+<p>删除系统级别的 credential.helper。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>也不行。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>git 的配置指令有 3 个层级，详细信息可参考 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS8=">git-scm.com<i class="fa fa-external-link-alt"></i></span> 的 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span>。<br>分别是</p>
+<ul>
+<li>system（系统级别）</li>
+<li>global（用户级别）</li>
+<li>local（仓库级别）</li>
+</ul>
+<p>优先级为 local &gt; global &gt; system。local 位置在项目的<code>.git/config</code>，global 位置在每个用户的<code>~/.gitconfig</code>，system 位置在 git 安装目录的<code>etc/gitconfig</code>。我们可以直接修改文件，或者用命令行的方式修改。详细查看<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyLyVFOCU4NyVBQSVFNSVBRSU5QSVFNCVCOSU4OS1HaXQtJUU5JTg1JThEJUU3JUJEJUFFLUdpdA==">自定义 Git - 配置 Git<i class="fa fa-external-link-alt"></i></span></p>
+<p>读取配置命令分别为：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --list
+$ git config --global --list
+$ git config --system --list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>查找<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyL0dpdC0lRTUlQjclQTUlRTUlODUlQjctJUU1JTg3JUFEJUU4JUFGJTgxJUU1JUFEJTk4JUU1JTgyJUE4">Git 的系统凭证管理<i class="fa fa-external-link-alt"></i></span>，credential.helper 可选的存储方式为:</p>
+<h3 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h3><p>将凭证存放在内存中一段时间。 密码永远不会被存储在磁盘中，并且在 15 分钟后从内存中清除。</p>
+<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p>将凭证用明文的形式存放在磁盘中，并且永不过期。 这意味着除非你修改了你在 Git 服务器上的密码，否则你永远不需要再次输入你的凭证信息。 这种方式的缺点是你的密码是用明文的方式存放在你的 home 目录下。</p>
+<h3 id="osxkeychain"><a href="#osxkeychain" class="headerlink" title="osxkeychain"></a>osxkeychain</h3><p>如果你使用的是 Mac，Git 还有一种 “osxkeychain” 模式，它会将凭证缓存到你系统用户的钥匙串中。 这种方式将凭证存放在磁盘中，并且永不过期，但是是被加密的，这种加密方式与存放 HTTPS 凭证以及 Safari 的自动填写是相同的。</p>
+<h3 id="manager"><a href="#manager" class="headerlink" title="manager"></a>manager</h3><p>如果你使用的是 Windows，你可以安装一个叫做 “Git Credential Manager for Windows” 的辅助工具。 这和上面说的 <code>osxkeychain</code>十分类似，但是是使用 <code>Windows Credential Store</code> 来控制敏感信息。 可以在<code>https://github.com/Microsoft/Git-Credential-Manager-for-Windows</code> 下载。</p>
+<p>git 在本地有多种方式来存储本地凭证。存储方式有三种：manager、wincred 和 store，可以在 git 安装目录的<code>mingw64/libexec/git-core</code> 路径下找到对应的 exe 文件：<code>git-credential-manager</code>、<code>git-credential-store</code> 和 <code>git-credential-wincred</code>。wincred 是 Windows 默认的凭证存储模式，其中 manager 模式也是采用的 store 的方式来存储。</p>
+<p>其中用 manager 会把用户信息加密，wincred 则不会。</p>
+<p>这里可以先把原有的 credential.helper 删除</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --unset credential.helper
+$ git config --global --unset credential.helper
+$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>然后再配置 credential.helper 为 manager</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看是否配置成功</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global --list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>问题解决。</p>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>credential</tag>
       </tags>
   </entry>
   <entry>
@@ -408,192 +591,9 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
       <tags>
         <tag>docker</tag>
         <tag>gitlab</tag>
+        <tag>ssh</tag>
         <tag>gitlab-ci</tag>
         <tag>gitlab-pages</tag>
-        <tag>ssh</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>docker+gitlab+jenkins+ssh实现代码自动构建部署</title>
-    <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 gitlab/gitlab-ce 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080</p>
-<a id="more"></a>
-
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 10080:80 --name gitlab twang2218&#x2F;gitlab-ce-zh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>如果是本机 windows 想要尝试社区镜像的，可以使用下面的代码</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker volume create gitlab-logs
-$ docker volume create gitlab-data
-$ docker run -d -p 10443:443 -p 10080:80 -p 10822:22 --name $ gitlab -v d:&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab -v gitlab-logs:&#x2F;var&#x2F;log&#x2F;gitlab -v gitlab-data:&#x2F;var&#x2F;opt&#x2F;gitlab gitlab&#x2F;gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>如果是 linux 的话要尝试社区镜像网上就很多了。<br>需要注意下 <strong>gitlab 的 webhook 配置的钩子地址是不允许内网的，比如 192.168、172.16 或者 10 开头的，这时候需要用 gitlab 的管理员账号（root）登陆去修改允许 webhook 的本地请求</strong>。<br>用 root 账号登陆之后左上角有一个小扳手的图标<code>Admin area =&gt; Settings =&gt; Network</code>勾选允许本地网络的请求即可。<br>这里就涉及到管理员账号的密码，网上很多参考说是系统默认的用户名：<code>root</code>，密码：<code>5iveL!fe</code>，试过了没有用，就只能自己去修改。这里可以参考官方<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvc2VjdXJpdHkvcmVzZXRfcm9vdF9wYXNzd29yZC5odG1sI2hvdy10by1yZXNldC15b3VyLXJvb3QtcGFzc3dvcmQ=">How to reset your root password<i class="fa fa-external-link-alt"></i></span><br>这里有坑的是安装社区版 gitlab/gitlab-ce 查不到用户。<br>进入 tty</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it gitlab bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>正常的修改密码代码如下：</p>
-<pre class="line-numbers language-none"><code class="language-none">gitlab-rails console -e production
-user &#x3D; User.where(id: 1).first或者user &#x3D; User.find_by(email: &#39;admin@example.com&#39;)
-user.password &#x3D; 12345678
-user.password_confirmation &#x3D; 12345678
-user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里查询到的<code>User.where(id: 1).first</code>为 nil，就是 none 的意思，这里不知道怎么解决。还好汉化的那个版本可以直接设置 root 密码。<br>到这一步 gitlab 就可以使用了，但是 clone 的地址没有设置，clone 的地址目前是显示为一串字母。这里需要在<br><code>vi /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml</code>修改为需要暴露的 ip 和端口<br>然后<code>gitlab-ctl restart</code>重启 gitlab 即可。</p>
-<h2 id="安装-jenkins"><a href="#安装-jenkins" class="headerlink" title="安装 jenkins"></a>安装 jenkins</h2><p>安装 jenkins 就简便许多，端口映射到 18080，这里 jenkins 的配置文件后面都在<code>/var/jenkins_home/</code>这个文件夹下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 18080:8080 -p 50000:50000 --name jenkins -v d:&#x2F;docker&#x2F;jenkins:&#x2F;var&#x2F;jenkins_home jenkins&#x2F;jenkins:lts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>后面由于涉及到 maven 环境的安装，所以进入 bash 环境的时候可以指定账号</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u 0 jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这里-u 可以指定 username 或者 uid，也可以写成</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u root jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>打开网页，需要输入首次的密码，可以在<code>/var/jenkins_home/secrets/initialAdminPassword</code>找到。<br>进入之后可以选择配置插件，也可以跳过后面再来配置。这里选择的跳过。<br><strong>如果退出之后不知道管理员的密码</strong>，可以打开<code>/var/jenkins_home/users/adminXXX</code>里面的 config.xml，找到 passwordHash，设置为<code>#jbcrypt:$2a$10$MiIVR0rr/UhQBqT.bBq0QehTiQVqgNpUGyWW2nJObaVAM/2xSQdSq</code><br>这个是编码过后的 123456，这样你的管理员账号就设置为了 123456.</p>
-<h2 id="安装-jenkins-插件"><a href="#安装-jenkins-插件" class="headerlink" title="安装 jenkins 插件"></a>安装 jenkins 插件</h2><p>安装插件这里由于官方的仓库比较慢而且经常失败，这里可以换其他源，这里可以选择清华大学的<code> https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/2.60/update-center.json</code><br>这里有个坑是清华是把这个文件镜像过来了，但是没有把里面的插件升级地址改成清华，所以下载还是有问题，这里解决方式有两种</p>
-<h3 id="nginx-代理"><a href="#nginx-代理" class="headerlink" title="nginx 代理"></a>nginx 代理</h3><p>将所有<code>http://updates.jenkins-ci.org/download</code>代理到<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code> 。</p>
-<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>打开<code>/var/jenkins_home/updates/default.json</code>，将所有的<code>http://updates.jenkins-ci.org/download</code>,有的是<code>https://updates.jenkins.io/download</code>批量修改为<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code>，一劳永逸。</p>
-<p>这里添加几个常用的插件<strong>Maven Integration</strong>、<strong>GitLab</strong>、<strong>GitLab Hook</strong>、<strong>Publish Over SSH</strong></p>
-<h2 id="jenkins-配置"><a href="#jenkins-配置" class="headerlink" title="jenkins 配置"></a>jenkins 配置</h2><p>配置之前先添加两个凭据。</p>
-<ol>
-<li>用于 gitlab 的 accessToken<br>首先登陆 gitlab<code>用户 =&gt; 设置 =&gt; accessToken</code>，填写名称和过期时间，勾选 api，点击生成 accessToken，这里要记录下 token，如果刷新了 token 就没了。<br>登陆到 jenkins，<code>Manage Jenkins =&gt; Manage Credentials</code>点击全局凭证，<code>Add Credentials</code>选择<code>Gitlab API token</code>，填写 accessToken。</li>
-<li>用于 gitlab 的登陆账号和密码<br>还是在全局凭证，点击添加凭证，类型选择<code>Username with password</code>，填写用户拉取代码的 gitlab 账号和用户名</li>
-</ol>
-<p>添加完成之后配置 gitlab 的连接地址和需要 ssh 部署的地址。<br>点击<code>Manage Jenkins =&gt; Configure System</code>里面的 gitlab 配置，填写你的 gitlab 名称 <code>Connection name</code>，gitlab 地址，我这里是<code>http://192.168.7.104:10080</code>，名称为”jenkins_for_gitlab”，凭证选择刚才新建的第一个凭证<code>Gitlab API token</code>，添加完成之后点击<code>Test Connection</code>测试，如果配置正确提示 Success。<br>然后添加 ssh 配置 <code>Publish over SSH</code>，<code>SSH Servers</code> 填写 ssh 的地址，账号，以及远程位置，这里可以直接设置为想要部署的位置，我这里设置为根目录<code>/</code>。<br>高级里面填写端口、密码，之后测试<code>Test Configuration</code>，之后 save 保存。</p>
-<h2 id="配置全局-jdk-和-maven"><a href="#配置全局-jdk-和-maven" class="headerlink" title="配置全局 jdk 和 maven"></a>配置全局 jdk 和 maven</h2><p>这一步需要安装 jenkins 的机器安装 jdk 和 maven。<br>一般安装 jenkins 的时候已经安装了 jdk，这里还需要安装 maven。<br>这里下载了压缩包到<code>/usr/local/</code>下面然后 unzip 解压，文件夹是 apache-maven-3.6.3。<br>需要修改环境变量，先下载一个 vim。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get update -y
-$ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>这里我 jdk 的文件名为 openjdk-8。<br>maven 和 jdk 都放在了<code>/usr/local</code> 下面。<br>安装完成后编辑环境变量<code>vi /etc/profile</code>，在文件末尾添加</p>
-<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">MAVEN_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/apache-maven-3.6.3</span>
-<span class="token attr-name">JAVA_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/openjdk-8</span>
-<span class="token attr-name">CLASS_PATH</span><span class="token punctuation">=</span><span class="token attr-value">$JAVA_HOME/lib/</span>
-<span class="token attr-name">PATH</span><span class="token punctuation">=</span><span class="token attr-value">$PATH:$MAVEN_HOME/bin:$JAVA_HOME/bin</span>
-<span class="token attr-name">export</span> <span class="token attr-value">PATH MAVEN_HOME JAVA_HOME CLASS_PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>配置完成之后输入<code>source /etc/profile</code>使配置文件生效。到这里可以测试下安装是否成功</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mvn -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>点击<code>Manage Jenkins =&gt; Global Tool Configuration</code>。<br>选择 <code>JDK installations</code>，填写 jdk 名称和路径<code>/usr/local/openjdk-8</code>。<br>选择 Maven installations，填写 maven 的名称和路径<code>/usr/local/apache-maven-3.6.3</code>，然后 save 保存。</p>
-<h2 id="通过-SSH-部署到远程服务器"><a href="#通过-SSH-部署到远程服务器" class="headerlink" title="通过 SSH 部署到远程服务器"></a>通过 SSH 部署到远程服务器</h2><h3 id="前端部署"><a href="#前端部署" class="headerlink" title="前端部署"></a>前端部署</h3><p>到 jenkins 主界面，左侧导航栏选择 <code>New Item</code>,填写名称，选择 <code>Freestyle project</code>，在配置 <code>configure</code> 里面，</p>
-<ul>
-<li><p><code>General</code>—在 <code>Gitlab Connection</code> 选择在配置里面设置的 gitlab 的连接”jenkins for gitlab”。</p>
-</li>
-<li><p><code>Source Code Management</code>—选择 git，仓库地址填写需要部署的项目的仓库地址，凭证选择建立好的 gitlab 的登陆账号密码，分支这里测试是直接选的 master 分支，</p>
-</li>
-<li><p><code>Build Triggers</code>—勾选<code>Build when a change is pushed to GitLab. GitLab webhook URL: http://192.168.7.104:18080/project/testDist</code>，这里需要记录下这个 webhook 地址，填写到 gitlab 的时候需要。<br>点击高级选项，点击 Generate 生成 <code>Secret token</code>，这里我们记录下这个 token，<code>b3d5a618874a8335XXXXXXXXX</code></p>
-</li>
-<li><p><code>Build Environment</code>—这里可以配置在 build 之前或者 build 之后的操作，比如我们需要 build 之后将生成的<code>/dist</code> 文件夹通过 SSH 部署到远程服务器。<br><code>SSH Server</code> 选择配置的地址.<br><code>Source files</code> 填写<code>dist/</code>即为 dist 下面所有文件.<br><code>Remote directory</code> 填写<code>home/</code><br>意思是将 jenkins 下面 workspace 的文件拷贝到远程服务器的 home 文件夹下，其中 <code>Exec command</code> 还可以填写需要在远程服务器执行的操作，比如 tomcat 的关闭与启动等等。</p>
-</li>
-</ul>
-<h3 id="后端-jar-包部署"><a href="#后端-jar-包部署" class="headerlink" title="后端 jar 包部署"></a>后端 jar 包部署</h3><p>jar 包部署与前端部署一样，在 <code>Build Environment</code> 中 <code>Source files</code> 填写<code>target/*.jar</code>。<br><code>Remove prefix</code> 删除前缀这里填写<code>target</code>。<br><code>Remote directory</code> 填写需要部署打的 jar 包位置。<br>这里 build 可以设置打包命令为<code>mvn clear package</code>。<br><code>nohup java -jar XXXX.jar &amp;</code>启动 jar 包，也可以写一些执行脚本在服务器上运行。</p>
-<h2 id="配置-gitlab-执行自动触发构建部署"><a href="#配置-gitlab-执行自动触发构建部署" class="headerlink" title="配置 gitlab 执行自动触发构建部署"></a>配置 gitlab 执行自动触发构建部署</h2><p>进入 gitlab 选择需要部署的项目，<code>设置 =&gt; 集成</code>里面填写 webhook，链接填写为 jenkins 里面生成的链接，如<code>http://192.168.7.104:18080/project/testDist</code>，安全令牌填写<code>b3d5a618874a83358bc0aXXXXX</code>。<br>选择 push 触发，分支选择 master，这样 master 分支提交 push 的时候就会触发这个 webhook，保存之后可以 test 测试<code>Push events</code>，如果成功则提示<code> Hook executed successfully: HTTP 200</code>，如果提示<code> Requests to localhost are not allowed</code>，就需要登陆管理员账号开启内网请求权限，参照文章第一点<a href="#%E5%AE%89%E8%A3%85-gitlab">安装-gitlab</a></p>
-<h2 id="查看任务的-log"><a href="#查看任务的-log" class="headerlink" title="查看任务的 log"></a>查看任务的 log</h2><p>进入任务，左侧导航<code>Console Output</code>可查询 jenkins 日志。<br><strong>build 生成的文件可在 <code>/var/jenkins_home/workspace</code> 下面查看</strong></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Devops</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>gitlab</tag>
-        <tag>ssh</tag>
-        <tag>devops</tag>
-        <tag>jenkins</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>github图片加载不出来问题解决</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/github%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<p>最近 github 上图片一直加载不出来，以前是用的 Chrome 插件 Ghelper，最近 Ghelper 开启之后 github 无法访问，这里用了另外一种解决方法。</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>github 上面图片加载有问题。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>这里我们设置域名指定 ip，以 Windwos 系统为例，文件位置在<code>C:\Windows\System32\drivers\etc</code>，打开之后添加以下代码</p>
-<pre class="line-numbers language-none"><code class="language-none"># GitHub Start
-192.30.255.112	gist.github.com
-192.30.255.112	github.com
-192.30.255.112	www.github.com
-151.101.56.133	avatars0.githubusercontent.com
-151.101.56.133	avatars1.githubusercontent.com
-151.101.56.133	avatars2.githubusercontent.com
-151.101.56.133	avatars3.githubusercontent.com
-151.101.56.133	avatars4.githubusercontent.com
-151.101.56.133	avatars5.githubusercontent.com
-151.101.56.133	avatars6.githubusercontent.com
-151.101.56.133	avatars7.githubusercontent.com
-151.101.56.133	avatars8.githubusercontent.com
-151.101.56.133	camo.githubusercontent.com
-151.101.56.133	cloud.githubusercontent.com
-151.101.56.133	gist.githubusercontent.com
-151.101.56.133	marketplace-screenshots.githubusercontent.com
-151.101.56.133	raw.githubusercontent.com
-151.101.56.133	repository-images.githubusercontent.com
-151.101.56.133	user-images.githubusercontent.com
-# GitHub End<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>再去打开 github，图片加载成功。</p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>github</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git push 报错解决</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Git/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<p>记一次 <code>git push</code> 的报错解决。</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>用 hexo 写博客提交的时候报错了 fatal: TaskCanceledException encountered.，有时候是这个 fatal: HttpRequestException encountered.<br>使用网上的方式均不管用，下载了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9HaXQtQ3JlZGVudGlhbC1NYW5hZ2VyLWZvci1XaW5kb3dzL3JlbGVhc2Vz">凭证管理<i class="fa fa-external-link-alt"></i></span>安装完成，也下载了新版本的 git 并更新。用以下命令行的方式也试过。</p>
-<p>配置 credential.helper 为 manager。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>试过了，不行。</p>
-<p>删除系统级别的 credential.helper。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>也不行。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>git 的配置指令有 3 个层级，详细信息可参考 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS8=">git-scm.com<i class="fa fa-external-link-alt"></i></span> 的 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span>。<br>分别是</p>
-<ul>
-<li>system（系统级别）</li>
-<li>global（用户级别）</li>
-<li>local（仓库级别）</li>
-</ul>
-<p>优先级为 local &gt; global &gt; system。local 位置在项目的<code>.git/config</code>，global 位置在每个用户的<code>~/.gitconfig</code>，system 位置在 git 安装目录的<code>etc/gitconfig</code>。我们可以直接修改文件，或者用命令行的方式修改。详细查看<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyLyVFOCU4NyVBQSVFNSVBRSU5QSVFNCVCOSU4OS1HaXQtJUU5JTg1JThEJUU3JUJEJUFFLUdpdA==">自定义 Git - 配置 Git<i class="fa fa-external-link-alt"></i></span></p>
-<p>读取配置命令分别为：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --list
-$ git config --global --list
-$ git config --system --list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>查找<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9ib29rL3poL3YyL0dpdC0lRTUlQjclQTUlRTUlODUlQjctJUU1JTg3JUFEJUU4JUFGJTgxJUU1JUFEJTk4JUU1JTgyJUE4">Git 的系统凭证管理<i class="fa fa-external-link-alt"></i></span>，credential.helper 可选的存储方式为:</p>
-<h3 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h3><p>将凭证存放在内存中一段时间。 密码永远不会被存储在磁盘中，并且在 15 分钟后从内存中清除。</p>
-<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p>将凭证用明文的形式存放在磁盘中，并且永不过期。 这意味着除非你修改了你在 Git 服务器上的密码，否则你永远不需要再次输入你的凭证信息。 这种方式的缺点是你的密码是用明文的方式存放在你的 home 目录下。</p>
-<h3 id="osxkeychain"><a href="#osxkeychain" class="headerlink" title="osxkeychain"></a>osxkeychain</h3><p>如果你使用的是 Mac，Git 还有一种 “osxkeychain” 模式，它会将凭证缓存到你系统用户的钥匙串中。 这种方式将凭证存放在磁盘中，并且永不过期，但是是被加密的，这种加密方式与存放 HTTPS 凭证以及 Safari 的自动填写是相同的。</p>
-<h3 id="manager"><a href="#manager" class="headerlink" title="manager"></a>manager</h3><p>如果你使用的是 Windows，你可以安装一个叫做 “Git Credential Manager for Windows” 的辅助工具。 这和上面说的 <code>osxkeychain</code>十分类似，但是是使用 <code>Windows Credential Store</code> 来控制敏感信息。 可以在<code>https://github.com/Microsoft/Git-Credential-Manager-for-Windows</code> 下载。</p>
-<p>git 在本地有多种方式来存储本地凭证。存储方式有三种：manager、wincred 和 store，可以在 git 安装目录的<code>mingw64/libexec/git-core</code> 路径下找到对应的 exe 文件：<code>git-credential-manager</code>、<code>git-credential-store</code> 和 <code>git-credential-wincred</code>。wincred 是 Windows 默认的凭证存储模式，其中 manager 模式也是采用的 store 的方式来存储。</p>
-<p>其中用 manager 会把用户信息加密，wincred 则不会。</p>
-<p>这里可以先把原有的 credential.helper 删除</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --local --unset credential.helper
-$ git config --global --unset credential.helper
-$ git config --system --unset credential.helper<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>然后再配置 credential.helper 为 manager</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global credential.helper manager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看是否配置成功</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git config --global --list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>问题解决。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-        <tag>credential</tag>
       </tags>
   </entry>
   <entry>
@@ -662,30 +662,6 @@ $ git config --system --unset credential.helper<span aria-hidden="true" class="l
         <tag>typora</tag>
         <tag>picgo</tag>
         <tag>图床</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>node+npm更新</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-npm%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
-<a id="more"></a>
-
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
-<p>查看 node 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看 npm 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\用户名\AppData\Roaming</code>文件夹下有一个 npm 和 npm-cache 文件，这里应该有 npm 的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Node</category>
-      </categories>
-      <tags>
-        <tag>npm</tag>
-        <tag>npm-cache</tag>
       </tags>
   </entry>
   <entry>
@@ -834,99 +810,27 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
       </tags>
   </entry>
   <entry>
-    <title>tabindex之焦点移动</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
-    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
+    <title>node+npm更新</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-npm%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
 <a id="more"></a>
 
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见 visibility:hidden，焦点就不会自动移动过去了。</p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
+<p>查看 node 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 npm 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>经过查找发现在<code>C:\Users\用户名\AppData\Roaming</code>文件夹下有一个 npm 和 npm-cache 文件，这里应该有 npm 的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
 ]]></content>
       <categories>
         <category>Bug解决</category>
-        <category>Javascript</category>
+        <category>Node</category>
       </categories>
       <tags>
-        <tag>tabindex</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用docker+minio实现对象存储</title>
-    <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
-    <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
-<a id="more"></a>
-
-<h2 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h2><p>创建 minio 服务器并设置账号密码为 admin/12345678，密码至少需要 8 位数。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9000:9000 --name minio -v d:\docker\minio\data:&#x2F;data -e &quot;MINIO_ACCESS_KEY&#x3D;admin&quot; -e &quot;MINIO_SECRET_KEY&#x3D;12345678&quot; minio&#x2F;minio server &#x2F;data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这时候打开浏览器输入<code>http://127.0.0.1:9000/</code>能访问到 minio，输入账号密码即可进入。<br>进入页面之后新建一个 bucket，取名 testpic，然后上传几张图片。</p>
-<h2 id="创建-minio-客户端"><a href="#创建-minio-客户端" class="headerlink" title="创建 minio 客户端"></a>创建 minio 客户端</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd --name minioclient --entrypoint&#x3D;&#x2F;bin&#x2F;sh minio&#x2F;mc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="配置对象外部访问"><a href="#配置对象外部访问" class="headerlink" title="配置对象外部访问"></a>配置对象外部访问</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it minioclient sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>启动客户端进入控制台<br>添加管理配置文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc config host add minio http:&#x2F;&#x2F;172.29.240.1:9000 admin 12345678 --api s3v4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<blockquote>
-<p><strong>注意这里不能使用 127.0.0.1 地址。</strong></p>
-</blockquote>
-<p>添加完成后可通过</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat &#x2F;root&#x2F;.mc&#x2F;config.json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看配置文件如下</p>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"10"</span><span class="token punctuation">,</span>
-  <span class="token property">"aliases"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"gcs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://storage.googleapis.com"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v2"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"local"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://localhost:9000"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"minio"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://172.29.240.1:9000"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"12345678"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"s3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"play"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://play.min.io"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"Q3AM3UQ867SPQQA43P2F"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token property">"s3"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://s3.amazonaws.com"</span><span class="token punctuation">,</span>
-      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
-      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
-      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这时候还不能通过外部访问到图片，如果输入<code>http://172.29.240.1:9000/testpic/avatar.png</code>会提示输入账号密码。<br>添加外部访问策略如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mc policy set public minio&#x2F;testpic<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>添加成功之后即可实现外部访问图片。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>对象存储</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>minio</tag>
+        <tag>npm</tag>
+        <tag>npm-cache</tag>
       </tags>
   </entry>
   <entry>
@@ -1095,6 +999,489 @@ $ <span class="token function">cp</span> server.crt /etc/nginx/certificate.crt<s
       </tags>
   </entry>
   <entry>
+    <title>vue+mqtt+protobuf的简单实践(2)</title>
+    <url>/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-2/</url>
+    <content><![CDATA[<h1 id="protobuf-的简单使用"><a href="#protobuf-的简单使用" class="headerlink" title="protobuf 的简单使用"></a>protobuf 的简单使用</h1><p><span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXJzLmdvb2dsZS5jbi9wcm90b2NvbC1idWZmZXJzLw==">protobuf<i class="fa fa-external-link-alt"></i></span>是 Google 提供的与语言无关，与平台无关的，一个具有高效的协议数据交换格式工具库(类似 Json)，但相比于 Json，Protobuf 有更高的转化效率。</p>
+<a id="more"></a>
+
+<h2 id="配置-protobuf-插件-可选"><a href="#配置-protobuf-插件-可选" class="headerlink" title="配置 protobuf 插件(可选)"></a>配置 protobuf 插件(可选)</h2><h3 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h3><p>vscode 里面安装 Clang-Format 和 vscode-proto3 两个插件，其中 Clang-Format 用于格式化，vscode-proto3 用于语法提示、编译等。</p>
+<h3 id="配置插件"><a href="#配置插件" class="headerlink" title="配置插件"></a>配置插件</h3><p>下载 llvm 用于 Clang-Format</p>
+<p>vscode-proto3 是依赖于 Clang-Format 的，而 Clang-Format 的格式化依赖于 llvm 的 clang，所以这里的格式化要下载 llvm，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xsdm0vbGx2bS1wcm9qZWN0L3JlbGVhc2Vz">下载地址<i class="fa fa-external-link-alt"></i></span>，我这里是 windows 就选择的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xsdm0vbGx2bS1wcm9qZWN0L3JlbGVhc2VzL2Rvd25sb2FkL2xsdm1vcmctMTIuMC4wL0xMVk0tMTIuMC4wLXdpbjY0LmV4ZQ==">windows 版本<i class="fa fa-external-link-alt"></i></span>，下载完成后安装，安装完成之后在当前配置文件里面增加一行配置，后面是你安装的路径。</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"clang-format.executable"</span><span class="token operator">:</span> <span class="token string">"C:\\Program Files\\LLVM\\bin\\clang-format.exe"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="编写-proto文件"><a href="#编写-proto文件" class="headerlink" title="编写.proto文件"></a>编写<code>.proto</code>文件</h2><p>这里我们定义一个<code>address.proto</code>，代码如下：</p>
+<pre class="line-numbers language-protobuf" data-language="protobuf"><code class="language-protobuf"><span class="token keyword">syntax</span> <span class="token operator">=</span> <span class="token string">"proto3"</span><span class="token punctuation">;</span>
+<span class="token keyword">package</span> testprotobuf<span class="token punctuation">;</span>
+<span class="token keyword">message</span> <span class="token class-name">Address</span> <span class="token punctuation">&#123;</span>
+  <span class="token builtin">string</span> province <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token builtin">string</span> city <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+  <span class="token builtin">string</span> county <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们上一步如果安装了格式化插件的话，现在可以实现格式化和语法提示等。</p>
+<h2 id="编译并测试"><a href="#编译并测试" class="headerlink" title="编译并测试"></a>编译并测试</h2><h3 id="方式一：使用-protoc"><a href="#方式一：使用-protoc" class="headerlink" title="方式一：使用 protoc"></a>方式一：使用 protoc</h3><h4 id="安装-protoc"><a href="#安装-protoc" class="headerlink" title="安装 protoc"></a>安装 protoc</h4><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Byb3RvY29sYnVmZmVycy9wcm90b2J1Zi9yZWxlYXNlcw==">下载地址<i class="fa fa-external-link-alt"></i></span>，这里我选择的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Byb3RvY29sYnVmZmVycy9wcm90b2J1Zi9yZWxlYXNlcy9kb3dubG9hZC92My4xNS44L3Byb3RvYy0zLjE1Ljgtd2luNjQuemlw">windows 版本<i class="fa fa-external-link-alt"></i></span>，下载之后解压到目录，将目录<code>C:\Program Files\Protoc-3.15.8-win64\bin</code>配置到环境变量中。</p>
+<ul>
+<li><p>如果配置了 vscode-proto3 插件</p>
+<p>在当前项目根目录下新建<code>.vscode/setting.json</code>，代码如下：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"protoc"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"C:\\Program Files\\Protoc-3.15.8-win64\\bin\\protoc.exe"</span><span class="token punctuation">,</span>
+    <span class="token property">"options"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">"--proto_path=$&#123;workspaceRoot&#125;"</span><span class="token punctuation">,</span>
+      <span class="token string">"--js_out=import_style=commonjs,binary:."</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>相关<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3p4aDAvdnNjb2RlLXByb3RvMw==">配置查看<i class="fa fa-external-link-alt"></i></span>，这里的 path 是编译的 protoc 执行地址，options 就是 protoc 里面的 options 参数，可在终端通过<code>protoc --help</code>查看相关配置。<code>$&#123;workspaceRoot&#125;</code>为当前的项目根地址</p>
+</li>
+</ul>
+<h4 id="编译-proto"><a href="#编译-proto" class="headerlink" title="编译 proto"></a>编译 proto</h4><ul>
+<li><p>如果配置了 vscode-proto3 插件，在 vscode 端使用组合键<code>Ctrl+Alt+P</code>，点击<code>proto3:Complie This Proto</code>，编译为<code>address_pb.js</code></p>
+</li>
+<li><p>如果没有配置插件，则直接在终端里面使用</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ protoc --js_out<span class="token operator">=</span>import_style<span class="token operator">=</span>commonjs,binary:. address.proto<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>其中格式为<code>--js_out=[OPTIONS:]output_dir</code></p>
+</li>
+</ul>
+<h4 id="node-测试"><a href="#node-测试" class="headerlink" title="node 测试"></a>node 测试</h4><p>添加 google-protobuf 包</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">yarn</span> <span class="token function">add</span> google-protobuf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>新建文件<code>protoc_node.js</code>，代码如下：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> pb <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./address_pb"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> address <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">pb<span class="token punctuation">.</span>Address</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+address<span class="token punctuation">.</span><span class="token function">setProvince</span><span class="token punctuation">(</span><span class="token string">"sichuan"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+address<span class="token punctuation">.</span><span class="token function">setCity</span><span class="token punctuation">(</span><span class="token string">"chengdu"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+address<span class="token punctuation">.</span><span class="token function">setCounty</span><span class="token punctuation">(</span><span class="token string">"gaoxin"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// var bytes = address.serializeBinary();</span>
+<span class="token comment">// var unBytes = pb.Address.deserializeBinary(bytes);</span>
+
+<span class="token keyword">var</span> province <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">getProvince</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> city <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">getCity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> county <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">getCounty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">province:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>province<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">,city:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>city<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">,county:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>county<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>执行文件<code>node protoc_node.js</code></p>
+<p>打印结果如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">province:sichuan,city:chengdu,county:gaoxin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="web-测试"><a href="#web-测试" class="headerlink" title="web 测试"></a>web 测试</h4><p>web 情况下需要再次编译为 web 可用的 js 文件</p>
+<ul>
+<li><p>编写 export 文件</p>
+<p>新建<code>address_export.js</code>，代码如下：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> address <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./address_pb"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  DataProto<span class="token operator">:</span> address<span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>编译为 web 可用文件</p>
+<p>​ 编译后文件名为<code>address_web.js</code></p>
+<ul>
+<li><p>方式一：使用 browserify 编译</p>
+<ul>
+<li><p>安装文件的引用库</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">npm</span> <span class="token function">install</span> -g require<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li><p>安装 browserify</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">npm</span> <span class="token function">install</span> -g browserify<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+<li><p>安装 protobuf 的库文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">npm</span> <span class="token function">install</span> google-protobuf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>使用 browserify 编译</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ browserify address_export.js -o  address_web.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+<li><p>方式二：使用 npx 编译</p>
+<p><strong>推荐这种方式，不用安装其他库</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ npx browserify address_export.js -o  address_web.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+</li>
+</ul>
+</li>
+</ul>
+<p>新建文件<code>protoc_brower.html</code></p>
+<p>代码如下：</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">http-equiv</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>X-UA-Compatible<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>IE=edge<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width=device-width, initial-scale=1.0<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>protoc_brower<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address_web.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+      <span class="token keyword">var</span> address <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">proto<span class="token punctuation">.</span>testprotobuf<span class="token punctuation">.</span>Address</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      address<span class="token punctuation">.</span><span class="token function">setProvince</span><span class="token punctuation">(</span><span class="token string">"sichuan"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      address<span class="token punctuation">.</span><span class="token function">setCity</span><span class="token punctuation">(</span><span class="token string">"chengdu"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      address<span class="token punctuation">.</span><span class="token function">setCounty</span><span class="token punctuation">(</span><span class="token string">"wuhou"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>address<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="方式二：使用-protobufjs"><a href="#方式二：使用-protobufjs" class="headerlink" title="方式二：使用 protobufjs"></a>方式二：使用 protobufjs</h3><h4 id="直接使用"><a href="#直接使用" class="headerlink" title="直接使用"></a>直接使用</h4><p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Byb3RvYnVmanMvcHJvdG9idWYuanM=">protobufjs 地址<i class="fa fa-external-link-alt"></i></span>，使用 protobufjs 的情况，可用直接加载<code>address.proto</code>文件</p>
+<p>添加 protobufjs 包</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">yarn</span> <span class="token function">add</span> protobufjs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h5 id="node-测试-1"><a href="#node-测试-1" class="headerlink" title="node 测试"></a>node 测试</h5><p>新建文件<code>protobufjs_node.js</code></p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> protobuf <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"protobufjs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+protobuf<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token string">"../address.proto"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err<span class="token punctuation">,</span> root</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token keyword">throw</span> err<span class="token punctuation">;</span>
+
+  <span class="token comment">// Obtain a message type</span>
+  <span class="token keyword">var</span> address <span class="token operator">=</span> root<span class="token punctuation">.</span><span class="token function">lookupType</span><span class="token punctuation">(</span><span class="token string">"testprotobuf.Address"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Exemplary payload</span>
+  <span class="token keyword">var</span> payload <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    province<span class="token operator">:</span> <span class="token string">"sichuan"</span><span class="token punctuation">,</span>
+    city<span class="token operator">:</span> <span class="token string">"chengdu"</span><span class="token punctuation">,</span>
+    county<span class="token operator">:</span> <span class="token string">"gaoxin"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Verify the payload if necessary (i.e. when possibly incomplete or invalid)</span>
+  <span class="token keyword">var</span> errMsg <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">verify</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token function">Error</span><span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Create a new message</span>
+  <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// or use .fromObject if conversion is necessary</span>
+
+  <span class="token comment">// Encode a message to an Uint8Array (browser) or Buffer (node)</span>
+  <span class="token keyword">var</span> buffer <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">finish</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// ... do something with buffer</span>
+
+  <span class="token comment">// Decode an Uint8Array (browser) or Buffer (node) to a message</span>
+  <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// ... do something with message</span>
+
+  <span class="token comment">// If the application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.</span>
+
+  <span class="token comment">// Maybe convert the message back to a plain object</span>
+  <span class="token keyword">var</span> object <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>执行文件<code>node protobufjs_node.js</code></p>
+<p>结果如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#123; province: &#39;sichuan&#39;, city: &#39;chengdu&#39;, county: &#39;gaoxin&#39; &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h5 id="web-测试-1"><a href="#web-测试-1" class="headerlink" title="web 测试"></a>web 测试</h5><p>新建文件<code>protobufjs_brower.html</code>，添加 js，<code>protobuf.min.js</code>，这里我是下载下来了再添加</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">http-equiv</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>X-UA-Compatible<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>IE=edge<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width=device-width, initial-scale=1.0<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>protobufjs_brower<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>protobuf.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+      protobuf<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token string">"../address.proto"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err<span class="token punctuation">,</span> root</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token keyword">throw</span> err<span class="token punctuation">;</span>
+
+        <span class="token comment">// Obtain a message type</span>
+        <span class="token keyword">var</span> address <span class="token operator">=</span> root<span class="token punctuation">.</span><span class="token function">lookupType</span><span class="token punctuation">(</span><span class="token string">"testprotobuf.Address"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Exemplary payload</span>
+        <span class="token keyword">var</span> payload <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+          province<span class="token operator">:</span> <span class="token string">"sichuan"</span><span class="token punctuation">,</span>
+          city<span class="token operator">:</span> <span class="token string">"chengdu"</span><span class="token punctuation">,</span>
+          county<span class="token operator">:</span> <span class="token string">"wuhou"</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Verify the payload if necessary (i.e. when possibly incomplete or invalid)</span>
+        <span class="token keyword">var</span> errMsg <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">verify</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token function">Error</span><span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Create a new message</span>
+        <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// or use .fromObject if conversion is necessary</span>
+
+        <span class="token comment">// Encode a message to an Uint8Array (browser) or Buffer (node)</span>
+        <span class="token keyword">var</span> buffer <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">finish</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// ... do something with buffer</span>
+
+        <span class="token comment">// Decode an Uint8Array (browser) or Buffer (node) to a message</span>
+        <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// ... do something with message</span>
+
+        <span class="token comment">// If the application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.</span>
+
+        <span class="token comment">// Maybe convert the message back to a plain object</span>
+        <span class="token keyword">var</span> object <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="编译后使用"><a href="#编译后使用" class="headerlink" title="编译后使用"></a>编译后使用</h4><p>由于前端 web 页面直接使用.proto 文件不太好，这里我们转换成 js 文件引入</p>
+<h5 id="安装-pbjs"><a href="#安装-pbjs" class="headerlink" title="安装 pbjs"></a>安装 pbjs</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">npm</span> <span class="token function">install</span> -g pbjs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 cli 相关的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Byb3RvYnVmanMvcHJvdG9idWYuanMvYmxvYi9tYXN0ZXIvY2xpL1JFQURNRS5tZCNwYmpzLWZvci1qYXZhc2NyaXB0">命令<i class="fa fa-external-link-alt"></i></span>，或者终端使用以下命令查看</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ pbjs --help<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h5 id="编译-proto-1"><a href="#编译-proto-1" class="headerlink" title="编译 proto"></a>编译 proto</h5><p>这里我们使用 json-module 方式，也可以选择其他方式 json、static-module 等。生成文件<code>protobufjs_bundle.js</code></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ pbjs -t json-module -w commonjs -o protobufjs_bundle.js address.proto<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>或者使用 npx 方式</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ npx pbjs -t json-module -w commonjs -o protobufjs_bundle.js address.proto<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h5 id="node-测试-2"><a href="#node-测试-2" class="headerlink" title="node 测试"></a>node 测试</h5><p>新建文件<code>protobufjs_bundle_node.js</code></p>
+<p>代码如下:</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> protoRoot <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./protobufjs_bundle"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> address <span class="token operator">=</span> protoRoot<span class="token punctuation">.</span><span class="token function">lookupType</span><span class="token punctuation">(</span><span class="token string">"testprotobuf.Address"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> payload <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  province<span class="token operator">:</span> <span class="token string">"sichuan"</span><span class="token punctuation">,</span>
+  city<span class="token operator">:</span> <span class="token string">"chengdu"</span><span class="token punctuation">,</span>
+  county<span class="token operator">:</span> <span class="token string">"gaoxin"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">message = </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> buffer <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">finish</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">buffer = </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token class-name">Array</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> decoded <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">decoded = </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>decoded<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>执行结果如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">message &#x3D; &#123;&quot;province&quot;:&quot;sichuan&quot;,&quot;city&quot;:&quot;chengdu&quot;,&quot;county&quot;:&quot;gaoxin&quot;&#125;
+buffer &#x3D; 10,7,115,105,99,104,117,97,110,18,7,99,104,101,110,103,100,117,26,6,103,97,111,120,105,110
+decoded &#x3D; &#123;&quot;province&quot;:&quot;sichuan&quot;,&quot;city&quot;:&quot;chengdu&quot;,&quot;county&quot;:&quot;gaoxin&quot;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="web-测试-2"><a href="#web-测试-2" class="headerlink" title="web 测试"></a>web 测试</h5><p>web 端如果是 require 的方式，会报<code>Require statement not part of import statement</code>错误，可用通过配置<code>.eslintrc.js</code>里面的<code>rules</code>，添加以下规则解决：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"@typescript-eslint/no-var-requires"</span><span class="token operator">:</span> <span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里建议还是通过以下代码编译为 es6 的方式：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ npx pbjs -t json-module -w es6 -o protobufjs_es6_bundle.js address.proto<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在 web 端可用通过 import 的方式引入代码</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> protoRoot <span class="token keyword">from</span> <span class="token string">"./protobufjs_es6_bundle.js"</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>具体的测试方式和 node 一样的代码，这里就不做演示了，以上就是 protobuf 在 JavaScript 方面的简单使用。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>MQTT</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>mqtt</tag>
+        <tag>protobuf</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue+mqtt+protobuf的简单实践(1)</title>
+    <url>/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-1/</url>
+    <content><![CDATA[<h1 id="mqtt-协议的简单使用"><a href="#mqtt-协议的简单使用" class="headerlink" title="mqtt 协议的简单使用"></a>mqtt 协议的简单使用</h1><p>MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议），是一种基于发布/订阅（publish/subscribe）模式的”轻量级”通讯协议，该协议构建于 TCP/IP 协议上，低开销、低带宽占用，在物联网、小型设备等方面应用较广。由 Broker(Server)+Pub/Sub 构成。</p>
+<a id="more"></a>
+
+<h2 id="创建一个-Broker"><a href="#创建一个-Broker" class="headerlink" title="创建一个 Broker"></a>创建一个 Broker</h2><p>这里我们使用了开源库<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vc2NhanMvYWVkZXM=">aedes<i class="fa fa-external-link-alt"></i></span>.broker 的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vc2NhanMvYWVkZXMvYmxvYi9tYWluL2RvY3MvQWVkZXMubWQ=">文档<i class="fa fa-external-link-alt"></i></span>，client 的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vc2NhanMvYWVkZXMvYmxvYi9tYWluL2RvY3MvQ2xpZW50Lm1k">文档<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="创建-mqtt-服务"><a href="#创建-mqtt-服务" class="headerlink" title="创建 mqtt 服务"></a>创建 mqtt 服务</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> aedes <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./aedes"</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> server <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"net"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span>aedes<span class="token punctuation">.</span>handle<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="开启服务"><a href="#开启服务" class="headerlink" title="开启服务"></a>开启服务</h3><p>mqtt 协议默认端口是 1883</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> port <span class="token operator">=</span> <span class="token number">1883</span><span class="token punctuation">;</span>
+
+server<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"server started and listening on port "</span><span class="token punctuation">,</span> port<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="身份验证"><a href="#身份验证" class="headerlink" title="身份验证"></a>身份验证</h3><p>添加一个用户名密码的身份验证，这里账号密码设置为<code>user/123456</code></p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">// 身份验证</span>
+aedes<span class="token punctuation">.</span><span class="token function-variable function">authenticate</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client<span class="token punctuation">,</span> username<span class="token punctuation">,</span> password<span class="token punctuation">,</span> callback</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">callback</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> username <span class="token operator">===</span> <span class="token string">"user"</span> <span class="token operator">&amp;&amp;</span> password<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">"123456"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>如果身份验证失败，可以参考<span class="exturl" data-url="aHR0cDovL2RvY3Mub2FzaXMtb3Blbi5vcmcvbXF0dC9tcXR0L3YzLjEuMS9vcy9tcXR0LXYzLjEuMS1vcy5odG1sI19UYWJsZV8zLjFfLQ==">错误码<i class="fa fa-external-link-alt"></i></span>,代码如下：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">aedes<span class="token punctuation">.</span><span class="token function-variable function">authenticate</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client<span class="token punctuation">,</span> username<span class="token punctuation">,</span> password<span class="token punctuation">,</span> callback</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>username <span class="token operator">!==</span> <span class="token string">"user"</span> <span class="token operator">||</span> password <span class="token operator">!==</span> <span class="token string">"123456"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> error <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"Auth error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    error<span class="token punctuation">.</span>returnCode <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+    <span class="token function">callback</span><span class="token punctuation">(</span>error<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="监听客户端"><a href="#监听客户端" class="headerlink" title="监听客户端"></a>监听客户端</h3><ul>
+<li>监听客户端连接</li>
+</ul>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">aedes<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"clientReady"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+    <span class="token string">"Client Connected: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>client <span class="token operator">?</span> client<span class="token punctuation">.</span>id <span class="token operator">:</span> client<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"to broker"</span><span class="token punctuation">,</span>
+    aedes<span class="token punctuation">.</span>id
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>监听客户端断开</li>
+</ul>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">aedes<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"clientDisconnect"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+    <span class="token string">"Client Disconnected: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>client <span class="token operator">?</span> client<span class="token punctuation">.</span>id <span class="token operator">:</span> client<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"to broker"</span><span class="token punctuation">,</span>
+    aedes<span class="token punctuation">.</span>id
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="创建发布端"><a href="#创建发布端" class="headerlink" title="创建发布端"></a>创建发布端</h2><h3 id="开启服务-1"><a href="#开启服务-1" class="headerlink" title="开启服务"></a>开启服务</h3><p>这里我们使用 mqtt 库，接口为<span class="exturl" data-url="aHR0cHM6Ly93d3cubnBtanMuY29tL3BhY2thZ2UvbXF0dCNhcGk=">API<i class="fa fa-external-link-alt"></i></span></p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> mqtt <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"mqtt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="连接到-broker"><a href="#连接到-broker" class="headerlink" title="连接到 broker"></a>连接到 broker</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> client <span class="token operator">=</span> mqtt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token string">"mqtt://127.0.0.1:1883"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  username<span class="token operator">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span>
+  password<span class="token operator">:</span> <span class="token string">"123456"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="监听连接"><a href="#监听连接" class="headerlink" title="监听连接"></a>监听连接</h3><p>监听并发布 protobuf 消息</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"connected"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"服务器连接成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  client<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token string">"text"</span><span class="token punctuation">,</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> id<span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> qos<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> retain<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 发布主题消息</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="创建订阅端"><a href="#创建订阅端" class="headerlink" title="创建订阅端"></a>创建订阅端</h2><h3 id="开启服务-2"><a href="#开启服务-2" class="headerlink" title="开启服务"></a>开启服务</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> mqtt <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"mqtt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="连接到-broker-1"><a href="#连接到-broker-1" class="headerlink" title="连接到 broker"></a>连接到 broker</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> client <span class="token operator">=</span> mqtt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token string">"mqtt://127.0.0.1:1883"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  username<span class="token operator">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span>
+  password<span class="token operator">:</span> <span class="token string">"123456"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="监听连接-1"><a href="#监听连接-1" class="headerlink" title="监听连接"></a>监听连接</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js">client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"connect"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"服务器连接成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  client<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token string">"text"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> qos<span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 订阅text消息</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="接收订阅消息"><a href="#接收订阅消息" class="headerlink" title="接收订阅消息"></a>接收订阅消息</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js">client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">topic<span class="token punctuation">,</span> message</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"当前topic："</span><span class="token punctuation">,</span> topic<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>message<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="测试-demo"><a href="#测试-demo" class="headerlink" title="测试 demo"></a>测试 demo</h2><ul>
+<li>启动服务器<code>node broker.js</code></li>
+<li>启动发布端<code>node pub.js</code></li>
+<li>启动订阅端<code>node sub.js</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>MQTT</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>mqtt</tag>
+        <tag>protobuf</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tabindex之焦点移动</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
+    <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
+<a id="more"></a>
+
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见 visibility:hidden，焦点就不会自动移动过去了。</p>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Javascript</category>
+      </categories>
+      <tags>
+        <tag>tabindex</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用docker+minio实现对象存储</title>
+    <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
+    <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。</p>
+<a id="more"></a>
+
+<h2 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h2><p>创建 minio 服务器并设置账号密码为 admin/12345678，密码至少需要 8 位数。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9000</span>:9000 --name minio -v d:<span class="token punctuation">\</span>docker<span class="token punctuation">\</span>minio<span class="token punctuation">\</span>data:/data -e <span class="token string">"MINIO_ACCESS_KEY=admin"</span> -e <span class="token string">"MINIO_SECRET_KEY=12345678"</span> minio/minio server /data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这时候打开浏览器输入<code>http://127.0.0.1:9000/</code>能访问到 minio，输入账号密码即可进入。<br>进入页面之后新建一个 bucket，取名 testpic，然后上传几张图片。</p>
+<h2 id="创建-minio-客户端"><a href="#创建-minio-客户端" class="headerlink" title="创建 minio 客户端"></a>创建 minio 客户端</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd --name minioclient --entrypoint<span class="token operator">=</span>/bin/sh minio/mc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="配置对象外部访问"><a href="#配置对象外部访问" class="headerlink" title="配置对象外部访问"></a>配置对象外部访问</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it minioclient <span class="token function">sh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>启动客户端进入控制台<br>添加管理配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">mc</span> config <span class="token function">host</span> <span class="token function">add</span> minio http://172.29.240.1:9000 admin <span class="token number">12345678</span> --api s3v4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p><strong>注意这里不能使用 127.0.0.1 地址。</strong></p>
+</blockquote>
+<p>添加完成后可通过</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">cat</span> /root/.mc/config.json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看配置文件如下</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"10"</span><span class="token punctuation">,</span>
+  <span class="token property">"aliases"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gcs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://storage.googleapis.com"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v2"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"local"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://localhost:9000"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"minio"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://172.29.240.1:9000"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"12345678"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"s3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"play"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://play.min.io"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"Q3AM3UQ867SPQQA43P2F"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"auto"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token property">"s3"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://s3.amazonaws.com"</span><span class="token punctuation">,</span>
+      <span class="token property">"accessKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-ACCESS-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"secretKey"</span><span class="token operator">:</span> <span class="token string">"YOUR-SECRET-KEY-HERE"</span><span class="token punctuation">,</span>
+      <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"S3v4"</span><span class="token punctuation">,</span>
+      <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"dns"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这时候还不能通过外部访问到图片，如果输入<code>http://172.29.240.1:9000/testpic/avatar.png</code>会提示输入账号密码。<br>添加外部访问策略如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">mc</span> policy <span class="token builtin class-name">set</span> public minio/testpic<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>添加成功之后即可实现外部访问图片。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>对象存储</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>minio</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用puppeteer实现自动登录和测试页面</title>
     <url>/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/</url>
     <content><![CDATA[<p>近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。</p>
@@ -1181,61 +1568,226 @@ $ <span class="token function">cp</span> server.crt /etc/nginx/certificate.crt<s
       </tags>
   </entry>
   <entry>
-    <title>数据可视化工具选型参考</title>
-    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
+    <title>vue+mqtt+protobuf的简单实践(3)</title>
+    <url>/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-3/</url>
+    <content><![CDATA[<h1 id="vue3-mqtt-protobuf"><a href="#vue3-mqtt-protobuf" class="headerlink" title="vue3+mqtt+protobuf"></a>vue3+mqtt+protobuf</h1><p>这里我们使用 node 端模拟 broker+publish/subscribe，web 端用 vue3+mqtt 模拟 publish/subscribe，测试发现 mqtt 好像不能直接用于浏览器端，可用通过转换来实现<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21xdHRqcy9NUVRULmpzI2Jyb3dzZXI=">Brower 端的使用<i class="fa fa-external-link-alt"></i></span></p>
 <a id="more"></a>
 
-<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
-<li>Leaflet|28.9K|适合移动设备</li>
-<li>Chartist.js|12.3K|创建响应式图表</li>
-<li>d3|93.6K|svg+canvas+html</li>
-<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
+<h2 id="node-端"><a href="#node-端" class="headerlink" title="node 端"></a>node 端</h2><p>测试发现 mqtt 支持浏览器的话，需要转换为 websoket 的方式，就是<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vc2NhanMvYWVkZXMvYmxvYi9tYXN0ZXIvZG9jcy9FeGFtcGxlcy5tZCNtcXR0LXNlcnZlci1vdmVyLXdlYnNvY2tldC11c2luZy1zZXJ2ZXItZmFjdG9yeQ==">MQTT over Websockets<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="创建-Broker"><a href="#创建-Broker" class="headerlink" title="创建 Broker"></a>创建 Broker</h3><p>新建<code>broker-ws.js</code>文件，代码如下，这里我们使用了<code>websocket-stream</code>库来实现<code>MQTT over Websockets</code>。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">/**
+ * 创建mqtt服务器
+ */</span>
+<span class="token keyword">const</span> aedes <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"aedes"</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> httpServer <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"http"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> ws <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"websocket-stream"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> port <span class="token operator">=</span> <span class="token number">8888</span><span class="token punctuation">;</span>
+
+ws<span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> server<span class="token operator">:</span> httpServer <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> aedes<span class="token punctuation">.</span>handle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+httpServer<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"websocket server listening on port "</span><span class="token punctuation">,</span> port<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 身份验证</span>
+aedes<span class="token punctuation">.</span><span class="token function-variable function">authenticate</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client<span class="token punctuation">,</span> username<span class="token punctuation">,</span> password<span class="token punctuation">,</span> callback</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">username:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>username<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">，password：</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>password<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">callback</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> username <span class="token operator">===</span> <span class="token string">"user"</span> <span class="token operator">&amp;&amp;</span> password<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">"123456"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 客户端连接</span>
+aedes<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"clientReady"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+    <span class="token string">"Client Connected: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>client <span class="token operator">?</span> client<span class="token punctuation">.</span>id <span class="token operator">:</span> client<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"to broker"</span><span class="token punctuation">,</span>
+    aedes<span class="token punctuation">.</span>id
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 客户端断开</span>
+aedes<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"clientDisconnect"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+    <span class="token string">"Client Disconnected: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>client <span class="token operator">?</span> client<span class="token punctuation">.</span>id <span class="token operator">:</span> client<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"to broker"</span><span class="token punctuation">,</span>
+    aedes<span class="token punctuation">.</span>id
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="创建-client"><a href="#创建-client" class="headerlink" title="创建 client"></a>创建 client</h3><p>新建<code>client-ws.js</code>用于和浏览器端互相发布订阅</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> mqtt <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"mqtt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> protobuf <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"protobufjs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> address <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> client <span class="token operator">=</span> mqtt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token string">"ws://127.0.0.1:8888"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  username<span class="token operator">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span>
+  password<span class="token operator">:</span> <span class="token string">"123456"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+protobuf<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token string">"./address.proto"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err<span class="token punctuation">,</span> root</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token keyword">throw</span> err<span class="token punctuation">;</span>
+  address <span class="token operator">=</span> root<span class="token punctuation">.</span><span class="token function">lookupType</span><span class="token punctuation">(</span><span class="token string">"testmqtt.Address"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"connect"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">服务器连接成功，clientId为</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  client<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token string">"vue-protobuf"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> qos<span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 订阅消息</span>
+  <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 发布消息</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">topic<span class="token punctuation">,</span> messageBuffer</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>messageBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> object <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+    <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">接收到</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">主题为</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>topic<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">的消息\n</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>
+      object
+    <span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 发布消息
+ */</span>
+<span class="token keyword">function</span> <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> payload <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    province<span class="token operator">:</span> <span class="token string">"sichuan"</span><span class="token punctuation">,</span>
+    city<span class="token operator">:</span> <span class="token string">"chengdu"</span><span class="token punctuation">,</span>
+    county<span class="token operator">:</span> <span class="token string">"gaoxin"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">var</span> errMsg <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">verify</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token function">Error</span><span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> buffer <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">finish</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  client<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token string">"node-protobuf"</span><span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+    qos<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    retain<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">setTimeout</span><span class="token punctuation">(</span>postMessage<span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="brower-端"><a href="#brower-端" class="headerlink" title="brower 端"></a>brower 端</h2><h3 id="生成-proto-js"><a href="#生成-proto-js" class="headerlink" title="生成 proto.js"></a>生成 proto.js</h3><p>这里我们采用 pbjs 的方式生成浏览器端可用的 js，使用 json-module 的方式</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ npx pbjs -t json-module -w es6 -o address_proto.js address.proto<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="vue-配置"><a href="#vue-配置" class="headerlink" title="vue 配置"></a>vue 配置</h3><p>这里我们新建一个 vue 的项目</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ vue create testmqtt-protobuf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li><p>首先我们增加 mqtt 和 protobufjs 的库</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">$ yarn add mqtt protobufjs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>将生成的 address_proto.js 拷贝到项目中，并新建<code>mqtt.js</code>文件用于订阅发布</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> connect <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"mqtt"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> protoRoot <span class="token keyword">from</span> <span class="token string">"@/proto/address_proto"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> <span class="token function-variable function">mqtt</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> client <span class="token operator">=</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token string">"ws://127.0.0.1:8888"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+    username<span class="token operator">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span>
+    password<span class="token operator">:</span> <span class="token string">"123456"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> address <span class="token operator">=</span> protoRoot<span class="token punctuation">.</span><span class="token function">lookupType</span><span class="token punctuation">(</span><span class="token string">"testmqtt.Address"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"connect"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">服务器连接成功，clientId为</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token string">"node-protobuf"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> qos<span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 订阅消息</span>
+    <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 发布消息</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">topic<span class="token punctuation">,</span> messageBuffer</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>messageBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> object <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+      <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">接收到</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">主题为</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>topic<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">的消息\n</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>
+        object
+      <span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * 发布消息
+   */</span>
+  <span class="token keyword">function</span> <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> payload <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+      province<span class="token operator">:</span> <span class="token string">"sichuan"</span><span class="token punctuation">,</span>
+      city<span class="token operator">:</span> <span class="token string">"chengdu"</span><span class="token punctuation">,</span>
+      county<span class="token operator">:</span> <span class="token string">"wuhou"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">var</span> errMsg <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">verify</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token function">Error</span><span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> buffer <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">finish</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token string">"vue-protobuf"</span><span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+      qos<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      retain<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span>postMessage<span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> mqtt<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>在 Home.vue 文件中添加 mqtt.js</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> onMounted<span class="token punctuation">,</span> defineComponent <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> mqtt <span class="token keyword">from</span> <span class="token string">"@/utils/mqtt"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> HelloWorld <span class="token keyword">from</span> <span class="token string">"@/components/HelloWorld.vue"</span><span class="token punctuation">;</span> <span class="token comment">// @ is an alias to /src</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineComponent</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  name<span class="token operator">:</span> <span class="token string">"Home"</span><span class="token punctuation">,</span>
+  components<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    HelloWorld<span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">onMounted</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+      <span class="token function">mqtt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+</li>
 </ul>
-<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
-<li>Echarts|42.8K|百度产品</li>
-<li>AntV|蚂蚁金服</li>
-<li>Highcharts|9.7K|可视化库，商用付费</li>
-</ul>
-<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
-<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
-</ul>
-<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
-<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
-<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
-<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
-</ul>
-<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
-<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
-<li>FineReport</li>
-<li>数字冰雹</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
-<li>recharts|14.7K|Redefined chart library built with React and D3</li>
-<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
-<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
-<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
-<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
-</ul>
-<hr>
-<p>选型对比</p>
-<blockquote>
-<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
-<p>开发：Echarts|AntV|D3</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><blockquote>
+<p>如果 vue 用 typescript 的方式，会提示需要定义 module，在<code>shims-vue.d.ts</code>文件中增加<code>declare module &#39;@/utils/mqtt&#39;</code>即可，</p>
+<p>如果有提示需要增加返回值的情况，可在 eslint 中关闭，rules 增加<code>&quot;@typescript-eslint/explicit-module-boundary-types&quot;: &quot;off&quot;</code></p>
 </blockquote>
-<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
-<hr>
-<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
-<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
-<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
+<ul>
+<li>启动 broker</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ node broker-ws.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>启动 client.js</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ node client-ws.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>启动 vue</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">yarn</span> serve<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这是我们能看到控制台打印为</p>
+<ul>
+<li>broker</li>
+</ul>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001809.png" alt="broker"></p>
+<ul>
+<li><p>client</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001842.png" alt="client"></p>
+</li>
+<li><p>brower</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001909.png" alt="brower"></p>
+</li>
+</ul>
 ]]></content>
       <categories>
         <category>开发</category>
-        <category>数据可视化</category>
+        <category>MQTT</category>
       </categories>
       <tags>
-        <tag>数据可视化</tag>
+        <tag>vue</tag>
+        <tag>mqtt</tag>
+        <tag>protobuf</tag>
       </tags>
   </entry>
   <entry>
@@ -1295,6 +1847,81 @@ $ <span class="token function">cp</span> server.crt /etc/nginx/certificate.crt<s
       </tags>
   </entry>
   <entry>
+    <title>数据可视化工具选型参考</title>
+    <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
+<a id="more"></a>
+
+<h2 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h2><ul>
+<li>Leaflet|28.9K|适合移动设备</li>
+<li>Chartist.js|12.3K|创建响应式图表</li>
+<li>d3|93.6K|svg+canvas+html</li>
+<li>Plotly|12.2K|使用该工具通过上传 CSV 文件或连接到 SQL 数据库来创建 D3.js 图表和地图</li>
+</ul>
+<h2 id="纯可视化图表生成类"><a href="#纯可视化图表生成类" class="headerlink" title="纯可视化图表生成类"></a>纯可视化图表生成类</h2><ul>
+<li>Echarts|42.8K|百度产品</li>
+<li>AntV|蚂蚁金服</li>
+<li>Highcharts|9.7K|可视化库，商用付费</li>
+</ul>
+<h2 id="可视化报表类"><a href="#可视化报表类" class="headerlink" title="可视化报表类"></a>可视化报表类</h2><ul>
+<li>FineReport|报表软件，企业级应用，工作用小屏，决策用大屏。办公用微软，经营用帆软。</li>
+</ul>
+<h2 id="商业智能分析"><a href="#商业智能分析" class="headerlink" title="商业智能分析"></a>商业智能分析</h2><ul>
+<li>Tableau|内置常用的分析图表，和一些数据分析模型</li>
+<li>FineBI|内置丰富图表，不需要代码调用，可直接拖拽生成。可用于业务数据的快速分析，制作 dashboard，也可构建可视化大屏。</li>
+<li>PowerBI|继 Excel 之后推出的 BI 产品，可以和 Excel 无缝连接使用，创建个性化的数据看板。</li>
+</ul>
+<h2 id="可视化大屏类"><a href="#可视化大屏类" class="headerlink" title="可视化大屏类"></a>可视化大屏类</h2><ul>
+<li>DataV|主要用于业务数据与地理信息融合的大数据可视化,通过简单的拖拽配置就能生成可视化大屏或者仪表盘.</li>
+<li>FineReport</li>
+<li>数字冰雹</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>Chart.js|50.2K|Simple HTML5 Charts using the <code>&lt;canvas&gt;</code> tag</li>
+<li>recharts|14.7K|Redefined chart library built with React and D3</li>
+<li>charts|13.5K|Simple, responsive, modern SVG Charts with zero dependencies</li>
+<li>dashboards|10.8K|Responsive dashboard templates 📊✨</li>
+<li>G2|10K|📊 A highly interactive data-driven visualization grammar for statistical charts.</li>
+<li>ZRender|4.5K|二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。</li>
+</ul>
+<hr>
+<p>选型对比</p>
+<blockquote>
+<p>商业：阿里 DataV|腾讯云图|百度 Sugar</p>
+<p>开发：Echarts|AntV|D3</p>
+</blockquote>
+<p>echarts 缺失灵活性的同时，带来的是使用上的便利。社区 echarts &gt; antv</p>
+<hr>
+<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>一种 3D 绘图协议，这种绘图技术标准允许把 JavaScript 和 OpenGL ES 2.0 结合在一起，通过增加 OpenGL ES 2.0 的一个 JavaScript 绑定，WebGL 可以为 HTML5 Canvas 提供硬件 3D 加速渲染，这样 Web 开发人员就可以借助系统显卡来在浏览器里更流畅地展示 3D 场景和模型了，还能创建复杂的导航和数据视觉化。</p>
+<h3 id="Three-js"><a href="#Three-js" class="headerlink" title="Three.js"></a>Three.js</h3><p>一款运行在浏览器中的 3D 引擎，你可以用它创建各种三维场景，包括了摄影机、光影、材质等各种对象。</p>
+<h3 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h3><p>游戏引擎开发商，实时 3D 互动内容创作和运营平台。包括游戏开发、美术、建筑、汽车设计、影视制作在内的创作者运用 Unity 实现。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>数据可视化</category>
+      </categories>
+      <tags>
+        <tag>数据可视化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据库字符集不匹配</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Database/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8D%E5%8C%B9%E9%85%8D/</url>
+    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>开发中遇到一个数据库字符集的问题 Caused by: java.sql.SQLException: Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation ‘=’</p>
+<a id="more"></a>
+
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>设置数据库的字符集为 utf-8</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ALTER table action CONVERT TO CHARACTER SET utf8<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Database</category>
+      </categories>
+      <tags>
+        <tag>database</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>文档在线预览</title>
     <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E6%96%87%E6%A1%A3%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88/</url>
     <content><![CDATA[<p>项目上需要在线预览 office 文件，项目为外面是 Android webview 壳子，里面为前端 H5 页面，在网上搜集了一些在线预览 office 的解决方式，整理出来。</p>
@@ -1323,23 +1950,6 @@ $ <span class="token function">cp</span> server.crt /etc/nginx/certificate.crt<s
       <tags>
         <tag>office</tag>
         <tag>preview</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据库字符集不匹配</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Database/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8D%E5%8C%B9%E9%85%8D/</url>
-    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>开发中遇到一个数据库字符集的问题 Caused by: java.sql.SQLException: Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation ‘=’</p>
-<a id="more"></a>
-
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>设置数据库的字符集为 utf-8</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ALTER table action CONVERT TO CHARACTER SET utf8<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Database</category>
-      </categories>
-      <tags>
-        <tag>database</tag>
       </tags>
   </entry>
 </search>

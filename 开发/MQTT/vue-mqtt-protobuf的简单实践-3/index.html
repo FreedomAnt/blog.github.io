@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="code-WzikV8hhdR">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Microsoft+YaHei:300,300italic,400,400italic,700,700italic|Comic+Sans+MS:300,300italic,400,400italic,700,700italic|Input+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="vue3+mqtt+protobuf这里我们使用 node 端模拟 broker+publish&#x2F;subscribe，web 端用 vue3+mqtt 模拟 publish&#x2F;subscribe，测试发现 mqtt 好像不能直接用于浏览器端，可用通过转换来实现Brower 端的使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue+mqtt+protobuf的简单实践(3)">
+<meta property="og:url" content="https://freedomant.github.io/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-3/index.html">
+<meta property="og:site_name" content="Marco&#39;s blog✍️">
+<meta property="og:description" content="vue3+mqtt+protobuf这里我们使用 node 端模拟 broker+publish&#x2F;subscribe，web 端用 vue3+mqtt 模拟 publish&#x2F;subscribe，测试发现 mqtt 好像不能直接用于浏览器端，可用通过转换来实现Brower 端的使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001809.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001842.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001909.png">
+<meta property="article:published_time" content="2021-05-01T16:24:43.000Z">
+<meta property="article:modified_time" content="2021-05-01T16:30:06.777Z">
+<meta property="article:author" content="Marco">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="mqtt">
+<meta property="article:tag" content="protobuf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001809.png">
+
+
+<link rel="canonical" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-3/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>vue+mqtt+protobuf的简单实践(3) | Marco's blog✍️</title>
+  
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2a76899220e9bd558b282e2d0b96bb91";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Marco's blog✍️</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">46</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">21</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue3-mqtt-protobuf"><span class="nav-number">1.</span> <span class="nav-text">vue3+mqtt+protobuf</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#node-%E7%AB%AF"><span class="nav-number">1.1.</span> <span class="nav-text">node 端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-Broker"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建 Broker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-client"><span class="nav-number">1.1.2.</span> <span class="nav-text">创建 client</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#brower-%E7%AB%AF"><span class="nav-number">1.2.</span> <span class="nav-text">brower 端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90-proto-js"><span class="nav-number">1.2.1.</span> <span class="nav-text">生成 proto.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text">vue 配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">1.3.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Marco"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">Marco</p>
+  <div class="site-description" itemprop="description">talk is cheap, show me the code</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0ZyZWVkb21BbnQ=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;FreedomAnt"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOjkyNTU4Mzg0OUBxcS5jb20=" title="E-Mail → mailto:925583849@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Marco">
+      <meta itemprop="description" content="talk is cheap, show me the code">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Marco's blog✍️">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue+mqtt+protobuf的简单实践(3)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-05-02 00:24:43 / 修改时间：00:30:06" itemprop="dateCreated datePublished" datetime="2021-05-02T00:24:43+08:00">2021-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/MQTT/" itemprop="url" rel="index"><span itemprop="name">MQTT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="vue3-mqtt-protobuf"><a href="#vue3-mqtt-protobuf" class="headerlink" title="vue3+mqtt+protobuf"></a>vue3+mqtt+protobuf</h1><p>这里我们使用 node 端模拟 broker+publish/subscribe，web 端用 vue3+mqtt 模拟 publish/subscribe，测试发现 mqtt 好像不能直接用于浏览器端，可用通过转换来实现<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21xdHRqcy9NUVRULmpzI2Jyb3dzZXI=">Brower 端的使用<i class="fa fa-external-link-alt"></i></span></p>
+<a id="more"></a>
+
+<h2 id="node-端"><a href="#node-端" class="headerlink" title="node 端"></a>node 端</h2><p>测试发现 mqtt 支持浏览器的话，需要转换为 websoket 的方式，就是<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vc2NhanMvYWVkZXMvYmxvYi9tYXN0ZXIvZG9jcy9FeGFtcGxlcy5tZCNtcXR0LXNlcnZlci1vdmVyLXdlYnNvY2tldC11c2luZy1zZXJ2ZXItZmFjdG9yeQ==">MQTT over Websockets<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="创建-Broker"><a href="#创建-Broker" class="headerlink" title="创建 Broker"></a>创建 Broker</h3><p>新建<code>broker-ws.js</code>文件，代码如下，这里我们使用了<code>websocket-stream</code>库来实现<code>MQTT over Websockets</code>。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">/**
+ * 创建mqtt服务器
+ */</span>
+<span class="token keyword">const</span> aedes <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"aedes"</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> httpServer <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"http"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> ws <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"websocket-stream"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> port <span class="token operator">=</span> <span class="token number">8888</span><span class="token punctuation">;</span>
+
+ws<span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> server<span class="token operator">:</span> httpServer <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> aedes<span class="token punctuation">.</span>handle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+httpServer<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"websocket server listening on port "</span><span class="token punctuation">,</span> port<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 身份验证</span>
+aedes<span class="token punctuation">.</span><span class="token function-variable function">authenticate</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client<span class="token punctuation">,</span> username<span class="token punctuation">,</span> password<span class="token punctuation">,</span> callback</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">username:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>username<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">，password：</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>password<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">callback</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> username <span class="token operator">===</span> <span class="token string">"user"</span> <span class="token operator">&amp;&amp;</span> password<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">"123456"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 客户端连接</span>
+aedes<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"clientReady"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+    <span class="token string">"Client Connected: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>client <span class="token operator">?</span> client<span class="token punctuation">.</span>id <span class="token operator">:</span> client<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"to broker"</span><span class="token punctuation">,</span>
+    aedes<span class="token punctuation">.</span>id
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 客户端断开</span>
+aedes<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"clientDisconnect"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">client</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+    <span class="token string">"Client Disconnected: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>client <span class="token operator">?</span> client<span class="token punctuation">.</span>id <span class="token operator">:</span> client<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"to broker"</span><span class="token punctuation">,</span>
+    aedes<span class="token punctuation">.</span>id
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="创建-client"><a href="#创建-client" class="headerlink" title="创建 client"></a>创建 client</h3><p>新建<code>client-ws.js</code>用于和浏览器端互相发布订阅</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> mqtt <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"mqtt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> protobuf <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"protobufjs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> address <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> client <span class="token operator">=</span> mqtt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token string">"ws://127.0.0.1:8888"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  username<span class="token operator">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span>
+  password<span class="token operator">:</span> <span class="token string">"123456"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+protobuf<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token string">"./address.proto"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err<span class="token punctuation">,</span> root</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token keyword">throw</span> err<span class="token punctuation">;</span>
+  address <span class="token operator">=</span> root<span class="token punctuation">.</span><span class="token function">lookupType</span><span class="token punctuation">(</span><span class="token string">"testmqtt.Address"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"connect"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">服务器连接成功，clientId为</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  client<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token string">"vue-protobuf"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> qos<span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 订阅消息</span>
+  <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 发布消息</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">topic<span class="token punctuation">,</span> messageBuffer</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>messageBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> object <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+    <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">接收到</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">主题为</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>topic<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">的消息\n</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>
+      object
+    <span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 发布消息
+ */</span>
+<span class="token keyword">function</span> <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> payload <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    province<span class="token operator">:</span> <span class="token string">"sichuan"</span><span class="token punctuation">,</span>
+    city<span class="token operator">:</span> <span class="token string">"chengdu"</span><span class="token punctuation">,</span>
+    county<span class="token operator">:</span> <span class="token string">"gaoxin"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">var</span> errMsg <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">verify</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token function">Error</span><span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> buffer <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">finish</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  client<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token string">"node-protobuf"</span><span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+    qos<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    retain<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">setTimeout</span><span class="token punctuation">(</span>postMessage<span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="brower-端"><a href="#brower-端" class="headerlink" title="brower 端"></a>brower 端</h2><h3 id="生成-proto-js"><a href="#生成-proto-js" class="headerlink" title="生成 proto.js"></a>生成 proto.js</h3><p>这里我们采用 pbjs 的方式生成浏览器端可用的 js，使用 json-module 的方式</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ npx pbjs -t json-module -w es6 -o address_proto.js address.proto<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="vue-配置"><a href="#vue-配置" class="headerlink" title="vue 配置"></a>vue 配置</h3><p>这里我们新建一个 vue 的项目</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ vue create testmqtt-protobuf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li><p>首先我们增加 mqtt 和 protobufjs 的库</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">$ yarn add mqtt protobufjs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>将生成的 address_proto.js 拷贝到项目中，并新建<code>mqtt.js</code>文件用于订阅发布</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> connect <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"mqtt"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> protoRoot <span class="token keyword">from</span> <span class="token string">"@/proto/address_proto"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> <span class="token function-variable function">mqtt</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> client <span class="token operator">=</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token string">"ws://127.0.0.1:8888"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+    username<span class="token operator">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span>
+    password<span class="token operator">:</span> <span class="token string">"123456"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> address <span class="token operator">=</span> protoRoot<span class="token punctuation">.</span><span class="token function">lookupType</span><span class="token punctuation">(</span><span class="token string">"testmqtt.Address"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"connect"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">服务器连接成功，clientId为</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token string">"node-protobuf"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> qos<span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 订阅消息</span>
+    <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 发布消息</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  client<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">topic<span class="token punctuation">,</span> messageBuffer</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>messageBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> object <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+      <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">接收到</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>client<span class="token punctuation">.</span>options<span class="token punctuation">.</span>clientId<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">主题为</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>topic<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">的消息\n</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>
+        object
+      <span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * 发布消息
+   */</span>
+  <span class="token keyword">function</span> <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> payload <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+      province<span class="token operator">:</span> <span class="token string">"sichuan"</span><span class="token punctuation">,</span>
+      city<span class="token operator">:</span> <span class="token string">"chengdu"</span><span class="token punctuation">,</span>
+      county<span class="token operator">:</span> <span class="token string">"wuhou"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">var</span> errMsg <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">verify</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token function">Error</span><span class="token punctuation">(</span>errMsg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">var</span> message <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> buffer <span class="token operator">=</span> address<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">finish</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    client<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token string">"vue-protobuf"</span><span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+      qos<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      retain<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span>postMessage<span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> mqtt<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>在 Home.vue 文件中添加 mqtt.js</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> onMounted<span class="token punctuation">,</span> defineComponent <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> mqtt <span class="token keyword">from</span> <span class="token string">"@/utils/mqtt"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> HelloWorld <span class="token keyword">from</span> <span class="token string">"@/components/HelloWorld.vue"</span><span class="token punctuation">;</span> <span class="token comment">// @ is an alias to /src</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineComponent</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  name<span class="token operator">:</span> <span class="token string">"Home"</span><span class="token punctuation">,</span>
+  components<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    HelloWorld<span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">onMounted</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+      <span class="token function">mqtt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+</li>
+</ul>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><blockquote>
+<p>如果 vue 用 typescript 的方式，会提示需要定义 module，在<code>shims-vue.d.ts</code>文件中增加<code>declare module &#39;@/utils/mqtt&#39;</code>即可，</p>
+<p>如果有提示需要增加返回值的情况，可在 eslint 中关闭，rules 增加<code>&quot;@typescript-eslint/explicit-module-boundary-types&quot;: &quot;off&quot;</code></p>
+</blockquote>
+<ul>
+<li>启动 broker</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ node broker-ws.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>启动 client.js</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ node client-ws.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>启动 vue</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">yarn</span> serve<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这是我们能看到控制台打印为</p>
+<ul>
+<li>broker</li>
+</ul>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001809.png" alt="broker"></p>
+<ul>
+<li><p>client</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001842.png" alt="client"></p>
+</li>
+<li><p>brower</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210502001909.png" alt="brower"></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee ☕</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Marco 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Marco 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Marco
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-3/" title="vue+mqtt+protobuf的简单实践(3)">https://freedomant.github.io/开发/MQTT/vue-mqtt-protobuf的简单实践-3/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/vue/" rel="tag"># vue</a>
+              <a href="/tags/mqtt/" rel="tag"># mqtt</a>
+              <a href="/tags/protobuf/" rel="tag"># protobuf</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-2/" rel="prev" title="vue+mqtt+protobuf的简单实践(2)">
+                  <i class="fa fa-chevron-left"></i> vue+mqtt+protobuf的简单实践(2)
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Marco</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">50k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">45 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+  <script data-pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  const url = element.dataset.target;
+  const pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  const pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  const fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e3f3db5dd0cfab27f9f2',
+      clientSecret: '95e5182ba79ec76af28ce1ca2aebc12356b615b1',
+      repo        : 'freedomant.github.io',
+      owner       : 'FreedomAnt',
+      admin       : ['FreedomAnt'],
+      id          : '2bb2360c249cc2ab9556d00a659dc2ef',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

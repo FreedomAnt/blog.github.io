@@ -3228,6 +3228,10 @@ mark.search-keyword {
 .headband {
   background: #75aaf8;
 }
+pre[class*="language-"] {
+  background: #31363f;
+  border-radius: 3px;
+}
 :root {
   --body-bg-color: url("/uploads/background.png") fixed;
 }
