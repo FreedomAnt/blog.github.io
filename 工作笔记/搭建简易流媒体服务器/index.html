@@ -31,19 +31,29 @@
     var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="talk is cheap, show me the code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Marco&#39;s blog✍️">
-<meta property="og:url" content="https://freedomant.github.io/categories/Bug%E8%A7%A3%E5%86%B3/Git/index.html">
+  <meta name="description" content="搭建流媒体服务器主要有三个部分，服务端+推流端+拉流端  服务端：srs、nginx-rtmp  推流端：obs-studio、ffmpeg  拉流端：vlc 或者其他播放器   这里我们基于 srs+obs-studio+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以查看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建简易流媒体服务器">
+<meta property="og:url" content="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
 <meta property="og:site_name" content="Marco&#39;s blog✍️">
-<meta property="og:description" content="talk is cheap, show me the code">
+<meta property="og:description" content="搭建流媒体服务器主要有三个部分，服务端+推流端+拉流端  服务端：srs、nginx-rtmp  推流端：obs-studio、ffmpeg  拉流端：vlc 或者其他播放器   这里我们基于 srs+obs-studio+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以查看">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508155727.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508160224.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508160458.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508161121.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508164251.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508164643.png">
+<meta property="article:published_time" content="2021-05-08T11:22:14.000Z">
+<meta property="article:modified_time" content="2021-05-08T11:30:08.087Z">
 <meta property="article:author" content="Marco">
-<meta property="article:tag" content="blog">
+<meta property="article:tag" content="srs">
+<meta property="article:tag" content="live">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508155727.png">
 
 
-<link rel="canonical" href="https://freedomant.github.io/categories/Bug%E8%A7%A3%E5%86%B3/Git/">
+<link rel="canonical" href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8/">
 
 
 <script data-pjax class="page-configurations">
@@ -51,12 +61,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>分类: Git | Marco's blog✍️</title>
+  <title>搭建简易流媒体服务器 | Marco's blog✍️</title>
   
 
 
@@ -208,7 +218,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -221,6 +231,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A8%E6%B5%81%E7%AB%AF"><span class="nav-number">2.</span> <span class="nav-text">推流端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%89%E6%B5%81%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">拉流端</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -289,78 +300,214 @@
 </noscript>
 
 
-    <div class="main-inner category posts-collapse">
+    <div class="main-inner post posts-expand">
       
 
       
 
   
+
+
+<div class="post-block">
   
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h2 class="collection-header">Git
-          <small>分类</small>
-        </h2>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Marco">
+      <meta itemprop="description" content="talk is cheap, show me the code">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Marco's blog✍️">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          搭建简易流媒体服务器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-05-08 19:22:14 / 修改时间：19:30:08" itemprop="dateCreated datePublished" datetime="2021-05-08T19:22:14+08:00">2021-05-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">工作笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
       </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>搭建流媒体服务器主要有三个部分，服务端+推流端+拉流端</p>
+<ul>
+<li><p>服务端：srs、nginx-rtmp</p>
+</li>
+<li><p>推流端：obs-studio、ffmpeg</p>
+</li>
+<li><p>拉流端：vlc 或者其他播放器</p>
+</li>
+</ul>
+<p>这里我们基于 srs+obs-studio+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3YxX0NOX0NvbXBhcmU=">查看<i class="fa fa-external-link-alt"></i></span></p>
+<a id="more"></a>
+
+<h1 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h1><p>SRS(Simple Realtime Server)是一个简单高效的实时视频服务器，支持 RTMP/WebRTC/HLS/HTTP-FLV/SRT/GB28181。<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycw==">开源地址<i class="fa fa-external-link-alt"></i></span>，这里我们使用 3.0 的版本，v4 版本新增<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3Y0X0NOX1dlYlJUQyNjb25maWctY2FuZGlkYXRl">webrtc<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3YzX0NOX0hvbWU=">文档地址<i class="fa fa-external-link-alt"></i></span>，以 docker 的方式简易安装。<span class="exturl" data-url="aHR0cHM6Ly9vc3Nycy5uZXQv">官网地址<i class="fa fa-external-link-alt"></i></span>，RTMP 默认端口是 1935</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run -p <span class="token number">1935</span>:1935 -p <span class="token number">1985</span>:1985 -p <span class="token number">8080</span>:8080 ossrs/srs:3<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>启动之后打开<code>http://192.168.8.123:8080/</code>，可以看到 SRS 已经启动成功</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508155727.png" alt="SRS"></p>
+<ul>
+<li>若希望做低延迟直播（3-5 秒），可用 HTTP-FLV，播放器用<span class="exturl" data-url="aHR0cDovL2JpbGliaWxpLmdpdGh1Yi5pby9mbHYuanMvZGVtbw==">flv.js<i class="fa fa-external-link-alt"></i></span>，H5/MSE 播放 HTTP-FLV</li>
+<li>若对延迟不敏感（5-10 秒），跨平台比较好，可用 HLS，播放器用<span class="exturl" data-url="aHR0cHM6Ly9obHMtanMubmV0bGlmeS5jb20vZGVtbw==">hls.js<i class="fa fa-external-link-alt"></i></span>，H5/MSE 播放 HLS</li>
+<li>若希望超低延迟（1 秒内），只需要支持主流的浏览器，可用 WebRTC，播放器用<span class="exturl" data-url="aHR0cDovLzE5Mi4xNjguOC4xMjM6ODA4MC9wbGF5ZXJzL3J0Y19wbGF5ZXIuaHRtbA==">RTC 播放器<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<blockquote>
+<p>如果想要自己编译，代码如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> clone -b <span class="token number">3</span>.0release https://gitee.com/ossrs/srs.git <span class="token operator">&amp;&amp;</span>
+$ <span class="token builtin class-name">cd</span> srs/trunk <span class="token operator">&amp;&amp;</span> ./configure <span class="token operator">&amp;&amp;</span> <span class="token function">make</span> <span class="token operator">&amp;&amp;</span> ./objs/srs -c conf/srs.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>其中配置文件为<code>conf/srs.conf</code>，日志为<code>./objs/srs.log</code></p>
+</blockquote>
+<h1 id="推流端"><a href="#推流端" class="headerlink" title="推流端"></a>推流端</h1><p>OBS Studio 是一个直播录制软件，应用广泛，开源免费，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29ic3Byb2plY3Qvb2JzLXN0dWRpby9yZWxlYXNlcw==">开源下载地址<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9vYnNwcm9qZWN0LmNvbS8=">官网下载地址<i class="fa fa-external-link-alt"></i></span></p>
+<p>选择适合自己系统的安装包，下载完成之后安装。</p>
+<p>点击左下角“来源”的“+”号，选择媒体源</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508160224.png" alt="选择来源"></p>
+<p>这里我们选择一个本地的视频文件播放</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508160458.png" alt="选择文件"></p>
+<p>点击右下角设置—&gt;推流，填入我们的服务器地址<code>rtmp://192.168.8.123:1935/live</code>，串流密钥（即自定义的流名称）<code>livestream</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508161121.png" alt="设置推流"></p>
+<p>设置完成之后点击右下角“开始推流”，在 docker 控制台能看到打印的信息。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508164251.png" alt="docker打印信息"></p>
+<blockquote>
+<p>如果需要用 ffmpeg 推流的话，代码如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run --network<span class="token operator">=</span>host ossrs/srs:encoder ffmpeg -re -i ./doc/source.flv <span class="token punctuation">\</span>
+  -c copy -f flv -y rtmp://localhost/live/livestream<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>视频文件名<code>./doc/source.flv</code></p>
+</blockquote>
+<h1 id="拉流端"><a href="#拉流端" class="headerlink" title="拉流端"></a>拉流端</h1><p>打开 VLC 播放器，选择媒体–&gt;打开网络串流。输入地址</p>
+<ul>
+<li>RTMP 地址<code>rtmp://192.168.8.123:1935/live/livestream</code></li>
+<li>H5(HTTP-FLV)地址<code>http://192.168.8.123:8080/live/livestream.flv</code></li>
+<li>H5(HLS)地址<code>http://192.168.8.123:8080/live/m3u8.flv</code></li>
+</ul>
+<p>H5 的地址也可以用本地在线的 SRS 播放器<span class="exturl" data-url="aHR0cDovLzE5Mi4xNjguOC4xMjM6ODA4MC9wbGF5ZXJzL3Nyc19wbGF5ZXIuaHRtbCU2MA==">http://192.168.8.123:8080/players/srs_player.html`<i class="fa fa-external-link-alt"></i></span></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508164643.png" alt="VLC播放"></p>
+<p>如果需要采集摄像头的话，在 obs-studio 的左下角”来源”选择”视频采集设备”即可。</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-11-16T09:36:52+08:00"
-              content="2020-11-16">
-          11-16
-        </time>
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee ☕</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Marco 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Marco 支付宝">
+        <span>支付宝</span>
       </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/" itemprop="url">
-            <span itemprop="name">回车换行问题</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-11-05T20:55:02+08:00"
-              content="2020-11-05">
-          11-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/Bug%E8%A7%A3%E5%86%B3/Git/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/" itemprop="url">
-            <span itemprop="name">git push 报错解决</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-    </div>
   </div>
-  
-  
-  
+</div>
 
-  
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Marco
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="搭建简易流媒体服务器">https://freedomant.github.io/工作笔记/搭建简易流媒体服务器/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/srs/" rel="tag"># srs</a>
+              <a href="/tags/live/" rel="tag"># live</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-3/" rel="prev" title="vue+mqtt+protobuf的简单实践(3)">
+                  <i class="fa fa-chevron-left"></i> vue+mqtt+protobuf的简单实践(3)
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
 
 
 
       
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -566,6 +713,25 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
   
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e3f3db5dd0cfab27f9f2',
+      clientSecret: '95e5182ba79ec76af28ce1ca2aebc12356b615b1',
+      repo        : 'freedomant.github.io',
+      owner       : 'FreedomAnt',
+      admin       : ['FreedomAnt'],
+      id          : 'e70ac3eda5973d92da90f6404a95bdd4',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
     </div>
 </body>
