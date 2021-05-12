@@ -31,15 +31,46 @@
     var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="安装 gitlab这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 gitlab&#x2F;gitlab-ce 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080">
+  <meta name="description" content="安装 gitlab这里我是 docker 安装的，由于电脑板载内存只有 8g，就没装 gitlab 的 docker 镜像 gitlab&#x2F;gitlab-ce，换了一个汉化的社区版，都可以实现自动构建部署。首先，docker 安装 gitlab，这里 gitlab 端口映射为 10080">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker+gitlab+jenkins+ssh实现代码自动构建部署">
 <meta property="og:url" content="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="Marco&#39;s blog✍️">
-<meta property="og:description" content="安装 gitlab这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 gitlab&#x2F;gitlab-ce 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080">
+<meta property="og:description" content="安装 gitlab这里我是 docker 安装的，由于电脑板载内存只有 8g，就没装 gitlab 的 docker 镜像 gitlab&#x2F;gitlab-ce，换了一个汉化的社区版，都可以实现自动构建部署。首先，docker 安装 gitlab，这里 gitlab 端口映射为 10080">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512091947.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512095712.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512100032.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512100759.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512102211.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512102320.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512103553.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512104536.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512104816.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512105206.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512105327.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512105825.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512110010.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512110229.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512111745.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512112010.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512113214.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114041.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114208.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114333.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114740.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114829.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512115051.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512115225.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512140050.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512141909.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512142600.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512142746.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512144015.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512154419.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512154532.png">
 <meta property="article:published_time" content="2020-11-03T03:01:12.000Z">
-<meta property="article:modified_time" content="2021-04-30T12:16:31.528Z">
+<meta property="article:modified_time" content="2021-05-12T07:47:35.072Z">
 <meta property="article:author" content="Marco">
 <meta property="article:tag" content="docker">
 <meta property="article:tag" content="gitlab">
@@ -47,6 +78,7 @@
 <meta property="article:tag" content="devops">
 <meta property="article:tag" content="jenkins">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512091947.png">
 
 
 <link rel="canonical" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/">
@@ -157,7 +189,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">48</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">51</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -167,7 +199,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -227,7 +259,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-gitlab"><span class="nav-number">1.</span> <span class="nav-text">安装 gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-jenkins"><span class="nav-number">2.</span> <span class="nav-text">安装 jenkins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-jenkins-%E6%8F%92%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">安装 jenkins 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-%E4%BB%A3%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">nginx 代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">修改配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jenkins-%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">jenkins 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%85%A8%E5%B1%80-jdk-%E5%92%8C-maven"><span class="nav-number">5.</span> <span class="nav-text">配置全局 jdk 和 maven</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87-SSH-%E9%83%A8%E7%BD%B2%E5%88%B0%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">6.</span> <span class="nav-text">通过 SSH 部署到远程服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E9%83%A8%E7%BD%B2"><span class="nav-number">6.1.</span> <span class="nav-text">前端部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF-jar-%E5%8C%85%E9%83%A8%E7%BD%B2"><span class="nav-number">6.2.</span> <span class="nav-text">后端 jar 包部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-gitlab-%E6%89%A7%E8%A1%8C%E8%87%AA%E5%8A%A8%E8%A7%A6%E5%8F%91%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2"><span class="nav-number">7.</span> <span class="nav-text">配置 gitlab 执行自动触发构建部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1%E7%9A%84-log"><span class="nav-number">8.</span> <span class="nav-text">查看任务的 log</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-gitlab"><span class="nav-number">1.</span> <span class="nav-text">安装 gitlab</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-gitlab"><span class="nav-number">2.</span> <span class="nav-text">配置 gitlab</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%85%81%E8%AE%B8%E5%86%85%E7%BD%91%E8%AE%BF%E9%97%AE"><span class="nav-number">2.1.</span> <span class="nav-text">配置允许内网访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-gitlab-%E7%9A%84-ip-port"><span class="nav-number">2.2.</span> <span class="nav-text">配置 gitlab 的 ip+port</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-jenkins"><span class="nav-number">3.</span> <span class="nav-text">安装 jenkins</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%AF%86%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">初始密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-jenkins-%E6%8F%92%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">安装 jenkins 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-%E4%BB%A3%E7%90%86"><span class="nav-number">3.2.1.</span> <span class="nav-text">nginx 代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.2.</span> <span class="nav-text">修改配置文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-jenkins"><span class="nav-number">4.</span> <span class="nav-text">配置 jenkins</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%87%AD%E6%8D%AE"><span class="nav-number">4.1.</span> <span class="nav-text">配置凭据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gitlab-%E7%9A%84-accessToken"><span class="nav-number">4.1.1.</span> <span class="nav-text">gitlab 的 accessToken</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gitlab-%E7%9A%84%E7%99%BB%E5%BD%95%E8%B4%A6%E5%8F%B7%E5%92%8C%E5%AF%86%E7%A0%81"><span class="nav-number">4.1.2.</span> <span class="nav-text">gitlab 的登录账号和密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-gitlab-%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%9C%B0%E5%9D%80"><span class="nav-number">4.2.</span> <span class="nav-text">配置 gitlab 的连接地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-ssh-%E9%83%A8%E7%BD%B2%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="nav-number">4.3.</span> <span class="nav-text">配置 ssh 部署的地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%85%A8%E5%B1%80-jdk-%E5%92%8C-maven"><span class="nav-number">4.4.</span> <span class="nav-text">配置全局 jdk 和 maven</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%83%A8%E7%BD%B2%E9%A1%B9%E7%9B%AE"><span class="nav-number">4.5.</span> <span class="nav-text">创建部署项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E9%83%A8%E7%BD%B2"><span class="nav-number">4.5.1.</span> <span class="nav-text">前端部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF-jar-%E5%8C%85%E9%83%A8%E7%BD%B2"><span class="nav-number">4.5.2.</span> <span class="nav-text">后端 jar 包部署</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E8%A7%A6%E5%8F%91%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2"><span class="nav-number">5.</span> <span class="nav-text">自动触发构建部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-webhook"><span class="nav-number">5.1.</span> <span class="nav-text">配置 webhook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1%E7%9A%84-log"><span class="nav-number">5.2.</span> <span class="nav-text">查看任务的 log</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%87%E4%BB%B6"><span class="nav-number">5.3.</span> <span class="nav-text">查看服务器文件</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -243,7 +275,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -256,7 +288,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">51</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -340,7 +372,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-04-30 20:16:31" itemprop="dateModified" datetime="2021-04-30T20:16:31+08:00">2021-04-30</time>
+        <time title="修改时间：2021-05-12 15:47:35" itemprop="dateModified" datetime="2021-05-12T15:47:35+08:00">2021-05-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -371,7 +403,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.2k</span>
+      <span>5.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -389,78 +421,158 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h2><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，gitlab 的 docker 镜像 gitlab/gitlab-ce 安装启动之后运行一会儿磁盘就拉满，于是换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab,这里 gitlab 端口映射为 10080</p>
+        <h1 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h1><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，就没装 gitlab 的 docker 镜像 gitlab/gitlab-ce，换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab，这里 gitlab 端口映射为 10080</p>
 <a id="more"></a>
 
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 10080:80 --name gitlab twang2218&#x2F;gitlab-ce-zh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>如果是本机 windows 想要尝试社区镜像的，可以使用下面的代码</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512091947.png"></p>
+<p>如果是本机 windows 想要尝试社区镜像的，可以使用下面的代码，正式部的<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vb21uaWJ1cy9kb2NrZXIvI2luc3RhbGwtZ2l0bGFiLXVzaW5nLWRvY2tlci1lbmdpbmU=">不支持 windows 的 docker<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vb21uaWJ1cy9kb2NrZXIvI2luc3RhbGwtZ2l0bGFiLXVzaW5nLWRvY2tlci1lbmdpbmU=">官网 docker 安装文档<i class="fa fa-external-link-alt"></i></span></p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker volume create gitlab-logs
 $ docker volume create gitlab-data
 $ docker run -d -p 10443:443 -p 10080:80 -p 10822:22 --name gitlab -v d:&#x2F;docker&#x2F;gitlab&#x2F;config:&#x2F;etc&#x2F;gitlab -v gitlab-logs:&#x2F;var&#x2F;log&#x2F;gitlab -v gitlab-data:&#x2F;var&#x2F;opt&#x2F;gitlab gitlab&#x2F;gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<p>如果是 linux 的话要尝试社区镜像网上就很多了。<br>需要注意下 <strong>gitlab 的 webhook 配置的钩子地址是不允许内网的，比如 192.168、172.16 或者 10 开头的，这时候需要用 gitlab 的管理员账号（root）登陆去修改允许 webhook 的本地请求</strong>。<br>用 root 账号登陆之后左上角有一个小扳手的图标<code>Admin area =&gt; Settings =&gt; Network</code>勾选允许本地网络的请求即可。<br>这里就涉及到管理员账号的密码，网上很多参考说是系统默认的用户名：<code>root</code>，密码：<code>5iveL!fe</code>，试过了没有用，就只能自己去修改。这里可以参考官方<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvc2VjdXJpdHkvcmVzZXRfcm9vdF9wYXNzd29yZC5odG1sI2hvdy10by1yZXNldC15b3VyLXJvb3QtcGFzc3dvcmQ=">How to reset your root password<i class="fa fa-external-link-alt"></i></span><br>这里有坑的是安装社区版 gitlab/gitlab-ce 查不到用户。<br>进入 tty</p>
+<p>如果是 linux 的话要尝试社区镜像网上就很多了。</p>
+<h1 id="配置-gitlab"><a href="#配置-gitlab" class="headerlink" title="配置 gitlab"></a>配置 gitlab</h1><h2 id="配置允许内网访问"><a href="#配置允许内网访问" class="headerlink" title="配置允许内网访问"></a>配置允许内网访问</h2><p>需要注意 <strong>gitlab 的 webhook 配置的钩子地址是不允许内网的，比如 192.168、172.16 或者 10 开头的，这时候需要用 gitlab 的管理员账号（root）登录去修改允许 webhook 的本地请求</strong>。</p>
+<p>这里就涉及到管理员账号的密码，网上很多参考说是系统默认的用户名：<code>root</code>，密码：<code>5iveL!fe</code>，试过了没有用，就只能自己去修改。修改密码这里可以参考官方<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvc2VjdXJpdHkvcmVzZXRfdXNlcl9wYXNzd29yZC5odG1sI3Jlc2V0LXlvdXItcm9vdC1wYXNzd29yZA==">reset-your-root-password<i class="fa fa-external-link-alt"></i></span></p>
+<ul>
+<li><p>如果是官方社区版 gitlab/gitlab-ce</p>
+<p>进入控制台</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it gitlab bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>正常的修改密码代码如下：</p>
-<pre class="line-numbers language-none"><code class="language-none">gitlab-rails console -e production
-user &#x3D; User.where(id: 1).first或者user &#x3D; User.find_by(email: &#39;admin@example.com&#39;)
+<p><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvYWRtaW5pc3RyYXRpb24vb3BlcmF0aW9ucy9yYWlsc19jb25zb2xlLmh0bWwjc3RhcnRpbmctYS1yYWlscy1jb25zb2xlLXNlc3Npb24=">进入 Rails console<i class="fa fa-external-link-alt"></i></span></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-rails console -e production<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>修改密码代码如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">user &#x3D; User.find(1)或者user &#x3D; User.find_by(email: &#39;admin@example.com&#39;)
 user.password &#x3D; 12345678
 user.password_confirmation &#x3D; 12345678
-user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>如果是汉化版</p>
+<p>可以直接设置 root 密码。这里我们修改为 12345678</p>
+</li>
+</ul>
+<p>用 root 账号登录之后左上角有一个小扳手的图标。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512095712.png"></p>
+<p><code>Admin area =&gt; Settings =&gt; Network</code>勾选允许本地网络的请求即可。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512100032.png"></p>
+<h2 id="配置-gitlab-的-ip-port"><a href="#配置-gitlab-的-ip-port" class="headerlink" title="配置 gitlab 的 ip+port"></a>配置 gitlab 的 ip+port</h2><p>我们新建项目发现 clone 的地址目前是显示为一串字母。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512100759.png"></p>
+<p>这里我们需要设置 gitlab 的 ip 和 port。</p>
+<p>进入控制台</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it gitlab bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里查询到的<code>User.where(id: 1).first</code>为 nil，就是 none 的意思，这里不知道怎么解决。还好汉化的那个版本可以直接设置 root 密码。<br>到这一步 gitlab 就可以使用了，但是 clone 的地址没有设置，clone 的地址目前是显示为一串字母。这里需要在<br><code>vi /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml</code>修改为需要暴露的 ip 和端口<br>然后<code>gitlab-ctl restart</code>重启 gitlab 即可。</p>
-<h2 id="安装-jenkins"><a href="#安装-jenkins" class="headerlink" title="安装 jenkins"></a>安装 jenkins</h2><p>安装 jenkins 就简便许多，端口映射到 18080，这里 jenkins 的配置文件后面都在<code>/var/jenkins_home/</code>这个文件夹下</p>
+<p>编辑配置文档</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;opt&#x2F;gitlab&#x2F;embedded&#x2F;service&#x2F;gitlab-rails&#x2F;config&#x2F;gitlab.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里我们修改为 localhost，端口修改为 10080，如果需要修改 ssh 端口，修改<code>/etc/gitlab/gitlab.rb</code>中的<code>gitlab_rails[&#39;gitlab_shell_ssh_port&#39;]= 10022</code>即可</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment">## GitLab settings</span>
+<span class="token key atrule">gitlab</span><span class="token punctuation">:</span>
+  <span class="token comment">## Web server settings (note: host is the FQDN, do not include http://)</span>
+  <span class="token key atrule">host</span><span class="token punctuation">:</span> localhost
+  <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">10080</span>
+  <span class="token key atrule">https</span><span class="token punctuation">:</span> <span class="token boolean important">false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvYWRtaW5pc3RyYXRpb24vcmVzdGFydF9naXRsYWIuaHRtbCNvbW5pYnVzLWdpdGxhYi1yZXN0YXJ0">重启 gitlab<i class="fa fa-external-link-alt"></i></span></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-ctl restart<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>可以看到地址已经变了</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512102211.png"></p>
+<p>同样，我们在<code>设置=&gt;SSH密钥</code>配置好之后可以看到拉取成功</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512102320.png"></p>
+<h1 id="安装-jenkins"><a href="#安装-jenkins" class="headerlink" title="安装 jenkins"></a>安装 jenkins</h1><p>安装 jenkins 就简便许多，端口映射到 18080，这里 jenkins 的配置文件后面都在<code>/var/jenkins_home/</code>这个文件夹下，我们这里映射到我们 window 的<code>d:/docker/jenkins</code>文件夹。</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 18080:8080 -p 50000:50000 --name jenkins -v d:&#x2F;docker&#x2F;jenkins:&#x2F;var&#x2F;jenkins_home jenkins&#x2F;jenkins:lts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>后面由于涉及到 maven 环境的安装，所以进入 bash 环境的时候可以指定账号</p>
+<p>打开<code>http://localhost:18080</code>能看到已经安装成功</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512103553.png"></p>
+<h2 id="初始密码"><a href="#初始密码" class="headerlink" title="初始密码"></a>初始密码</h2><p>打开网页，管理员账户为 admin，需要输入首次的密码，可以在<code>/var/jenkins_home/secrets/initialAdminPassword</code>找到。如果映射到本地文件，可以相应的在本地文件夹下查找。进入之后可以选择配置插件，也可以跳过后面再来配置。这里选择的跳过。<br><strong>如果退出之后不知道管理员的密码</strong>，还可以打开<code>/var/jenkins_home/users/adminXXX</code>里面的 config.xml，找到 passwordHash，设置为<code>#jbcrypt:$2a$10$MiIVR0rr/UhQBqT.bBq0QehTiQVqgNpUGyWW2nJObaVAM/2xSQdSq</code><br>这个是编码过后的 123456，这样你的管理员账号就设置为了 123456.</p>
+<h2 id="安装-jenkins-插件"><a href="#安装-jenkins-插件" class="headerlink" title="安装 jenkins 插件"></a>安装 jenkins 插件</h2><p>进入 jenkins 之后，点击左侧<code>Manage Jenkins =&gt; Manage Plugins</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512104536.png"></p>
+<p>安装插件这里由于官方的仓库比较慢而且经常失败，这里可以换其他源，这里可以选择清华大学的<code> https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/2.60/update-center.json</code>，选择<code>Advanced</code>，填入清华的源</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512104816.png"></p>
+<p>这里有个坑是清华是把这个文件镜像过来了，但是没有把里面的插件升级地址改成清华，所以下载还是有问题，这里解决方式有两种</p>
+<h3 id="nginx-代理"><a href="#nginx-代理" class="headerlink" title="nginx 代理"></a>nginx 代理</h3><p>将所有<code>https://updates.jenkins.io/download</code>代理到<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code> 。</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>打开<code>/var/jenkins_home/updates/default.json</code>，将所有的<code>https://updates.jenkins.io/download</code>批量修改为<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code>，一劳永逸。</p>
+<p>这里添加几个常用的插件<strong>Maven Integration</strong>、<strong>GitLab</strong>、<strong>GitLab Hook</strong>、<strong>Publish Over SSH</strong></p>
+<h1 id="配置-jenkins"><a href="#配置-jenkins" class="headerlink" title="配置 jenkins"></a>配置 jenkins</h1><h2 id="配置凭据"><a href="#配置凭据" class="headerlink" title="配置凭据"></a>配置凭据</h2><h3 id="gitlab-的-accessToken"><a href="#gitlab-的-accessToken" class="headerlink" title="gitlab 的 accessToken"></a>gitlab 的 accessToken</h3><p>首先登录 gitlab<code>用户 =&gt; 设置 =&gt; accessToken</code>，填写名称和过期时间，勾选 api，点击生成 accessToken，这里要记录下 token，如果刷新了 token 就没了。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512105206.png"></p>
+<p>登录到 jenkins，<code>Manage Jenkins =&gt; Manage Credentials</code>。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512105327.png"></p>
+<p>点击全局凭证</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512105825.png"></p>
+<p><code>Add Credentials</code>选择<code>Gitlab API token</code>，填写 accessToken。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512110010.png"></p>
+<h3 id="gitlab-的登录账号和密码"><a href="#gitlab-的登录账号和密码" class="headerlink" title="gitlab 的登录账号和密码"></a>gitlab 的登录账号和密码</h3><p>还是在全局凭证，点击添加凭证，类型选择<code>Username with password</code>，填写用户拉取代码的 gitlab 账号和用户名</p>
+<h2 id="配置-gitlab-的连接地址"><a href="#配置-gitlab-的连接地址" class="headerlink" title="配置 gitlab 的连接地址"></a>配置 gitlab 的连接地址</h2><p>点击<code>Manage Jenkins =&gt; Configure System</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512110229.png"></p>
+<p>找到 gitlab 配置（前面我们已经添加了相应的插件），填写你的 gitlab 名称 <code>Connection name</code>，gitlab 地址，我这里是<code>http://192.168.7.104:10080</code>，<strong>注意这里必须填写内网地址，不能填写 localhost 或者 127.0.0.1</strong>，名称为”jenkins_for_gitlab”，凭证选择刚才新建的第一个凭证<code>Gitlab API token</code>，添加完成之后点击<code>Test Connection</code>测试，如果配置正确提示 Success。点击保存</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512111745.png"></p>
+<h2 id="配置-ssh-部署的地址"><a href="#配置-ssh-部署的地址" class="headerlink" title="配置 ssh 部署的地址"></a>配置 ssh 部署的地址</h2><p>还是在<code>Manage Jenkins =&gt; Configure System</code>中，找到 ssh 配置（前面我们已经添加了相应的插件） <code>Publish over SSH</code>，<code>SSH Servers</code> 填写 ssh 的地址，账号，以及远程位置，这里可以直接设置为想要部署的位置，我这里设置为根目录<code>/</code>。<br>高级里面填写端口、密码，之后测试<code>Test Configuration</code>，之后 save 保存。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512112010.png"></p>
+<h2 id="配置全局-jdk-和-maven"><a href="#配置全局-jdk-和-maven" class="headerlink" title="配置全局 jdk 和 maven"></a>配置全局 jdk 和 maven</h2><p>这一步需要在安装 jenkins 的机器上面安装 jdk 和 maven。一般安装 jenkins 的时候已经安装了 jdk，这里还需要安装 maven。</p>
+<p>进入 bash 环境的时候可以<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmRvY2tlci5jb20vZW5naW5lL3JlZmVyZW5jZS9jb21tYW5kbGluZS9leGVjLyNvcHRpb25z">指定账号<i class="fa fa-external-link-alt"></i></span>，这里我们需要以 root 登录，才能修改编辑环境变量。</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u 0 jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里-u 可以指定 username 或者 uid，也可以写成</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it -u root jenkins bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>打开网页，需要输入首次的密码，可以在<code>/var/jenkins_home/secrets/initialAdminPassword</code>找到。<br>进入之后可以选择配置插件，也可以跳过后面再来配置。这里选择的跳过。<br><strong>如果退出之后不知道管理员的密码</strong>，可以打开<code>/var/jenkins_home/users/adminXXX</code>里面的 config.xml，找到 passwordHash，设置为<code>#jbcrypt:$2a$10$MiIVR0rr/UhQBqT.bBq0QehTiQVqgNpUGyWW2nJObaVAM/2xSQdSq</code><br>这个是编码过后的 123456，这样你的管理员账号就设置为了 123456.</p>
-<h2 id="安装-jenkins-插件"><a href="#安装-jenkins-插件" class="headerlink" title="安装 jenkins 插件"></a>安装 jenkins 插件</h2><p>安装插件这里由于官方的仓库比较慢而且经常失败，这里可以换其他源，这里可以选择清华大学的<code> https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/2.60/update-center.json</code><br>这里有个坑是清华是把这个文件镜像过来了，但是没有把里面的插件升级地址改成清华，所以下载还是有问题，这里解决方式有两种</p>
-<h3 id="nginx-代理"><a href="#nginx-代理" class="headerlink" title="nginx 代理"></a>nginx 代理</h3><p>将所有<code>http://updates.jenkins-ci.org/download</code>代理到<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code> 。</p>
-<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>打开<code>/var/jenkins_home/updates/default.json</code>，将所有的<code>http://updates.jenkins-ci.org/download</code>,有的是<code>https://updates.jenkins.io/download</code>批量修改为<code>https://mirrors.tuna.tsinghua.edu.cn/jenkins</code>，一劳永逸。</p>
-<p>这里添加几个常用的插件<strong>Maven Integration</strong>、<strong>GitLab</strong>、<strong>GitLab Hook</strong>、<strong>Publish Over SSH</strong></p>
-<h2 id="jenkins-配置"><a href="#jenkins-配置" class="headerlink" title="jenkins 配置"></a>jenkins 配置</h2><p>配置之前先添加两个凭据。</p>
-<ol>
-<li>用于 gitlab 的 accessToken<br>首先登陆 gitlab<code>用户 =&gt; 设置 =&gt; accessToken</code>，填写名称和过期时间，勾选 api，点击生成 accessToken，这里要记录下 token，如果刷新了 token 就没了。<br>登陆到 jenkins，<code>Manage Jenkins =&gt; Manage Credentials</code>点击全局凭证，<code>Add Credentials</code>选择<code>Gitlab API token</code>，填写 accessToken。</li>
-<li>用于 gitlab 的登陆账号和密码<br>还是在全局凭证，点击添加凭证，类型选择<code>Username with password</code>，填写用户拉取代码的 gitlab 账号和用户名</li>
-</ol>
-<p>添加完成之后配置 gitlab 的连接地址和需要 ssh 部署的地址。<br>点击<code>Manage Jenkins =&gt; Configure System</code>里面的 gitlab 配置，填写你的 gitlab 名称 <code>Connection name</code>，gitlab 地址，我这里是<code>http://192.168.7.104:10080</code>，名称为”jenkins_for_gitlab”，凭证选择刚才新建的第一个凭证<code>Gitlab API token</code>，添加完成之后点击<code>Test Connection</code>测试，如果配置正确提示 Success。<br>然后添加 ssh 配置 <code>Publish over SSH</code>，<code>SSH Servers</code> 填写 ssh 的地址，账号，以及远程位置，这里可以直接设置为想要部署的位置，我这里设置为根目录<code>/</code>。<br>高级里面填写端口、密码，之后测试<code>Test Configuration</code>，之后 save 保存。</p>
-<h2 id="配置全局-jdk-和-maven"><a href="#配置全局-jdk-和-maven" class="headerlink" title="配置全局 jdk 和 maven"></a>配置全局 jdk 和 maven</h2><p>这一步需要安装 jenkins 的机器安装 jdk 和 maven。<br>一般安装 jenkins 的时候已经安装了 jdk，这里还需要安装 maven。<br>这里下载了压缩包到<code>/usr/local/</code>下面然后 unzip 解压，文件夹是 apache-maven-3.6.3。<br>需要修改环境变量，先下载一个 vim。</p>
+<p>这里下载了压缩包到<code>/usr/local/</code>下面然后 unzip 解压，文件夹名为 apache-maven-3.6.3。<br>需要修改环境变量，先下载一个 vim。</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get update -y
 $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<p>这里我 jdk 的文件名为 openjdk-8。<br>maven 和 jdk 都放在了<code>/usr/local</code> 下面。<br>安装完成后编辑环境变量<code>vi /etc/profile</code>，在文件末尾添加</p>
+<p>这里我 jdk 的文件名为 openjdk-8。maven 和 jdk 都放在了<code>/usr/local</code> 下面。安装完成后编辑环境变量</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在文件末尾添加</p>
 <pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">MAVEN_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/apache-maven-3.6.3</span>
 <span class="token attr-name">JAVA_HOME</span><span class="token punctuation">=</span><span class="token attr-value">/usr/local/openjdk-8</span>
 <span class="token attr-name">CLASS_PATH</span><span class="token punctuation">=</span><span class="token attr-value">$JAVA_HOME/lib/</span>
 <span class="token attr-name">PATH</span><span class="token punctuation">=</span><span class="token attr-value">$PATH:$MAVEN_HOME/bin:$JAVA_HOME/bin</span>
 <span class="token attr-name">export</span> <span class="token attr-value">PATH MAVEN_HOME JAVA_HOME CLASS_PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>配置完成之后输入<code>source /etc/profile</code>使配置文件生效。到这里可以测试下安装是否成功</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512113214.png"></p>
+<p>配置完成之后输入</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ source &#x2F;etc&#x2F;profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使配置文件生效。到这里可以测试下安装是否成功</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ mvn -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ java -version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>点击<code>Manage Jenkins =&gt; Global Tool Configuration</code>。<br>选择 <code>JDK installations</code>，填写 jdk 名称和路径<code>/usr/local/openjdk-8</code>。<br>选择 Maven installations，填写 maven 的名称和路径<code>/usr/local/apache-maven-3.6.3</code>，然后 save 保存。</p>
-<h2 id="通过-SSH-部署到远程服务器"><a href="#通过-SSH-部署到远程服务器" class="headerlink" title="通过 SSH 部署到远程服务器"></a>通过 SSH 部署到远程服务器</h2><h3 id="前端部署"><a href="#前端部署" class="headerlink" title="前端部署"></a>前端部署</h3><p>到 jenkins 主界面，左侧导航栏选择 <code>New Item</code>,填写名称，选择 <code>Freestyle project</code>，在配置 <code>configure</code> 里面，</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114041.png"></p>
+<p>点击<code>Manage Jenkins =&gt; Global Tool Configuration</code>。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114208.png">选择 <code>JDK installations</code>，填写 jdk 名称和路径<code>/usr/local/openjdk-8</code>。<br>选择 Maven installations，填写 maven 的名称和路径<code>/usr/local/apache-maven-3.6.3</code>，然后 save 保存。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114333.png"></p>
+<h2 id="创建部署项目"><a href="#创建部署项目" class="headerlink" title="创建部署项目"></a>创建部署项目</h2><h3 id="前端部署"><a href="#前端部署" class="headerlink" title="前端部署"></a>前端部署</h3><p>到 jenkins 主界面，左侧导航栏选择 <code>New Item</code>,填写名称，选择 <code>Freestyle project</code>，在配置 <code>configure</code> 里面，</p>
 <ul>
 <li><p><code>General</code>—在 <code>Gitlab Connection</code> 选择在配置里面设置的 gitlab 的连接”jenkins for gitlab”。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114740.png"></p>
 </li>
-<li><p><code>Source Code Management</code>—选择 git，仓库地址填写需要部署的项目的仓库地址，凭证选择建立好的 gitlab 的登陆账号密码，分支这里测试是直接选的 master 分支，</p>
+<li><p><code>Source Code Management</code>—选择 git，仓库地址填写需要部署的项目的仓库地址，凭证选择建立好的 gitlab 的登录账号密码，分支这里测试是直接选的 master 分支，</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512114829.png"></p>
 </li>
-<li><p><code>Build Triggers</code>—勾选<code>Build when a change is pushed to GitLab. GitLab webhook URL: http://192.168.7.104:18080/project/testDist</code>，这里需要记录下这个 webhook 地址，填写到 gitlab 的时候需要。<br>点击高级选项，点击 Generate 生成 <code>Secret token</code>，这里我们记录下这个 token，<code>b3d5a618874a8335XXXXXXXXX</code></p>
+<li><p><code>Build Triggers</code>—勾选<code>Build when a change is pushed to GitLab. GitLab webhook URL: http://192.168.7.104:18080/project/testDist</code>，这里需要记录下这个 webhook 地址，填写到 gitlab 的时候需要。<br>点击高级选项，点击 Generate 生成 <code>Secret token</code>，这里我们记录下这个 token</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512115051.png"></p>
 </li>
 <li><p><code>Build Environment</code>—这里可以配置在 build 之前或者 build 之后的操作，比如我们需要 build 之后将生成的<code>/dist</code> 文件夹通过 SSH 部署到远程服务器。<br><code>SSH Server</code> 选择配置的地址.<br><code>Source files</code> 填写<code>dist/</code>即为 dist 下面所有文件.<br><code>Remote directory</code> 填写<code>home/</code><br>意思是将 jenkins 下面 workspace 的文件拷贝到远程服务器的 home 文件夹下，其中 <code>Exec command</code> 还可以填写需要在远程服务器执行的操作，比如 tomcat 的关闭与启动等等。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512115225.png"></p>
 </li>
 </ul>
 <h3 id="后端-jar-包部署"><a href="#后端-jar-包部署" class="headerlink" title="后端 jar 包部署"></a>后端 jar 包部署</h3><p>jar 包部署与前端部署一样，在 <code>Build Environment</code> 中 <code>Source files</code> 填写<code>target/*.jar</code>。<br><code>Remove prefix</code> 删除前缀这里填写<code>target</code>。<br><code>Remote directory</code> 填写需要部署打的 jar 包位置。<br>这里 build 可以设置打包命令为<code>mvn clear package</code>。<br><code>nohup java -jar XXXX.jar &amp;</code>启动 jar 包，也可以写一些执行脚本在服务器上运行。</p>
-<h2 id="配置-gitlab-执行自动触发构建部署"><a href="#配置-gitlab-执行自动触发构建部署" class="headerlink" title="配置 gitlab 执行自动触发构建部署"></a>配置 gitlab 执行自动触发构建部署</h2><p>进入 gitlab 选择需要部署的项目，<code>设置 =&gt; 集成</code>里面填写 webhook，链接填写为 jenkins 里面生成的链接，如<code>http://192.168.7.104:18080/project/testDist</code>，安全令牌填写<code>b3d5a618874a83358bc0aXXXXX</code>。<br>选择 push 触发，分支选择 master，这样 master 分支提交 push 的时候就会触发这个 webhook，保存之后可以 test 测试<code>Push events</code>，如果成功则提示<code> Hook executed successfully: HTTP 200</code>，如果提示<code> Requests to localhost are not allowed</code>，就需要登陆管理员账号开启内网请求权限，参照文章第一点<a href="#%E5%AE%89%E8%A3%85-gitlab">安装-gitlab</a></p>
-<h2 id="查看任务的-log"><a href="#查看任务的-log" class="headerlink" title="查看任务的 log"></a>查看任务的 log</h2><p>进入任务，左侧导航<code>Console Output</code>可查询 jenkins 日志。<br><strong>build 生成的文件可在 <code>/var/jenkins_home/workspace</code> 下面查看</strong></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512140050.png"></p>
+<h1 id="自动触发构建部署"><a href="#自动触发构建部署" class="headerlink" title="自动触发构建部署"></a>自动触发构建部署</h1><h2 id="配置-webhook"><a href="#配置-webhook" class="headerlink" title="配置 webhook"></a>配置 webhook</h2><p>进入 gitlab 选择需要部署的项目，<code>设置 =&gt; 集成</code>里面填写 webhook，链接填写为 jenkins 里面生成的链接，如<code>http://192.168.7.104:18080/project/testDist</code>，安全令牌填写前面 jenkins 的<code>Build Triggers</code>生成的 token。<br>选择 push 触发，分支选择 master，这样 master 分支提交 push 的时候就会触发这个 webhook，保存之后可以 test 测试<code>Push events</code>，如果成功则提示<code> Hook executed successfully: HTTP 200</code>，如果提示<code> Requests to localhost are not allowed</code>，就需要登录管理员账号开启内网请求权限，参照文章第一点<a href="#%E5%AE%89%E8%A3%85-gitlab">安装-gitlab</a></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512141909.png"></p>
+<h2 id="查看任务的-log"><a href="#查看任务的-log" class="headerlink" title="查看任务的 log"></a>查看任务的 log</h2><p>配置好 webhook 之后，我们提交一下代码，看下触发钩子的任务 log，进入项目，点击左侧<code>Build History</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512142600.png"></p>
+<p>进入任务，左侧导航<code>Console Output</code>可查询 jenkins 日志。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512142746.png"></p>
+<p><strong>build 生成的文件可在 <code>/var/jenkins_home/workspace</code> 下面查看</strong></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512144015.png"></p>
+<p>同样的，maven 构建的项目，我们也能看到 log，maven 项目耗时比较久</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512154419.png"></p>
+<h2 id="查看服务器文件"><a href="#查看服务器文件" class="headerlink" title="查看服务器文件"></a>查看服务器文件</h2><p>登录我们配置的部署地址 192.168.7.234，根据我们前面的配置，能看到/home 路径下已经有 dist 文件夹和相应的 jar 包了</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512154532.png"></p>
 
     </div>
 
@@ -469,24 +581,6 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
     
 
     <footer class="post-footer">
-          <div class="reward-container">
-  <div>Buy me a coffee ☕</div>
-  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
-    赞赏
-  </button>
-  <div class="post-reward">
-      <div>
-        <img src="/images/wechatpay.jpg" alt="Marco 微信">
-        <span>微信</span>
-      </div>
-      <div>
-        <img src="/images/alipay.jpg" alt="Marco 支付宝">
-        <span>支付宝</span>
-      </div>
-
-  </div>
-</div>
-
           
 
 <div class="post-copyright">
@@ -583,13 +677,13 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">51k</span>
+    <span title="站点总字数">56k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">46 分钟</span>
+    <span title="站点阅读时长">51 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

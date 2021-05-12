@@ -31,15 +31,22 @@
     var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="主要操作步骤 使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。">
+  <meta name="description" content="主要操作步骤这里我们使用 docker 创建一台用于部署的 centos 服务器，一台用于 gitlab-runner 的服务器  使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker+gitlab-ci+ssh+gitlab-pages实现代码自动构建部署">
 <meta property="og:url" content="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="Marco&#39;s blog✍️">
-<meta property="og:description" content="主要操作步骤 使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。">
+<meta property="og:description" content="主要操作步骤这里我们使用 docker 创建一台用于部署的 centos 服务器，一台用于 gitlab-runner 的服务器  使用 ssh-keygen 在本地创建新的 SSH 密钥对。 将私钥作为变量添加到您的项目中。 运行 ssh-agent 以加载私钥。 将公共密钥复制到您想要访问的服务器上（通常在 ~&#x2F;.ssh&#x2F;authorized_keys中），或者在访问私有 GitLab 存储库">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510204111.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510200906.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510202407.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510202637.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210511190813.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210511190844.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510201104.png">
 <meta property="article:published_time" content="2020-11-03T05:04:29.000Z">
-<meta property="article:modified_time" content="2021-04-30T12:16:03.095Z">
+<meta property="article:modified_time" content="2021-05-12T01:03:11.467Z">
 <meta property="article:author" content="Marco">
 <meta property="article:tag" content="docker">
 <meta property="article:tag" content="gitlab">
@@ -47,6 +54,7 @@
 <meta property="article:tag" content="gitlab-pages">
 <meta property="article:tag" content="ssh">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510204111.png">
 
 
 <link rel="canonical" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-ci-ssh-pages%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/">
@@ -157,7 +165,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">48</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">51</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -167,7 +175,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -227,7 +235,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.</span> <span class="nav-text">主要操作步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD-centos6-10-%E5%B9%B6%E8%BF%9B%E5%85%A5%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">1.2.</span> <span class="nav-text">下载 centos6.10 并进入控制台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-openssh-server"><span class="nav-number">1.3.</span> <span class="nav-text">安装 openssh-server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-ssh-%E5%85%81%E8%AE%B8-root-%E7%99%BB%E9%99%86"><span class="nav-number">1.4.</span> <span class="nav-text">设置 ssh 允许 root 登陆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF-ssh-%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.5.</span> <span class="nav-text">开启 ssh 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-rsync"><span class="nav-number">1.6.</span> <span class="nav-text">安装 rsync</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-root-%E5%AF%86%E7%A0%81"><span class="nav-number">1.7.</span> <span class="nav-text">修改 root 密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-gitlab-runner"><span class="nav-number">2.</span> <span class="nav-text">配置 gitlab-runner</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD-gitlab-runner-%E5%B9%B6%E8%BF%9B%E5%85%A5%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">2.1.</span> <span class="nav-text">下载 gitlab-runner 并进入控制台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C-gitlab-runner"><span class="nav-number">2.2.</span> <span class="nav-text">注册 gitlab-runner</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-CI-CD"><span class="nav-number">3.</span> <span class="nav-text">配置 CI&#x2F;CD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E6%9C%AC%E6%9C%BA%E7%94%9F%E6%88%90%E5%AF%86%E9%92%A5%E5%AF%B9"><span class="nav-number">3.1.</span> <span class="nav-text">在本机生成密钥对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E6%94%BE%E5%88%B0%E8%A6%81%E9%83%A8%E7%BD%B2%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">公钥放到要部署的服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%81%E9%92%A5%E9%85%8D%E7%BD%AE%E5%88%B0-gitlab-%E5%8F%98%E9%87%8F"><span class="nav-number">3.3.</span> <span class="nav-text">私钥配置到 gitlab 变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8-root-%E7%99%BB%E9%99%86-runner-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.4.</span> <span class="nav-text">用 root 登陆 runner 服务器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99-gitlab-ci-yml"><span class="nav-number">4.</span> <span class="nav-text">编写 gitlab-ci.yml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E8%A7%A3%E9%87%8A"><span class="nav-number">5.</span> <span class="nav-text">脚本解释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eval"><span class="nav-number">5.1.</span> <span class="nav-text">eval</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#echo"><span class="nav-number">5.2.</span> <span class="nav-text">echo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-keyscan"><span class="nav-number">5.3.</span> <span class="nav-text">ssh-keyscan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#f-amp-amp-echo"><span class="nav-number">5.4.</span> <span class="nav-text">-f &amp;&amp; echo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab-pages"><span class="nav-number">6.</span> <span class="nav-text">gitlab pages</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.</span> <span class="nav-text">主要操作步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">配置部署服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD-centos6-10-%E5%B9%B6%E8%BF%9B%E5%85%A5%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">2.1.</span> <span class="nav-text">下载 centos6.10 并进入控制台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-openssh-server"><span class="nav-number">2.2.</span> <span class="nav-text">安装 openssh-server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-ssh-%E5%85%81%E8%AE%B8-root-%E7%99%BB%E5%BD%95"><span class="nav-number">2.3.</span> <span class="nav-text">设置 ssh 允许 root 登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%90%AF-ssh-%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.4.</span> <span class="nav-text">开启 ssh 服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-rsync"><span class="nav-number">2.5.</span> <span class="nav-text">安装 rsync</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-root-%E5%AF%86%E7%A0%81"><span class="nav-number">2.6.</span> <span class="nav-text">修改 root 密码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-gitlab-runner"><span class="nav-number">3.</span> <span class="nav-text">配置 gitlab-runner</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD-gitlab-runner-%E5%B9%B6%E8%BF%9B%E5%85%A5%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">3.1.</span> <span class="nav-text">下载 gitlab-runner 并进入控制台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C-gitlab-runner"><span class="nav-number">3.2.</span> <span class="nav-text">注册 gitlab-runner</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-CI-CD"><span class="nav-number">4.</span> <span class="nav-text">配置 CI&#x2F;CD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E6%9C%AC%E6%9C%BA%E7%94%9F%E6%88%90%E5%AF%86%E9%92%A5%E5%AF%B9"><span class="nav-number">4.1.</span> <span class="nav-text">在本机生成密钥对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E6%94%BE%E5%88%B0%E8%A6%81%E9%83%A8%E7%BD%B2%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">4.2.</span> <span class="nav-text">公钥放到要部署的服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%81%E9%92%A5%E9%85%8D%E7%BD%AE%E5%88%B0-gitlab-%E5%8F%98%E9%87%8F"><span class="nav-number">4.3.</span> <span class="nav-text">私钥配置到 gitlab 变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-root-%E7%99%BB%E5%BD%95-gitlab-runner-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">4.4.</span> <span class="nav-text">用 root 登录 gitlab-runner 服务器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E5%86%99-gitlab-ci-yml"><span class="nav-number">5.</span> <span class="nav-text">编写 gitlab-ci.yml</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E8%A7%A3%E9%87%8A"><span class="nav-number">6.</span> <span class="nav-text">脚本解释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#eval"><span class="nav-number">6.1.</span> <span class="nav-text">eval</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#echo"><span class="nav-number">6.2.</span> <span class="nav-text">echo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh-keyscan"><span class="nav-number">6.3.</span> <span class="nav-text">ssh-keyscan</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#f-amp-amp-echo"><span class="nav-number">6.4.</span> <span class="nav-text">-f &amp;&amp; echo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gitlab-pages"><span class="nav-number">7.</span> <span class="nav-text">gitlab pages</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -243,7 +251,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -256,7 +264,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">51</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -340,7 +348,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-04-30 20:16:03" itemprop="dateModified" datetime="2021-04-30T20:16:03+08:00">2021-04-30</time>
+        <time title="修改时间：2021-05-12 09:03:11" itemprop="dateModified" datetime="2021-05-12T09:03:11+08:00">2021-05-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -371,14 +379,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.3k</span>
+      <span>6.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
+      <span>6 分钟</span>
     </span>
 </div>
 
@@ -389,7 +397,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="主要操作步骤"><a href="#主要操作步骤" class="headerlink" title="主要操作步骤"></a>主要操作步骤</h2><ol>
+        <h1 id="主要操作步骤"><a href="#主要操作步骤" class="headerlink" title="主要操作步骤"></a>主要操作步骤</h1><p>这里我们使用 docker 创建一台用于部署的 centos 服务器，一台用于 gitlab-runner 的服务器</p>
+<ol>
 <li><strong>使用 ssh-keygen 在本地创建新的 SSH 密钥对。</strong></li>
 <li><strong>将私钥作为变量添加到您的项目中。</strong></li>
 <li><strong>运行 ssh-agent 以加载私钥。</strong></li>
@@ -397,65 +406,72 @@
 </ol>
 <a id="more"></a>
 
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>由于 docker 启动的 centos 不能使用 systemctl，包括安装 server 命令都不行，网上有解决方法如下：</p>
+<h1 id="配置部署服务器"><a href="#配置部署服务器" class="headerlink" title="配置部署服务器"></a>配置部署服务器</h1><p>由于 docker 启动的 centos 不能使用 systemctl，包括安装 server 命令都不行，网上有解决方法如下：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos8 --privileged&#x3D;true centos &#x2F;sbin&#x2F;init<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>但不适合于 docker 的 windows 版本，所以这里安装 centos7 以下的版本，不使用 systemctl。</p>
-<h3 id="下载-centos6-10-并进入控制台"><a href="#下载-centos6-10-并进入控制台" class="headerlink" title="下载 centos6.10 并进入控制台"></a>下载 centos6.10 并进入控制台</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos6 centos:6.10 bash
-docker exec -it centos6 bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="下载-centos6-10-并进入控制台"><a href="#下载-centos6-10-并进入控制台" class="headerlink" title="下载 centos6.10 并进入控制台"></a>下载 centos6.10 并进入控制台</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos6 centos:6.10 bash
+$ docker exec -it centos6 bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>这里直接 run 一个 container 。如果 run 之前没有 pull centos6 的话，在 run 的时候 docker 会自动去找相应的 image 去拉取，把 22 端口映射到宿主机的 10022 端口，方便 ssh。</p>
-<h3 id="安装-openssh-server"><a href="#安装-openssh-server" class="headerlink" title="安装 openssh-server"></a>安装 openssh-server</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ rpm -qa | grep ssh
+<h2 id="安装-openssh-server"><a href="#安装-openssh-server" class="headerlink" title="安装 openssh-server"></a>安装 openssh-server</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ rpm -qa | grep ssh
 $ yum update -y &amp;&amp; yum install openssh-server -y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="设置-ssh-允许-root-登陆"><a href="#设置-ssh-允许-root-登陆" class="headerlink" title="设置 ssh 允许 root 登陆"></a>设置 ssh 允许 root 登陆</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="设置-ssh-允许-root-登录"><a href="#设置-ssh-允许-root-登录" class="headerlink" title="设置 ssh 允许 root 登录"></a>设置 ssh 允许 root 登录</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>PermitRootLogin 修改为 yes。</p>
-<h3 id="开启-ssh-服务"><a href="#开启-ssh-服务" class="headerlink" title="开启 ssh 服务"></a>开启 ssh 服务</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ &#x2F;etc&#x2F;init.d&#x2F;sshd start<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>PermitRootLogin 修改为 yes。方便 gitlab-runner 的机器登录</p>
+<h2 id="开启-ssh-服务"><a href="#开启-ssh-服务" class="headerlink" title="开启 ssh 服务"></a>开启 ssh 服务</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ &#x2F;etc&#x2F;init.d&#x2F;sshd start<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>查看 ssh 是否已经启动</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ps -ef|grep ssh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="安装-rsync"><a href="#安装-rsync" class="headerlink" title="安装 rsync"></a>安装 rsync</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ yum install rsync -y<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="安装-rsync"><a href="#安装-rsync" class="headerlink" title="安装 rsync"></a>安装 rsync</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ yum install rsync -y<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>如果用 scp 传的话本地和远程都需要安装 openssh-client，如果用 rsync 传的话本地和远程都需要安装 rsync。</strong></p>
-<h3 id="修改-root-密码"><a href="#修改-root-密码" class="headerlink" title="修改 root 密码"></a>修改 root 密码</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="修改-root-密码"><a href="#修改-root-密码" class="headerlink" title="修改 root 密码"></a>修改 root 密码</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里设置为 123456，方便登陆验证。</p>
-<h2 id="配置-gitlab-runner"><a href="#配置-gitlab-runner" class="headerlink" title="配置 gitlab-runner"></a>配置 gitlab-runner</h2><h3 id="下载-gitlab-runner-并进入控制台"><a href="#下载-gitlab-runner-并进入控制台" class="headerlink" title="下载 gitlab-runner 并进入控制台"></a>下载 gitlab-runner 并进入控制台</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name gitlab-runner -v d:&#x2F;docker&#x2F;gitlab-runner&#x2F;config:&#x2F;etc&#x2F;gitlab-runner gitlab&#x2F;gitlab-runner:latest
+<p>这里设置为 123456，方便登录验证。</p>
+<h1 id="配置-gitlab-runner"><a href="#配置-gitlab-runner" class="headerlink" title="配置 gitlab-runner"></a>配置 gitlab-runner</h1><h2 id="下载-gitlab-runner-并进入控制台"><a href="#下载-gitlab-runner-并进入控制台" class="headerlink" title="下载 gitlab-runner 并进入控制台"></a>下载 gitlab-runner 并进入控制台</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name gitlab-runner -v d:&#x2F;docker&#x2F;gitlab-runner&#x2F;config:&#x2F;etc&#x2F;gitlab-runner gitlab&#x2F;gitlab-runner:latest
 $ docker exec -it gitlab-runner bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="注册-gitlab-runner"><a href="#注册-gitlab-runner" class="headerlink" title="注册 gitlab-runner"></a>注册 gitlab-runner</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-runner register<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="注册-gitlab-runner"><a href="#注册-gitlab-runner" class="headerlink" title="注册 gitlab-runner"></a>注册 gitlab-runner</h2><p>注册一个 gitlab-runner，<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vcnVubmVyL3JlZ2lzdGVyLyNsaW51eA==">注册文档<i class="fa fa-external-link-alt"></i></span></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-runner register<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里注意填写下 tags，后面方便用到。执行环境选择的 shell，如果执行环境选 docker 的话，相应的版本可以选 alpine:latest。<br>试过 docker，因为没有映射<code>/var/run/docker.sock</code>，用 docker 执行 jobs 有时候会报错。所以这里我改成了 shell。</p>
-<h2 id="配置-CI-CD"><a href="#配置-CI-CD" class="headerlink" title="配置 CI/CD"></a>配置 CI/CD</h2><h3 id="在本机生成密钥对"><a href="#在本机生成密钥对" class="headerlink" title="在本机生成密钥对"></a>在本机生成密钥对</h3><p>在 runner 机器上生成密钥</p>
+<p>可以用<code>gitlab-runner --help</code>查看 gitlab-runner 的<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vcnVubmVyL2NvbW1hbmRzL1JFQURNRS5odG1sI2dpdGxhYi1ydW5uZXItY29tbWFuZHM=">所有命令<i class="fa fa-external-link-alt"></i></span>，配置文件在<code>/etc/gitlab-runner/config.toml</code></p>
+<p>打开<code>Setting =&gt; CI/CD =&gt; Runners</code>可以看到注册需要的 url 和 token，注册的时候需要填写，这里注意填写下 tags，后面方便用到。执行环境选择的 shell，如果执行环境选 docker 的话，相应的版本可以选 alpine:latest。<br>试过 docker，因为没有映射<code>/var/run/docker.sock</code>，用 docker 执行 jobs 有时候会报错。所以这里我改成了 shell。这里 runner 名称我们定为 testci，在<code>Setting =&gt; CI/CD =&gt; Runners</code>里面可以看到我们的 runner</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510204111.png"></p>
+<h1 id="配置-CI-CD"><a href="#配置-CI-CD" class="headerlink" title="配置 CI/CD"></a>配置 CI/CD</h1><p>这里我们使用 SSH 的方式来达到 CI/CD 的目的，<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvY2kvc3NoX2tleXMvaW5kZXguaHRtbCN1c2luZy1zc2gta2V5cy13aXRoLWdpdGxhYi1jaWNk">详见文档<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="在本机生成密钥对"><a href="#在本机生成密钥对" class="headerlink" title="在本机生成密钥对"></a>在本机生成密钥对</h2><p>在本机上<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvc3NoL1JFQURNRS5odG1sI2dlbmVyYXRlLWFuLXNzaC1rZXktcGFpcg==">生成密钥<i class="fa fa-external-link-alt"></i></span>，密钥名称我们改为了 runnerkey，避免生成的密钥文件将原来的其他密钥覆盖掉。密钥的类型官方推荐是 ed25519，<strong>但是 centos6.10 不支持 ed25519，这里还是换成 rsa。</strong>linux 用户生成文件在<code>/home/用户名/.ssh</code>文件夹，windows 用户在<code>C:\Users\用户名\.ssh</code>文件夹。</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -t rsa -f runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里文件名称最好修改一下，避免生成的密钥文件将原来的覆盖掉。密钥的类型官方推荐是 ed25519，即</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-keygen -t ed25519 -f runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>但是 centos6.10 不支持 ed25519，这里还是换成 rsa。</p>
-<h3 id="公钥放到要部署的服务器"><a href="#公钥放到要部署的服务器" class="headerlink" title="公钥放到要部署的服务器"></a>公钥放到要部署的服务器</h3><p>公钥放到要部署的服务器的<code>~/.ssh/authorized_keys</code>文件里</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-copy-id -i runnerkey.pub root@remoteip -p port<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="公钥放到要部署的服务器"><a href="#公钥放到要部署的服务器" class="headerlink" title="公钥放到要部署的服务器"></a>公钥放到要部署的服务器</h2><p>切换到<code>.ssh</code>目录，公钥放到要部署的服务器的<code>~/.ssh/authorized_keys</code>文件里，这里由于我们是用的 docker，端口是映射出来的，所有我们这里用的 localhost，实际环境中需要换成要部署的服务器地址。注意这里如果要查看 authorized_keys 文件的话，需注意是否为隐藏文件，显示隐藏文件为<code>ls -a</code>，带<code>-a</code>参数。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-copy-id -i runnerkey.pub root@localhost -p 10022<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>按照提示输入密码就行了。</p>
-<h3 id="私钥配置到-gitlab-变量"><a href="#私钥配置到-gitlab-变量" class="headerlink" title="私钥配置到 gitlab 变量"></a>私钥配置到 gitlab 变量</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="私钥配置到-gitlab-变量"><a href="#私钥配置到-gitlab-变量" class="headerlink" title="私钥配置到 gitlab 变量"></a>私钥配置到 gitlab 变量</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ cat runnerkey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里可以把服务器地址、端口都配置上，路径为 gitlab 页面上项目里的<code>Setting =&gt; CI/CD =&gt; Variables =&gt; Add Variables</code>，key 就用<code>SSH_PRIVATE_KEY</code>和<code>SSH_KNOWN_HOSTS</code>、<code>SSH_KNOWN_HOSTS_PORT</code>。</p>
-<h3 id="用-root-登陆-runner-服务器"><a href="#用-root-登陆-runner-服务器" class="headerlink" title="用 root 登陆 runner 服务器"></a>用 root 登陆 runner 服务器</h3><p>用 root 登陆 runner 服务器并设置为可无密码切换到 root。</p>
+<p>这里可以把服务器地址、端口都配置上，这里我们的项目名称为 testpagecenter，进入到项目的配置里面，路径为 gitlab 页面上项目里的<code>Setting =&gt; CI/CD =&gt; Variables =&gt; Add Variables</code>。</p>
+<ul>
+<li><code>SSH_KNOWN_HOSTS</code>：这里我们配置为本机的局域网地址<code>192.168.9.200</code></li>
+<li><code>SSH_KNOWN_HOSTS_PORT</code>：10022</li>
+<li><code>SSH_PRIVATE_KEY</code>：配置为你的私钥，即文件 runnerkey 内容</li>
+</ul>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510200906.png" alt="配置变量"></p>
+<h2 id="用-root-登录-gitlab-runner-服务器"><a href="#用-root-登录-gitlab-runner-服务器" class="headerlink" title="用 root 登录 gitlab-runner 服务器"></a>用 root 登录 gitlab-runner 服务器</h2><p>用 root 登录 gitlab-runner 服务器并设置为可无密码切换到 root。</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ apt-get install sudo -y
 $ apt-get install vim -y
 $ vim &#x2F;etc&#x2F;sudoers<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<p>添加以下命令</p>
+<p>由于操作命令是用户<code>gitlab-runner</code>来操作的，每次需要 sudo，所以这里设置允许<code>gitlab-runner</code>的无密码切换，在<code>/etc/sudoers</code>添加以下命令</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ gitlab-runner ALL&#x3D;(ALL) NOPASSWD: ALL<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h2 id="编写-gitlab-ci-yml"><a href="#编写-gitlab-ci-yml" class="headerlink" title="编写 gitlab-ci.yml"></a>编写 gitlab-ci.yml</h2><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">stages</span><span class="token punctuation">:</span>
+<h1 id="编写-gitlab-ci-yml"><a href="#编写-gitlab-ci-yml" class="headerlink" title="编写 gitlab-ci.yml"></a>编写 gitlab-ci.yml</h1><p>gitlab-ci.yml 编写的 <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvY2kveWFtbC9SRUFETUUuaHRtbA==">具体文档<i class="fa fa-external-link-alt"></i></span></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">stages</span><span class="token punctuation">:</span>
   <span class="token punctuation">-</span> deploy
 <span class="token key atrule">deploy_by_192</span><span class="token punctuation">:</span>
-  stage<span class="token punctuation">:</span> deploy
-  before_script<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> <span class="token string">'command -v ssh-agent || ( sudo apt-get update -y &amp;&amp; sudo apt-get install openssh-client -y )'</span>
+  <span class="token key atrule">stage</span><span class="token punctuation">:</span> deploy
+  <span class="token key atrule">before_script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token string">"command -v ssh-agent || ( sudo apt-get update -y &amp;&amp; sudo apt-get install openssh-client -y )"</span>
     <span class="token punctuation">-</span> eval $(ssh<span class="token punctuation">-</span>agent <span class="token punctuation">-</span>s)
     <span class="token punctuation">-</span> echo "$SSH_PRIVATE_KEY" <span class="token punctuation">|</span> tr <span class="token punctuation">-</span>d '\r' <span class="token punctuation">|</span> ssh<span class="token punctuation">-</span>add <span class="token punctuation">-</span>
     <span class="token punctuation">-</span> mkdir <span class="token punctuation">-</span>p ~/.ssh
@@ -464,21 +480,21 @@ $ vim &#x2F;etc&#x2F;sudoers<span aria-hidden="true" class="line-numbers-rows"><
     <span class="token punctuation">-</span> ssh<span class="token punctuation">-</span>keyscan <span class="token punctuation">-</span>p "$SSH_KNOWN_HOSTS_PORT" "$SSH_KNOWN_HOSTS" <span class="token punctuation">></span><span class="token punctuation">></span> ~/.ssh/known_hosts
     <span class="token punctuation">-</span> chmod 644 ~/.ssh/known_hosts
     <span class="token punctuation">-</span> command <span class="token punctuation">-</span>v rsync <span class="token punctuation">|</span><span class="token punctuation">|</span> ( sudo apt<span class="token punctuation">-</span>get install rsync <span class="token punctuation">-</span>y )
-  script<span class="token punctuation">:</span>
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
     <span class="token punctuation">-</span> rsync <span class="token punctuation">-</span>avze "ssh <span class="token punctuation">-</span>p $SSH_KNOWN_HOSTS_PORT" ./dist root@$SSH_KNOWN_HOSTS<span class="token punctuation">:</span>/home/
-  only<span class="token punctuation">:</span>
+  <span class="token key atrule">only</span><span class="token punctuation">:</span>
     <span class="token punctuation">-</span> master
-  tags<span class="token punctuation">:</span>
+  <span class="token key atrule">tags</span><span class="token punctuation">:</span>
     <span class="token punctuation">-</span> testci<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>这里如果是用的 docker, 可以将上面文件中的部分代码</p>
+<p>这里如果是用的 docker executor, 可以将上面文件中的部分代码</p>
 <pre class="line-numbers language-none"><code class="language-none">- ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~&#x2F;.ssh&#x2F;known_hosts
 - chmod 644 ~&#x2F;.ssh&#x2F;known_hosts<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>替换为</p>
 <pre class="line-numbers language-none"><code class="language-none">-&#39;[[ -f &#x2F;.dockerenv ]] &amp;&amp; echo -e &quot;Host *\n\tStrictHostKeyChecking no\n\n&quot; &gt;&gt; ~&#x2F;.ssh&#x2F;config&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h2 id="脚本解释"><a href="#脚本解释" class="headerlink" title="脚本解释"></a>脚本解释</h2><h3 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h3><p><code>eval $(ssh-agent -s)</code></p>
+<h1 id="脚本解释"><a href="#脚本解释" class="headerlink" title="脚本解释"></a>脚本解释</h1><h2 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h2><p><code>eval $(ssh-agent -s)</code></p>
 <p>解释如下：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ssh-agent
 SSH_AUTH_SOCK&#x3D;&#x2F;tmp&#x2F;ssh-GiORRAqMXEFt&#x2F;agent.28161; export SSH_AUTH_SOCK;
@@ -493,11 +509,11 @@ echo Agent pid 28162;<span aria-hidden="true" class="line-numbers-rows"><span></
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ eval &#96;ssh-agent&#96;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>参数说明：<br>-s 生成 Bourne shell 风格的命令输出</strong></p>
-<h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p><code>echo &quot;$SSH_PRIVATE_KEY&quot; | tr -d &#39;\r&#39; | ssh-add -</code></p>
+<h2 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h2><p><code>echo &quot;$SSH_PRIVATE_KEY&quot; | tr -d &#39;\r&#39; | ssh-add -</code></p>
 <p>解释如下：<br>删除私钥字符串的空格（针对 ed25519 的一个 bug），然后作为输入传给 ssh-add 添加到 ssh-agent 代理中<br><strong>参数说明：<br>“tr”:用于转换或删除文件中的字符。<br>“-d”:–delete 删除指令字符。<br>“-“:指令会从标准输入设备读取数据。</strong></p>
-<h3 id="ssh-keyscan"><a href="#ssh-keyscan" class="headerlink" title="ssh-keyscan"></a>ssh-keyscan</h3><p><code>ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~/.ssh/known_hosts</code></p>
-<p>解释如下：<br>将远程机器的公钥添加到 runner 机器的 known_hosts 中，目录在<code>/home/gitlab-runner/.ssh/known_hosts</code>。<br>ssh-keyscan 的主要用途是用于批量获取机器的公钥，这样以后再用 ssh 登录到已经获取过公钥的服务器时，不需要再输入 yes 之类去保存公钥了。<br><strong>参数说明：<br>“-p”，端口。</strong></p>
-<h3 id="f-amp-amp-echo"><a href="#f-amp-amp-echo" class="headerlink" title="-f &amp;&amp; echo"></a>-f &amp;&amp; echo</h3><p><code>&#39;[[ -f /.dockerenv ]] &amp;&amp; echo -e &quot;Host *\n\tStrictHostKeyChecking no\n\n&quot; &gt;&gt; ~/.ssh/config&#39;</code></p>
+<h2 id="ssh-keyscan"><a href="#ssh-keyscan" class="headerlink" title="ssh-keyscan"></a>ssh-keyscan</h2><p><code>ssh-keyscan -p &quot;$SSH_KNOWN_HOSTS_PORT&quot; &quot;$SSH_KNOWN_HOSTS&quot; &gt;&gt; ~/.ssh/known_hosts</code></p>
+<p>解释如下：<br>将远程机器的主机公钥 (host key，<strong>注意这里的主机公钥是针对主机来说的，不是前面提到的生成的公私密钥</strong>)添加到 runner 机器的 known_hosts 中，目录在<code>/home/gitlab-runner/.ssh/known_hosts</code>。<br>ssh-keyscan 的主要用途是用于批量获取机器的公钥，这样以后再用 ssh 登录到已经获取过公钥的服务器时，不需要再输入 yes 之类去保存公钥了。这里会一直往<code>~/.ssh/known_hosts</code>文件写入，后续如果已经有了相关机器公钥的话也可以跳过这步。<br><strong>参数说明：<br>“-p”，端口。</strong></p>
+<h2 id="f-amp-amp-echo"><a href="#f-amp-amp-echo" class="headerlink" title="-f &amp;&amp; echo"></a>-f &amp;&amp; echo</h2><p><code>&#39;[[ -f /.dockerenv ]] &amp;&amp; echo -e &quot;Host *\n\tStrictHostKeyChecking no\n\n&quot; &gt;&gt; ~/.ssh/config&#39;</code></p>
 <p>解释如下：<br>如果存在 <code>/.dockerenv</code> 且为常规文件，则添加以下字符串到<code>~/.ssh/config</code> 文件，实现当第一次连接服务器时，自动接受新的公钥，不必询问。<br>但这里会一直往<code>~/.ssh/config</code> 里面写数据，并不是覆盖原有的数据，方式不太好</p>
 <pre class="line-numbers language-none"><code class="language-none">Host *
   StrictHostKeyChecking no<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
@@ -508,34 +524,47 @@ $ ssh-keygen -R 服务器端的ip地址<span aria-hidden="true" class="line-numb
 
 <p>来删除旧的地址</p>
 <p><strong>参数说明：<br>“[[]]”：这里相当于 test。<br>“-f”：如果 file 存在且是一个普通文件则为真。<br>“echo -e”：处理特殊字符，开启转义。</strong></p>
-<p><strong>如果配置了 ssh 一次都没有登陆过的话，第一次登陆是需要绕过公钥检查，也可以用 <code>ssh -o stricthostkeychecking=no</code> 来绕过。<br>用命令 <code>cat /etc/issue</code> 可以查看 linux 版本</strong></p>
-<p>执行之前最好到 gitlab 的 pipelines 用 CI Lint 验证下 gitlab-ci.yml 的格式是否正确，如果不正确是不触发 jobs 的。<br>到 gitlab 上该项目查看，jobs 执行成功 passed，到这里就大功告成。</p>
+<p><strong>如果配置了 ssh 一次都没有登录过的话，第一次登录是需要绕过公钥检查，也可以用 <code>ssh -o stricthostkeychecking=no</code> 来绕过。<br>用命令 <code>cat /etc/issue</code> 可以查看 linux 版本</strong></p>
+<p>执行之前最好到 gitlab 的 pipelines 用 CI Lint 验证下 gitlab-ci.yml 的格式是否正确，如果不正确是不触发 jobs 的。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510202407.png">当我们修改代码并提交之后，触发 CI/CD，到 gitlab 上该项目查看，jobs 执行成功 passed，到这里就大功告成。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510202637.png"></p>
 <p>如果当前 runner 和需要部署的机器是一台的话可以直接用 cp 拷贝了。<br>可以用 <code>echo whoami</code> 和<code>echo pwd</code>查看当前用户和路径的。可以看到当前用户为 gitlab-runner，路径为<code>/home/gitlab-runner/builds/qmPHwZRG/0/userNameXXX/gitdirXXXX</code>，拷贝之前先执行</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ chown -R gitlab-runner:gitlab-runner .&#x2F;share<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>执行的时候前面添加 sudo，例如</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ sudo mkdir -p &#x2F;usr&#x2F;local&#x2F;share&#x2F;html
-$ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+$ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>就可以实现直接拷贝</p>
 <p><strong>即执行 gitlab-ci.yml 是用户 gitlab-runner 在 runner 注册的服务器上执行的。如果要部署在 runner 服务器，就直接 cp 拷贝，如果要部署到其他服务器，就设置 ssh 无密码登录再 rsync 或者 scp 都可以</strong></p>
-<h2 id="gitlab-pages"><a href="#gitlab-pages" class="headerlink" title="gitlab pages"></a>gitlab pages</h2><p>gitlab pages 是 gitlab 的静态托管页面，只需要在 gitlab-ci.yml 重设置 pages 即可，只要采用了 public 文件夹，在提交的时候会默认把 public 里面的文件部署到 pages 作为静态页面。</p>
+<h1 id="gitlab-pages"><a href="#gitlab-pages" class="headerlink" title="gitlab pages"></a>gitlab pages</h1><p>pages 是一个特殊的 job，gitlab pages 是 gitlab 的静态托管页面，只需要在 gitlab-ci.yml 里设置 pages 即可。以下两点是必须的：</p>
+<ul>
+<li><p>静态资源必须放到 public 文件夹下</p>
+</li>
+<li><p>artifacts 的路径必须为 public/</p>
+</li>
+</ul>
+<p>在提交的时候会默认把 public 里面的文件部署到 pages 作为静态页面。见<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGxhYi5jb20vZWUvY2kveWFtbC9SRUFETUUuaHRtbCNwYWdlcw==">文档<i class="fa fa-external-link-alt"></i></span>，注意这里不能照搬文档的<code>mv .public public</code>，这里会默认新建一个 public 的文件夹，如果使用<code>mv .public public</code>命令，在 public 文件夹已经存在的情况下，会把<code>.public</code>整改文件夹拷贝到了<code>public</code>文件夹，导致 404.可以使用<code>mv .public/* public</code>代替。<br>这里我们简单粗暴的直接删除 public 文件夹，再复制</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">pages</span><span class="token punctuation">:</span>
-  stage<span class="token punctuation">:</span> deploy
+  <span class="token key atrule">stage</span><span class="token punctuation">:</span> deploy
   <span class="token key atrule">script</span><span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> mkdir .public
-    <span class="token punctuation">-</span> cp <span class="token punctuation">-</span>r ./<span class="token important">*.html</span> .public
-    <span class="token punctuation">-</span> mv .public public
+    <span class="token punctuation">-</span> rm <span class="token punctuation">-</span>rf public/*
+    <span class="token punctuation">-</span> mv dist/* public
   <span class="token key atrule">artifacts</span><span class="token punctuation">:</span>
-    paths<span class="token punctuation">:</span>
+    <span class="token key atrule">paths</span><span class="token punctuation">:</span>
       <span class="token punctuation">-</span> public
   <span class="token key atrule">when</span><span class="token punctuation">:</span> manual
-  only<span class="token punctuation">:</span>
+  <span class="token key atrule">only</span><span class="token punctuation">:</span>
     <span class="token punctuation">-</span> master
-  tags<span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> testci<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  <span class="token key atrule">tags</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> testci<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>这里设置了手动触发。<u><strong>特别需要注意的一点是顶层的 stages 名称，必须是 pages</strong></u>，不然 gitlab 的 pages 部署不会显示 pages 的地址。部署好了之后在 gitlab 中的 <code>Settings =&gt; Pages</code> 就可以看到部署的地址了，如果需要设置所有人可见的话，在单个项目的设置<code>Settings =&gt; General =&gt; Visibility</code>。</p>
+<p>这里设置了手动触发。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210511190813.png"></p>
+<p><u><strong>特别需要注意的一点是顶层的 stages 名称，必须是 pages</strong></u>，不然 gitlab 的 pages 部署不会显示 pages 的地址。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210511190844.png"></p>
+<p>部署好了之后在 gitlab 中的 <code>Settings =&gt; Pages</code> 就可以看到部署的地址了，如果需要设置所有人可见的话，在单个项目的设置<code>Settings =&gt; General =&gt; Visibility, project features, permissions =&gt; Pages</code>。设置为<code>Everyone</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510201104.png" alt="生成的部署地址"></p>
 
     </div>
 
@@ -544,24 +573,6 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
     
 
     <footer class="post-footer">
-          <div class="reward-container">
-  <div>Buy me a coffee ☕</div>
-  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
-    赞赏
-  </button>
-  <div class="post-reward">
-      <div>
-        <img src="/images/wechatpay.jpg" alt="Marco 微信">
-        <span>微信</span>
-      </div>
-      <div>
-        <img src="/images/alipay.jpg" alt="Marco 支付宝">
-        <span>支付宝</span>
-      </div>
-
-  </div>
-</div>
-
           
 
 <div class="post-copyright">
@@ -658,13 +669,13 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<spa
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">51k</span>
+    <span title="站点总字数">56k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">46 分钟</span>
+    <span title="站点阅读时长">51 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

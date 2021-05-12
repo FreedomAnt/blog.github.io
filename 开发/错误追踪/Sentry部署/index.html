@@ -31,19 +31,24 @@
     var CONFIG = {"hostname":"freedomant.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。">
+  <meta name="description" content="Sentry是一个实时事件记录和聚合平台。本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sentry部署">
 <meta property="og:url" content="https://freedomant.github.io/%E5%BC%80%E5%8F%91/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="Marco&#39;s blog✍️">
-<meta property="og:description" content="Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。">
+<meta property="og:description" content="Sentry是一个实时事件记录和聚合平台。本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510170805.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512163352.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512165049.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512170506.png">
 <meta property="article:published_time" content="2020-10-31T08:06:01.000Z">
-<meta property="article:modified_time" content="2021-04-30T12:16:09.600Z">
+<meta property="article:modified_time" content="2021-05-12T09:21:46.170Z">
 <meta property="article:author" content="Marco">
 <meta property="article:tag" content="docker">
 <meta property="article:tag" content="sentry">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510170805.png">
 
 
 <link rel="canonical" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/">
@@ -154,7 +159,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">48</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">51</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -164,7 +169,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -224,7 +229,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA-Redis-%E5%AE%B9%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">启动一个 Redis 容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA-Postgres-%E5%AE%B9%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">启动一个 Postgres 容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%94%AF%E4%B8%80%E7%A7%98%E9%92%A5"><span class="nav-number">3.</span> <span class="nav-text">生成唯一秘钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5-Redis%E3%80%81Postgres-%E5%92%8C-Sentry"><span class="nav-number">4.</span> <span class="nav-text">连接 Redis、Postgres 和 Sentry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Sentry-Server%EF%BC%8C%E5%90%8C%E6%97%B6%E6%B7%BB%E5%8A%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="nav-number">5.</span> <span class="nav-text">启动 Sentry Server，同时添加端口映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E4%B8%AD%E9%9C%80%E8%A6%81-Celery"><span class="nav-number">6.</span> <span class="nav-text">默认配置中需要 Celery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BB%E5%BD%95-sentry"><span class="nav-number">7.</span> <span class="nav-text">登录 sentry</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%82%AE%E7%AE%B1%E5%91%8A%E8%AD%A6"><span class="nav-number">7.1.</span> <span class="nav-text">配置邮箱告警</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-vue-%E7%BB%A7%E6%89%BF"><span class="nav-number">7.2.</span> <span class="nav-text">使用 vue 继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A"><span class="nav-number">7.2.1.</span> <span class="nav-text">参数解释</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-sourceMap-%E4%BB%A5%E6%96%B9%E4%BE%BF%E5%AE%9A%E4%BD%8D-bug"><span class="nav-number">7.3.</span> <span class="nav-text">启用 sourceMap 以方便定位 bug</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA-Redis-%E5%AE%B9%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">启动一个 Redis 容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA-Postgres-%E5%AE%B9%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">启动一个 Postgres 容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%94%AF%E4%B8%80%E7%A7%98%E9%92%A5"><span class="nav-number">3.</span> <span class="nav-text">生成唯一秘钥</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5-Redis%E3%80%81Postgres-%E5%92%8C-Sentry"><span class="nav-number">4.</span> <span class="nav-text">连接 Redis、Postgres 和 Sentry</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Sentry-Server%EF%BC%8C%E5%90%8C%E6%97%B6%E6%B7%BB%E5%8A%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="nav-number">5.</span> <span class="nav-text">启动 Sentry Server，同时添加端口映射</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E4%B8%AD%E9%9C%80%E8%A6%81-Celery"><span class="nav-number">6.</span> <span class="nav-text">默认配置中需要 Celery</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%99%BB%E5%BD%95-sentry"><span class="nav-number">7.</span> <span class="nav-text">登录 sentry</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%82%AE%E7%AE%B1%E5%91%8A%E8%AD%A6"><span class="nav-number">7.1.</span> <span class="nav-text">配置邮箱告警</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A"><span class="nav-number">7.1.1.</span> <span class="nav-text">参数解释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-sourceMap-%E4%BB%A5%E6%96%B9%E4%BE%BF%E5%AE%9A%E4%BD%8D-bug"><span class="nav-number">7.2.</span> <span class="nav-text">启用 sourceMap 以方便定位 bug</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -240,7 +245,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -253,7 +258,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">51</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -337,7 +342,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-04-30 20:16:09" itemprop="dateModified" datetime="2021-04-30T20:16:09+08:00">2021-04-30</time>
+        <time title="修改时间：2021-05-12 17:21:46" itemprop="dateModified" datetime="2021-05-12T17:21:46+08:00">2021-05-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -368,14 +373,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.9k</span>
+      <span>5.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -386,24 +391,22 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Sentry 本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
+        <p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dldHNlbnRyeS9zZW50cnk=">Sentry<i class="fa fa-external-link-alt"></i></span>是一个实时事件记录和聚合平台。本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
 <a id="more"></a>
 
-<p>如果你选择了通过 Docker 进行安装，有更加便捷的方式——docker-compose 。在 github 上有一个开源项目用于部署 Sentry，可以直接运行该项目中 <code>./install.sh</code> 将 Sentry 及其依赖都通过 docker 安装。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ git clone https:&#x2F;&#x2F;github.com&#x2F;getsentry&#x2F;onpremise.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="启动一个-Redis-容器"><a href="#启动一个-Redis-容器" class="headerlink" title="启动一个 Redis 容器"></a>启动一个 Redis 容器</h2><p>Start a Redis container</p>
+<p>如果你选择了通过 Docker 进行安装，有更加便捷的方式——docker-compose 。在 github 上有一个开源项目<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dldHNlbnRyeS9vbnByZW1pc2U=">onpremise<i class="fa fa-external-link-alt"></i></span>用于部署 Sentry，可以直接运行该项目中的 <code>./install.sh</code> 将 Sentry 及其依赖都通过 docker 安装。</p>
+<p>我们这里使用常规的 docker 安装，<span class="exturl" data-url="aHR0cHM6Ly9odWIuZG9ja2VyLmNvbS9fL3NlbnRyeQ==">文档地址<i class="fa fa-external-link-alt"></i></span></p>
+<h1 id="启动一个-Redis-容器"><a href="#启动一个-Redis-容器" class="headerlink" title="启动一个 Redis 容器"></a>启动一个 Redis 容器</h1><p>Start a Redis container</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-redis redis<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h2 id="启动一个-Postgres-容器"><a href="#启动一个-Postgres-容器" class="headerlink" title="启动一个 Postgres 容器"></a>启动一个 Postgres 容器</h2><p>Start a Postgres container</p>
+<h1 id="启动一个-Postgres-容器"><a href="#启动一个-Postgres-容器" class="headerlink" title="启动一个 Postgres 容器"></a>启动一个 Postgres 容器</h1><p>Start a Postgres container</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-postgres -e POSTGRES_PASSWORD&#x3D;secret -e POSTGRES_USER&#x3D;sentry postgres<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h2 id="生成唯一秘钥"><a href="#生成唯一秘钥" class="headerlink" title="生成唯一秘钥"></a>生成唯一秘钥</h2><p>生成一个密钥，用于后面所有 sentry 容器之间握手。请记住这串密钥，在后面的 docker 命令中，密钥需要以环境变量形式传入</p>
+<h1 id="生成唯一秘钥"><a href="#生成唯一秘钥" class="headerlink" title="生成唯一秘钥"></a>生成唯一秘钥</h1><p>生成一个密钥，用于后面所有 sentry 容器之间握手。请记住这串密钥，在后面的 docker 命令中，密钥需要以环境变量形式传入</p>
 <p>Generate a new secret key to be shared by all <code>sentry</code> containers. This value will then be used as the <code>SENTRY_SECRET_KEY</code> environment variable.</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run --rm sentry config generate-secret-key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>密钥为<code>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</code></p>
-<h2 id="连接-Redis、Postgres-和-Sentry"><a href="#连接-Redis、Postgres-和-Sentry" class="headerlink" title="连接 Redis、Postgres 和 Sentry"></a>连接 Redis、Postgres 和 Sentry</h2><p>运行后会自动执行初始化操作.</p>
+<h1 id="连接-Redis、Postgres-和-Sentry"><a href="#连接-Redis、Postgres-和-Sentry" class="headerlink" title="连接 Redis、Postgres 和 Sentry"></a>连接 Redis、Postgres 和 Sentry</h1><p>运行后会自动执行初始化操作.</p>
 <p>If this is a new database, you’ll need to run <code>upgrade</code></p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -it --rm -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry upgrade<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -412,26 +415,34 @@
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjMTA5OyYjOTc7JiMxMDU7JiMxMDg7JiMxMTA7JiM5NzsmI3g2ZDsmI3g2NTsmIzY0OyYjMTEzOyYjeDcxOyYjNDY7JiM5OTsmIzExMTsmI3g2ZDs=">&#109;&#97;&#105;&#108;&#110;&#97;&#x6d;&#x65;&#64;&#113;&#x71;&#46;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
-<h2 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h2><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiM1MDsmI3gzNTsmI3gzNTsmIzU2OyYjNTE7JiN4Mzg7JiN4MzQ7JiN4Mzk7JiN4NDA7JiMxMTM7JiN4NzE7JiM0NjsmI3g2MzsmI3g2ZjsmI3g2ZDs=">&#57;&#50;&#x35;&#x35;&#56;&#51;&#x38;&#x34;&#x39;&#x40;&#113;&#x71;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h1 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h1><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h2 id="默认配置中需要-Celery"><a href="#默认配置中需要-Celery" class="headerlink" title="默认配置中需要 Celery"></a>默认配置中需要 Celery</h2><p>因此启动一个 Celery 主节点与执行节点（worker 节点可按需多启几个）：</p>
+<h1 id="默认配置中需要-Celery"><a href="#默认配置中需要-Celery" class="headerlink" title="默认配置中需要 Celery"></a>默认配置中需要 Celery</h1><p>因此启动一个 Celery 主节点与执行节点（worker 节点可按需多启几个）：</p>
 <p>The default config needs a celery beat and celery workers, start as many workers as you need (each with a unique name)</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
 $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h2 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h2><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjeDZkOyYjOTc7JiMxMDU7JiMxMDg7JiN4NmU7JiM5NzsmI3g2ZDsmIzEwMTsmIzY0OyYjeDcxOyYjMTEzOyYjeDJlOyYjeDYzOyYjeDZmOyYjeDZkOw==">&#x6d;&#97;&#105;&#108;&#x6e;&#97;&#x6d;&#101;&#64;&#x71;&#113;&#x2e;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
-<h3 id="配置邮箱告警"><a href="#配置邮箱告警" class="headerlink" title="配置邮箱告警"></a>配置邮箱告警</h3><p><code>$ docker exec -it my-sentry bash</code>进入控制台</p>
-<p><code>$ vi /etc/sentry/config.yml</code></p>
+<h1 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h1><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiN4MzI7JiN4MzU7JiN4MzU7JiN4Mzg7JiM1MTsmI3gzODsmIzUyOyYjeDM5OyYjNjQ7JiN4NzE7JiN4NzE7JiM0NjsmIzk5OyYjMTExOyYjMTA5Ow==">&#57;&#x32;&#x35;&#x35;&#x38;&#51;&#x38;&#52;&#x39;&#64;&#x71;&#x71;&#46;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510170805.png"></p>
+<p>我们可以创建一个 Vue 项目，在 Browser 里面可以选</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512163352.png"></p>
+<h2 id="配置邮箱告警"><a href="#配置邮箱告警" class="headerlink" title="配置邮箱告警"></a>配置邮箱告警</h2><ul>
+<li><p>进入控制台</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>修改配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;sentry&#x2F;config.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>腾讯示例：</p>
 <table>
 <thead>
 <tr>
 <th>配置项</th>
 <th>作用</th>
-<th>腾讯企业邮</th>
+<th>腾讯企业邮箱</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -442,7 +453,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjMTA5OyYjeDcwOyYjeDZjOyYjeDY1OyYjNjQ7JiN4NmQ7JiN4NjE7JiMxMDU7JiMxMDg7JiM0NjsmIzk5OyYjeDZmOyYjMTA5Ow==">&#x65;&#120;&#x61;&#109;&#x70;&#x6c;&#x65;&#64;&#x6d;&#x61;&#105;&#108;&#46;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiN4NmQ7JiMxMTI7JiN4NmM7JiN4NjU7JiM2NDsmIzEwOTsmI3g2MTsmI3g2OTsmI3g2YzsmI3gyZTsmI3g2MzsmIzExMTsmIzEwOTs=">&#101;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#64;&#109;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -462,27 +473,39 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjMTAxOyYjNjQ7JiMxMDk7JiN4NjE7JiMxMDU7JiMxMDg7JiM0NjsmI3g2MzsmIzExMTsmI3g2ZDs=">&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#101;&#64;&#109;&#x61;&#105;&#108;&#46;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjeDZkOyYjeDcwOyYjeDZjOyYjMTAxOyYjNjQ7JiMxMDk7JiM5NzsmIzEwNTsmIzEwODsmIzQ2OyYjeDYzOyYjMTExOyYjMTA5Ow==">&#101;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#64;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
-<p>​ 网易邮箱示例：</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">mail.backend</span><span class="token punctuation">:</span> <span class="token string">"smtp"</span>
+<pre><code>网易邮箱示例：
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">
+<span class="token key atrule">mail.backend</span><span class="token punctuation">:</span> <span class="token string">"smtp"</span>
 <span class="token key atrule">mail.host</span><span class="token punctuation">:</span> <span class="token string">"smtp.126.com"</span>
 <span class="token key atrule">mail.port</span><span class="token punctuation">:</span> <span class="token number">25</span>
-<span class="token key atrule">mail.username</span><span class="token punctuation">:</span> <span class="token string">"XXXX@126.com"</span>
+<span class="token key atrule">mail.username</span><span class="token punctuation">:</span> <span class="token string">"fswuming@126.com"</span>
 <span class="token key atrule">mail.password</span><span class="token punctuation">:</span> <span class="token string">"XXXXX"</span>
 <span class="token key atrule">mail.use-tls</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
-<span class="token key atrule">mail.from</span><span class="token punctuation">:</span> <span class="token string">"XXXX@126.com"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token key atrule">mail.from</span><span class="token punctuation">:</span> <span class="token string">"fswuming@126.com"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">
+## 配置 Vue 项目
 
-<h3 id="使用-vue-继承"><a href="#使用-vue-继承" class="headerlink" title="使用 vue 继承"></a>使用 vue 继承</h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> Sentry <span class="token keyword">from</span> <span class="token string">"@sentry/browser"</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Vue <span class="token keyword">as</span> VueIntegration <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@sentry/integrations"</span><span class="token punctuation">;</span>
-Sentry<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  dsn<span class="token operator">:</span> <span class="token string">"http://d6168c0c5ba947f0b7fafbb288522b0e@127.0.0.1:9000/2"</span><span class="token punctuation">,</span>
-  integrations<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token keyword">new</span> <span class="token class-name">VueIntegration</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> Vue<span class="token punctuation">,</span> attachProps<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+详见[配置文档](https:&#x2F;&#x2F;docs.sentry.io&#x2F;platforms&#x2F;javascript&#x2F;guides&#x2F;vue&#x2F;)
 
-<h4 id="参数解释"><a href="#参数解释" class="headerlink" title="参数解释"></a>参数解释</h4><ol>
+&#96;&#96;&#96;javascript
+import Vue from &quot;vue&quot;;
+import * as Sentry from &quot;@sentry&#x2F;browser&quot;;
+import &#123; Vue as VueIntegration &#125; from &quot;@sentry&#x2F;integrations&quot;;
+Sentry.init(&#123;
+  dsn: &quot;http:&#x2F;&#x2F;d6168c0c5ba947f0b7fafbb288522b0e@127.0.0.1:9000&#x2F;2&quot;,
+  integrations: [new VueIntegration(&#123; Vue, attachProps: true &#125;)],
+&#125;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+</li>
+</ul>
+<p>这里的 dsn 可以在该项目的<code>设置 =&gt; Client Keys (DSN)</code>客户端密钥里面找到</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512165049.png"></p>
+<h3 id="参数解释"><a href="#参数解释" class="headerlink" title="参数解释"></a>参数解释</h3><ol>
 <li><p>传递 Vue 是可选的，如果不传递，则 window.Vue 必须存在。</p>
 </li>
 <li><p>传递 attachProps 是可选的，默认 true。如果将其设置为 false，Sentry 将禁止发送所有 Vue 组件的道具进行记录。</p>
@@ -494,7 +517,9 @@ Sentry<span class="token punctuation">.</span><span class="token function">init<
 <p>Vue 错误处理<br>请注意，如果启用此集成，则 Vue 不会在 logError 内部调用它。这意味着在 Vue 渲染器中发生的错误将不会显示在开发人员控制台中。如果要保留此功能，请确保通过该 logErrors: true 选项。</p>
 </blockquote>
 <ol start="4">
-<li>跟踪 Vue 应用程序的最基本配置（仅跟踪顶级组件）如下所示</li>
+<li><p>跟踪 Vue 应用程序的最基本配置（仅跟踪顶级组件）如下所示</p>
+<p><code>@sentry/tracing</code>监控性能，<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnNlbnRyeS5pby9wbGF0Zm9ybXMvamF2YXNjcmlwdC9ndWlkZXMvdnVlL3BlcmZvcm1hbmNlLyNjb25maWd1cmUtdGhlLXNhbXBsZS1yYXRl">配置采样率<i class="fa fa-external-link-alt"></i></span>，</p>
+</li>
 </ol>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> Sentry <span class="token keyword">from</span> <span class="token string">"@sentry/browser"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Vue <span class="token keyword">as</span> VueIntegration <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@sentry/integrations"</span><span class="token punctuation">;</span>
@@ -521,7 +546,8 @@ Sentry<span class="token punctuation">.</span><span class="token function">init<
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="启用-sourceMap-以方便定位-bug"><a href="#启用-sourceMap-以方便定位-bug" class="headerlink" title="启用 sourceMap 以方便定位 bug"></a>启用 sourceMap 以方便定位 bug</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install --save-dev @sentry&#x2F;webpack-plugin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="启用-sourceMap-以方便定位-bug"><a href="#启用-sourceMap-以方便定位-bug" class="headerlink" title="启用 sourceMap 以方便定位 bug"></a>启用 sourceMap 以方便定位 bug</h2><p><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnNlbnRyeS5pby9wbGF0Zm9ybXMvamF2YXNjcmlwdC9ndWlkZXMvdnVlL3NvdXJjZW1hcHMv">配置 sourceMap 文档地址<i class="fa fa-external-link-alt"></i></span></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install --save-dev @sentry&#x2F;webpack-plugin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> SentryWebpackPlugin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"@sentry/webpack-plugin"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -558,7 +584,7 @@ module<span class="token punctuation">.</span>exports <span class="token operato
     <span class="token punctuation">]</span>
   <span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><code>.sentryclirc</code>配置文件如下：<br><code>token</code>生成: 登陆 sentry 控制台页面，点击左上角头像，再点击<code>API keys-&gt;授权令牌</code></p>
+<p><code>.sentryclirc</code>配置文件<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnNlbnRyeS5pby9wcm9kdWN0L2NsaS9jb25maWd1cmF0aW9uLw==">详见文档<i class="fa fa-external-link-alt"></i></span>如下：</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">[</span>defaults<span class="token punctuation">]</span>
 <span class="token comment">### 你的域名</span>
 url='http<span class="token punctuation">:</span>//127.0.0.1<span class="token punctuation">:</span>9000'
@@ -568,8 +594,10 @@ org=sentry
 project=vue
 <span class="token comment">### 步骤1创建的</span>
 <span class="token punctuation">[</span>auth<span class="token punctuation">]</span>
-token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+token=1ef3e7b88d614ca9aa155fe693b5a68eb73fa88aacd941cdb9cd0a86091c0894<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<p>其中<code>token</code>生成方式: 登陆 sentry 控制台页面，点击左上角头像，再点击<code>API keys-&gt;授权令牌</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512170506.png"></p>
 <p><strong>提示：docker 生成版本较低，建议 github 上下载或者直接用线上的 Saas 做。</strong></p>
 
     </div>
@@ -579,24 +607,6 @@ token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-number
     
 
     <footer class="post-footer">
-          <div class="reward-container">
-  <div>Buy me a coffee ☕</div>
-  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
-    赞赏
-  </button>
-  <div class="post-reward">
-      <div>
-        <img src="/images/wechatpay.jpg" alt="Marco 微信">
-        <span>微信</span>
-      </div>
-      <div>
-        <img src="/images/alipay.jpg" alt="Marco 支付宝">
-        <span>支付宝</span>
-      </div>
-
-  </div>
-</div>
-
           
 
 <div class="post-copyright">
@@ -687,13 +697,13 @@ token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<span aria-hidden="true" class="line-number
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">51k</span>
+    <span title="站点总字数">56k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">46 分钟</span>
+    <span title="站点阅读时长">51 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

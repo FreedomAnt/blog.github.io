@@ -39,7 +39,7 @@
 <meta property="og:description" content="记录一次换行符引发的问题。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-16T01:36:52.000Z">
-<meta property="article:modified_time" content="2021-04-30T12:15:31.197Z">
+<meta property="article:modified_time" content="2021-05-12T01:03:47.950Z">
 <meta property="article:author" content="Marco">
 <meta property="article:tag" content="autocrlf">
 <meta property="article:tag" content="crlf">
@@ -155,7 +155,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">48</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">51</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -165,7 +165,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -225,7 +225,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#core-autocrlf"><span class="nav-number">2.1.</span> <span class="nav-text">core.autocrlf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gitattributes"><span class="nav-number">2.2.</span> <span class="nav-text">.gitattributes</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#text"><span class="nav-number">2.2.1.</span> <span class="nav-text">text</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eol"><span class="nav-number">2.2.2.</span> <span class="nav-text">eol</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#editorconfig"><span class="nav-number">2.3.</span> <span class="nav-text">editorconfig</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#core-autocrlf"><span class="nav-number">2.1.</span> <span class="nav-text">core.autocrlf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitattributes"><span class="nav-number">2.2.</span> <span class="nav-text">.gitattributes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#text"><span class="nav-number">2.2.1.</span> <span class="nav-text">text</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eol"><span class="nav-number">2.2.2.</span> <span class="nav-text">eol</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#editorconfig"><span class="nav-number">2.3.</span> <span class="nav-text">editorconfig</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -241,7 +241,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -254,7 +254,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">51</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -338,7 +338,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-04-30 20:15:31" itemprop="dateModified" datetime="2021-04-30T20:15:31+08:00">2021-04-30</time>
+        <time title="修改时间：2021-05-12 09:03:47" itemprop="dateModified" datetime="2021-05-12T09:03:47+08:00">2021-05-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -390,14 +390,14 @@
         <p>记录一次换行符引发的问题。</p>
 <a id="more"></a>
 
-<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>使用 git 提交的时候报错提示如下：<br>warning: LF will be replaced by CRLF in js/utils.js.<br>The file will have its original line endings in your working directory</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ul>
+<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>使用 git 提交的时候报错提示如下：<br>warning: LF will be replaced by CRLF in js/utils.js.<br>The file will have its original line endings in your working directory</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><ul>
 <li>CR (Carriage Return) 回车</li>
 <li>LR (Line Feed) 换行</li>
 <li>CRLF (Carriage Return Line Feed) 回车换行</li>
 </ul>
 <p>早期的 MAC 系统使用 CR 进行换行，现在统一成 LF，Uninx 系统都是使用的 LF 换行，而 Windows 系统使用的 CRLF 当作换行。所以在多人协同开发的时候会造成兼容性问题。</p>
-<h3 id="core-autocrlf"><a href="#core-autocrlf" class="headerlink" title="core.autocrlf"></a>core.autocrlf</h3><p>git 提供了一个<code>core.autocrlf</code>的配置，可以自动完成换行的转换，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="core-autocrlf"><a href="#core-autocrlf" class="headerlink" title="core.autocrlf"></a>core.autocrlf</h2><p>git 提供了一个<code>core.autocrlf</code>的配置，可以自动完成换行的转换，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span></p>
 <ul>
 <li>true<br>自动完成转换，在 push 的时候自动将换行符从 CRLF 换成 LF，在 pull 的时候将 LF 换成 CRLF。</li>
 <li>input<br>push 转换，pull 不转换</li>
@@ -407,19 +407,19 @@
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> config --global core.autocrlf <span class="token boolean">false</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这样设置之后有些可能有 LF 和 CRLF 混乱的问题，即出现 CRLF 和 LF 共同出现的情况。</p>
-<h3 id="gitattributes"><a href="#gitattributes" class="headerlink" title=".gitattributes"></a>.gitattributes</h3><p>git 提供一个<code>.gitattributes</code>文件用于配置该项目一些属性配置，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdGF0dHJpYnV0ZXM=">gitattributes<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="gitattributes"><a href="#gitattributes" class="headerlink" title=".gitattributes"></a>.gitattributes</h2><p>git 提供一个<code>.gitattributes</code>文件用于配置该项目一些属性配置，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdGF0dHJpYnV0ZXM=">gitattributes<i class="fa fa-external-link-alt"></i></span></p>
 <p>每行的格式为<code>pattern attr1 attr2 ...</code><br>pattern 配置</p>
 <pre class="line-numbers language-none"><code class="language-none">* 匹配所有文件
 *.txt 匹配所有 txt 文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h4 id="text"><a href="#text" class="headerlink" title="text"></a>text</h4><p>其中 text 属性可以启用并控制行尾规范化</p>
+<h3 id="text"><a href="#text" class="headerlink" title="text"></a>text</h3><p>其中 text 属性可以启用并控制行尾规范化</p>
 <ul>
 <li>text<br>在路径上设置属性可启用行尾规范化并将路径标记为文本文件。行尾转换不会猜测内容类型。</li>
 <li>-text<br>Git 在签入或签出时不要尝试任何行尾转换。</li>
 <li>auto<br>标记该路径以进行自动行尾转换。如果 Git 决定内容为文本，则其行尾在签入时转换为 LF。使用 CRLF 提交文件后，不会进行任何转换。</li>
 <li>未指定<br>如果 text 未指定该属性，则 Git 使用 core.autocrlf 配置变量来确定是否应转换文件。</li>
 </ul>
-<h4 id="eol"><a href="#eol" class="headerlink" title="eol"></a>eol</h4><p>属性设置在工作目录中使用的特定行尾样式。</p>
+<h3 id="eol"><a href="#eol" class="headerlink" title="eol"></a>eol</h3><p>属性设置在工作目录中使用的特定行尾样式。</p>
 <ul>
 <li>crlf<br>此设置强制 Git 在签入时对此文件的行尾进行规范化，并在签出文件时将其转换为 CRLF。</li>
 <li>lf<br>此设置强制 Git 在签入时将行尾标准化为 LF，并在签出文件时阻止转换为 CRLF。</li>
@@ -427,7 +427,7 @@
 <p>可设置如下</p>
 <pre class="line-numbers language-none"><code class="language-none">* text eol&#x3D;lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="editorconfig"><a href="#editorconfig" class="headerlink" title="editorconfig"></a>editorconfig</h3><p>也可以设置一个 <span class="exturl" data-url="aHR0cHM6Ly9lZGl0b3Jjb25maWcub3JnLw==">editorconfig<i class="fa fa-external-link-alt"></i></span> 来解决行尾转换的问题。这样在保存的时候自动规范化文件的内容。<br>editorconfig 的配置如下：</p>
+<h2 id="editorconfig"><a href="#editorconfig" class="headerlink" title="editorconfig"></a>editorconfig</h2><p>也可以设置一个 <span class="exturl" data-url="aHR0cHM6Ly9lZGl0b3Jjb25maWcub3JnLw==">editorconfig<i class="fa fa-external-link-alt"></i></span> 来解决行尾转换的问题。这样在保存的时候自动规范化文件的内容。<br>editorconfig 的配置如下：</p>
 <pre class="line-numbers language-none"><code class="language-none">end_of_line &#x3D; lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
     </div>
@@ -437,24 +437,6 @@
     
 
     <footer class="post-footer">
-          <div class="reward-container">
-  <div>Buy me a coffee ☕</div>
-  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
-    赞赏
-  </button>
-  <div class="post-reward">
-      <div>
-        <img src="/images/wechatpay.jpg" alt="Marco 微信">
-        <span>微信</span>
-      </div>
-      <div>
-        <img src="/images/alipay.jpg" alt="Marco 支付宝">
-        <span>支付宝</span>
-      </div>
-
-  </div>
-</div>
-
           
 
 <div class="post-copyright">
@@ -549,13 +531,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">51k</span>
+    <span title="站点总字数">56k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">46 分钟</span>
+    <span title="站点阅读时长">51 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
