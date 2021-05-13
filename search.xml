@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Android 7.0 以上网络安全配置</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android-7-0-%E4%BB%A5%E4%B8%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>开发中遇到 Android 模拟器跑项目一直请求不到网络链接。Android 版本 9.0 API28</p>
+<span id="more"></span>
+
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>在 Android 7.0 以上的系统中，Google 引入了一种名为网络安全配置（Network Security Configuration）的功能。<br>全面禁止了非安全的加密，如果要使用非加密的链接，需要配置 network_security_config.xml</p>
+<ol>
+<li>在 res/xml 下面新建一个 xml 文件，取名为 network_security_config.xml<br>配置如下<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>network-security-config</span><span class="token punctuation">></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>base-config</span> <span class="token attr-name">cleartextTrafficPermitted</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>network-security-config</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>在 res 下面的 AndroidManifest.xml 中的 application 标签中 添加<code>android:networkSecurityConfig=&quot;@xml/network_security_config&quot;</code></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
+        <tag>network</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Android上canvas不显示</title>
     <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android%E4%B8%8Acanvas%E4%B8%8D%E6%98%BE%E7%A4%BA/</url>
     <content><![CDATA[<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>这次遇到的问题是 echarts 的图形在 android 模拟器中不显示，Android 版本 9.0 API28</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>Android 在 API14 以上默认启用硬件加速，如果启用硬件加速导致了视图的绘制，Android 允许您在多个级别选择是启用还是停用硬件加速。详见<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuYW5kcm9pZC5nb29nbGUuY24vZ3VpZGUvdG9waWNzL2dyYXBoaWNzL2hhcmR3YXJlLWFjY2VsP2hsPXpoLWNuI2NvbnRyb2xsaW5n">控制硬件加速<i class="fa fa-external-link-alt"></i></span><br>可以从以下四个级别控制硬件加速</p>
 <ul>
 <li>应用 Application<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>application</span> <span class="token attr-name"><span class="token namespace">android:</span>hardwareAccelerated</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 <li>Activity<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activity</span> <span class="token attr-name"><span class="token namespace">android:</span>hardwareAccelerated</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>false<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 <li>窗口 Window<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setFlags</span><span class="token punctuation">(</span>
-      <span class="token class-name">WindowManager</span><span class="token punctuation">.</span><span class="token class-name">LayoutParams</span><span class="token punctuation">.</span>FLAG_HARDWARE_ACCELERATED<span class="token punctuation">,</span>
-      <span class="token class-name">WindowManager</span><span class="token punctuation">.</span><span class="token class-name">LayoutParams</span><span class="token punctuation">.</span>FLAG_HARDWARE_ACCELERATED<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
-<li>视图 View<pre class="line-numbers language-java" data-language="java"><code class="language-java">myView<span class="token punctuation">.</span><span class="token function">setLayerType</span><span class="token punctuation">(</span><span class="token class-name">View</span><span class="token punctuation">.</span>LAYER_TYPE_SOFTWARE<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-</li>
+      <span class="token class-name">WindowManager<span class="token punctuation">.</span>LayoutParams</span><span class="token punctuation">.</span>FLAG_HARDWARE_ACCELERATED<span class="token punctuation">,</span>
+      <span class="token class-name">WindowManager<span class="token punctuation">.</span>LayoutParams</span><span class="token punctuation">.</span>FLAG_HARDWARE_ACCELERATED<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+<li>视图 View<pre class="line-numbers language-java" data-language="java"><code class="language-java">myView<span class="token punctuation">.</span><span class="token function">setLayerType</span><span class="token punctuation">(</span><span class="token class-name">View</span><span class="token punctuation">.</span>LAYER_TYPE_SOFTWARE<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ul>
 <p>在这四个层次中，应用和 Activity 是可以选择打开或者关闭加速的，窗口只能打开加速，视图层只能关闭加速。<br>关闭硬件加速后，canvas 可以显示。</p>
 ]]></content>
@@ -32,7 +54,7 @@
     <title>Sentry部署</title>
     <url>/%E5%BC%80%E5%8F%91/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dldHNlbnRyeS9zZW50cnk=">Sentry<i class="fa fa-external-link-alt"></i></span>是一个实时事件记录和聚合平台。本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>如果你选择了通过 Docker 进行安装，有更加便捷的方式——docker-compose 。在 github 上有一个开源项目<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dldHNlbnRyeS9vbnByZW1pc2U=">onpremise<i class="fa fa-external-link-alt"></i></span>用于部署 Sentry，可以直接运行该项目中的 <code>./install.sh</code> 将 Sentry 及其依赖都通过 docker 安装。</p>
 <p>我们这里使用常规的 docker 安装，<span class="exturl" data-url="aHR0cHM6Ly9odWIuZG9ja2VyLmNvbS9fL3NlbnRyeQ==">文档地址<i class="fa fa-external-link-alt"></i></span></p>
@@ -55,7 +77,7 @@
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiM1MDsmI3gzNTsmI3gzNTsmIzU2OyYjNTE7JiN4Mzg7JiN4MzQ7JiN4Mzk7JiN4NDA7JiMxMTM7JiN4NzE7JiM0NjsmI3g2MzsmI3g2ZjsmI3g2ZDs=">&#57;&#50;&#x35;&#x35;&#56;&#51;&#x38;&#x34;&#x39;&#x40;&#113;&#x71;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjeDM5OyYjNTA7JiM1MzsmI3gzNTsmIzU2OyYjNTE7JiM1NjsmIzUyOyYjNTc7JiN4NDA7JiN4NzE7JiMxMTM7JiN4MmU7JiN4NjM7JiN4NmY7JiMxMDk7">&#x39;&#50;&#53;&#x35;&#56;&#51;&#56;&#52;&#57;&#x40;&#x71;&#113;&#x2e;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h1 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h1><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -65,14 +87,13 @@
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
 $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h1 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h1><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiN4MzI7JiN4MzU7JiN4MzU7JiN4Mzg7JiM1MTsmI3gzODsmIzUyOyYjeDM5OyYjNjQ7JiN4NzE7JiN4NzE7JiM0NjsmIzk5OyYjMTExOyYjMTA5Ow==">&#57;&#x32;&#x35;&#x35;&#x38;&#51;&#x38;&#52;&#x39;&#64;&#x71;&#x71;&#46;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h1 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h1><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiN4MzI7JiN4MzU7JiM1MzsmIzU2OyYjeDMzOyYjNTY7JiN4MzQ7JiM1NzsmIzY0OyYjeDcxOyYjeDcxOyYjNDY7JiN4NjM7JiN4NmY7JiMxMDk7">&#57;&#x32;&#x35;&#53;&#56;&#x33;&#56;&#x34;&#57;&#64;&#x71;&#x71;&#46;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510170805.png"></p>
 <p>我们可以创建一个 Vue 项目，在 Browser 里面可以选</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512163352.png"></p>
 <h2 id="配置邮箱告警"><a href="#配置邮箱告警" class="headerlink" title="配置邮箱告警"></a>配置邮箱告警</h2><ul>
 <li><p>进入控制台</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 <li><p>修改配置文件</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;sentry&#x2F;config.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -93,7 +114,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiN4NmQ7JiMxMTI7JiN4NmM7JiN4NjU7JiM2NDsmIzEwOTsmI3g2MTsmI3g2OTsmI3g2YzsmI3gyZTsmI3g2MzsmIzExMTsmIzEwOTs=">&#101;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#64;&#109;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjeDYxOyYjMTA5OyYjeDcwOyYjMTA4OyYjMTAxOyYjeDQwOyYjMTA5OyYjeDYxOyYjeDY5OyYjMTA4OyYjNDY7JiN4NjM7JiN4NmY7JiMxMDk7">&#101;&#120;&#x61;&#109;&#x70;&#108;&#101;&#x40;&#109;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -113,7 +134,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjeDYxOyYjeDZkOyYjeDcwOyYjeDZjOyYjMTAxOyYjNjQ7JiMxMDk7JiM5NzsmIzEwNTsmIzEwODsmIzQ2OyYjeDYzOyYjMTExOyYjMTA5Ow==">&#101;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#64;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjOTc7JiMxMDk7JiN4NzA7JiMxMDg7JiN4NjU7JiM2NDsmIzEwOTsmIzk3OyYjMTA1OyYjMTA4OyYjeDJlOyYjOTk7JiN4NmY7JiMxMDk7">&#101;&#120;&#97;&#109;&#x70;&#108;&#x65;&#64;&#109;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <pre><code>网易邮箱示例：
@@ -126,7 +147,8 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <span class="token key atrule">mail.password</span><span class="token punctuation">:</span> <span class="token string">"XXXXX"</span>
 <span class="token key atrule">mail.use-tls</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
 <span class="token key atrule">mail.from</span><span class="token punctuation">:</span> <span class="token string">"fswuming@126.com"</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <pre class="line-numbers language-none"><code class="language-none">
 ## 配置 Vue 项目
 
@@ -139,9 +161,7 @@ import &#123; Vue as VueIntegration &#125; from &quot;@sentry&#x2F;integrations&
 Sentry.init(&#123;
   dsn: &quot;http:&#x2F;&#x2F;d6168c0c5ba947f0b7fafbb288522b0e@127.0.0.1:9000&#x2F;2&quot;,
   integrations: [new VueIntegration(&#123; Vue, attachProps: true &#125;)],
-&#125;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-</li>
+&#125;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ul>
 <p>这里的 dsn 可以在该项目的<code>设置 =&gt; Client Keys (DSN)</code>客户端密钥里面找到</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512165049.png"></p>
@@ -250,27 +270,87 @@ token=1ef3e7b88d614ca9aa155fe693b5a68eb73fa88aacd941cdb9cd0a86091c0894<span aria
       </tags>
   </entry>
   <entry>
-    <title>Android 7.0 以上网络安全配置</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android-7-0-%E4%BB%A5%E4%B8%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>开发中遇到 Android 模拟器跑项目一直请求不到网络链接。Android 版本 9.0 API28</p>
-<a id="more"></a>
+    <title>chrome插件简易入门</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/chrome%E6%8F%92%E4%BB%B6%E7%AE%80%E6%98%93%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<p>项目上需要统计市面上的一些电视型号信息，想到可以用 chrome 插件来做，这里记录一下简易插件的实现过程。</p>
+<span id="more"></span>
 
-<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>在 Android 7.0 以上的系统中，Google 引入了一种名为网络安全配置（Network Security Configuration）的功能。<br>全面禁止了非安全的加密，如果要使用非加密的链接，需要配置 network_security_config.xml</p>
-<ol>
-<li>在 res/xml 下面新建一个 xml 文件，取名为 network_security_config.xml<br>配置如下<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>network-security-config</span><span class="token punctuation">></span></span>
- <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>base-config</span> <span class="token attr-name">cleartextTrafficPermitted</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>network-security-config</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li>在 res 下面的 AndroidManifest.xml 中的 application 标签中 添加<code>android:networkSecurityConfig=&quot;@xml/network_security_config&quot;</code></li>
-</ol>
+<h1 id="manifest-json"><a href="#manifest-json" class="headerlink" title="manifest.json"></a>manifest.json</h1><p>主要文件 manifest.json 包含了插件一些基础配置，代码如下：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"manifest_version"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"GetAndroidTVList"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"1.0.0"</span><span class="token punctuation">,</span>
+  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
+  <span class="token property">"icons"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"16"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
+    <span class="token property">"48"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
+    <span class="token property">"128"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"browser_action"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"default_icon"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
+    <span class="token property">"default_title"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
+    <span class="token property">"default_popup"</span><span class="token operator">:</span> <span class="token string">"popup.html"</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"background"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"background.js"</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"permissions"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"contextMenus"</span><span class="token punctuation">,</span> <span class="token string">"notifications"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"content_scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span>
+      <span class="token property">"matches"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"http://detail.zol.com.cn/digital_tv_advSearch/*"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"js"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"content-script.js"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"run_at"</span><span class="token operator">:</span> <span class="token string">"document_end"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"homepage_url"</span><span class="token operator">:</span> <span class="token string">"https://xxxxx/"</span><span class="token punctuation">,</span>
+  <span class="token property">"options_page"</span><span class="token operator">:</span> <span class="token string">"options.html"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里我们使用的 v2 版本，现在 v3 版本也可以用了，<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuY2hyb21lLmNvbS9kb2NzL2V4dGVuc2lvbnMvbXYzL2dldHN0YXJ0ZWQv">地址<i class="fa fa-external-link-alt"></i></span></p>
+<p>主要介绍几个常用的属性，</p>
+<ul>
+<li>browser_action：浏览器右上角图标设置</li>
+<li>background：后台常驻 script</li>
+<li>permissions：此插件用到的浏览器的权限，我们这里用到了右键菜单<code>contextMenus</code>和通知<code>notifications</code></li>
+<li>content_scripts：<strong>需要直接注入页面的 js</strong><ul>
+<li>matches：匹配地址</li>
+<li>js：待注入的 js</li>
+<li>run_at：注入的时间，可选 document_start、document_end、document_idle</li>
+</ul>
+</li>
+<li>homepage_url：扩展的主页 url</li>
+<li>options_page：插件选项页</li>
+</ul>
+<p>这里贴一下其他文件的示例代码</p>
+<h1 id="background-js"><a href="#background-js" class="headerlink" title="background.js"></a>background.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js">chrome<span class="token punctuation">.</span>contextMenus<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  title<span class="token operator">:</span> <span class="token string">"添加TV数据"</span><span class="token punctuation">,</span>
+  id<span class="token operator">:</span> <span class="token string">"GetTV"</span><span class="token punctuation">,</span>
+  <span class="token function-variable function">onclick</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    chrome<span class="token punctuation">.</span>notifications<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+      type<span class="token operator">:</span> <span class="token string">"basic"</span><span class="token punctuation">,</span>
+      iconUrl<span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
+      title<span class="token operator">:</span> <span class="token string">"这是标题"</span><span class="token punctuation">,</span>
+      message<span class="token operator">:</span> <span class="token string">"您刚才点击了自定义右键菜单！"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="content-script-js"><a href="#content-script-js" class="headerlink" title="content-script.js"></a>content-script.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> l <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+<span class="token keyword">var</span> str <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  str <span class="token operator">+=</span>
+    document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+      <span class="token punctuation">.</span>textContent<span class="token punctuation">;</span>
+  str <span class="token operator">+=</span> <span class="token string">"、"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这样就实现了一个简易的获取 androidTV 的名称的 chrome 插件，名称打印到 console 的。</p>
+<h1 id="安装扩展"><a href="#安装扩展" class="headerlink" title="安装扩展"></a>安装扩展</h1><p>这里我们打开 chrome 浏览器输入<code>chrome://extensions/</code>，点击页面右上角打开<code>开发者模式</code>，选择左上角<code>加载已解压的扩展程序</code>，选中我们的测试插件即可。</p>
 ]]></content>
       <categories>
-        <category>Bug解决</category>
-        <category>Android</category>
+        <category>工作笔记</category>
       </categories>
       <tags>
-        <tag>android</tag>
-        <tag>network</tag>
+        <tag>chromeExtension</tag>
       </tags>
   </entry>
   <entry>
@@ -283,7 +363,7 @@ token=1ef3e7b88d614ca9aa155fe693b5a68eb73fa88aacd941cdb9cd0a86091c0894<span aria
 <li><strong>运行 ssh-agent 以加载私钥。</strong></li>
 <li><strong>将公共密钥复制到您想要访问的服务器上（通常在 <code>~/.ssh/authorized_keys</code>中），或者在访问私有 GitLab 存储库时将其添加为部署密钥。</strong></li>
 </ol>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="配置部署服务器"><a href="#配置部署服务器" class="headerlink" title="配置部署服务器"></a>配置部署服务器</h1><p>由于 docker 启动的 centos 不能使用 systemctl，包括安装 server 命令都不行，网上有解决方法如下：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd -p 10022:22 --name centos8 --privileged&#x3D;true centos &#x2F;sbin&#x2F;init<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -458,94 +538,10 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<span ar
       </tags>
   </entry>
   <entry>
-    <title>chrome插件简易入门</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/chrome%E6%8F%92%E4%BB%B6%E7%AE%80%E6%98%93%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<p>项目上需要统计市面上的一些电视型号信息，想到可以用 chrome 插件来做，这里记录一下简易插件的实现过程。</p>
-<a id="more"></a>
-
-<h1 id="manifest-json"><a href="#manifest-json" class="headerlink" title="manifest.json"></a>manifest.json</h1><p>主要文件 manifest.json 包含了插件一些基础配置，代码如下：</p>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-  <span class="token property">"manifest_version"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"GetAndroidTVList"</span><span class="token punctuation">,</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"1.0.0"</span><span class="token punctuation">,</span>
-  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
-  <span class="token property">"icons"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"16"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-    <span class="token property">"48"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-    <span class="token property">"128"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"browser_action"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"default_icon"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-    <span class="token property">"default_title"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
-    <span class="token property">"default_popup"</span><span class="token operator">:</span> <span class="token string">"popup.html"</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"background"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"background.js"</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"permissions"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"contextMenus"</span><span class="token punctuation">,</span> <span class="token string">"notifications"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"content_scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">&#123;</span>
-      <span class="token property">"matches"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"http://detail.zol.com.cn/digital_tv_advSearch/*"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token property">"js"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"content-script.js"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token property">"run_at"</span><span class="token operator">:</span> <span class="token string">"document_end"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"homepage_url"</span><span class="token operator">:</span> <span class="token string">"https://xxxxx/"</span><span class="token punctuation">,</span>
-  <span class="token property">"options_page"</span><span class="token operator">:</span> <span class="token string">"options.html"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里我们使用的 v2 版本，现在 v3 版本也可以用了，<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuY2hyb21lLmNvbS9kb2NzL2V4dGVuc2lvbnMvbXYzL2dldHN0YXJ0ZWQv">地址<i class="fa fa-external-link-alt"></i></span></p>
-<p>主要介绍几个常用的属性，</p>
-<ul>
-<li>browser_action：浏览器右上角图标设置</li>
-<li>background：后台常驻 script</li>
-<li>permissions：此插件用到的浏览器的权限，我们这里用到了右键菜单<code>contextMenus</code>和通知<code>notifications</code></li>
-<li>content_scripts：<strong>需要直接注入页面的 js</strong><ul>
-<li>matches：匹配地址</li>
-<li>js：待注入的 js</li>
-<li>run_at：注入的时间，可选 document_start、document_end、document_idle</li>
-</ul>
-</li>
-<li>homepage_url：扩展的主页 url</li>
-<li>options_page：插件选项页</li>
-</ul>
-<p>这里贴一下其他文件的示例代码</p>
-<h1 id="background-js"><a href="#background-js" class="headerlink" title="background.js"></a>background.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js">chrome<span class="token punctuation">.</span>contextMenus<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  title<span class="token operator">:</span> <span class="token string">"添加TV数据"</span><span class="token punctuation">,</span>
-  id<span class="token operator">:</span> <span class="token string">"GetTV"</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">onclick</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    chrome<span class="token punctuation">.</span>notifications<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
-      type<span class="token operator">:</span> <span class="token string">"basic"</span><span class="token punctuation">,</span>
-      iconUrl<span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-      title<span class="token operator">:</span> <span class="token string">"这是标题"</span><span class="token punctuation">,</span>
-      message<span class="token operator">:</span> <span class="token string">"您刚才点击了自定义右键菜单！"</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="content-script-js"><a href="#content-script-js" class="headerlink" title="content-script.js"></a>content-script.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> l <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-<span class="token keyword">var</span> str <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  str <span class="token operator">+=</span>
-    document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-      <span class="token punctuation">.</span>textContent<span class="token punctuation">;</span>
-  str <span class="token operator">+=</span> <span class="token string">"、"</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这样就实现了一个简易的获取 androidTV 的名称的 chrome 插件，名称打印到 console 的。</p>
-<h1 id="安装扩展"><a href="#安装扩展" class="headerlink" title="安装扩展"></a>安装扩展</h1><p>这里我们打开 chrome 浏览器输入<code>chrome://extensions/</code>，点击页面右上角打开<code>开发者模式</code>，选择左上角<code>加载已解压的扩展程序</code>，选中我们的测试插件即可。</p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>chromeExtension</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>docker+gitlab+jenkins+ssh实现代码自动构建部署</title>
     <url>/%E5%BC%80%E5%8F%91/Devops/docker-gitlab-jenkins-ssh%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h1 id="安装-gitlab"><a href="#安装-gitlab" class="headerlink" title="安装 gitlab"></a>安装 gitlab</h1><p>这里我是 docker 安装的，由于电脑板载内存只有 8g，就没装 gitlab 的 docker 镜像 gitlab/gitlab-ce，换了一个汉化的社区版，都可以实现自动构建部署。<br>首先，docker 安装 gitlab，这里 gitlab 端口映射为 10080</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 10080:80 --name gitlab twang2218&#x2F;gitlab-ce-zh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -570,8 +566,7 @@ $ docker run -d -p 10443:443 -p 10080:80 -p 10822:22 --name gitlab -v d:&#x2F;do
 <pre class="line-numbers language-none"><code class="language-none">user &#x3D; User.find(1)或者user &#x3D; User.find_by(email: &#39;admin@example.com&#39;)
 user.password &#x3D; 12345678
 user.password_confirmation &#x3D; 12345678
-user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
+user.save!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
 <li><p>如果是汉化版</p>
 <p>可以直接设置 root 密码。这里我们修改为 12345678</p>
 </li>
@@ -713,7 +708,7 @@ $ apt-get install vim -y<span aria-hidden="true" class="line-numbers-rows"><span
     <title>git push 报错解决</title>
     <url>/Bug%E8%A7%A3%E5%86%B3/Git/git-push-%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
     <content><![CDATA[<p>记一次 <code>git push</code> 的报错解决。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>用 hexo 写博客提交的时候报错了 fatal: TaskCanceledException encountered.，有时候是这个 fatal: HttpRequestException encountered.<br>使用网上的方式均不管用，下载了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9HaXQtQ3JlZGVudGlhbC1NYW5hZ2VyLWZvci1XaW5kb3dzL3JlbGVhc2Vz">凭证管理<i class="fa fa-external-link-alt"></i></span>安装完成，也下载了新版本的 git 并更新。用以下命令行的方式也试过。</p>
 <p>配置 credential.helper 为 manager。</p>
@@ -769,7 +764,7 @@ $ git config --system --unset credential.helper<span aria-hidden="true" class="l
     <title>github图片加载不出来问题解决</title>
     <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/github%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E4%B8%8D%E5%87%BA%E6%9D%A5%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
     <content><![CDATA[<p>最近 github 上图片一直加载不出来，以前是用的 Chrome 插件 Ghelper，最近 Ghelper 开启之后 github 无法访问，这里用了另外一种解决方法。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>github 上面图片加载有问题。</p>
 <h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>这里我们设置域名指定 ip，以 Windwos 系统为例，文件位置在<code>C:\Windows\System32\drivers\etc</code>，打开之后添加以下代码</p>
@@ -805,182 +800,89 @@ $ git config --system --unset credential.helper<span aria-hidden="true" class="l
       </tags>
   </entry>
   <entry>
-    <title>rocket.chat开源聊天服务器搭建</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/rocket-chat%E5%BC%80%E6%BA%90%E8%81%8A%E5%A4%A9%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>近日使用 Rocket.Chat 搭建了一个聊天服务器，踩坑较多，写下以备后期查阅。</p>
-<a id="more"></a>
+    <title>hexo+github-pages搭建个人博客</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
+<span id="more"></span>
 
-<h1 id="启动一个数据库"><a href="#启动一个数据库" class="headerlink" title="启动一个数据库"></a>启动一个数据库</h1><ol>
-<li><p>启动一个 mongo 实例并初始化 replicaSet</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run --name db -d mongo:4.0 --smallfiles --replSet rs0 --oplogSize <span class="token number">128</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>需要先安装好 nodejs、git，注册登录 github，熟悉一些 markdown 语法等暂且不表。</p>
+<h1 id="github-新建仓库"><a href="#github-新建仓库" class="headerlink" title="github 新建仓库"></a>github 新建仓库</h1><p>github 上新建一个仓库，名字为 <code>username.git.io</code>，仓库需要配置为 public。这里的 username 就是你 github 的名字，比如 github 用户名是 FreedomAnt，仓库就取名为 <code>freedomant.github.io</code>。<br>这样写的原因是 github-pages 能自动将该仓库用为 github-pages 的域名所在仓库，即后面不用跟项目名了。<br>进入该仓库，进入设置页面<code>Settings =&gt; Options</code>里面有一个<code>GitHub Pages</code>配置，如图所示:<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105171032.png" alt="github pages 设置截图"><br>这里可以设置分支，默认 github 是会新建一个 gh-pages 的分支。</p>
+<h1 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h1><p><span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL3poLWNuL2RvY3Mv">Hexo 文档<i class="fa fa-external-link-alt"></i></span>，这里使用的全局安装</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install -g hexo-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker <span class="token builtin class-name">exec</span> -ti db mongo --eval <span class="token string">"printjson(rs.initiate())"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>新建一个项目，项目名就叫 blog。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo init blog<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-</li>
-</ol>
-<h1 id="启动-Rocket-Chat"><a href="#启动-Rocket-Chat" class="headerlink" title="启动 Rocket.Chat"></a>启动 Rocket.Chat</h1><ol>
-<li><p>启动一个 Rocket.Chat 并连接到 mongo 的实例上</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run -p <span class="token number">3000</span>:3000 --name rocketchat --link db --env <span class="token assign-left variable">MONGO_OPLOG_URL</span><span class="token operator">=</span>mongodb://db:27017/local -d rocket.chat<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-</li>
-</ol>
-<h1 id="配置网页端"><a href="#配置网页端" class="headerlink" title="配置网页端"></a>配置网页端</h1><ol>
-<li><p>打开浏览器<code>http://localhost:3000</code></p>
-</li>
-<li><p>配置账号邮箱密码<code>admin/123456</code>，成功之后再增加一个 admin2 的账号<code>admin2/123456</code></p>
-<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424001637.png" />
-
-</li>
-</ol>
-<h1 id="配置手机端"><a href="#配置手机端" class="headerlink" title="配置手机端"></a>配置手机端</h1><p>由于 Rocket.Chat 的手机端需要配置 https 的服务器，nginx 配置 https 则需要 CA 证书，CA 证书的申请 CSR 的字段<code>common name</code>需要配置具体的域名，这里将域名定为<code>test.fanta.cn</code>并配置解析到本机。</p>
-<h2 id="配置域名解析"><a href="#配置域名解析" class="headerlink" title="配置域名解析"></a>配置域名解析</h2><ol>
-<li><p>电脑打开<code>C:\Windows\System32\drivers\etc\hosts</code>，增加以下代码</p>
-<pre class="line-numbers language-none"><code class="language-none">127.0.0.1       test.fanta.cn<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>如果编辑之后保存不了，将当前用户的权限提高，右键点击<code>hosts</code>–&gt;属性–&gt;安全–&gt;编辑，选中当前用户，勾选允许</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424201050.png"></p>
-</li>
-</ol>
-<h2 id="配置-Nginx"><a href="#配置-Nginx" class="headerlink" title="配置 Nginx"></a>配置 Nginx</h2><h3 id="生成自签名证书"><a href="#生成自签名证书" class="headerlink" title="生成自签名证书"></a>生成自签名证书</h3><ol>
-<li><p>检测下是否安装 openssl</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><p>生成私钥</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl genrsa -des3 -out server.pass.key <span class="token number">2048</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>输入密码</p>
-</li>
-<li><p>去除私钥中的密码</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl rsa -in server.pass.key -out server.key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><p>生成 CSR(证书签名请求)</p>
-<blockquote>
-<p><strong>注意自签名请求 csr 中的 Common Name 必须写域名(这里写 test.fanta.cn)，如果是测试，可以写 localhost</strong></p>
-</blockquote>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl req -new -key server.key -out server.csr<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424202317.png"></p>
-</li>
-<li><p>生成自签名 SSL 证书</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># -days 证书有效期</span>
-$ openssl x509 -req -days <span class="token number">365</span> -in server.csr -signkey server.key -out server.crt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-<li><p>拷贝密钥和 CA 证书到 Nginx</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">cp</span> server.key /etc/nginx/certificate.key
-$ <span class="token function">cp</span> server.crt /etc/nginx/certificate.crt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-<li><p>设置秘钥文件权限</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">chmod</span> <span class="token number">400</span> /etc/nginx/certificate.key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><p>生成 ssl_dhparam 文件</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl dhparam -out /etc/nginx/dhparams.pem <span class="token number">2048</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-</li>
-</ol>
-<h3 id="配置反向代理"><a href="#配置反向代理" class="headerlink" title="配置反向代理"></a>配置反向代理</h3><ol>
-<li><p>编辑<code>nginx.conf</code>文件</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">vi</span> /etc/nginx/nginx.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>参考<span class="exturl" data-url="aHR0cHM6Ly9yb2NrZXQuY2hhdC9kb2NzL2luc3RhbGxhdGlvbi9kb2NrZXItY29udGFpbmVycy8jNWItc2VsZi1zaWduZWQtc3Ns">官方文档<i class="fa fa-external-link-alt"></i></span></p>
-<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># HTTPS Server</span>
-    <span class="token keyword">server</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">listen</span> <span class="token number">443</span> <span class="token keyword">ssl</span><span class="token punctuation">;</span>
-        <span class="token keyword">server_name</span> test<span class="token punctuation">.</span>fanta<span class="token punctuation">.</span>cn<span class="token punctuation">;</span>
-
-        <span class="token keyword">error_log</span> <span class="token operator">/</span>var<span class="token operator">/</span>log<span class="token operator">/</span>nginx<span class="token operator">/</span>rocketchat_error<span class="token punctuation">.</span>log<span class="token punctuation">;</span>
-
-        <span class="token keyword">ssl_certificate</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>certificate<span class="token punctuation">.</span>crt<span class="token punctuation">;</span>
-        <span class="token keyword">ssl_certificate_key</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>certificate<span class="token punctuation">.</span>key<span class="token punctuation">;</span>
-        <span class="token keyword">ssl_dhparam</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>dhparams<span class="token punctuation">.</span>pem<span class="token punctuation">;</span>
-        <span class="token keyword">ssl_protocols</span> TLSv1<span class="token punctuation">.</span><span class="token number">2</span><span class="token punctuation">;</span>
-        <span class="token keyword">ssl_ciphers</span> <span class="token string">'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'</span><span class="token punctuation">;</span>
-        <span class="token keyword">ssl_prefer_server_ciphers</span> on<span class="token punctuation">;</span>
-        <span class="token keyword">ssl_session_cache</span> shared<span class="token punctuation">:</span><span class="token keyword">SSL</span><span class="token punctuation">:</span><span class="token number">20</span>m<span class="token punctuation">;</span>
-        <span class="token keyword">ssl_session_timeout</span> <span class="token number">180</span>m<span class="token punctuation">;</span>
-
-        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">proxy_pass</span> <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">192.168</span><span class="token number">.1</span><span class="token number">.4</span><span class="token punctuation">:</span><span class="token number">3000</span><span class="token operator">/</span><span class="token punctuation">;</span>
-            <span class="token keyword">proxy_http_version</span> <span class="token number">1.1</span><span class="token punctuation">;</span>
-            <span class="token keyword">proxy_set_header</span> Upgrade <span class="token variable">$http_upgrade</span><span class="token punctuation">;</span>
-            <span class="token keyword">proxy_set_header</span> Connection <span class="token string">"upgrade"</span><span class="token punctuation">;</span>
-            <span class="token keyword">proxy_set_header</span> Host <span class="token variable">$http_host</span><span class="token punctuation">;</span>
-            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Real<span class="token operator">-</span>IP <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
-            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>For <span class="token variable">$proxy_add_x_forwarded_for</span><span class="token punctuation">;</span>
-            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>Proto <span class="token keyword">https</span><span class="token punctuation">;</span>
-            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Nginx<span class="token operator">-</span><span class="token keyword">Proxy</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-            <span class="token keyword">proxy_redirect</span> off<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p>测试 nginx 配置文件是否正确</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ nginx -t<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><p>启动 nginx</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">service</span> nginx start<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-</li>
-</ol>
-<p>这时候电脑端打开链接<code>https://test.fanta.cn</code>，Nginx 会报 502 的错误。这里需要防火墙需要打开 3000 端口。如果没有错误，则跳过下面防火墙放开 3000 端口这一步。</p>
-<p><strong>我测试的环境用的 Nginx 是安装在 windows 的 wsl 的 ubuntu 系统里面，而我的 docker 是 windows 版本的直接安装在 windows 的，这里需要注意：docker 开放的 3000 端口只是对宿主机(windows10)开放，windows 里面的子系统 wsl 是读不到 docker 里面启动的 RocketChat 的，在 windows 里面<code>ipconfig</code>能看到 windows 的 ip 地址前缀为 192.168，docker 的前缀为 172.24，wsl 的前缀为 172.31。</strong></p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424203602.png"></p>
-<h2 id="放开-3000-端口"><a href="#放开-3000-端口" class="headerlink" title="放开 3000 端口"></a>放开 3000 端口</h2><p>这时候手机端也是连接不上电脑端的 3000 端口（可以用<code>JuiceSSH</code>本地连接手机之后 telnet 一下电脑的 3000 端口），需要在防火墙侧增加一个 3000 端口开放的规则（这里电脑系统为 win10）。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424194951.jpg"></p>
+<p>有几个快捷键比较常用</p>
 <ol>
-<li>按下<code>win+s</code>键，搜索“防火墙”。</li>
-<li>打开高级安全 Windows Defender 防火墙</li>
-<li>新建“入站规则”，选择端口</li>
+<li><code>hexo clean</code>清空生成的静态文件和缓存。</li>
+<li><code>hexo s</code>是<code>hexo server</code>的缩写，启动一个默认 4000 端口的本地服务。</li>
+<li><code>hexo n [name]</code>是<code>hexo new [name]</code>的缩写，新建一篇文章</li>
+<li><code>hexo g</code>是<code>hexo generate</code>的缩写，生成静态文件。</li>
+<li><code>hexo d</code>是<code>hexo deploy</code>的缩写，部署到配置的仓库或者服务器。</li>
 </ol>
-<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424181725.png" />
+<p>生成静态文件和部署可以用一条命令表示<code>hexo g -d</code>或者<code>hexo d -g</code>。<br>安装完成之后有几个主要的文件和目录，配置文件<code>_config.yml</code>，<code>source</code>文件夹是放文章和样式图片等。<code>themes</code>是用于放主题文件。</p>
+<h1 id="Hexo-配置"><a href="#Hexo-配置" class="headerlink" title="Hexo 配置"></a>Hexo 配置</h1><p>安装完成之后在<code>_config.yml</code>配置。<br><code>theme: next</code>这里配置主题的名字，主题放 themes 文件夹下。这里配置的是 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25leHQtdGhlbWUvaGV4by10aGVtZS1uZXh0">next 主题<i class="fa fa-external-link-alt"></i></span>。具体<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9uLmh0bWw=">配置<i class="fa fa-external-link-alt"></i></span><br>这里采用 git 方式部署博客，先安装一个 hexo-deployer-git。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm install hexo-deployer-git --save<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<ol start="4">
-<li>选择特定端口 3000</li>
-</ol>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424181931.png"></p>
-<ol start="5">
-<li>下一步到完成。</li>
-</ol>
-<p>这时候电脑端打开<code>https://test.fanta.cn</code>则可以打开 Rocket.Chat</p>
-<h2 id="连接服务器"><a href="#连接服务器" class="headerlink" title="连接服务器"></a>连接服务器</h2><h3 id="下载-App"><a href="#下载-App" class="headerlink" title="下载 App"></a>下载 App</h3><p>Android 端 APP 并安装到手机，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY2tldENoYXQvUm9ja2V0LkNoYXQuUmVhY3ROYXRpdmUvcmVsZWFzZXM=">下载地址<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="打开-APP"><a href="#打开-APP" class="headerlink" title="打开 APP"></a>打开 APP</h3><p>填写服务器端地址</p>
-<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424193747.jpg" alt="1" style="width:50%;height:50%" />
+<p>安装完成之后在<code>_config.yml</code>里配置部署的服务。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> git
+  <span class="token key atrule">repo</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//github.com/FreedomAnt/freedomant.github.io.git
+  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="配置代理"><a href="#配置代理" class="headerlink" title="配置代理"></a>配置代理</h3><p>手机和电脑端连接同一个 wifi，由于电脑端本地开启了域名解析，手机端也需要开启域名解析才行。这里采用 Fiddle 设置代理的方式把手机连接到电脑，这样手机也有了电脑的域名解析。</p>
-<ol>
-<li><p>电脑端下载 Fiddle，<span class="exturl" data-url="aHR0cHM6Ly93d3cudGVsZXJpay5jb20vZG93bmxvYWQvZmlkZGxlcg==">下载地址<i class="fa fa-external-link-alt"></i></span></p>
-</li>
-<li><p>设置 Fiddle</p>
-<p>Tools–&gt;Options–&gt;Connections，记住端口号，并勾选<code>Allow remote computers to connect</code></p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424194243.png"></p>
-</li>
-<li><p>手机端在 wifi 里面设置手动代理，地址填写电脑端的地址<code>192.168.1.4</code>，端口填写<code>18888</code>，保存修改</p>
-</li>
-<li><p>这样就实现了手机都走电脑的代理。就实现了手机端域名解析<code>test.fanta.cn</code></p>
-</li>
-</ol>
-<h3 id="配置完成"><a href="#配置完成" class="headerlink" title="配置完成"></a>配置完成</h3><p>点击连接到电脑的服务器，输入网友端申请的账号密码<code>admin2/123456</code>，就可以与 web 端或者 pc 端的 Rocket.Chat 通信了，对于 Rocket.Chat 还是有很多不了解的地方，用于生产环境的话还需要细细探索。</p>
+<p>这里分支选择 gh-pages，就是<a href="#github-%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93">github 新建仓库</a>里的生成分支。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo n 文章名称<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里写完文章以后依次输入以下命令：</p>
+<p>清空缓存</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>本地先跑一个服务看下效果</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>生成静态文件并部署</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo g -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样就生成了博客，在浏览器输入地址即可访问<code>https://freedomant.github.io</code>，如果你买了域名可以添加到 source 下面的 CNAME 文件。如果需要修改主题的配置文件，可以在项目根目录下面新建一个<code>_config.[theme name].yml</code>，将<code>themes/next/_config.yml</code>里面的内容复制到这个文件，修改主题就在这个文件修改就行。这里用的 next 主题<code>_config.next.yml</code>。这个文件里面的内容在静态页面生成的时候会覆盖掉<code>themes/next/_config.yml</code>的内容。</p>
+<h1 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h1><p>图床这里也是白 piao 的 github，先在 github 里面新建一个项目用于图床。token 生成方式在 github 里面，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; Personal access tokens =&gt; Generate new token</code>这里注意勾选 repo 下的选项。如图所示：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105175136.png" alt="github 配置图床Token"><br>然后下载 PicGo，PicGo 是一个用于快速上传图片并获取图片 URL 链接的工具，支持很多图床，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01vbHVuZXJmaW5uL1BpY0dvL3JlbGVhc2Vz">下载地址<i class="fa fa-external-link-alt"></i></span>，下载安装之后点击图床设置，选择 GitHub 图床，配置如下：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105174115.png" alt="PicGGo中GitHub图床配置"><br>这里的自定义域名有讲究的，填写<code>https://cdn.jsdelivr.net/gh/FreedomAnt/image@main</code>，用 jsdelivr 的黑科技完成 CDN 加速。</p>
+<h1 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h1><p>这里我使用的 vscode 写的文章，vscode 安装插件<code>Markdown All in One</code>、<code>Markdwon Preview Enhanced</code>等。也安装有 typora 软件，typora 是一个所见即所得(WYSIWYG)的 markdown 软件，非常不错。而且 typora 集成 PicGo，typora 的<code>文件 =&gt; 偏好设置 =&gt; 图像 =&gt; 上传服务设定</code>里面选择 PicGo(app)的方式，PicGo-Core 的命令行的方式不是太方便。集成之后可以在 typora 里面直接上传图片。<br><strong>这里需要注意 PicGo 默认的服务端口开的是 36677，在 PicGo 里<code>PicGo设置 =&gt; 设置Server</code>可设置监听端口，如果想要配置 typora 里面的 PicGo，需要注意测试 PicGo 连接的服务地址端口是不是 36677。</strong></p>
+<h1 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h1><p>next 主题自带的评论插件里面有<code>changyan | disqus | disqusjs | gitalk | livere | valine</code>，这里我选择的 gitalk，对比了几个之后还是选择了 github 的黑科技。valine 也不错，不过我看到 github 上面写 src 目录停止更新的信息，就还是选择了 gitalk。<br>gitalk 配置需要客户端的 id 和密钥。还是在 github 里面生成。<br>进入 github，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; OAuth Apps =&gt; new OAuth Apps</code>。<code>Homepage URL</code>和<code>Authorization callback URL</code>都填写<code>https://freedomant.github.io/</code>，生成的客户端 id 和密钥填到主题配置里面。</p>
+<h1 id="部署到-Vercel"><a href="#部署到-Vercel" class="headerlink" title="部署到 Vercel"></a>部署到 Vercel</h1><p>Vercel 是一个提供使用简单命令就可部署静态页面的服务，由于 github 访问速度慢的原因，在使用测速软件分别测试了很多常见的静态网页部署服务之后，发现比较快的就是国内的 coding 和 gitee，再就是腾讯阿里的对象存储了，Vercel 算是国外里面比较快的了，而且和 github 无缝对接。如果不想花钱买 CDN 加速或者对象存储，可以使用 Vercel，Vercel 以前叫 zeit，安装了之后直接使用一行<code>now XXXX</code>命令就可完成部署。目前已经更名为 Vercel。用 github 关联登录之后，点击<code>Import Preject =&gt; Import Git Repository =&gt; continue</code>填写你的仓库地址<code>https://github.com/FreedomAnt/freedomant.github.io.git</code>。部署命令那不用填写，默认就行。部署好之后就会生成访问的地址了。<br>Vercel 还支持修改默认的分支，进入到关联的项目，点击<code>Settings =&gt; Git =&gt; Production Branch</code>可以修改成博客所在的 gh-pages 分支。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510195450.png"></p>
+<p>Vercel 还支持自定义域名，点击<code>Settings =&gt; Domains</code>一般域名后缀填写 XXX.vercel.app。vercel.app 为默认生成后缀。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510195639.png"></p>
+<p>至此，部署到 Vercel 成功。<br>当调用命令<code>hexo g -d</code>部署到 github 时，会触发 Vercel 的部署，一键部署到两个地方，完美！</p>
+<p><strong>注意：博客原文件和静态页面的分开放两个仓库，博客原文件可以用私有仓库，里面有一些个人配置的信息</strong></p>
 ]]></content>
       <categories>
         <category>工作笔记</category>
       </categories>
       <tags>
-        <tag>rocket.chat</tag>
-        <tag>nginx</tag>
-        <tag>openssl</tag>
-        <tag>fiddle</tag>
+        <tag>github</tag>
+        <tag>hexo</tag>
+        <tag>github-pages</tag>
+        <tag>gitalk</tag>
+        <tag>zeit</tag>
+        <tag>vercel</tag>
+        <tag>markdown</tag>
+        <tag>typora</tag>
+        <tag>picgo</tag>
+        <tag>图床</tag>
       </tags>
   </entry>
   <entry>
     <title>node+npm更新</title>
     <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-npm%E6%9B%B4%E6%96%B0/</url>
     <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
 <p>查看 node 版本：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>查看 npm 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">npm</span> -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>经过查找发现在<code>C:\Users\用户名\AppData\Roaming</code>文件夹下有一个 npm 和 npm-cache 文件，这里应该有 npm 的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
 ]]></content>
@@ -999,42 +901,42 @@ $ <span class="token function">cp</span> server.crt /etc/nginx/certificate.crt<s
     <content><![CDATA[<blockquote>
 <p><strong>Prometheus Server：Prometheus 服务的主服务器<br>Node Exporter：收集 Host 硬件和操作系统的信息<br>cAdvrisor：负责收集 Host 上运行的容器信息<br>Grafana：用来展示 Prometheus 监控操作界面（给我们提供一个友好的 web 界面）</strong></p>
 </blockquote>
-<a id="more"></a>
+<span id="more"></span>
 
-<h1 id="获取-node-exporter"><a href="#获取-node-exporter" class="headerlink" title="获取 node-exporter"></a>获取 node-exporter</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9100</span>:9100 <span class="token punctuation">\</span>
---name nodeexporter <span class="token punctuation">\</span>
--v d:/docker/node-exporter/host/proc:/host/proc <span class="token punctuation">\</span>
--v d:/docker/node-exporter/host/sys:/host/sys <span class="token punctuation">\</span>
--v d:/docker/node-exporter/rootfs:/rootfs <span class="token punctuation">\</span>
-prom/node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-node-exporter"><a href="#获取-node-exporter" class="headerlink" title="获取 node-exporter"></a>获取 node-exporter</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9100:9100 \
+--name nodeexporter \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;proc:&#x2F;host&#x2F;proc \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;sys:&#x2F;host&#x2F;sys \
+-v d:&#x2F;docker&#x2F;node-exporter&#x2F;rootfs:&#x2F;rootfs \
+prom&#x2F;node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:9100/</code>即可查看页面</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510172501.png" alt="node-exporter"></p>
-<h1 id="获取-cadvisor"><a href="#获取-cadvisor" class="headerlink" title="获取 cadvisor"></a>获取 cadvisor</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">8080</span>:8080 <span class="token punctuation">\</span>
---name cadvisor <span class="token punctuation">\</span>
--v d:/docker/cadvisor/rootfs:/rootfs:ro <span class="token punctuation">\</span>
--v d:/docker/cadvisor/var/run:/var/run:rw <span class="token punctuation">\</span>
--v d:/docker/cadvisor/var/lib/docker:/var/lib/docker:ro <span class="token punctuation">\</span>
-google/cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-cadvisor"><a href="#获取-cadvisor" class="headerlink" title="获取 cadvisor"></a>获取 cadvisor</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 8080:8080 \
+--name cadvisor \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;rootfs:&#x2F;rootfs:ro \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;run:&#x2F;var&#x2F;run:rw \
+-v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;lib&#x2F;docker:&#x2F;var&#x2F;lib&#x2F;docker:ro \
+google&#x2F;cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:8080/</code>即可查看页面</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510180058.png" alt="cadvisor"></p>
-<h1 id="获取-prometheus"><a href="#获取-prometheus" class="headerlink" title="获取 prometheus"></a>获取 prometheus</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9090</span>:9090 <span class="token punctuation">\</span>
---name prometheus <span class="token punctuation">\</span>
-prom/prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-prometheus"><a href="#获取-prometheus" class="headerlink" title="获取 prometheus"></a>获取 prometheus</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:9090/</code>即可查看页面</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510175743.png" alt="prometheus"></p>
-<h1 id="获取-grafana"><a href="#获取-grafana" class="headerlink" title="获取 grafana"></a>获取 grafana</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">3000</span>:3000 <span class="token punctuation">\</span>
---name grafana <span class="token punctuation">\</span>
--v d:/docker/grafana/grafana-storage:/var/lib/grafana <span class="token punctuation">\</span>
-grafana/grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-grafana"><a href="#获取-grafana" class="headerlink" title="获取 grafana"></a>获取 grafana</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 3000:3000 \
+--name grafana \
+-v d:&#x2F;docker&#x2F;grafana&#x2F;grafana-storage:&#x2F;var&#x2F;lib&#x2F;grafana \
+grafana&#x2F;grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:3000/</code>即可查看页面<br>初始密码为 admin/admin，首次登陆需要修改密码。</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510175902.png" alt="grafana"></p>
-<h1 id="获取-alertmanager"><a href="#获取-alertmanager" class="headerlink" title="获取 alertmanager"></a>获取 alertmanager</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9093</span>:9093 <span class="token punctuation">\</span>
---name alertmanager <span class="token punctuation">\</span>
-prom/alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-alertmanager"><a href="#获取-alertmanager" class="headerlink" title="获取 alertmanager"></a>获取 alertmanager</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9093:9093 \
+--name alertmanager \
+prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:9093/</code>即可查看页面</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510180939.png" alt="alertmanager"></p>
@@ -1042,26 +944,26 @@ prom/alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span
 <ul>
 <li>直接进 shell 环境修改。</li>
 </ul>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it prometheus <span class="token function">sh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it prometheus sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">vi</span> /etc/prometheus/prometheus.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ul>
 <li>删除此 container，重新新建</li>
 </ul>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9090</span>:9090 <span class="token punctuation">\</span>
---name prometheus <span class="token punctuation">\</span>
--v d:/docker/prometheus/opt/prometheus.yml:/etc/prometheus/prometheus.yml  <span class="token punctuation">\</span>
-prom/prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
+--name prometheus \
+-v d:&#x2F;docker&#x2F;prometheus&#x2F;opt&#x2F;prometheus.yml:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml  \
+prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这样就将配置文件映射到本地，修改本地可以达到一样的效果</p>
 <ul>
 <li>配置文件也可以单独拷贝出来，代码如下</li>
 </ul>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token function">cp</span> prometheus:/etc/prometheus/prometheus.yml ./<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker cp prometheus:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>修改了配置文件之后用以下代码实现热加载</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">kill</span> -HUP <span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ kill -HUP 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里本地地址为<code>192.168.7.104</code>，其中 scrape_configs 的配置部分修改为</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
@@ -1145,10 +1047,10 @@ prom/prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><
           description<span class="token punctuation">:</span> <span class="token string">"&#123;&#123; $labels.instance &#125;&#125; of job &#123;&#123; $labels.job &#125;&#125; has been down for more than 1 minutes."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="配置-alertmanager-yml"><a href="#配置-alertmanager-yml" class="headerlink" title="配置 alertmanager.yml"></a>配置 alertmanager.yml</h2><p>进入 alertmanager 的 shell</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it alertmanager <span class="token function">sh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it alertmanager sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>配置 alertmanager 的配置文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">vi</span> /etc/alertmanager/alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;alertmanager&#x2F;alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里我们也可以采用和 prometheus 同样的方式，拷贝配置文件出来修改，或者映射配置文件到本地修改。</p>
 <p>这里我配置的为我的 126 邮箱地址发送告警到我的 qq 邮箱地址，完整代码如下：</p>
@@ -1197,10 +1099,158 @@ prom/prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><
       </tags>
   </entry>
   <entry>
+    <title>rocket.chat开源聊天服务器搭建</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/rocket-chat%E5%BC%80%E6%BA%90%E8%81%8A%E5%A4%A9%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>近日使用 Rocket.Chat 搭建了一个聊天服务器，踩坑较多，写下以备后期查阅。</p>
+<span id="more"></span>
+
+<h1 id="启动一个数据库"><a href="#启动一个数据库" class="headerlink" title="启动一个数据库"></a>启动一个数据库</h1><ol>
+<li><p>启动一个 mongo 实例并初始化 replicaSet</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run --name db -d mongo:4.0 --smallfiles --replSet rs0 --oplogSize <span class="token number">128</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker <span class="token builtin class-name">exec</span> -ti db mongo --eval <span class="token string">"printjson(rs.initiate())"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+<h1 id="启动-Rocket-Chat"><a href="#启动-Rocket-Chat" class="headerlink" title="启动 Rocket.Chat"></a>启动 Rocket.Chat</h1><ol>
+<li><p>启动一个 Rocket.Chat 并连接到 mongo 的实例上</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run -p <span class="token number">3000</span>:3000 --name rocketchat --link db --env <span class="token assign-left variable">MONGO_OPLOG_URL</span><span class="token operator">=</span>mongodb://db:27017/local -d rocket.chat<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+<h1 id="配置网页端"><a href="#配置网页端" class="headerlink" title="配置网页端"></a>配置网页端</h1><ol>
+<li><p>打开浏览器<code>http://localhost:3000</code></p>
+</li>
+<li><p>配置账号邮箱密码<code>admin/123456</code>，成功之后再增加一个 admin2 的账号<code>admin2/123456</code></p>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424001637.png" /></li>
+</ol>
+<h1 id="配置手机端"><a href="#配置手机端" class="headerlink" title="配置手机端"></a>配置手机端</h1><p>由于 Rocket.Chat 的手机端需要配置 https 的服务器，nginx 配置 https 则需要 CA 证书，CA 证书的申请 CSR 的字段<code>common name</code>需要配置具体的域名，这里将域名定为<code>test.fanta.cn</code>并配置解析到本机。</p>
+<h2 id="配置域名解析"><a href="#配置域名解析" class="headerlink" title="配置域名解析"></a>配置域名解析</h2><ol>
+<li><p>电脑打开<code>C:\Windows\System32\drivers\etc\hosts</code>，增加以下代码</p>
+<pre class="line-numbers language-none"><code class="language-none">127.0.0.1       test.fanta.cn<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果编辑之后保存不了，将当前用户的权限提高，右键点击<code>hosts</code>–&gt;属性–&gt;安全–&gt;编辑，选中当前用户，勾选允许</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424201050.png"></p>
+</li>
+</ol>
+<h2 id="配置-Nginx"><a href="#配置-Nginx" class="headerlink" title="配置 Nginx"></a>配置 Nginx</h2><h3 id="生成自签名证书"><a href="#生成自签名证书" class="headerlink" title="生成自签名证书"></a>生成自签名证书</h3><ol>
+<li><p>检测下是否安装 openssl</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl version<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>生成私钥</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl genrsa -des3 -out server.pass.key <span class="token number">2048</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入密码</p>
+</li>
+<li><p>去除私钥中的密码</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl rsa -in server.pass.key -out server.key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>生成 CSR(证书签名请求)</p>
+<blockquote>
+<p><strong>注意自签名请求 csr 中的 Common Name 必须写域名(这里写 test.fanta.cn)，如果是测试，可以写 localhost</strong></p>
+</blockquote>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl req -new -key server.key -out server.csr<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424202317.png"></p>
+</li>
+<li><p>生成自签名 SSL 证书</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># -days 证书有效期</span>
+$ openssl x509 -req -days <span class="token number">365</span> -in server.csr -signkey server.key -out server.crt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li><p>拷贝密钥和 CA 证书到 Nginx</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">cp</span> server.key /etc/nginx/certificate.key
+$ <span class="token function">cp</span> server.crt /etc/nginx/certificate.crt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li><p>设置秘钥文件权限</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">chmod</span> <span class="token number">400</span> /etc/nginx/certificate.key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>生成 ssl_dhparam 文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl dhparam -out /etc/nginx/dhparams.pem <span class="token number">2048</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+<h3 id="配置反向代理"><a href="#配置反向代理" class="headerlink" title="配置反向代理"></a>配置反向代理</h3><ol>
+<li><p>编辑<code>nginx.conf</code>文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">vi</span> /etc/nginx/nginx.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>参考<span class="exturl" data-url="aHR0cHM6Ly9yb2NrZXQuY2hhdC9kb2NzL2luc3RhbGxhdGlvbi9kb2NrZXItY29udGFpbmVycy8jNWItc2VsZi1zaWduZWQtc3Ns">官方文档<i class="fa fa-external-link-alt"></i></span></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># HTTPS Server</span>
+    <span class="token keyword">server</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">listen</span> <span class="token number">443</span> <span class="token keyword">ssl</span><span class="token punctuation">;</span>
+        <span class="token keyword">server_name</span> test<span class="token punctuation">.</span>fanta<span class="token punctuation">.</span>cn<span class="token punctuation">;</span>
+
+        <span class="token keyword">error_log</span> <span class="token operator">/</span>var<span class="token operator">/</span>log<span class="token operator">/</span>nginx<span class="token operator">/</span>rocketchat_error<span class="token punctuation">.</span>log<span class="token punctuation">;</span>
+
+        <span class="token keyword">ssl_certificate</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>certificate<span class="token punctuation">.</span>crt<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_certificate_key</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>certificate<span class="token punctuation">.</span>key<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_dhparam</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>dhparams<span class="token punctuation">.</span>pem<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_protocols</span> TLSv1<span class="token punctuation">.</span><span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_ciphers</span> <span class="token string">'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_prefer_server_ciphers</span> on<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_cache</span> shared<span class="token punctuation">:</span><span class="token keyword">SSL</span><span class="token punctuation">:</span><span class="token number">20</span>m<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_timeout</span> <span class="token number">180</span>m<span class="token punctuation">;</span>
+
+        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">proxy_pass</span> <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">192.168</span><span class="token number">.1</span><span class="token number">.4</span><span class="token punctuation">:</span><span class="token number">3000</span><span class="token operator">/</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_http_version</span> <span class="token number">1.1</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> Upgrade <span class="token variable">$http_upgrade</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> Connection <span class="token string">"upgrade"</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> Host <span class="token variable">$http_host</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Real<span class="token operator">-</span>IP <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>For <span class="token variable">$proxy_add_x_forwarded_for</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>Proto <span class="token keyword">https</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Nginx<span class="token operator">-</span><span class="token keyword">Proxy</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_redirect</span> off<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>测试 nginx 配置文件是否正确</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ nginx -t<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>启动 nginx</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">service</span> nginx start<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+<p>这时候电脑端打开链接<code>https://test.fanta.cn</code>，Nginx 会报 502 的错误。这里需要防火墙需要打开 3000 端口。如果没有错误，则跳过下面防火墙放开 3000 端口这一步。</p>
+<p><strong>我测试的环境用的 Nginx 是安装在 windows 的 wsl 的 ubuntu 系统里面，而我的 docker 是 windows 版本的直接安装在 windows 的，这里需要注意：docker 开放的 3000 端口只是对宿主机(windows10)开放，windows 里面的子系统 wsl 是读不到 docker 里面启动的 RocketChat 的，在 windows 里面<code>ipconfig</code>能看到 windows 的 ip 地址前缀为 192.168，docker 的前缀为 172.24，wsl 的前缀为 172.31。</strong></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424203602.png"></p>
+<h2 id="放开-3000-端口"><a href="#放开-3000-端口" class="headerlink" title="放开 3000 端口"></a>放开 3000 端口</h2><p>这时候手机端也是连接不上电脑端的 3000 端口（可以用<code>JuiceSSH</code>本地连接手机之后 telnet 一下电脑的 3000 端口），需要在防火墙侧增加一个 3000 端口开放的规则（这里电脑系统为 win10）。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424194951.jpg"></p>
+<ol>
+<li>按下<code>win+s</code>键，搜索“防火墙”。</li>
+<li>打开高级安全 Windows Defender 防火墙</li>
+<li>新建“入站规则”，选择端口</li>
+</ol>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424181725.png" />
+
+<ol start="4">
+<li>选择特定端口 3000</li>
+</ol>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424181931.png"></p>
+<ol start="5">
+<li>下一步到完成。</li>
+</ol>
+<p>这时候电脑端打开<code>https://test.fanta.cn</code>则可以打开 Rocket.Chat</p>
+<h2 id="连接服务器"><a href="#连接服务器" class="headerlink" title="连接服务器"></a>连接服务器</h2><h3 id="下载-App"><a href="#下载-App" class="headerlink" title="下载 App"></a>下载 App</h3><p>Android 端 APP 并安装到手机，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1JvY2tldENoYXQvUm9ja2V0LkNoYXQuUmVhY3ROYXRpdmUvcmVsZWFzZXM=">下载地址<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="打开-APP"><a href="#打开-APP" class="headerlink" title="打开 APP"></a>打开 APP</h3><p>填写服务器端地址</p>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424193747.jpg" alt="1" style="width:50%;height:50%" />
+
+<h3 id="配置代理"><a href="#配置代理" class="headerlink" title="配置代理"></a>配置代理</h3><p>手机和电脑端连接同一个 wifi，由于电脑端本地开启了域名解析，手机端也需要开启域名解析才行。这里采用 Fiddle 设置代理的方式把手机连接到电脑，这样手机也有了电脑的域名解析。</p>
+<ol>
+<li><p>电脑端下载 Fiddle，<span class="exturl" data-url="aHR0cHM6Ly93d3cudGVsZXJpay5jb20vZG93bmxvYWQvZmlkZGxlcg==">下载地址<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>设置 Fiddle</p>
+<p>Tools–&gt;Options–&gt;Connections，记住端口号，并勾选<code>Allow remote computers to connect</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210424194243.png"></p>
+</li>
+<li><p>手机端在 wifi 里面设置手动代理，地址填写电脑端的地址<code>192.168.1.4</code>，端口填写<code>18888</code>，保存修改</p>
+</li>
+<li><p>这样就实现了手机都走电脑的代理。就实现了手机端域名解析<code>test.fanta.cn</code></p>
+</li>
+</ol>
+<h3 id="配置完成"><a href="#配置完成" class="headerlink" title="配置完成"></a>配置完成</h3><p>点击连接到电脑的服务器，输入网友端申请的账号密码<code>admin2/123456</code>，就可以与 web 端或者 pc 端的 Rocket.Chat 通信了，对于 Rocket.Chat 还是有很多不了解的地方，用于生产环境的话还需要细细探索。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>rocket.chat</tag>
+        <tag>nginx</tag>
+        <tag>openssl</tag>
+        <tag>fiddle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>tabindex之焦点移动</title>
     <url>/Bug%E8%A7%A3%E5%86%B3/Javascript/tabindex%E4%B9%8B%E7%84%A6%E7%82%B9%E7%A7%BB%E5%8A%A8/</url>
     <content><![CDATA[<p>记一次 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRNTC9HbG9iYWxfYXR0cmlidXRlcy90YWJpbmRleA==">tabindex<i class="fa fa-external-link-alt"></i></span> 的焦点移动问题解决</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>由于博主目前所处行业是 IPTV，页面需要在 TV 端展示，所以基本上页面和遥控器打交道比较多。<br>这次项目是采用的 Android 的 webview 加载地址的方式拉起 url。<br>页面上用到了 pdfjs 用于浏览 pdf，在浏览器测试没有问题，进入页面聚焦之后可以实现上下翻页，但是在 Android 的 webview 中(模拟器开的 Android9.0 API28)，按“下”方向键没问题，按“上”方向键的时候焦点自动移动到了有 tabindex 的一个 button 上面，导致无法向上翻页。</p>
 <h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>开始尝试了把页面上的 tabindex 的其他位置都去掉，结果按“上”方向键仍然能够自动聚焦到 button 上面，只有另寻他法，最后发现将 tabindex 所在的 dom 设置为不可见 visibility:hidden，焦点就不会自动移动过去了。</p>
@@ -1214,82 +1264,10 @@ prom/prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><
       </tags>
   </entry>
   <entry>
-    <title>hexo+github-pages搭建个人博客</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
-<a id="more"></a>
-
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>需要先安装好 nodejs、git，注册登录 github，熟悉一些 markdown 语法等暂且不表。</p>
-<h1 id="github-新建仓库"><a href="#github-新建仓库" class="headerlink" title="github 新建仓库"></a>github 新建仓库</h1><p>github 上新建一个仓库，名字为 <code>username.git.io</code>，仓库需要配置为 public。这里的 username 就是你 github 的名字，比如 github 用户名是 FreedomAnt，仓库就取名为 <code>freedomant.github.io</code>。<br>这样写的原因是 github-pages 能自动将该仓库用为 github-pages 的域名所在仓库，即后面不用跟项目名了。<br>进入该仓库，进入设置页面<code>Settings =&gt; Options</code>里面有一个<code>GitHub Pages</code>配置，如图所示:<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105171032.png" alt="github pages 设置截图"><br>这里可以设置分支，默认 github 是会新建一个 gh-pages 的分支。</p>
-<h1 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h1><p><span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL3poLWNuL2RvY3Mv">Hexo 文档<i class="fa fa-external-link-alt"></i></span>，这里使用的全局安装</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">npm</span> <span class="token function">install</span> -g hexo-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>新建一个项目，项目名就叫 blog。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo init blog<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>有几个快捷键比较常用</p>
-<ol>
-<li><code>hexo clean</code>清空生成的静态文件和缓存。</li>
-<li><code>hexo s</code>是<code>hexo server</code>的缩写，启动一个默认 4000 端口的本地服务。</li>
-<li><code>hexo n [name]</code>是<code>hexo new [name]</code>的缩写，新建一篇文章</li>
-<li><code>hexo g</code>是<code>hexo generate</code>的缩写，生成静态文件。</li>
-<li><code>hexo d</code>是<code>hexo deploy</code>的缩写，部署到配置的仓库或者服务器。</li>
-</ol>
-<p>生成静态文件和部署可以用一条命令表示<code>hexo g -d</code>或者<code>hexo d -g</code>。<br>安装完成之后有几个主要的文件和目录，配置文件<code>_config.yml</code>，<code>source</code>文件夹是放文章和样式图片等。<code>themes</code>是用于放主题文件。</p>
-<h1 id="Hexo-配置"><a href="#Hexo-配置" class="headerlink" title="Hexo 配置"></a>Hexo 配置</h1><p>安装完成之后在<code>_config.yml</code>配置。<br><code>theme: next</code>这里配置主题的名字，主题放 themes 文件夹下。这里配置的是 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25leHQtdGhlbWUvaGV4by10aGVtZS1uZXh0">next 主题<i class="fa fa-external-link-alt"></i></span>。具体<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9uLmh0bWw=">配置<i class="fa fa-external-link-alt"></i></span><br>这里采用 git 方式部署博客，先安装一个 hexo-deployer-git。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">npm</span> <span class="token function">install</span> hexo-deployer-git --save<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>安装完成之后在<code>_config.yml</code>里配置部署的服务。</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
-  <span class="token key atrule">type</span><span class="token punctuation">:</span> git
-  <span class="token key atrule">repo</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//github.com/FreedomAnt/freedomant.github.io.git
-  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里分支选择 gh-pages，就是<a href="#github-%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93">github 新建仓库</a>里的生成分支。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo n 文章名称<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这里写完文章以后依次输入以下命令：</p>
-<p>清空缓存</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>本地先跑一个服务看下效果</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>生成静态文件并部署</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ hexo g -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这样就生成了博客，在浏览器输入地址即可访问<code>https://freedomant.github.io</code>，如果你买了域名可以添加到 source 下面的 CNAME 文件。如果需要修改主题的配置文件，可以在项目根目录下面新建一个<code>_config.[theme name].yml</code>，将<code>themes/next/_config.yml</code>里面的内容复制到这个文件，修改主题就在这个文件修改就行。这里用的 next 主题<code>_config.next.yml</code>。这个文件里面的内容在静态页面生成的时候会覆盖掉<code>themes/next/_config.yml</code>的内容。</p>
-<h1 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h1><p>图床这里也是白 piao 的 github，先在 github 里面新建一个项目用于图床。token 生成方式在 github 里面，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; Personal access tokens =&gt; Generate new token</code>这里注意勾选 repo 下的选项。如图所示：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105175136.png" alt="github 配置图床Token"><br>然后下载 PicGo，PicGo 是一个用于快速上传图片并获取图片 URL 链接的工具，支持很多图床，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01vbHVuZXJmaW5uL1BpY0dvL3JlbGVhc2Vz">下载地址<i class="fa fa-external-link-alt"></i></span>，下载安装之后点击图床设置，选择 GitHub 图床，配置如下：<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201105174115.png" alt="PicGGo中GitHub图床配置"><br>这里的自定义域名有讲究的，填写<code>https://cdn.jsdelivr.net/gh/FreedomAnt/image@main</code>，用 jsdelivr 的黑科技完成 CDN 加速。</p>
-<h1 id="写文章"><a href="#写文章" class="headerlink" title="写文章"></a>写文章</h1><p>这里我使用的 vscode 写的文章，vscode 安装插件<code>Markdown All in One</code>、<code>Markdwon Preview Enhanced</code>等。也安装有 typora 软件，typora 是一个所见即所得(WYSIWYG)的 markdown 软件，非常不错。而且 typora 集成 PicGo，typora 的<code>文件 =&gt; 偏好设置 =&gt; 图像 =&gt; 上传服务设定</code>里面选择 PicGo(app)的方式，PicGo-Core 的命令行的方式不是太方便。集成之后可以在 typora 里面直接上传图片。<br><strong>这里需要注意 PicGo 默认的服务端口开的是 36677，在 PicGo 里<code>PicGo设置 =&gt; 设置Server</code>可设置监听端口，如果想要配置 typora 里面的 PicGo，需要注意测试 PicGo 连接的服务地址端口是不是 36677。</strong></p>
-<h1 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h1><p>next 主题自带的评论插件里面有<code>changyan | disqus | disqusjs | gitalk | livere | valine</code>，这里我选择的 gitalk，对比了几个之后还是选择了 github 的黑科技。valine 也不错，不过我看到 github 上面写 src 目录停止更新的信息，就还是选择了 gitalk。<br>gitalk 配置需要客户端的 id 和密钥。还是在 github 里面生成。<br>进入 github，点击右上角头像<code>Settings =&gt; Developers Settings =&gt; OAuth Apps =&gt; new OAuth Apps</code>。<code>Homepage URL</code>和<code>Authorization callback URL</code>都填写<code>https://freedomant.github.io/</code>，生成的客户端 id 和密钥填到主题配置里面。</p>
-<h1 id="部署到-Vercel"><a href="#部署到-Vercel" class="headerlink" title="部署到 Vercel"></a>部署到 Vercel</h1><p>Vercel 是一个提供使用简单命令就可部署静态页面的服务，由于 github 访问速度慢的原因，在使用测速软件分别测试了很多常见的静态网页部署服务之后，发现比较快的就是国内的 coding 和 gitee，再就是腾讯阿里的对象存储了，Vercel 算是国外里面比较快的了，而且和 github 无缝对接。如果不想花钱买 CDN 加速或者对象存储，可以使用 Vercel，Vercel 以前叫 zeit，安装了之后直接使用一行<code>now XXXX</code>命令就可完成部署。目前已经更名为 Vercel。用 github 关联登录之后，点击<code>Import Preject =&gt; Import Git Repository =&gt; continue</code>填写你的仓库地址<code>https://github.com/FreedomAnt/freedomant.github.io.git</code>。部署命令那不用填写，默认就行。部署好之后就会生成访问的地址了。<br>Vercel 还支持修改默认的分支，进入到关联的项目，点击<code>Settings =&gt; Git =&gt; Production Branch</code>可以修改成博客所在的 gh-pages 分支。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510195450.png"></p>
-<p>Vercel 还支持自定义域名，点击<code>Settings =&gt; Domains</code>一般域名后缀填写 XXX.vercel.app。vercel.app 为默认生成后缀。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510195639.png"></p>
-<p>至此，部署到 Vercel 成功。<br>当调用命令<code>hexo g -d</code>部署到 github 时，会触发 Vercel 的部署，一键部署到两个地方，完美！</p>
-<p><strong>注意：博客原文件和静态页面的分开放两个仓库，博客原文件可以用私有仓库，里面有一些个人配置的信息</strong></p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>github</tag>
-        <tag>hexo</tag>
-        <tag>github-pages</tag>
-        <tag>gitalk</tag>
-        <tag>zeit</tag>
-        <tag>vercel</tag>
-        <tag>markdown</tag>
-        <tag>typora</tag>
-        <tag>picgo</tag>
-        <tag>图床</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>vue+mqtt+protobuf的简单实践(1)</title>
     <url>/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-1/</url>
     <content><![CDATA[<h1 id="mqtt-协议的简单使用"><a href="#mqtt-协议的简单使用" class="headerlink" title="mqtt 协议的简单使用"></a>mqtt 协议的简单使用</h1><p>MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议），是一种基于发布/订阅（publish/subscribe）模式的”轻量级”通讯协议，该协议构建于 TCP/IP 协议上，低开销、低带宽占用，在物联网、小型设备等方面应用较广。由 Broker(Server)+Pub/Sub 构成。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="创建一个-Broker"><a href="#创建一个-Broker" class="headerlink" title="创建一个 Broker"></a>创建一个 Broker</h2><p>这里我们使用了开源库<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vc2NhanMvYWVkZXM=">aedes<i class="fa fa-external-link-alt"></i></span>.broker 的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vc2NhanMvYWVkZXMvYmxvYi9tYWluL2RvY3MvQWVkZXMubWQ=">文档<i class="fa fa-external-link-alt"></i></span>，client 的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vc2NhanMvYWVkZXMvYmxvYi9tYWluL2RvY3MvQ2xpZW50Lm1k">文档<i class="fa fa-external-link-alt"></i></span></p>
 <h3 id="创建-mqtt-服务"><a href="#创建-mqtt-服务" class="headerlink" title="创建 mqtt 服务"></a>创建 mqtt 服务</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> aedes <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./aedes"</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1390,7 +1368,7 @@ aedes<span class="token punctuation">.</span><span class="token function-variabl
     <title>vue+mqtt+protobuf的简单实践(2)</title>
     <url>/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-2/</url>
     <content><![CDATA[<h1 id="protobuf-的简单使用"><a href="#protobuf-的简单使用" class="headerlink" title="protobuf 的简单使用"></a>protobuf 的简单使用</h1><p><span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXJzLmdvb2dsZS5jbi9wcm90b2NvbC1idWZmZXJzLw==">protobuf<i class="fa fa-external-link-alt"></i></span>是 Google 提供的与语言无关，与平台无关的，一个具有高效的协议数据交换格式工具库(类似 Json)，但相比于 Json，Protobuf 有更高的转化效率。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="配置-protobuf-插件-可选"><a href="#配置-protobuf-插件-可选" class="headerlink" title="配置 protobuf 插件(可选)"></a>配置 protobuf 插件(可选)</h2><h3 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h3><p>vscode 里面安装 Clang-Format 和 vscode-proto3 两个插件，其中 Clang-Format 用于格式化，vscode-proto3 用于语法提示、编译等。</p>
 <h3 id="配置插件"><a href="#配置插件" class="headerlink" title="配置插件"></a>配置插件</h3><p>下载 llvm 用于 Clang-Format</p>
@@ -1464,8 +1442,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> address <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./address_pb"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
   DataProto<span class="token operator">:</span> address<span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
 <li><p>编译为 web 可用文件</p>
 <p>​ 编译后文件名为<code>address_web.js</code></p>
 <ul>
@@ -1476,23 +1453,18 @@ module<span class="token punctuation">.</span>exports <span class="token operato
 
 <ul>
 <li><p>安装 browserify</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">npm</span> <span class="token function">install</span> -g browserify<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">npm</span> <span class="token function">install</span> -g browserify<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ul>
 </li>
 <li><p>安装 protobuf 的库文件</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">npm</span> <span class="token function">install</span> google-protobuf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">npm</span> <span class="token function">install</span> google-protobuf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 <li><p>使用 browserify 编译</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ browserify address_export.js -o  address_web.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ browserify address_export.js -o  address_web.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ul>
 </li>
 <li><p>方式二：使用 npx 编译</p>
 <p><strong>推荐这种方式，不用安装其他库</strong></p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ npx browserify address_export.js -o  address_web.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-</li>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ npx browserify address_export.js -o  address_web.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ul>
 </li>
 </ul>
@@ -1676,7 +1648,7 @@ decoded &#x3D; &#123;&quot;province&quot;:&quot;sichuan&quot;,&quot;city&quot;:&
     <title>vue+mqtt+protobuf的简单实践(3)</title>
     <url>/%E5%BC%80%E5%8F%91/MQTT/vue-mqtt-protobuf%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5-3/</url>
     <content><![CDATA[<h1 id="vue3-mqtt-protobuf"><a href="#vue3-mqtt-protobuf" class="headerlink" title="vue3+mqtt+protobuf"></a>vue3+mqtt+protobuf</h1><p>这里我们使用 node 端模拟 broker+publish/subscribe，web 端用 vue3+mqtt 模拟 publish/subscribe，测试发现 mqtt 好像不能直接用于浏览器端，可用通过转换来实现<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21xdHRqcy9NUVRULmpzI2Jyb3dzZXI=">Brower 端的使用<i class="fa fa-external-link-alt"></i></span></p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="node-端"><a href="#node-端" class="headerlink" title="node 端"></a>node 端</h2><p>测试发现 mqtt 支持浏览器的话，需要转换为 websoket 的方式，就是<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vc2NhanMvYWVkZXMvYmxvYi9tYWluL2RvY3MvRXhhbXBsZXMubWQjbXF0dC1zZXJ2ZXItb3Zlci13ZWJzb2NrZXQtdXNpbmctc2VydmVyLWZhY3Rvcnk=">MQTT over Websockets<i class="fa fa-external-link-alt"></i></span></p>
 <h3 id="创建-Broker"><a href="#创建-Broker" class="headerlink" title="创建 Broker"></a>创建 Broker</h3><p>新建<code>broker-ws.js</code>文件，代码如下，这里我们使用了<code>websocket-stream</code>库来实现<code>MQTT over Websockets</code>。</p>
@@ -1778,8 +1750,7 @@ client<span class="token punctuation">.</span><span class="token function">on</s
 
 <ul>
 <li><p>首先我们增加 mqtt 和 protobufjs 的库</p>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js">$ yarn add mqtt protobufjs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">$ yarn add mqtt protobufjs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 <li><p>将生成的 address_proto.js 拷贝到项目中，并新建<code>mqtt.js</code>文件用于订阅发布</p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> connect <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"mqtt"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> protoRoot <span class="token keyword">from</span> <span class="token string">"@/proto/address_proto"</span><span class="token punctuation">;</span>
@@ -1831,8 +1802,7 @@ client<span class="token punctuation">.</span><span class="token function">on</s
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> mqtt<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
+<span class="token keyword">export</span> <span class="token keyword">default</span> mqtt<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 <li><p>在 Home.vue 文件中添加 mqtt.js</p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> onMounted<span class="token punctuation">,</span> defineComponent <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> mqtt <span class="token keyword">from</span> <span class="token string">"@/utils/mqtt"</span><span class="token punctuation">;</span>
@@ -1848,9 +1818,7 @@ client<span class="token punctuation">.</span><span class="token function">on</s
       <span class="token function">mqtt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-</li>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ul>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><blockquote>
 <p>如果 vue 用 typescript 的方式，会提示需要定义 module，在<code>shims-vue.d.ts</code>文件中增加<code>declare module &#39;@/utils/mqtt&#39;</code>即可，</p>
@@ -1899,7 +1867,7 @@ client<span class="token punctuation">.</span><span class="token function">on</s
     <title>使用code-server搭建在线VSCode环境</title>
     <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E4%BD%BF%E7%94%A8code-server%E6%90%AD%E5%BB%BA%E5%9C%A8%E7%BA%BFVSCode%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p>code-server 可以使用户能在浏览器端搭建 VSCode 环境。<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Nkci9jb2RlLXNlcnZlcg==">地址<i class="fa fa-external-link-alt"></i></span></p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="创建-code-server"><a href="#创建-code-server" class="headerlink" title="创建 code-server"></a>创建 code-server</h1><p>根据 docker 创建</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -itd --name code-server -p <span class="token number">8080</span>:8080 <span class="token punctuation">\</span>
@@ -1917,12 +1885,9 @@ client<span class="token punctuation">.</span><span class="token function">on</s
 <p>如果创建的时候没有设置密码，第一次需要输入密码，密码查看方式为：</p>
 <ul>
 <li><p>登录到控制台</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it code-server /bin/bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it code-server /bin/bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 <li><p>查看密码</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">vi</span> ~/.config/code-server/config.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-</li>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">vi</span> ~/.config/code-server/config.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ul>
 <p>登录成功之后可以看到界面，后面就和我们平时写代码一样了</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512161220.png"></p>
@@ -1939,7 +1904,7 @@ client<span class="token punctuation">.</span><span class="token function">on</s
     <title>使用docker+minio实现对象存储</title>
     <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
     <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。<span class="exturl" data-url="aHR0cDovL2RvY3MubWluaW8ub3JnLmNuL2RvY3Mv">minio 文档<i class="fa fa-external-link-alt"></i></span></p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="创建-minio-服务端"><a href="#创建-minio-服务端" class="headerlink" title="创建 minio 服务端"></a>创建 minio 服务端</h1><p>创建 minio 服务器并设置账号密码为 admin/12345678，密码至少需要 8 位数。</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9000</span>:9000 --name minio -v d:<span class="token punctuation">\</span>docker<span class="token punctuation">\</span>minio<span class="token punctuation">\</span>data:/data -e <span class="token string">"MINIO_ACCESS_KEY=admin"</span> -e <span class="token string">"MINIO_SECRET_KEY=12345678"</span> minio/minio server /data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -2014,10 +1979,66 @@ client<span class="token punctuation">.</span><span class="token function">on</s
       </tags>
   </entry>
   <entry>
+    <title>回车换行问题</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>记录一次换行符引发的问题。</p>
+<span id="more"></span>
+
+<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>使用 git 提交的时候报错提示如下：<br>warning: LF will be replaced by CRLF in js/utils.js.<br>The file will have its original line endings in your working directory</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><ul>
+<li>CR (Carriage Return) 回车</li>
+<li>LR (Line Feed) 换行</li>
+<li>CRLF (Carriage Return Line Feed) 回车换行</li>
+</ul>
+<p>早期的 MAC 系统使用 CR 进行换行，现在统一成 LF，Uninx 系统都是使用的 LF 换行，而 Windows 系统使用的 CRLF 当作换行。所以在多人协同开发的时候会造成兼容性问题。</p>
+<h2 id="core-autocrlf"><a href="#core-autocrlf" class="headerlink" title="core.autocrlf"></a>core.autocrlf</h2><p>git 提供了一个<code>core.autocrlf</code>的配置，可以自动完成换行的转换，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span></p>
+<ul>
+<li>true<br>自动完成转换，在 push 的时候自动将换行符从 CRLF 换成 LF，在 pull 的时候将 LF 换成 CRLF。</li>
+<li>input<br>push 转换，pull 不转换</li>
+<li>false<br>都不转换</li>
+</ul>
+<p>这里设置全局<code>--global</code> 里的 <code>core.autocrlf</code> 为 false。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> config --global core.autocrlf <span class="token boolean">false</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样设置之后有些可能有 LF 和 CRLF 混乱的问题，即出现 CRLF 和 LF 共同出现的情况。</p>
+<h2 id="gitattributes"><a href="#gitattributes" class="headerlink" title=".gitattributes"></a>.gitattributes</h2><p>git 提供一个<code>.gitattributes</code>文件用于配置该项目一些属性配置，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdGF0dHJpYnV0ZXM=">gitattributes<i class="fa fa-external-link-alt"></i></span></p>
+<p>每行的格式为<code>pattern attr1 attr2 ...</code><br>pattern 配置</p>
+<pre class="line-numbers language-none"><code class="language-none">* 匹配所有文件
+*.txt 匹配所有 txt 文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="text"><a href="#text" class="headerlink" title="text"></a>text</h3><p>其中 text 属性可以启用并控制行尾规范化</p>
+<ul>
+<li>text<br>在路径上设置属性可启用行尾规范化并将路径标记为文本文件。行尾转换不会猜测内容类型。</li>
+<li>-text<br>Git 在签入或签出时不要尝试任何行尾转换。</li>
+<li>auto<br>标记该路径以进行自动行尾转换。如果 Git 决定内容为文本，则其行尾在签入时转换为 LF。使用 CRLF 提交文件后，不会进行任何转换。</li>
+<li>未指定<br>如果 text 未指定该属性，则 Git 使用 core.autocrlf 配置变量来确定是否应转换文件。</li>
+</ul>
+<h3 id="eol"><a href="#eol" class="headerlink" title="eol"></a>eol</h3><p>属性设置在工作目录中使用的特定行尾样式。</p>
+<ul>
+<li>crlf<br>此设置强制 Git 在签入时对此文件的行尾进行规范化，并在签出文件时将其转换为 CRLF。</li>
+<li>lf<br>此设置强制 Git 在签入时将行尾标准化为 LF，并在签出文件时阻止转换为 CRLF。</li>
+</ul>
+<p>可设置如下</p>
+<pre class="line-numbers language-none"><code class="language-none">* text eol&#x3D;lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="editorconfig"><a href="#editorconfig" class="headerlink" title="editorconfig"></a>editorconfig</h2><p>也可以设置一个 <span class="exturl" data-url="aHR0cHM6Ly9lZGl0b3Jjb25maWcub3JnLw==">editorconfig<i class="fa fa-external-link-alt"></i></span> 来解决行尾转换的问题。这样在保存的时候自动规范化文件的内容。<br>editorconfig 的配置如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">end_of_line &#x3D; lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>autocrlf</tag>
+        <tag>crlf</tag>
+        <tag>lf</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用puppeteer实现自动登录和测试页面</title>
     <url>/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/</url>
     <content><![CDATA[<p>近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="获取-Browser-实例"><a href="#获取-Browser-实例" class="headerlink" title="获取 Browser 实例"></a>获取 Browser 实例</h1><p>关于 puppeteer 的文档可以查看<span class="exturl" data-url="aHR0cHM6Ly96aGFvcWl6ZS5naXRodWIuaW8vcHVwcGV0ZWVyLWFwaS16aF9DTi8=">Puppeteer<i class="fa fa-external-link-alt"></i></span><br>首先引入 puppeteer 库，这里我们选择的是 puppeteer 而不是 puppeteer-core，简单是说区别就是</p>
 <ol>
@@ -2047,8 +2068,7 @@ client<span class="token punctuation">.</span><span class="token function">on</s
 <p>connect 方式需要以 <code>remote-debugging-port</code> 参数启动 Chrome，具体参数参照<span class="exturl" data-url="aHR0cHM6Ly9jaHJvbWVkZXZ0b29scy5naXRodWIuaW8vZGV2dG9vbHMtcHJvdG9jb2wvI2hvdy1kby1pLWFjY2Vzcy10aGUtYnJvd3Nlci10YXJnZXQ=">Chrome DevTools Protocol<i class="fa fa-external-link-alt"></i></span></p>
 <ol>
 <li><p>以 <code>remote-debugging-port</code> 参数启动 Chrome</p>
-<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165028.png" style="zoom:50%" />
-</li>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165028.png" style="zoom:50%" /></li>
 <li><p>通过<code>http://$&#123;host&#125;:$&#123;port&#125;/json/version</code>获取到浏览器的一些信息。其中有 webSocketDebuggerUrl<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165029.png" alt="查看Chrome信息"></p>
 </li>
 <li><p>实现连接</p>
@@ -2112,7 +2132,7 @@ client<span class="token punctuation">.</span><span class="token function">on</s
 </li>
 </ul>
 <p>这里我们基于 srs+obs-studio+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3YxX0NOX0NvbXBhcmU=">查看<i class="fa fa-external-link-alt"></i></span></p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h1><p>SRS(Simple Realtime Server)是一个简单高效的实时视频服务器，支持 RTMP/WebRTC/HLS/HTTP-FLV/SRT/GB28181。<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycw==">开源地址<i class="fa fa-external-link-alt"></i></span>，这里我们使用 3.0 的版本，v4 版本新增<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3Y0X0NOX1dlYlJUQyNjb25maWctY2FuZGlkYXRl">webrtc<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3YzX0NOX0hvbWU=">文档地址<i class="fa fa-external-link-alt"></i></span>，以 docker 的方式简易安装。<span class="exturl" data-url="aHR0cHM6Ly9vc3Nycy5uZXQv">官网地址<i class="fa fa-external-link-alt"></i></span>，RTMP 默认端口是 1935</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run -p <span class="token number">1935</span>:1935 -p <span class="token number">1985</span>:1985 -p <span class="token number">8080</span>:8080 ossrs/srs:3<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -2167,97 +2187,10 @@ $ <span class="token builtin class-name">cd</span> srs/trunk <span class="token 
       </tags>
   </entry>
   <entry>
-    <title>回车换行问题</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>记录一次换行符引发的问题。</p>
-<a id="more"></a>
-
-<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>使用 git 提交的时候报错提示如下：<br>warning: LF will be replaced by CRLF in js/utils.js.<br>The file will have its original line endings in your working directory</p>
-<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><ul>
-<li>CR (Carriage Return) 回车</li>
-<li>LR (Line Feed) 换行</li>
-<li>CRLF (Carriage Return Line Feed) 回车换行</li>
-</ul>
-<p>早期的 MAC 系统使用 CR 进行换行，现在统一成 LF，Uninx 系统都是使用的 LF 换行，而 Windows 系统使用的 CRLF 当作换行。所以在多人协同开发的时候会造成兼容性问题。</p>
-<h2 id="core-autocrlf"><a href="#core-autocrlf" class="headerlink" title="core.autocrlf"></a>core.autocrlf</h2><p>git 提供了一个<code>core.autocrlf</code>的配置，可以自动完成换行的转换，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdC1jb25maWc=">git-config<i class="fa fa-external-link-alt"></i></span></p>
-<ul>
-<li>true<br>自动完成转换，在 push 的时候自动将换行符从 CRLF 换成 LF，在 pull 的时候将 LF 换成 CRLF。</li>
-<li>input<br>push 转换，pull 不转换</li>
-<li>false<br>都不转换</li>
-</ul>
-<p>这里设置全局<code>--global</code> 里的 <code>core.autocrlf</code> 为 false。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> config --global core.autocrlf <span class="token boolean">false</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这样设置之后有些可能有 LF 和 CRLF 混乱的问题，即出现 CRLF 和 LF 共同出现的情况。</p>
-<h2 id="gitattributes"><a href="#gitattributes" class="headerlink" title=".gitattributes"></a>.gitattributes</h2><p>git 提供一个<code>.gitattributes</code>文件用于配置该项目一些属性配置，详见<span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdGF0dHJpYnV0ZXM=">gitattributes<i class="fa fa-external-link-alt"></i></span></p>
-<p>每行的格式为<code>pattern attr1 attr2 ...</code><br>pattern 配置</p>
-<pre class="line-numbers language-none"><code class="language-none">* 匹配所有文件
-*.txt 匹配所有 txt 文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h3 id="text"><a href="#text" class="headerlink" title="text"></a>text</h3><p>其中 text 属性可以启用并控制行尾规范化</p>
-<ul>
-<li>text<br>在路径上设置属性可启用行尾规范化并将路径标记为文本文件。行尾转换不会猜测内容类型。</li>
-<li>-text<br>Git 在签入或签出时不要尝试任何行尾转换。</li>
-<li>auto<br>标记该路径以进行自动行尾转换。如果 Git 决定内容为文本，则其行尾在签入时转换为 LF。使用 CRLF 提交文件后，不会进行任何转换。</li>
-<li>未指定<br>如果 text 未指定该属性，则 Git 使用 core.autocrlf 配置变量来确定是否应转换文件。</li>
-</ul>
-<h3 id="eol"><a href="#eol" class="headerlink" title="eol"></a>eol</h3><p>属性设置在工作目录中使用的特定行尾样式。</p>
-<ul>
-<li>crlf<br>此设置强制 Git 在签入时对此文件的行尾进行规范化，并在签出文件时将其转换为 CRLF。</li>
-<li>lf<br>此设置强制 Git 在签入时将行尾标准化为 LF，并在签出文件时阻止转换为 CRLF。</li>
-</ul>
-<p>可设置如下</p>
-<pre class="line-numbers language-none"><code class="language-none">* text eol&#x3D;lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="editorconfig"><a href="#editorconfig" class="headerlink" title="editorconfig"></a>editorconfig</h2><p>也可以设置一个 <span class="exturl" data-url="aHR0cHM6Ly9lZGl0b3Jjb25maWcub3JnLw==">editorconfig<i class="fa fa-external-link-alt"></i></span> 来解决行尾转换的问题。这样在保存的时候自动规范化文件的内容。<br>editorconfig 的配置如下：</p>
-<pre class="line-numbers language-none"><code class="language-none">end_of_line &#x3D; lf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>autocrlf</tag>
-        <tag>crlf</tag>
-        <tag>lf</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>文档在线预览</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E6%96%87%E6%A1%A3%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88/</url>
-    <content><![CDATA[<p>项目上需要在线预览 office 文件，项目为外面是 Android webview 壳子，里面为前端 H5 页面，在网上搜集了一些在线预览 office 的解决方式，整理出来。</p>
-<a id="more"></a>
-
-<h1 id="网上资源"><a href="#网上资源" class="headerlink" title="网上资源"></a>网上资源</h1><ol>
-<li>微软提供的在线预览，地址为<code>https://view.officeapps.live.com/op/embed.aspx?src=外网office文件地址</code>。</li>
-<li>百度文库、金山 WPS 都提供收费在线预览，或者业内付费产品有<span class="exturl" data-url="aHR0cDovL3d3dy55b3pvZGNzLmNvbS8=">永中 office<i class="fa fa-external-link-alt"></i></span>、<span class="exturl" data-url="aHR0cDovL3d3dy5vZmZpY2V3ZWIzNjUuY29tLw==">office365<i class="fa fa-external-link-alt"></i></span>、<span class="exturl" data-url="aHR0cHM6Ly93d3cuaWRvY3YuY29tLw==">idocv<i class="fa fa-external-link-alt"></i></span></li>
-<li>通过隐式 intent 调用手机中的文档处理相关的 app</li>
-<li>更换 webview 为腾讯 X5 内核，但不支持在线预览</li>
-<li>office web apps 需要 windows 服务器，已更名为 office online</li>
-<li>file-online-preview 基于 springboot 实现，已改名为 kkFileView</li>
-<li>openoffice/Aspose</li>
-</ol>
-<h1 id="自己编写"><a href="#自己编写" class="headerlink" title="自己编写"></a>自己编写</h1><p>如果要自己编写的话，在前端这块</p>
-<ul>
-<li>excel 可以用 sheetjs</li>
-<li>word 可以用 mammoth.js</li>
-<li>pdf 可以用 pdf.js</li>
-</ul>
-<p>最后项目采用的开源的 <strong>kkFileView</strong></p>
-]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>office</tag>
-        <tag>preview</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数据可视化工具选型参考</title>
     <url>/%E5%BC%80%E5%8F%91/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E9%80%89%E5%9E%8B%E5%8F%82%E8%80%83/</url>
     <content><![CDATA[<p>本文主要对比现在的一些可视化工具方便技术选型。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="数据可视化工具"><a href="#数据可视化工具" class="headerlink" title="数据可视化工具"></a>数据可视化工具</h1><ul>
 <li>Leaflet|28.9K|适合移动设备</li>
@@ -2315,7 +2248,7 @@ $ <span class="token builtin class-name">cd</span> srs/trunk <span class="token 
     <title>数据库字符集不匹配</title>
     <url>/Bug%E8%A7%A3%E5%86%B3/Database/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8D%E5%8C%B9%E9%85%8D/</url>
     <content><![CDATA[<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>开发中遇到一个数据库字符集的问题 Caused by: java.sql.SQLException: Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation ‘=’</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>设置数据库的字符集为 utf-8</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ALTER table action CONVERT TO CHARACTER SET utf8<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -2326,6 +2259,37 @@ $ <span class="token builtin class-name">cd</span> srs/trunk <span class="token 
       </categories>
       <tags>
         <tag>database</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文档在线预览</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E6%96%87%E6%A1%A3%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88/</url>
+    <content><![CDATA[<p>项目上需要在线预览 office 文件，项目为外面是 Android webview 壳子，里面为前端 H5 页面，在网上搜集了一些在线预览 office 的解决方式，整理出来。</p>
+<span id="more"></span>
+
+<h1 id="网上资源"><a href="#网上资源" class="headerlink" title="网上资源"></a>网上资源</h1><ol>
+<li>微软提供的在线预览，地址为<code>https://view.officeapps.live.com/op/embed.aspx?src=外网office文件地址</code>。</li>
+<li>百度文库、金山 WPS 都提供收费在线预览，或者业内付费产品有<span class="exturl" data-url="aHR0cDovL3d3dy55b3pvZGNzLmNvbS8=">永中 office<i class="fa fa-external-link-alt"></i></span>、<span class="exturl" data-url="aHR0cDovL3d3dy5vZmZpY2V3ZWIzNjUuY29tLw==">office365<i class="fa fa-external-link-alt"></i></span>、<span class="exturl" data-url="aHR0cHM6Ly93d3cuaWRvY3YuY29tLw==">idocv<i class="fa fa-external-link-alt"></i></span></li>
+<li>通过隐式 intent 调用手机中的文档处理相关的 app</li>
+<li>更换 webview 为腾讯 X5 内核，但不支持在线预览</li>
+<li>office web apps 需要 windows 服务器，已更名为 office online</li>
+<li>file-online-preview 基于 springboot 实现，已改名为 kkFileView</li>
+<li>openoffice/Aspose</li>
+</ol>
+<h1 id="自己编写"><a href="#自己编写" class="headerlink" title="自己编写"></a>自己编写</h1><p>如果要自己编写的话，在前端这块</p>
+<ul>
+<li>excel 可以用 sheetjs</li>
+<li>word 可以用 mammoth.js</li>
+<li>pdf 可以用 pdf.js</li>
+</ul>
+<p>最后项目采用的开源的 <strong>kkFileView</strong></p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>office</tag>
+        <tag>preview</tag>
       </tags>
   </entry>
 </search>
