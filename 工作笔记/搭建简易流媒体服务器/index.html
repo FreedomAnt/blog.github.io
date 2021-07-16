@@ -25,21 +25,24 @@
   <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;freedomant.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:true,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:true,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:true,&quot;pangu&quot;:true,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script>
-<meta name="description" content="搭建流媒体服务器主要有三个部分，服务端+推流端+拉流端  服务端：srs、nginx-rtmp  推流端：obs-studio、ffmpeg  拉流端：vlc 或者其他播放器   这里我们基于 srs+obs-studio+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以查看">
+<meta name="description" content="搭建流媒体服务器主要有三个部分，服务端+推流端+拉流端  服务端：srs、nginx-rtmp  推流端：obs-studio、ffmpeg  拉流端：vlc 或者其他播放器   这里我们基于 srs+obs-studio&#x2F;ffmpeg+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以查看">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建简易流媒体服务器">
 <meta property="og:url" content="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
 <meta property="og:site_name" content="Marco&#39;s blog✍️">
-<meta property="og:description" content="搭建流媒体服务器主要有三个部分，服务端+推流端+拉流端  服务端：srs、nginx-rtmp  推流端：obs-studio、ffmpeg  拉流端：vlc 或者其他播放器   这里我们基于 srs+obs-studio+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以查看">
+<meta property="og:description" content="搭建流媒体服务器主要有三个部分，服务端+推流端+拉流端  服务端：srs、nginx-rtmp  推流端：obs-studio、ffmpeg  拉流端：vlc 或者其他播放器   这里我们基于 srs+obs-studio&#x2F;ffmpeg+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以查看">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508155727.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508160224.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508160458.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508161121.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508164251.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210628192204.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210628192404.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508164643.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210628192547.png">
 <meta property="article:published_time" content="2021-05-08T11:22:14.000Z">
-<meta property="article:modified_time" content="2021-05-12T01:03:49.695Z">
+<meta property="article:modified_time" content="2021-06-28T11:26:37.217Z">
 <meta property="article:author" content="Marco">
 <meta property="article:tag" content="srs">
 <meta property="article:tag" content="live">
@@ -102,9 +105,9 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">51</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">14</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">52</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -161,7 +164,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A8%E6%B5%81%E7%AB%AF"><span class="nav-number">2.</span> <span class="nav-text">推流端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%89%E6%B5%81%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">拉流端</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A8%E6%B5%81%E7%AB%AF"><span class="nav-number">2.</span> <span class="nav-text">推流端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OBS-Studio"><span class="nav-number">2.1.</span> <span class="nav-text">OBS Studio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FFmpeg"><span class="nav-number">2.2.</span> <span class="nav-text">FFmpeg</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%89%E6%B5%81%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">拉流端</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -177,20 +180,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -272,7 +275,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-05-12 09:03:49" itemprop="dateModified" datetime="2021-05-12T09:03:49+08:00">2021-05-12</time>
+        <time title="修改时间：2021-06-28 19:26:37" itemprop="dateModified" datetime="2021-06-28T19:26:37+08:00">2021-06-28</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -299,14 +302,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
+      <span>1.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -326,11 +329,11 @@
 <li><p>拉流端：vlc 或者其他播放器</p>
 </li>
 </ul>
-<p>这里我们基于 srs+obs-studio+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3YxX0NOX0NvbXBhcmU=">查看<i class="fa fa-external-link-alt"></i></span></p>
+<p>这里我们基于 srs+obs-studio/ffmpeg+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3YxX0NOX0NvbXBhcmU=">查看<i class="fa fa-external-link-alt"></i></span></p>
 <span id="more"></span>
 
 <h1 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h1><p>SRS(Simple Realtime Server)是一个简单高效的实时视频服务器，支持 RTMP/WebRTC/HLS/HTTP-FLV/SRT/GB28181。<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycw==">开源地址<i class="fa fa-external-link-alt"></i></span>，这里我们使用 3.0 的版本，v4 版本新增<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3Y0X0NOX1dlYlJUQyNjb25maWctY2FuZGlkYXRl">webrtc<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29zc3JzL3Nycy93aWtpL3YzX0NOX0hvbWU=">文档地址<i class="fa fa-external-link-alt"></i></span>，以 docker 的方式简易安装。<span class="exturl" data-url="aHR0cHM6Ly9vc3Nycy5uZXQv">官网地址<i class="fa fa-external-link-alt"></i></span>，RTMP 默认端口是 1935</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run -p <span class="token number">1935</span>:1935 -p <span class="token number">1985</span>:1985 -p <span class="token number">8080</span>:8080 ossrs/srs:3<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ docker run -p <span class="token number">1935</span>:1935 -p <span class="token number">1985</span>:1985 -p <span class="token number">8080</span>:8080 --name<span class="token operator">=</span>srs ossrs/srs:3<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>启动之后打开<code>http://192.168.8.123:8080/</code>，可以看到 SRS 已经启动成功</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508155727.png" alt="SRS"></p>
@@ -341,12 +344,11 @@
 </ul>
 <blockquote>
 <p>如果想要自己编译，代码如下：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> clone -b <span class="token number">3</span>.0release https://gitee.com/ossrs/srs.git <span class="token operator">&amp;&amp;</span>
-$ <span class="token builtin class-name">cd</span> srs/trunk <span class="token operator">&amp;&amp;</span> ./configure <span class="token operator">&amp;&amp;</span> <span class="token function">make</span> <span class="token operator">&amp;&amp;</span> ./objs/srs -c conf/srs.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> clone -b <span class="token number">3</span>.0release https://gitee.com/ossrs/srs.git <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">cd</span> srs/trunk <span class="token operator">&amp;&amp;</span> ./configure <span class="token operator">&amp;&amp;</span> <span class="token function">make</span> <span class="token operator">&amp;&amp;</span> ./objs/srs -c conf/srs.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>其中配置文件为<code>conf/srs.conf</code>，日志为<code>./objs/srs.log</code></p>
 </blockquote>
-<h1 id="推流端"><a href="#推流端" class="headerlink" title="推流端"></a>推流端</h1><p>OBS Studio 是一个直播录制软件，应用广泛，开源免费，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29ic3Byb2plY3Qvb2JzLXN0dWRpby9yZWxlYXNlcw==">开源下载地址<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9vYnNwcm9qZWN0LmNvbS8=">官网下载地址<i class="fa fa-external-link-alt"></i></span></p>
+<h1 id="推流端"><a href="#推流端" class="headerlink" title="推流端"></a>推流端</h1><h2 id="OBS-Studio"><a href="#OBS-Studio" class="headerlink" title="OBS Studio"></a>OBS Studio</h2><p>OBS Studio 是一个直播录制软件，应用广泛，开源免费，<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL29ic3Byb2plY3Qvb2JzLXN0dWRpby9yZWxlYXNlcw==">开源下载地址<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9vYnNwcm9qZWN0LmNvbS8=">官网下载地址<i class="fa fa-external-link-alt"></i></span></p>
 <p>选择适合自己系统的安装包，下载完成之后安装。</p>
 <p>点击左下角“来源”的“+”号，选择媒体源</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508160224.png" alt="选择来源"></p>
@@ -356,21 +358,34 @@ $ <span class="token builtin class-name">cd</span> srs/trunk <span class="token 
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508161121.png" alt="设置推流"></p>
 <p>设置完成之后点击右下角“开始推流”，在 docker 控制台能看到打印的信息。</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508164251.png" alt="docker打印信息"></p>
-<blockquote>
-<p>如果需要用 ffmpeg 推流的话，代码如下：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run --network<span class="token operator">=</span>host ossrs/srs:encoder ffmpeg -re -i ./doc/source.flv <span class="token punctuation">\</span>
-  -c copy -f flv -y rtmp://localhost/live/livestream<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="FFmpeg"><a href="#FFmpeg" class="headerlink" title="FFmpeg"></a>FFmpeg</h2><p>如果需要用 ffmpeg 推流的话，在前面的 container(名称为 srs)里面已经有 ffmpeg，我们进入 srs 的控制台:</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it srs <span class="token function">bash</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>视频文件名<code>./doc/source.flv</code></p>
-</blockquote>
+<p>在目录<code>/usr/local/srs/</code>下新建一个文件夹 doc</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">mkdir</span> doc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>新建一个终端，本机环境我们先切换到本机需要拷贝的目录，再拷贝文件到容器：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token function">cp</span> test.mp4 srs:/usr/local/srs/doc/test.mp4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>到 srs 容器的 shell 中，先切换到 ffmpeg 命令目录，再推 rtmp 流到 srs：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token builtin class-name">cd</span> /usr/local/srs/objs/ffmpeg/bin
+$ ./ffmpeg -re -i /usr/local/srs/doc/test.mp4 -c copy -f flv -y rtmp://localhost/live/livestream<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210628192204.png" alt="rtmp推流"></p>
+<p>切换到 hls 的目录下面能看到切片好的文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token builtin class-name">cd</span> /usr/local/srs/objs/nginx/html/live<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>注意：如果使用 ffmpeg 推 rtmp 流，这里的输出格式指定为 flv，即<code>-f flv</code></strong></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210628192404.png" alt="切片的ts文件"></p>
 <h1 id="拉流端"><a href="#拉流端" class="headerlink" title="拉流端"></a>拉流端</h1><p>打开 VLC 播放器，选择媒体–&gt;打开网络串流。输入地址</p>
 <ul>
 <li>RTMP 地址<code>rtmp://192.168.8.123:1935/live/livestream</code></li>
 <li>H5(HTTP-FLV)地址<code>http://192.168.8.123:8080/live/livestream.flv</code></li>
-<li>H5(HLS)地址<code>http://192.168.8.123:8080/live/m3u8.flv</code></li>
+<li>H5(HLS)地址<code>http://192.168.8.123:8080/live/livestream.m3u8</code></li>
 </ul>
-<p>H5 的地址也可以用本地在线的 SRS 播放器<code>http://192.168.8.123:8080/players/srs_player.html</code></p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210508164643.png" alt="VLC播放"></p>
+<p>H5 的地址也可以用本地在线的 SRS 播放器<code>http://192.168.8.123:8080/players/srs_player.html</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210628192547.png" alt="srs播放器"></p>
 <p>如果需要采集摄像头的话，在 obs-studio 的左下角”来源”选择”视频采集设备”即可。</p>
 
     </div>
@@ -446,13 +461,13 @@ $ <span class="token builtin class-name">cd</span> srs/trunk <span class="token 
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">57k</span>
+    <span title="站点总字数">61k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">52 分钟</span>
+    <span title="站点阅读时长">56 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

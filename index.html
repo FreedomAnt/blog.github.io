@@ -92,9 +92,9 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">51</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">14</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">52</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -166,20 +166,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -220,6 +220,214 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Websocket/websocket%E7%BB%8F%E5%B8%B8%E8%87%AA%E5%8A%A8%E5%85%B3%E9%97%AD%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Marco">
+      <meta itemprop="description" content="talk is cheap, show me the code">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Marco's blog✍️">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Bug%E8%A7%A3%E5%86%B3/Websocket/websocket%E7%BB%8F%E5%B8%B8%E8%87%AA%E5%8A%A8%E5%85%B3%E9%97%AD%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">websocket经常自动关闭问题解决</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-07-16 19:59:02 / 修改时间：20:30:18" itemprop="dateCreated datePublished" datetime="2021-07-16T19:59:02+08:00">2021-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/" itemprop="url" rel="index"><span itemprop="name">Bug解决</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/Websocket/" itemprop="url" rel="index"><span itemprop="name">Websocket</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>记一次 Websocket 经常 close 问题的解决方式。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Bug%E8%A7%A3%E5%86%B3/Websocket/websocket%E7%BB%8F%E5%B8%B8%E8%87%AA%E5%8A%A8%E5%85%B3%E9%97%AD%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Nginx/nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%9B%BE%E7%89%87%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Marco">
+      <meta itemprop="description" content="talk is cheap, show me the code">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Marco's blog✍️">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Bug%E8%A7%A3%E5%86%B3/Nginx/nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%9B%BE%E7%89%87%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">nginx反向代理图片报错解决</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-22 16:42:10" itemprop="dateCreated datePublished" datetime="2021-06-22T16:42:10+08:00">2021-06-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-07-12 10:43:29" itemprop="dateModified" datetime="2021-07-12T10:43:29+08:00">2021-07-12</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/" itemprop="url" rel="index"><span itemprop="name">Bug解决</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/Nginx/" itemprop="url" rel="index"><span itemprop="name">Nginx</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>记一次 Nginx 反向代理的报错解决。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Bug%E8%A7%A3%E5%86%B3/Nginx/nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%9B%BE%E7%89%87%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -460,7 +668,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-05-12 09:03:49" itemprop="dateModified" datetime="2021-05-12T09:03:49+08:00">2021-05-12</time>
+        <time title="修改时间：2021-06-28 19:26:37" itemprop="dateModified" datetime="2021-06-28T19:26:37+08:00">2021-06-28</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -480,14 +688,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
+      <span>1.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -507,7 +715,7 @@
 <li><p>拉流端：vlc 或者其他播放器</p>
 </li>
 </ul>
-<p>这里我们基于 srs+obs-studio+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以<a target="_blank" rel="noopener" href="https://github.com/ossrs/srs/wiki/v1_CN_Compare">查看</a></p>
+<p>这里我们基于 srs+obs-studio/ffmpeg+vlc 实现搭建流媒体服务器，srs 与 nginx 以及其他流媒体服务端对比可以<a target="_blank" rel="noopener" href="https://github.com/ossrs/srs/wiki/v1_CN_Compare">查看</a></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8/#more" rel="contents">
@@ -1060,220 +1268,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Marco">
-      <meta itemprop="description" content="talk is cheap, show me the code">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Marco's blog✍️">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/" class="post-title-link" itemprop="url">使用puppeteer实现自动登录和测试页面</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-02 16:10:06" itemprop="dateCreated datePublished" datetime="2020-12-02T16:10:06+08:00">2020-12-02</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-05-12 09:03:44" itemprop="dateModified" datetime="2021-05-12T09:03:44+08:00">2021-05-12</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Marco">
-      <meta itemprop="description" content="talk is cheap, show me the code">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Marco's blog✍️">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">回车换行问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-16 09:36:52" itemprop="dateCreated datePublished" datetime="2020-11-16T09:36:52+08:00">2020-11-16</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-05-12 09:03:47" itemprop="dateModified" datetime="2021-05-12T09:03:47+08:00">2021-05-12</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/" itemprop="url" rel="index"><span itemprop="name">Bug解决</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>记录一次换行符引发的问题。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Bug%E8%A7%A3%E5%86%B3/Git/%E5%9B%9E%E8%BD%A6%E6%8D%A2%E8%A1%8C%E9%97%AE%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1298,13 +1292,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">57k</span>
+    <span title="站点总字数">61k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">52 分钟</span>
+    <span title="站点阅读时长">56 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
