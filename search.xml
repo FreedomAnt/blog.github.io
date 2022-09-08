@@ -2864,4 +2864,136 @@ bot
         <tag>wechaty</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Threejs屏幕坐标和世界坐标</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/Threejs%E5%B1%8F%E5%B9%95%E5%9D%90%E6%A0%87%E5%92%8C%E4%B8%96%E7%95%8C%E5%9D%90%E6%A0%87/</url>
+    <content><![CDATA[<p>这里记录一下Three.js中屏幕坐标与世界坐标互转。</p>
+<span id="more"></span>
+
+<p>Three.js中如果要点击一个场景中的物体，需要用到屏幕坐标和世界坐标的互转，转换需要以下几步</p>
+<p>屏幕坐标=&gt;标准设备坐标=&gt;世界坐标，我们常用的屏幕坐标系如下，左上角是原点。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/202209082058272.png" alt="常用坐标系"></p>
+<p>而标准设备坐标采用右手坐标系，示例图如下：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/202209082058998.png" alt="右手坐标系"></p>
+<h1 id="屏幕坐标转世界坐标"><a href="#屏幕坐标转世界坐标" class="headerlink" title="屏幕坐标转世界坐标"></a>屏幕坐标转世界坐标</h1><p>转换步骤如下：</p>
+<ol>
+<li><p>这里我们设canvas坐标系的宽为 $w$ ，高为 $h$ ，Three.js中的中心点就是$w/2$,$h/2$,</p>
+</li>
+<li><p>假设有一个点canvas坐标为(x,y)，那么这个点相对于Three.js中的中心点就是<br>$$<br>x_1=-(\frac{w}{2}-x)<br>$$</p>
+<p>$$<br>y_1=(\frac{h}{2}-y)<br>$$</p>
+<p><strong>注意x轴和y轴的方向。</strong></p>
+</li>
+<li><p>将$x_1$,$y_1$标准化到[-1,1]之间，需要再除以Three.js的中心点，转换如下：<br>$$<br>x_1=\frac{-(\frac{w}{2}-x)}{\frac{w}{2}}=\frac{2x}{w}-1<br>$$</p>
+<p>$$<br>y_1=\frac{(\frac{h}{2}-y)}{\frac{h}{2}}=-\frac{2y}{h}+1<br>$$</p>
+</li>
+</ol>
+<p>使用代码表示：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> x <span class="token operator">=</span> event<span class="token punctuation">.</span>clientX<span class="token punctuation">;</span><span class="token comment">//鼠标单击坐标X</span>
+<span class="token keyword">const</span> y <span class="token operator">=</span> event<span class="token punctuation">.</span>clientY<span class="token punctuation">;</span><span class="token comment">//鼠标单击坐标Y</span>
+
+<span class="token comment">// 屏幕坐标转标准设备坐标</span>
+<span class="token keyword">const</span> x1 <span class="token operator">=</span> <span class="token punctuation">(</span> x <span class="token operator">/</span> window<span class="token punctuation">.</span>innerWidth <span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> y1 <span class="token operator">=</span> <span class="token operator">-</span><span class="token punctuation">(</span> y <span class="token operator">/</span> window<span class="token punctuation">.</span>innerHeight <span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> stdVector <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//0.5为约定俗成</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>设备坐标转世界坐标</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> worldVector <span class="token operator">=</span> stdVector<span class="token punctuation">.</span><span class="token function">unproject</span><span class="token punctuation">(</span>camera<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h1 id="世界坐标转屏幕坐标"><a href="#世界坐标转屏幕坐标" class="headerlink" title="世界坐标转屏幕坐标"></a>世界坐标转屏幕坐标</h1><p>世界坐标转屏幕坐标与上面相反，推导出公式为：</p>
+<p>$$<br>x=x_1*\frac{w}{2}+\frac{w}{2}<br>$$</p>
+<p>$$<br>y=-y_1*\frac{h}{2}+\frac{h}{2}<br>$$</p>
+<p>使用代码表示：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> centerX <span class="token operator">=</span> window<span class="token punctuation">.</span>innerWidth <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> centerY <span class="token operator">=</span> window<span class="token punctuation">.</span>innerHeight <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> standardVec <span class="token operator">=</span> worldVector<span class="token punctuation">.</span><span class="token function">project</span><span class="token punctuation">(</span>camera<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> screenX <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>centerX <span class="token operator">*</span> standardVec<span class="token punctuation">.</span>x <span class="token operator">+</span> centerX<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> screenY <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token operator">-</span>centerY <span class="token operator">*</span> standardVec<span class="token punctuation">.</span>y <span class="token operator">+</span> centerY<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>Three.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AVP项目性能优化总结</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/AVP%E9%A1%B9%E7%9B%AE%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>我们在项目开发中都会遇到一些性能方面的问题，这里主要记录总结一下我在 AVP 项目中遇到的问题，以及解决方法。</p>
+<span id="more"></span>
+
+<h1 id="问题-amp-解决方法"><a href="#问题-amp-解决方法" class="headerlink" title="问题&amp;解决方法"></a>问题&amp;解决方法</h1><h2 id="问题-1：频繁切换-Tab-导致页面卡顿"><a href="#问题-1：频繁切换-Tab-导致页面卡顿" class="headerlink" title="问题 1：频繁切换 Tab 导致页面卡顿"></a>问题 1：频繁切换 Tab 导致页面卡顿</h2><p><strong>原因分析：</strong> 在切换 tab 的时候会频繁的调用页面的生命周期，可以从页面的生命周期着手，js 是单线程，造成卡死应该是线程一直阻塞</p>
+<p><strong>解决方式：</strong> 经过排查，发现在 Threejs 中的创建 CylinderGeometry 有分段的参数 segments，为了线条更平滑，分段数的值会填写得比较大，查看相关 API 源码发现，Threejs 会根据你填写的分段数进行 for 循环计算顶点。Threejs 中部分源码如下所示：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/202209082035856.png" alt="部分源码"></p>
+<p>如果分段数过大，for 循环会造成严重的 js 阻塞，页面卡顿很严重，这里我们把分段数改小，呈现的图形视觉上能看清即可，比如圆弧，数值大致在 20 左右即可。</p>
+<h2 id="问题-2：页面内存泄漏"><a href="#问题-2：页面内存泄漏" class="headerlink" title="问题 2：页面内存泄漏"></a>问题 2：页面内存泄漏</h2><p><strong>原因分析：</strong> 这里我们采用发送模拟数据的方式测试，模拟数据发送速度快，方便观察内存泄漏的情况，如果有创建的变量以及几何体存在未释放的情况，会造成内存泄漏。</p>
+<p><strong>解决方式：</strong></p>
+<ol>
+<li><p>帧动画需要移除<code>cancelAnimationFrame(frameNum)</code></p>
+</li>
+<li><p>在 Threejs 中每一个创建的 geometry 和 material，包括 material 中包含的 texture，都需要清除，调用 dispose 方法，如果包含有多种 mesh，例如 environment，需要遍历 traverse 来清除 mesh，代码如下：</p>
+ <pre class="line-numbers language-js" data-language="js"><code class="language-js">environment<span class="token punctuation">.</span><span class="token function">traverse</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">item</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>item <span class="token keyword">instanceof</span> <span class="token class-name">Mesh</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        item<span class="token punctuation">.</span>geometry<span class="token punctuation">.</span><span class="token function">dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        item<span class="token punctuation">.</span>material<span class="token punctuation">.</span><span class="token function">dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>mesh 可以清除并移除</p>
+ <pre class="line-numbers language-js" data-language="js"><code class="language-js">mesh<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+mesh<span class="token punctuation">.</span><span class="token function">removeFromParent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li><p>WebGLRenderer 也需要清除</p>
+ <pre class="line-numbers language-js" data-language="js"><code class="language-js">renderer<span class="token punctuation">.</span>renderLists<span class="token punctuation">.</span><span class="token function">dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+renderer<span class="token punctuation">.</span><span class="token function">dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+renderer<span class="token punctuation">.</span><span class="token function">forceContextLoss</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+</ol>
+<p>可以使用 WebGLRenderer 的 info 属性可查询图形内存和渲染过程中的一些统计信息，这里用来查看内存中还剩余多少 geometry 和 material。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/202209082042749.png" alt="查看剩余"></p>
+<h2 id="问题-3：页面运行一段时间卡死"><a href="#问题-3：页面运行一段时间卡死" class="headerlink" title="问题 3：页面运行一段时间卡死"></a>问题 3：页面运行一段时间卡死</h2><p><strong>原因分析：</strong> 业务场景为：登录之后订阅接收历史轨迹线，后端发送历史轨迹线是一个点一个点的发送，前端在另一个页面需要呈现总的历史轨迹线，历史轨迹线不清空，测试发现在历史轨迹线大量接收且绘制线段的情况下运行一段时间页面会卡死。主要有两个原因：</p>
+<ol>
+<li>历史轨迹线需要存取 5 万个点，每一个点是 xyz 三个坐标，就是 15 万长度的数组，存取采用的存取到 sessionStorage，由于发送数据的速度很快，约 10ms~20ms，就会频繁的操作 storage，造成性能问题，且数组很大，大数组的删除添加也会造成一定的性能问题。</li>
+<li>在画历史轨迹线的时候采用的先定义一个总的数组，也就是 15 万个值的一个数组，画轨迹线的时候会频繁的操作这个数组<strong>并根据这个数组更新线段</strong>，会造成很大的性能压力。</li>
+</ol>
+<p><strong>解决方式：</strong></p>
+<ol>
+<li>首先解决第一个问题，这里我们采用类似 buff 的形式，使用一个临时数组来存放收到的历史点位，定义一个存放 1000 个点的数组，长度为 3000，挂在 window 下面，如果存满了，再向 storage 里面写，storage 里面存满 15 万个点之后，如果临时数组满了，就先删除 storage 里面前面的 3000 个点，再将临时数组 push 到 storage 里面。</li>
+<li>第二个问题采用分段画线的方式，进入页面的时候，把 storage 里面的总数组和 window 里面的临时数组 concat，然后初始化线段，初始化的时候将总数组分段画线，这里以 1000 个点(即 3000 长度的数组)为 thunk，每一个都画一条线段并添加到 group 里面，并建立一个临时的 tempLine，点位数组长度为 3000，放在 group 第一位，用来存放新接收的点位，当临时线段的点长度满 3000，就将点位新建一个 line 并 push 到 group 末尾，清空 tempLine，如果总的 line 数量达到了存满 5 万个点，就删除第二个 line(第一个为 tempLine)。</li>
+</ol>
+<h2 id="问题-4：页面接收到原有的-listener-数据"><a href="#问题-4：页面接收到原有的-listener-数据" class="headerlink" title="问题 4：页面接收到原有的 listener 数据"></a>问题 4：页面接收到原有的 listener 数据</h2><p><strong>原因分析：</strong> 经过测试发现，在 Electron 主进程和渲染进程通信桥接的过程中，由于 listener 发送接收挂在 window 下面，在注册了 listener 之后没有及时的清除掉，页面刷新后导致新建的 listener 收到了原注册的 listener 本该收到的数据。</p>
+<p><strong>解决方式：</strong> 在每次注册了相关的 listener 之后，在页面生命周期结束的时候要记得 remove 掉该 listener，相关代码如下：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">receive<span class="token operator">:</span> <span class="token punctuation">(</span>channel<span class="token operator">:</span> string<span class="token punctuation">,</span> <span class="token function-variable function">listener</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token operator">...</span>args<span class="token operator">:</span> any<span class="token punctuation">[</span><span class="token punctuation">]</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">void</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token parameter">Function</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> <span class="token function-variable function">tempListener</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token operator">:</span> Electron<span class="token punctuation">.</span>IpcRendererEvent<span class="token punctuation">,</span> data<span class="token operator">:</span> any</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token function">listener</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ipcRenderer<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span>channel<span class="token punctuation">,</span> tempListener<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+        ipcRenderer<span class="token punctuation">.</span><span class="token function">removeListener</span><span class="token punctuation">(</span>channel<span class="token punctuation">,</span> tempListener<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>也可通过<code>ipcRenderer.eventNames</code>和<code>ipcRenderer.listenerCount</code>查看某个 channel 还剩多少 listener。</p>
+<h2 id="问题-5：子组件频繁更新"><a href="#问题-5：子组件频繁更新" class="headerlink" title="问题 5：子组件频繁更新"></a>问题 5：子组件频繁更新</h2><p><strong>原因分析：</strong> 在 React 中，我们知道任一的 props 改变或者 setState，组件都会被更新，原有的逻辑是父组件接收到数据，由 props 传到子组件，父组件频繁的接收数据通过 props 传到子组件，导致子组件频繁刷新。</p>
+<p><strong>解决方式：</strong></p>
+<ol>
+<li>直接通过 props 传几组数据方式不太好，这里改为父组件调用子组件的方法，子组件通过 useImperativeHandle 暴露函数，父组件接收到数据之后调用此函数</li>
+<li>如果子组件要更新父组件的内容，不用把父组件的变量参数都传到子组件，可通过 props 的方式传递父组件的函数，子组件来调用该函数</li>
+<li>子组件为避免频繁更新，需要加上<code>React.memo</code></li>
+<li>可缓存的函数使用 useCallback</li>
+</ol>
+<h2 id="其他优化"><a href="#其他优化" class="headerlink" title="其他优化"></a>其他优化</h2><h3 id="删除冗余代码"><a href="#删除冗余代码" class="headerlink" title="删除冗余代码"></a>删除冗余代码</h3><p>删除掉冗余代码，例如<code>line.computeLineDistances()</code>实际没有用到距离，可删除，减少 threejs 内部操作。</p>
+<h3 id="提取重复代码"><a href="#提取重复代码" class="headerlink" title="提取重复代码"></a>提取重复代码</h3><p>threejs 的模型比较耗内存，频繁加载同一模型的情况下，可将模型提取到 umi 的 useModel 中</p>
+<h3 id="在-render-中少做操作"><a href="#在-render-中少做操作" class="headerlink" title="在 render 中少做操作"></a>在 render 中少做操作</h3><p>一般来说我们调用 render 根据 requestAnimationFrame 来做的操作，调用非常频繁，在 render 里面需要少做其他操作，比如 resize，可提取到外部操作一次即可。</p>
+<h3 id="部分几何体替换"><a href="#部分几何体替换" class="headerlink" title="部分几何体替换"></a>部分几何体替换</h3><p>有部分几何体只实现了简单的功能，可用其他代替，例如 TextGeometry，实际中没有用到 3D 的场景，可使用 canvas 贴图来代替。</p>
+<h3 id="部分逻辑优化"><a href="#部分逻辑优化" class="headerlink" title="部分逻辑优化"></a>部分逻辑优化</h3><p>原有的线障碍物的方式是两个点，需求是根据两个点来画出一个厚度 50 的长方体，原有的方式是通过两个点计算出长方体顶部的 4 个点来绘制，代码未加注释的情况下晦涩难懂，这里改为根据两个点的长度和中心点先画一个长方体 BoxGeometry，再根据原有的两个点连接成的线段与 X 轴的夹角来计算长方体的旋转弧度。代码精简易读。</p>
+<h3 id="其他注意点："><a href="#其他注意点：" class="headerlink" title="其他注意点："></a>其他注意点：</h3><p>●  多个地方用同一个引用的话，对象的操作会影响到其他的引用，需要 clone 一份新的数据，例如 carModel、PDC 里面的点位 reverse 等。<br>●  数组循环过程中不能有删除当前数组的操作<br>●  数组操作的时候，例如 7 除以 10，用除法<code>7/10</code>，不要用<code>7*0.1</code>这种乘法的方式，会有精度问题<br>●  如果两个物体的绘制有重叠并且闪烁的情况，考虑 Material 的<code>depthTest</code>属性设置为<code>false</code><br>●  摄像头的属性改变之后需要设置<code>camera.updateProjectionMatrix()</code><br>●  注意 OrthographicCamera 相机镜头的远近是使用 minZoom 和 maxZoom，PerspectiveCamera 相机镜头的远近使用 minDistance 和 maxDistance<br>●  如果场景 Scene 旋转了，这时候用 CameraHelper 不太好观察，CameraHelper 的图形还是没有旋转的图形，需要设置摄像头的正方向，即<code>camera.up.set(0,0,1)</code>。<br>●  设置 OrbitControls 的原点<code>control.target</code>的时候需要注意，如果有 reset 的情况，原点设置了之后需要保存当前原点并更新，即</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">control<span class="token punctuation">.</span>target <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">135</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+control<span class="token punctuation">.</span><span class="token function">saveState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+control<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>Three.js</tag>
+        <tag>Electron</tag>
+      </tags>
+  </entry>
 </search>
