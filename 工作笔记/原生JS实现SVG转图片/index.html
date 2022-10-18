@@ -24,28 +24,28 @@
   <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;freedomant.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:true,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:true,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:true,&quot;pangu&quot;:true,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script>
-<meta name="description" content="项目上需要统计市面上的一些电视型号信息，想到可以用 chrome 插件来做，这里记录一下简易插件的实现过程。">
+<meta name="description" content="记录一下原生JS实现SVG转图片的功能,可实现水印为图片的情况。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="chrome插件简易入门">
-<meta property="og:url" content="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/chrome%E6%8F%92%E4%BB%B6%E7%AE%80%E6%98%93%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:title" content="原生JS实现SVG转图片">
+<meta property="og:url" content="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E5%8E%9F%E7%94%9FJS%E5%AE%9E%E7%8E%B0SVG%E8%BD%AC%E5%9B%BE%E7%89%87/index.html">
 <meta property="og:site_name" content="Marco&#39;s blog✍️">
-<meta property="og:description" content="项目上需要统计市面上的一些电视型号信息，想到可以用 chrome 插件来做，这里记录一下简易插件的实现过程。">
+<meta property="og:description" content="记录一下原生JS实现SVG转图片的功能,可实现水印为图片的情况。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-05-10T04:42:17.000Z">
-<meta property="article:modified_time" content="2021-05-12T01:04:00.489Z">
+<meta property="article:published_time" content="2022-10-18T13:06:47.000Z">
+<meta property="article:modified_time" content="2022-10-18T13:37:38.182Z">
 <meta property="article:author" content="Marco">
-<meta property="article:tag" content="chromeExtension">
+<meta property="article:tag" content="svg">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/chrome%E6%8F%92%E4%BB%B6%E7%AE%80%E6%98%93%E5%85%A5%E9%97%A8/">
+<link rel="canonical" href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E5%8E%9F%E7%94%9FJS%E5%AE%9E%E7%8E%B0SVG%E8%BD%AC%E5%9B%BE%E7%89%87/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;freedomant.github.io&#x2F;%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0&#x2F;chrome%E6%8F%92%E4%BB%B6%E7%AE%80%E6%98%93%E5%85%A5%E9%97%A8&#x2F;&quot;,&quot;path&quot;:&quot;工作笔记&#x2F;chrome插件简易入门&#x2F;&quot;,&quot;title&quot;:&quot;chrome插件简易入门&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;freedomant.github.io&#x2F;%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0&#x2F;%E5%8E%9F%E7%94%9FJS%E5%AE%9E%E7%8E%B0SVG%E8%BD%AC%E5%9B%BE%E7%89%87&#x2F;&quot;,&quot;path&quot;:&quot;工作笔记&#x2F;原生JS实现SVG转图片&#x2F;&quot;,&quot;title&quot;:&quot;原生JS实现SVG转图片&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>chrome插件简易入门 | Marco's blog✍️</title><script src="/js/config.js"></script>
+<title>原生JS实现SVG转图片 | Marco's blog✍️</title><script src="/js/config.js"></script>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -152,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#manifest-json"><span class="nav-number">1.</span> <span class="nav-text">manifest.json</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#background-js"><span class="nav-number">2.</span> <span class="nav-text">background.js</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#content-script-js"><span class="nav-number">3.</span> <span class="nav-text">content-script.js</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%89%A9%E5%B1%95"><span class="nav-number">4.</span> <span class="nav-text">安装扩展</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -232,7 +232,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/chrome%E6%8F%92%E4%BB%B6%E7%AE%80%E6%98%93%E5%85%A5%E9%97%A8/">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E5%8E%9F%E7%94%9FJS%E5%AE%9E%E7%8E%B0SVG%E8%BD%AC%E5%9B%BE%E7%89%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -245,7 +245,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          chrome插件简易入门
+          原生JS实现SVG转图片
         </h1>
 
         <div class="post-meta-container">
@@ -255,16 +255,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2021-05-10 12:42:17" itemprop="dateCreated datePublished" datetime="2021-05-10T12:42:17+08:00">2021-05-10</time>
+      <time title="创建时间：2022-10-18 21:06:47 / 修改时间：21:37:38" itemprop="dateCreated datePublished" datetime="2022-10-18T21:06:47+08:00">2022-10-18</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-05-12 09:04:00" itemprop="dateModified" datetime="2021-05-12T09:04:00+08:00">2021-05-12</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -290,14 +284,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.6k</span>
+      <span>1.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -308,79 +302,101 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>项目上需要统计市面上的一些电视型号信息，想到可以用 chrome 插件来做，这里记录一下简易插件的实现过程。</p>
+        <p>记录一下原生JS实现SVG转图片的功能,可实现水印为图片的情况。</p>
 <span id="more"></span>
 
-<h1 id="manifest-json"><a href="#manifest-json" class="headerlink" title="manifest.json"></a>manifest.json</h1><p>主要文件 manifest.json 包含了插件一些基础配置，代码如下：</p>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-  <span class="token property">"manifest_version"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"GetAndroidTVList"</span><span class="token punctuation">,</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"1.0.0"</span><span class="token punctuation">,</span>
-  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
-  <span class="token property">"icons"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"16"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-    <span class="token property">"48"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-    <span class="token property">"128"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"browser_action"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"default_icon"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-    <span class="token property">"default_title"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
-    <span class="token property">"default_popup"</span><span class="token operator">:</span> <span class="token string">"popup.html"</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"background"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"background.js"</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"permissions"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"contextMenus"</span><span class="token punctuation">,</span> <span class="token string">"notifications"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"content_scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">&#123;</span>
-      <span class="token property">"matches"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"http://detail.zol.com.cn/digital_tv_advSearch/*"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token property">"js"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"content-script.js"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token property">"run_at"</span><span class="token operator">:</span> <span class="token string">"document_end"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"homepage_url"</span><span class="token operator">:</span> <span class="token string">"https://xxxxx/"</span><span class="token punctuation">,</span>
-  <span class="token property">"options_page"</span><span class="token operator">:</span> <span class="token string">"options.html"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><ol>
+<li><p>foreignObject</p>
+<p>SVG中的 <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvU1ZHL0VsZW1lbnQvZm9yZWlnbk9iamVjdA==">foreignObject<i class="fa fa-external-link-alt"></i></span> 元素允许包含来自不同的 XML 命名空间的元素。在浏览器的上下文中，很可能是 XHTML / HTML。</p>
+<p>注意SVG的MIME类型为<code>image/svg+xml</code>.</p>
+<p>新建一个SVG的字符串</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> svgStr <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+     &lt;svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+         &lt;style>
+             div &#123;
+                 width: 200px;
+                 height: 200px;
+                 line-height: 200px;
+                 text-align: center;
+                 transform: rotate(-20deg);
+                 opacity: 0.5;
+                 color: #5DA6F8;
+             &#125;
+         &lt;/style>
+         &lt;foreignObject width="200" height="200">
+             &lt;div xmlns="http://www.w3.org/1999/xhtml">
+                 Wu Ming 测试
+             &lt;/div>
+         &lt;/foreignObject>
+     &lt;/svg>
+ </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>原生JS将SVG转图片的方式</p>
+<ol>
+<li><p>直接使用svg字符串</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'test'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token string">"data:image/svg+xml,"</span> <span class="token operator">+</span> svgStr<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里我们使用的 v2 版本，现在 v3 版本也可以用了，<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuY2hyb21lLmNvbS9kb2NzL2V4dGVuc2lvbnMvbXYzL2dldHN0YXJ0ZWQv">地址<i class="fa fa-external-link-alt"></i></span></p>
-<p>主要介绍几个常用的属性，</p>
-<ul>
-<li>browser_action：浏览器右上角图标设置</li>
-<li>background：后台常驻 script</li>
-<li>permissions：此插件用到的浏览器的权限，我们这里用到了右键菜单<code>contextMenus</code>和通知<code>notifications</code></li>
-<li>content_scripts：<strong>需要直接注入页面的 js</strong><ul>
-<li>matches：匹配地址</li>
-<li>js：待注入的 js</li>
-<li>run_at：注入的时间，可选 document_start、document_end、document_idle</li>
-</ul>
+<p>缺点：不适用于复杂的方式，如有style的情况。</p>
 </li>
-<li>homepage_url：扩展的主页 url</li>
-<li>options_page：插件选项页</li>
-</ul>
-<p>这里贴一下其他文件的示例代码</p>
-<h1 id="background-js"><a href="#background-js" class="headerlink" title="background.js"></a>background.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js">chrome<span class="token punctuation">.</span>contextMenus<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  title<span class="token operator">:</span> <span class="token string">"添加TV数据"</span><span class="token punctuation">,</span>
-  id<span class="token operator">:</span> <span class="token string">"GetTV"</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">onclick</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    chrome<span class="token punctuation">.</span>notifications<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
-      type<span class="token operator">:</span> <span class="token string">"basic"</span><span class="token punctuation">,</span>
-      iconUrl<span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-      title<span class="token operator">:</span> <span class="token string">"这是标题"</span><span class="token punctuation">,</span>
-      message<span class="token operator">:</span> <span class="token string">"您刚才点击了自定义右键菜单！"</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<li><p>使用base64</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'test'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token string">"data:image/svg+xml;base64,"</span> <span class="token operator">+</span> <span class="token function">btoa</span><span class="token punctuation">(</span><span class="token function">unescape</span><span class="token punctuation">(</span><span class="token function">encodeURIComponent</span><span class="token punctuation">(</span>svgStr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h1 id="content-script-js"><a href="#content-script-js" class="headerlink" title="content-script.js"></a>content-script.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> l <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-<span class="token keyword">var</span> str <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  str <span class="token operator">+=</span>
-    document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-      <span class="token punctuation">.</span>textContent<span class="token punctuation">;</span>
-  str <span class="token operator">+=</span> <span class="token string">"、"</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>注意这里如果是有中文的话，直接btoa转码会报错，就需要重新编解码一下。</p>
+</blockquote>
+</li>
+<li><p>使用createObjectURL</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> imageUrl <span class="token operator">=</span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span>svgStr<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'image/svg+xml'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这样就实现了一个简易的获取 androidTV 的名称的 chrome 插件，名称打印到 console 的。</p>
-<h1 id="安装扩展"><a href="#安装扩展" class="headerlink" title="安装扩展"></a>安装扩展</h1><p>这里我们打开 chrome 浏览器输入<code>chrome://extensions/</code>，点击页面右上角打开<code>开发者模式</code>，选择左上角<code>加载已解压的扩展程序</code>，选中我们的测试插件即可。</p>
+<blockquote>
+<p>注意<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvQVBJL0Jsb2IvQmxvYg==">Blob<i class="fa fa-external-link-alt"></i></span>构造函数的用法</p>
+</blockquote>
+</li>
+</ol>
+</li>
+</ol>
+<p>如果是image的url可以使用上面三种方式，如果是background-image使用后两者</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>完整代码如下:</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">http-equiv</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>X-UA-Compatible<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>IE=edge<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width=device-width, initial-scale=1.0<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Document<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>testDiv<span class="token punctuation">"</span></span> <span class="token special-attr"><span class="token attr-name">style</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value css language-css"><span class="token property">width</span><span class="token punctuation">:</span> 2000px<span class="token punctuation">;</span><span class="token property">height</span><span class="token punctuation">:</span> 2000px<span class="token punctuation">;</span></span><span class="token punctuation">"</span></span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+		<span class="token keyword">const</span> svgStr <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+			&lt;svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+				&lt;style>
+					div &#123;
+						width: 200px;
+						height: 200px;
+						line-height: 200px;
+						text-align: center;
+						transform: rotate(-20deg);
+						opacity: 0.5;
+						color: #5DA6F8;
+					&#125;
+				&lt;/style>
+				&lt;foreignObject width="200" height="200">
+					&lt;div xmlns="http://www.w3.org/1999/xhtml">
+						Wu Ming 测试
+					&lt;/div>
+				&lt;/foreignObject>
+			&lt;/svg>
+			</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+		<span class="token keyword">const</span> imageUrl <span class="token operator">=</span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span>svgStr<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'image/svg+xml'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'testDiv'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>style<span class="token punctuation">.</span>backgroundImage <span class="token operator">=</span> <span class="token string">"url("</span> <span class="token operator">+</span> imageUrl <span class="token operator">+</span> <span class="token string">")"</span><span class="token punctuation">;</span>
+	</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
     </div>
 
@@ -398,7 +414,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/chrome%E6%8F%92%E4%BB%B6%E7%AE%80%E6%98%93%E5%85%A5%E9%97%A8/" title="chrome插件简易入门">https://freedomant.github.io/工作笔记/chrome插件简易入门/</a>
+      <a href="https://freedomant.github.io/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E5%8E%9F%E7%94%9FJS%E5%AE%9E%E7%8E%B0SVG%E8%BD%AC%E5%9B%BE%E7%89%87/" title="原生JS实现SVG转图片">https://freedomant.github.io/工作笔记/原生JS实现SVG转图片/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -407,21 +423,18 @@ console<span class="token punctuation">.</span><span class="token function">log<
 </div>
 
           <div class="post-tags">
-              <a href="/tags/chromeExtension/" rel="tag"># chromeExtension</a>
+              <a href="/tags/svg/" rel="tag"># svg</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="搭建简易流媒体服务器">
-                  <i class="fa fa-chevron-left"></i> 搭建简易流媒体服务器
+                <a href="/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/Threejs%E5%B1%8F%E5%B9%95%E5%9D%90%E6%A0%87%E5%92%8C%E4%B8%96%E7%95%8C%E5%9D%90%E6%A0%87/" rel="prev" title="Threejs屏幕坐标和世界坐标">
+                  <i class="fa fa-chevron-left"></i> Threejs屏幕坐标和世界坐标
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/code-server%E6%90%AD%E5%BB%BA%E5%9C%A8%E7%BA%BFVSCode%E7%8E%AF%E5%A2%83/" rel="next" title="code-server搭建在线VSCode环境">
-                  code-server搭建在线VSCode环境 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
