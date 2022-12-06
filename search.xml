@@ -80,30 +80,6 @@ control<span class="token punctuation">.</span><span class="token function">upda
       </tags>
   </entry>
   <entry>
-    <title>Android 7.0 以上网络安全配置</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android-7-0-%E4%BB%A5%E4%B8%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>开发中遇到 Android 模拟器跑项目一直请求不到网络链接。Android 版本 9.0 API28</p>
-<span id="more"></span>
-
-<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>在 Android 7.0 以上的系统中，Google 引入了一种名为网络安全配置（Network Security Configuration）的功能。<br>全面禁止了非安全的加密，如果要使用非加密的链接，需要配置 network_security_config.xml</p>
-<ol>
-<li>在 res/xml 下面新建一个 xml 文件，取名为 network_security_config.xml<br>配置如下<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>network-security-config</span><span class="token punctuation">></span></span>
- <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>base-config</span> <span class="token attr-name">cleartextTrafficPermitted</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>network-security-config</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li>在 res 下面的 AndroidManifest.xml 中的 application 标签中 添加<code>android:networkSecurityConfig=&quot;@xml/network_security_config&quot;</code></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>android</tag>
-        <tag>network</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Sentry部署</title>
     <url>/%E5%BC%80%E5%8F%91/%E9%94%99%E8%AF%AF%E8%BF%BD%E8%B8%AA/Sentry%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dldHNlbnRyeS9zZW50cnk=">Sentry<i class="fa fa-external-link-alt"></i></span>是一个实时事件记录和聚合平台。本身是基于 Django 开发的，而且也依赖到其他的如 Postgresql、 Redis 等数据库，所以一般有两种途径进行安装：通过 Docker 或用 Python 搭建。</p>
@@ -130,7 +106,7 @@ control<span class="token punctuation">.</span><span class="token function">upda
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjeDM5OyYjNTA7JiM1MzsmI3gzNTsmI3gzODsmIzUxOyYjeDM4OyYjNTI7JiN4Mzk7JiM2NDsmIzExMzsmI3g3MTsmI3gyZTsmIzk5OyYjeDZmOyYjeDZkOw==">&#x39;&#50;&#53;&#x35;&#x38;&#51;&#x38;&#52;&#x39;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiN4MzI7JiN4MzU7JiN4MzU7JiN4Mzg7JiM1MTsmI3gzODsmI3gzNDsmI3gzOTsmIzY0OyYjeDcxOyYjMTEzOyYjNDY7JiM5OTsmI3g2ZjsmI3g2ZDs=">&#57;&#x32;&#x35;&#x35;&#x38;&#51;&#x38;&#x34;&#x39;&#64;&#x71;&#113;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h1 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h1><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -140,7 +116,7 @@ control<span class="token punctuation">.</span><span class="token function">upda
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
 $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h1 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h1><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjeDM5OyYjeDMyOyYjeDM1OyYjNTM7JiM1NjsmI3gzMzsmIzU2OyYjNTI7JiN4Mzk7JiN4NDA7JiMxMTM7JiN4NzE7JiM0NjsmI3g2MzsmIzExMTsmI3g2ZDs=">&#x39;&#x32;&#x35;&#53;&#56;&#x33;&#56;&#52;&#x39;&#x40;&#113;&#x71;&#46;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h1 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h1><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiM1MDsmI3gzNTsmI3gzNTsmIzU2OyYjeDMzOyYjNTY7JiN4MzQ7JiM1NzsmI3g0MDsmI3g3MTsmIzExMzsmI3gyZTsmI3g2MzsmI3g2ZjsmIzEwOTs=">&#57;&#50;&#x35;&#x35;&#56;&#x33;&#56;&#x34;&#57;&#x40;&#x71;&#113;&#x2e;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510170805.png"></p>
 <p>我们可以创建一个 Vue 项目，在 Browser 里面可以选</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512163352.png"></p>
@@ -167,7 +143,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjOTc7JiMxMDk7JiMxMTI7JiMxMDg7JiMxMDE7JiM2NDsmIzEwOTsmIzk3OyYjeDY5OyYjMTA4OyYjNDY7JiM5OTsmI3g2ZjsmI3g2ZDs=">&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#64;&#109;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjMTAxOyYjNjQ7JiN4NmQ7JiM5NzsmIzEwNTsmIzEwODsmI3gyZTsmI3g2MzsmIzExMTsmIzEwOTs=">&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#101;&#64;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -187,7 +163,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjeDY1OyYjeDQwOyYjMTA5OyYjeDYxOyYjMTA1OyYjeDZjOyYjNDY7JiN4NjM7JiMxMTE7JiMxMDk7">&#101;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#x40;&#109;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjMTA5OyYjeDcwOyYjMTA4OyYjeDY1OyYjeDQwOyYjeDZkOyYjOTc7JiN4Njk7JiN4NmM7JiN4MmU7JiM5OTsmIzExMTsmIzEwOTs=">&#x65;&#120;&#x61;&#109;&#x70;&#108;&#x65;&#x40;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <pre><code>网易邮箱示例：
@@ -323,21 +299,19 @@ token=1ef3e7b88d614ca9aa155fe693b5a68eb73fa88aacd941cdb9cd0a86091c0894<span aria
       </tags>
   </entry>
   <entry>
-    <title>Android上canvas不显示</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android%E4%B8%8Acanvas%E4%B8%8D%E6%98%BE%E7%A4%BA/</url>
-    <content><![CDATA[<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>这次遇到的问题是 echarts 的图形在 android 模拟器中不显示，Android 版本 9.0 API28</p>
+    <title>Android 7.0 以上网络安全配置</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android-7-0-%E4%BB%A5%E4%B8%8A%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>开发中遇到 Android 模拟器跑项目一直请求不到网络链接。Android 版本 9.0 API28</p>
 <span id="more"></span>
 
-<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>Android 在 API14 以上默认启用硬件加速，如果启用硬件加速导致了视图的绘制，Android 允许您在多个级别选择是启用还是停用硬件加速。详见<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuYW5kcm9pZC5nb29nbGUuY24vZ3VpZGUvdG9waWNzL2dyYXBoaWNzL2hhcmR3YXJlLWFjY2VsP2hsPXpoLWNuI2NvbnRyb2xsaW5n">控制硬件加速<i class="fa fa-external-link-alt"></i></span><br>可以从以下四个级别控制硬件加速</p>
-<ul>
-<li>应用 Application<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>application</span> <span class="token attr-name"><span class="token namespace">android:</span>hardwareAccelerated</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
-<li>Activity<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activity</span> <span class="token attr-name"><span class="token namespace">android:</span>hardwareAccelerated</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>false<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
-<li>窗口 Window<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setFlags</span><span class="token punctuation">(</span>
-      <span class="token class-name">WindowManager<span class="token punctuation">.</span>LayoutParams</span><span class="token punctuation">.</span>FLAG_HARDWARE_ACCELERATED<span class="token punctuation">,</span>
-      <span class="token class-name">WindowManager<span class="token punctuation">.</span>LayoutParams</span><span class="token punctuation">.</span>FLAG_HARDWARE_ACCELERATED<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
-<li>视图 View<pre class="line-numbers language-java" data-language="java"><code class="language-java">myView<span class="token punctuation">.</span><span class="token function">setLayerType</span><span class="token punctuation">(</span><span class="token class-name">View</span><span class="token punctuation">.</span>LAYER_TYPE_SOFTWARE<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
-</ul>
-<p>在这四个层次中，应用和 Activity 是可以选择打开或者关闭加速的，窗口只能打开加速，视图层只能关闭加速。<br>关闭硬件加速后，canvas 可以显示。</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>在 Android 7.0 以上的系统中，Google 引入了一种名为网络安全配置（Network Security Configuration）的功能。<br>全面禁止了非安全的加密，如果要使用非加密的链接，需要配置 network_security_config.xml</p>
+<ol>
+<li>在 res/xml 下面新建一个 xml 文件，取名为 network_security_config.xml<br>配置如下<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>network-security-config</span><span class="token punctuation">></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>base-config</span> <span class="token attr-name">cleartextTrafficPermitted</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>network-security-config</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>在 res 下面的 AndroidManifest.xml 中的 application 标签中 添加<code>android:networkSecurityConfig=&quot;@xml/network_security_config&quot;</code></li>
+</ol>
 ]]></content>
       <categories>
         <category>Bug解决</category>
@@ -345,7 +319,7 @@ token=1ef3e7b88d614ca9aa155fe693b5a68eb73fa88aacd941cdb9cd0a86091c0894<span aria
       </categories>
       <tags>
         <tag>android</tag>
-        <tag>canvas</tag>
+        <tag>network</tag>
       </tags>
   </entry>
   <entry>
@@ -506,87 +480,29 @@ bot
       </tags>
   </entry>
   <entry>
-    <title>chrome插件简易入门</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/chrome%E6%8F%92%E4%BB%B6%E7%AE%80%E6%98%93%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<p>项目上需要统计市面上的一些电视型号信息，想到可以用 chrome 插件来做，这里记录一下简易插件的实现过程。</p>
+    <title>Android上canvas不显示</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Android/Android%E4%B8%8Acanvas%E4%B8%8D%E6%98%BE%E7%A4%BA/</url>
+    <content><![CDATA[<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>这次遇到的问题是 echarts 的图形在 android 模拟器中不显示，Android 版本 9.0 API28</p>
 <span id="more"></span>
 
-<h1 id="manifest-json"><a href="#manifest-json" class="headerlink" title="manifest.json"></a>manifest.json</h1><p>主要文件 manifest.json 包含了插件一些基础配置，代码如下：</p>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-  <span class="token property">"manifest_version"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"GetAndroidTVList"</span><span class="token punctuation">,</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"1.0.0"</span><span class="token punctuation">,</span>
-  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
-  <span class="token property">"icons"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"16"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-    <span class="token property">"48"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-    <span class="token property">"128"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"browser_action"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"default_icon"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-    <span class="token property">"default_title"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
-    <span class="token property">"default_popup"</span><span class="token operator">:</span> <span class="token string">"popup.html"</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"background"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"background.js"</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"permissions"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"contextMenus"</span><span class="token punctuation">,</span> <span class="token string">"notifications"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"content_scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">&#123;</span>
-      <span class="token property">"matches"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"http://detail.zol.com.cn/digital_tv_advSearch/*"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token property">"js"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"content-script.js"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token property">"run_at"</span><span class="token operator">:</span> <span class="token string">"document_end"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"homepage_url"</span><span class="token operator">:</span> <span class="token string">"https://xxxxx/"</span><span class="token punctuation">,</span>
-  <span class="token property">"options_page"</span><span class="token operator">:</span> <span class="token string">"options.html"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里我们使用的 v2 版本，现在 v3 版本也可以用了，<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuY2hyb21lLmNvbS9kb2NzL2V4dGVuc2lvbnMvbXYzL2dldHN0YXJ0ZWQv">地址<i class="fa fa-external-link-alt"></i></span></p>
-<p>主要介绍几个常用的属性，</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>Android 在 API14 以上默认启用硬件加速，如果启用硬件加速导致了视图的绘制，Android 允许您在多个级别选择是启用还是停用硬件加速。详见<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuYW5kcm9pZC5nb29nbGUuY24vZ3VpZGUvdG9waWNzL2dyYXBoaWNzL2hhcmR3YXJlLWFjY2VsP2hsPXpoLWNuI2NvbnRyb2xsaW5n">控制硬件加速<i class="fa fa-external-link-alt"></i></span><br>可以从以下四个级别控制硬件加速</p>
 <ul>
-<li>browser_action：浏览器右上角图标设置</li>
-<li>background：后台常驻 script</li>
-<li>permissions：此插件用到的浏览器的权限，我们这里用到了右键菜单<code>contextMenus</code>和通知<code>notifications</code></li>
-<li>content_scripts：<strong>需要直接注入页面的 js</strong><ul>
-<li>matches：匹配地址</li>
-<li>js：待注入的 js</li>
-<li>run_at：注入的时间，可选 document_start、document_end、document_idle</li>
+<li>应用 Application<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>application</span> <span class="token attr-name"><span class="token namespace">android:</span>hardwareAccelerated</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>Activity<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activity</span> <span class="token attr-name"><span class="token namespace">android:</span>hardwareAccelerated</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>false<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>窗口 Window<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setFlags</span><span class="token punctuation">(</span>
+      <span class="token class-name">WindowManager<span class="token punctuation">.</span>LayoutParams</span><span class="token punctuation">.</span>FLAG_HARDWARE_ACCELERATED<span class="token punctuation">,</span>
+      <span class="token class-name">WindowManager<span class="token punctuation">.</span>LayoutParams</span><span class="token punctuation">.</span>FLAG_HARDWARE_ACCELERATED<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+<li>视图 View<pre class="line-numbers language-java" data-language="java"><code class="language-java">myView<span class="token punctuation">.</span><span class="token function">setLayerType</span><span class="token punctuation">(</span><span class="token class-name">View</span><span class="token punctuation">.</span>LAYER_TYPE_SOFTWARE<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ul>
-</li>
-<li>homepage_url：扩展的主页 url</li>
-<li>options_page：插件选项页</li>
-</ul>
-<p>这里贴一下其他文件的示例代码</p>
-<h1 id="background-js"><a href="#background-js" class="headerlink" title="background.js"></a>background.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js">chrome<span class="token punctuation">.</span>contextMenus<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  title<span class="token operator">:</span> <span class="token string">"添加TV数据"</span><span class="token punctuation">,</span>
-  id<span class="token operator">:</span> <span class="token string">"GetTV"</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">onclick</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    chrome<span class="token punctuation">.</span>notifications<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
-      type<span class="token operator">:</span> <span class="token string">"basic"</span><span class="token punctuation">,</span>
-      iconUrl<span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
-      title<span class="token operator">:</span> <span class="token string">"这是标题"</span><span class="token punctuation">,</span>
-      message<span class="token operator">:</span> <span class="token string">"您刚才点击了自定义右键菜单！"</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="content-script-js"><a href="#content-script-js" class="headerlink" title="content-script.js"></a>content-script.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> l <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-<span class="token keyword">var</span> str <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  str <span class="token operator">+=</span>
-    document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-      <span class="token punctuation">.</span>textContent<span class="token punctuation">;</span>
-  str <span class="token operator">+=</span> <span class="token string">"、"</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这样就实现了一个简易的获取 androidTV 的名称的 chrome 插件，名称打印到 console 的。</p>
-<h1 id="安装扩展"><a href="#安装扩展" class="headerlink" title="安装扩展"></a>安装扩展</h1><p>这里我们打开 chrome 浏览器输入<code>chrome://extensions/</code>，点击页面右上角打开<code>开发者模式</code>，选择左上角<code>加载已解压的扩展程序</code>，选中我们的测试插件即可。</p>
+<p>在这四个层次中，应用和 Activity 是可以选择打开或者关闭加速的，窗口只能打开加速，视图层只能关闭加速。<br>关闭硬件加速后，canvas 可以显示。</p>
 ]]></content>
       <categories>
-        <category>工作笔记</category>
+        <category>Bug解决</category>
+        <category>Android</category>
       </categories>
       <tags>
-        <tag>chromeExtension</tag>
+        <tag>android</tag>
+        <tag>canvas</tag>
       </tags>
   </entry>
   <entry>
@@ -677,6 +593,90 @@ console<span class="token punctuation">.</span><span class="token function">log<
       <tags>
         <tag>code-server</tag>
         <tag>vscode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>chrome插件简易入门</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/chrome%E6%8F%92%E4%BB%B6%E7%AE%80%E6%98%93%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<p>项目上需要统计市面上的一些电视型号信息，想到可以用 chrome 插件来做，这里记录一下简易插件的实现过程。</p>
+<span id="more"></span>
+
+<h1 id="manifest-json"><a href="#manifest-json" class="headerlink" title="manifest.json"></a>manifest.json</h1><p>主要文件 manifest.json 包含了插件一些基础配置，代码如下：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"manifest_version"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"GetAndroidTVList"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"1.0.0"</span><span class="token punctuation">,</span>
+  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
+  <span class="token property">"icons"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"16"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
+    <span class="token property">"48"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
+    <span class="token property">"128"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"browser_action"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"default_icon"</span><span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
+    <span class="token property">"default_title"</span><span class="token operator">:</span> <span class="token string">"获取安卓版本的电视列表"</span><span class="token punctuation">,</span>
+    <span class="token property">"default_popup"</span><span class="token operator">:</span> <span class="token string">"popup.html"</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"background"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"background.js"</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"permissions"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"contextMenus"</span><span class="token punctuation">,</span> <span class="token string">"notifications"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"content_scripts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span>
+      <span class="token property">"matches"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"http://detail.zol.com.cn/digital_tv_advSearch/*"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"js"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"content-script.js"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"run_at"</span><span class="token operator">:</span> <span class="token string">"document_end"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"homepage_url"</span><span class="token operator">:</span> <span class="token string">"https://xxxxx/"</span><span class="token punctuation">,</span>
+  <span class="token property">"options_page"</span><span class="token operator">:</span> <span class="token string">"options.html"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里我们使用的 v2 版本，现在 v3 版本也可以用了，<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIuY2hyb21lLmNvbS9kb2NzL2V4dGVuc2lvbnMvbXYzL2dldHN0YXJ0ZWQv">地址<i class="fa fa-external-link-alt"></i></span></p>
+<p>主要介绍几个常用的属性，</p>
+<ul>
+<li>browser_action：浏览器右上角图标设置</li>
+<li>background：后台常驻 script</li>
+<li>permissions：此插件用到的浏览器的权限，我们这里用到了右键菜单<code>contextMenus</code>和通知<code>notifications</code></li>
+<li>content_scripts：<strong>需要直接注入页面的 js</strong><ul>
+<li>matches：匹配地址</li>
+<li>js：待注入的 js</li>
+<li>run_at：注入的时间，可选 document_start、document_end、document_idle</li>
+</ul>
+</li>
+<li>homepage_url：扩展的主页 url</li>
+<li>options_page：插件选项页</li>
+</ul>
+<p>这里贴一下其他文件的示例代码</p>
+<h1 id="background-js"><a href="#background-js" class="headerlink" title="background.js"></a>background.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js">chrome<span class="token punctuation">.</span>contextMenus<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  title<span class="token operator">:</span> <span class="token string">"添加TV数据"</span><span class="token punctuation">,</span>
+  id<span class="token operator">:</span> <span class="token string">"GetTV"</span><span class="token punctuation">,</span>
+  <span class="token function-variable function">onclick</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    chrome<span class="token punctuation">.</span>notifications<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+      type<span class="token operator">:</span> <span class="token string">"basic"</span><span class="token punctuation">,</span>
+      iconUrl<span class="token operator">:</span> <span class="token string">"img/icon.png"</span><span class="token punctuation">,</span>
+      title<span class="token operator">:</span> <span class="token string">"这是标题"</span><span class="token punctuation">,</span>
+      message<span class="token operator">:</span> <span class="token string">"您刚才点击了自定义右键菜单！"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="content-script-js"><a href="#content-script-js" class="headerlink" title="content-script.js"></a>content-script.js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> l <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+<span class="token keyword">var</span> str <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  str <span class="token operator">+=</span>
+    document<span class="token punctuation">.</span><span class="token function">getElementsByClassName</span><span class="token punctuation">(</span><span class="token string">"pro_detail"</span><span class="token punctuation">)</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+      <span class="token punctuation">.</span>textContent<span class="token punctuation">;</span>
+  str <span class="token operator">+=</span> <span class="token string">"、"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这样就实现了一个简易的获取 androidTV 的名称的 chrome 插件，名称打印到 console 的。</p>
+<h1 id="安装扩展"><a href="#安装扩展" class="headerlink" title="安装扩展"></a>安装扩展</h1><p>这里我们打开 chrome 浏览器输入<code>chrome://extensions/</code>，点击页面右上角打开<code>开发者模式</code>，选择左上角<code>加载已解压的扩展程序</code>，选中我们的测试插件即可。</p>
+]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>chromeExtension</tag>
       </tags>
   </entry>
   <entry>
@@ -861,6 +861,83 @@ $ sudo cp -r .&#x2F;dist&#x2F; &#x2F;usr&#x2F;local&#x2F;share&#x2F;html<span ar
         <tag>gitlab-ci</tag>
         <tag>gitlab-pages</tag>
         <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>elasticsearch未授权访问问题解决</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Elasticsearch/elasticsearch%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>近日有扫描发现 elasticsearch 出现未授权访问的问题，这里记录一下解决过程。</p>
+<span id="more"></span>
+
+<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>扫描方通过<code>elasticsearch head</code>进入 web 页面，连接到 elasticsearch 的服务器，能查看到 es 的相关信息。</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>先分析一下现象产生，elasticsearch 安装之后又安装了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vYnovZWxhc3RpY3NlYXJjaC1oZWFk">elasticsearch head<i class="fa fa-external-link-alt"></i></span>以便于查看 elasticsearch 的信息。<code>elasticsearch head</code>默认在<code>9100</code>端口。</p>
+<h2 id="关闭-elasticsearch-head-可选"><a href="#关闭-elasticsearch-head-可选" class="headerlink" title="关闭 elasticsearch head(可选)"></a>关闭 elasticsearch head(可选)</h2><p>查找<code>elasticsearch head</code>进程，我们在<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vYnovZWxhc3RpY3NlYXJjaC1oZWFkL2Jsb2IvbWFzdGVyL3BhY2thZ2UuanNvbg==">文档<i class="fa fa-external-link-alt"></i></span>中可以看到<code>elasticsearch head</code>是以 grunt 的方式启动的。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ps -ef|grep grunt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查找到相关进程，再 kill 掉。也关闭跨域，只允许 elasticsearch 本机访问，在<code>elasticsearch.yml</code>中设置<code>http.cors.enabled: false</code>。</p>
+<h2 id="增加-elasticsearch-自身安全认证"><a href="#增加-elasticsearch-自身安全认证" class="headerlink" title="增加 elasticsearch 自身安全认证"></a>增加 elasticsearch 自身安全认证</h2><p>我们可以通过增加 elasticsearch 的自身安全设置来避免未授权访问，es 版本这里是 6.x，有以下几种方式：</p>
+<ol>
+<li>使用官方推荐的 shield 插件(收费)</li>
+<li>使用<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0FzcXVlcmEvZWxhc3RpY3NlYXJjaC1odHRwLWJhc2lj">elasticsearch-http-basic<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnNlYXJjaC1ndWFyZC5jb20v">searchguard 插件<i class="fa fa-external-link-alt"></i></span>(免费)</li>
+<li>架设 nginx 反向代理服务器，并设置<code>http basic</code>认证来实现 elasticsearch 的登录认证。</li>
+</ol>
+<p>这里 shield 插件收费的先排除了，<code>elasticsearch-http-basic</code>的话是有<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0FzcXVlcmEvZWxhc3RpY3NlYXJjaC1odHRwLWJhc2ljI3ZlcnNpb24tbWFwcGluZw==">版本限制<i class="fa fa-external-link-alt"></i></span>，而且 github 上面已经不维护了。</p>
+<table>
+<thead>
+<tr>
+<th>Http Basic Plugin</th>
+<th>elasticsearch</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v1.5.1(master)</td>
+<td>1.5.1, 1.5.2, 1.6.0, 1.7.0</td>
+</tr>
+<tr>
+<td>v1.5.0</td>
+<td>1.5.0</td>
+</tr>
+<tr>
+<td>v1.4.0</td>
+<td>1.4.0</td>
+</tr>
+<tr>
+<td>v1.3.0</td>
+<td>1.3.0</td>
+</tr>
+<tr>
+<td>v1.2.0</td>
+<td>1.2.0</td>
+</tr>
+<tr>
+<td>1.1.0</td>
+<td>1.0.0</td>
+</tr>
+<tr>
+<td>1.0.4</td>
+<td>0.90.7</td>
+</tr>
+</tbody></table>
+<p>searchguard 配置有一点繁琐。这里我们选用第三种，Nginx 做反向代理的方式。</p>
+<p>在 location 配置下面增加以下：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">location</span> ~* /</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">#关键点，配置帐号密码</span>
+    <span class="token directive"><span class="token keyword">auth_basic</span> <span class="token string">"login"</span></span><span class="token punctuation">;</span> <span class="token comment">#提示信息</span>
+    <span class="token directive"><span class="token keyword">auth_basic_user_file</span> /usr/local/nginx/conf/vhosts/password/es</span><span class="token punctuation">;</span> <span class="token comment">#密码文件</span>
+    <span class="token directive"><span class="token keyword">autoindex</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>
+    <span class="token comment">#配置转发等</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里密码文件通过<span class="exturl" data-url="aHR0cHM6Ly90b29sLm9zY2hpbmEubmV0L2h0cGFzc3dk">htpasswd<i class="fa fa-external-link-alt"></i></span>来生成就可以。</p>
+<p>然后修改 elasticsearch.yml 里的<code>network.host: 127.0.0.1</code>，如果不在同一个机器上就将<code>network.host</code>选项设置为 nginx 服务器的 ip 就可以了。</p>
+<p>然后我们访问 elasticsearch 的时候就需要输入用户名密码了。</p>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Elasticsearch</category>
+      </categories>
+      <tags>
+        <tag>elasticsearch</tag>
       </tags>
   </entry>
   <entry>
@@ -1126,83 +1203,6 @@ $ git config --system --unset credential.helper<span aria-hidden="true" class="l
       </tags>
   </entry>
   <entry>
-    <title>elasticsearch未授权访问问题解决</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Elasticsearch/elasticsearch%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<p>近日有扫描发现 elasticsearch 出现未授权访问的问题，这里记录一下解决过程。</p>
-<span id="more"></span>
-
-<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>扫描方通过<code>elasticsearch head</code>进入 web 页面，连接到 elasticsearch 的服务器，能查看到 es 的相关信息。</p>
-<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>先分析一下现象产生，elasticsearch 安装之后又安装了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vYnovZWxhc3RpY3NlYXJjaC1oZWFk">elasticsearch head<i class="fa fa-external-link-alt"></i></span>以便于查看 elasticsearch 的信息。<code>elasticsearch head</code>默认在<code>9100</code>端口。</p>
-<h2 id="关闭-elasticsearch-head-可选"><a href="#关闭-elasticsearch-head-可选" class="headerlink" title="关闭 elasticsearch head(可选)"></a>关闭 elasticsearch head(可选)</h2><p>查找<code>elasticsearch head</code>进程，我们在<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vYnovZWxhc3RpY3NlYXJjaC1oZWFkL2Jsb2IvbWFzdGVyL3BhY2thZ2UuanNvbg==">文档<i class="fa fa-external-link-alt"></i></span>中可以看到<code>elasticsearch head</code>是以 grunt 的方式启动的。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ps -ef|grep grunt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查找到相关进程，再 kill 掉。也关闭跨域，只允许 elasticsearch 本机访问，在<code>elasticsearch.yml</code>中设置<code>http.cors.enabled: false</code>。</p>
-<h2 id="增加-elasticsearch-自身安全认证"><a href="#增加-elasticsearch-自身安全认证" class="headerlink" title="增加 elasticsearch 自身安全认证"></a>增加 elasticsearch 自身安全认证</h2><p>我们可以通过增加 elasticsearch 的自身安全设置来避免未授权访问，es 版本这里是 6.x，有以下几种方式：</p>
-<ol>
-<li>使用官方推荐的 shield 插件(收费)</li>
-<li>使用<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0FzcXVlcmEvZWxhc3RpY3NlYXJjaC1odHRwLWJhc2lj">elasticsearch-http-basic<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnNlYXJjaC1ndWFyZC5jb20v">searchguard 插件<i class="fa fa-external-link-alt"></i></span>(免费)</li>
-<li>架设 nginx 反向代理服务器，并设置<code>http basic</code>认证来实现 elasticsearch 的登录认证。</li>
-</ol>
-<p>这里 shield 插件收费的先排除了，<code>elasticsearch-http-basic</code>的话是有<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0FzcXVlcmEvZWxhc3RpY3NlYXJjaC1odHRwLWJhc2ljI3ZlcnNpb24tbWFwcGluZw==">版本限制<i class="fa fa-external-link-alt"></i></span>，而且 github 上面已经不维护了。</p>
-<table>
-<thead>
-<tr>
-<th>Http Basic Plugin</th>
-<th>elasticsearch</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>v1.5.1(master)</td>
-<td>1.5.1, 1.5.2, 1.6.0, 1.7.0</td>
-</tr>
-<tr>
-<td>v1.5.0</td>
-<td>1.5.0</td>
-</tr>
-<tr>
-<td>v1.4.0</td>
-<td>1.4.0</td>
-</tr>
-<tr>
-<td>v1.3.0</td>
-<td>1.3.0</td>
-</tr>
-<tr>
-<td>v1.2.0</td>
-<td>1.2.0</td>
-</tr>
-<tr>
-<td>1.1.0</td>
-<td>1.0.0</td>
-</tr>
-<tr>
-<td>1.0.4</td>
-<td>0.90.7</td>
-</tr>
-</tbody></table>
-<p>searchguard 配置有一点繁琐。这里我们选用第三种，Nginx 做反向代理的方式。</p>
-<p>在 location 配置下面增加以下：</p>
-<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">location</span> ~* /</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">#关键点，配置帐号密码</span>
-    <span class="token directive"><span class="token keyword">auth_basic</span> <span class="token string">"login"</span></span><span class="token punctuation">;</span> <span class="token comment">#提示信息</span>
-    <span class="token directive"><span class="token keyword">auth_basic_user_file</span> /usr/local/nginx/conf/vhosts/password/es</span><span class="token punctuation">;</span> <span class="token comment">#密码文件</span>
-    <span class="token directive"><span class="token keyword">autoindex</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>
-    <span class="token comment">#配置转发等</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里密码文件通过<span class="exturl" data-url="aHR0cHM6Ly90b29sLm9zY2hpbmEubmV0L2h0cGFzc3dk">htpasswd<i class="fa fa-external-link-alt"></i></span>来生成就可以。</p>
-<p>然后修改 elasticsearch.yml 里的<code>network.host: 127.0.0.1</code>，如果不在同一个机器上就将<code>network.host</code>选项设置为 nginx 服务器的 ip 就可以了。</p>
-<p>然后我们访问 elasticsearch 的时候就需要输入用户名密码了。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Elasticsearch</category>
-      </categories>
-      <tags>
-        <tag>elasticsearch</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo+github-pages搭建个人博客</title>
     <url>/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/hexo-github-pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<p>近日使用 hexo 搭建了个人的博客，搭建好之后写一篇文章记录下过程。<br>hexo 是可以直接生成静态文件，拿静态页面部署，用 github 部署不需要备案，比较方便，唯一的缺点就是访问有点慢。</p>
@@ -1426,30 +1426,6 @@ $ git config --system --unset credential.helper<span aria-hidden="true" class="l
       </tags>
   </entry>
   <entry>
-    <title>node+npm更新</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-npm%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
-<span id="more"></span>
-
-<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
-<p>查看 node 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查看 npm 版本：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>经过查找发现在<code>C:\Users\用户名\AppData\Roaming</code>文件夹下有一个 npm 和 npm-cache 文件，这里应该有 npm 的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Node</category>
-      </categories>
-      <tags>
-        <tag>npm</tag>
-        <tag>npm-cache</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>prometheus+grafana实现数据采集展示+邮件告警</title>
     <url>/%E5%BC%80%E5%8F%91/Devops/prometheus-grafana%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%B1%95%E7%A4%BA-%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/</url>
     <content><![CDATA[<blockquote>
@@ -1650,6 +1626,30 @@ prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></s
         <tag>grafana</tag>
         <tag>数据采集</tag>
         <tag>邮件告警</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>node+npm更新</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-npm%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p>由于家里的电脑很久没使用 node，近期写博客发现 node 版本比较低，需要升级。<br>这里把升级遇到的坑点，记录一下。</p>
+<span id="more"></span>
+
+<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>在试过网上推荐的几个方式更新 node 版本都不行之后，就决定把 node 卸载了重新下载一个新版本安装。卸载再安装之后发现 node 版本倒是更新了，npm 的版本还是停留在老版本。</p>
+<p>查看 node 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ node -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看 npm 版本：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>经过查找发现在<code>C:\Users\用户名\AppData\Roaming</code>文件夹下有一个 npm 和 npm-cache 文件，这里应该有 npm 的缓存之类的，狠心删除之后，再卸载 node 重新安装一次。npm 终于是更新了。</p>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Node</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+        <tag>npm-cache</tag>
       </tags>
   </entry>
   <entry>
@@ -2417,6 +2417,85 @@ client<span class="token punctuation">.</span><span class="token function">on</s
       </tags>
   </entry>
   <entry>
+    <title>wordpres搭建简易网站</title>
+    <url>/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/wordpres%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E7%BD%91%E7%AB%99/</url>
+    <content><![CDATA[<p>搭建网站的工具和平台有很多，常见的就有 wordpress，国内的有 pageadmin、metinfo、禅知等。还有自助建站的凡科等等。</p>
+<p>wordpress 是一个 php 开发的博客平台，由于使用甚广，也有很多网站的主题和模板，用来搭建简易网站的例子也很多，这里我们就使用 wordpress 来搭建简易网站。</p>
+<span id="more"></span>
+
+<h1 id="创建宝塔"><a href="#创建宝塔" class="headerlink" title="创建宝塔"></a>创建宝塔</h1><p>这里我们选用 docker 安装<span class="exturl" data-url="aHR0cHM6Ly9odWIuZG9ja2VyLmNvbS9yL3BjaDE4L2Jhb3Rh">宝塔<i class="fa fa-external-link-alt"></i></span>，这里 docker 的宝塔是自带了 LNMP(linux+nginx+mysql+php)环境，后面安装 wordpress 的时候就省事很多。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -tid --name baota -p <span class="token number">80</span>:80 -p <span class="token number">443</span>:443 -p <span class="token number">8888</span>:8888 -p <span class="token number">888</span>:888 --privileged<span class="token operator">=</span>true --shm-size<span class="token operator">=</span>1g -v D:<span class="token punctuation">\</span>docker<span class="token punctuation">\</span>baota<span class="token punctuation">\</span>wwwroot:/www/wwwroot pch18/baota<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>启动之后输入 <code>http://localhost:8888/</code>打开宝塔登录页面，输入账号<code>username</code>密码<code>password</code>，这里如果忘记了登录密码的话，可以进宝塔的服务器</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it baota <span class="token function">bash</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入<code>bt</code>命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ bt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>能看到可以修改密码</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722113138.png" alt="bt命令"></p>
+<p>这里我们修改密码为<code>123456</code>，然后登录进宝塔。登录之后有一个需要填写宝塔账号的，这里我是 F12 然后去掉了弹框。。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722145554.jpg" alt="宝塔面板"></p>
+<h1 id="创建网站"><a href="#创建网站" class="headerlink" title="创建网站"></a>创建网站</h1><h2 id="下载-wordpress"><a href="#下载-wordpress" class="headerlink" title="下载 wordpress"></a>下载 wordpress</h2><p>在官网上下载<span class="exturl" data-url="aHR0cHM6Ly93b3JkcHJlc3Mub3JnLw==">wordpress<i class="fa fa-external-link-alt"></i></span>，注意网址是<code>https://wordpress.org/</code>，这里容易进到另外一个网址<code>https://wordpress.com/</code>，这个<code>.com</code>是可托管 wordpress 的网站。</p>
+<h2 id="添加网站"><a href="#添加网站" class="headerlink" title="添加网站"></a>添加网站</h2><p>宝塔菜单栏选择网站–&gt;添加站点，这里我是用本机的，添加了一个<code>127.0.0.1</code>，然后再添加一个数据库。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722113728.png" alt="添加网站"></p>
+<p>解压前面下载的 wordpress 压缩包，由于我们映射了目录出来，这里我们可以直接拷贝 wordpress 解压之后的文件到<code>D:\docker\baota\wwwroot\127.0.0.1</code>文件夹。原来的文件夹里文件可以直接删除。</p>
+<p>如果没有映射出来的话，进入宝塔菜单栏选择&lt;文件&gt;，选择<code>127.0.0.1</code>文件夹，这里宝塔是通过 vhost 来创建的。将解压后的文件拷贝到<code>127.0.0.1</code>的文件夹的根目录，由于上传不能超过 800 个文件，这里可以上传了之后再解压，注意解压之后的文件一定要放到<code>127.0.0.1</code>的文件夹下。</p>
+<p>上传之后如下图：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722151649.png"></p>
+<p>宝塔菜单栏点击设置–&gt;网站目录，去掉防跨站攻击。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722114004.png"></p>
+<p>点击伪静态–&gt;选择<code>wordpress</code>，再保存。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722150349.png"></p>
+<h2 id="配置-wordpress"><a href="#配置-wordpress" class="headerlink" title="配置 wordpress"></a>配置 wordpress</h2><p>输入网址<code>http://127.0.0.1</code>，打开 wordpress 启动配置页面。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722151758.png" alt="wordpress启动配置页"></p>
+<p>宝塔菜单栏选择数据库，查看数据库的用户名、密码、数据库名称等信息。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722151908.png" alt="宝塔-数据库"></p>
+<p>填入我们的宝塔建的数据库的数据库名字，用户名和密码。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722151931.png" alt="填入wordpress"></p>
+<p>再填写一些基本信息之后点击安装 wordpress。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722152044.png"></p>
+<h2 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h2><p>用刚刚创建的用户名<code>test</code>，密码<code>123456</code>登录 wordpress。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171949.png"></p>
+<p>选择外观–&gt;主题，我们可以把没有启用的主题删掉，点击主题详情之后，右下角有一个删除的按钮，点击之后可以删掉。</p>
+<p>这里主题推荐几个模板比较多的，首先<span class="exturl" data-url="aHR0cHM6Ly9hdmFkYS50aGVtZS1mdXNpb24uY29tLw==">Avada 主题<i class="fa fa-external-link-alt"></i></span>是非常受欢迎的，模板有 83 个之多，选择很多，如果是购买正版，购买网址在<span class="exturl" data-url="aHR0cHM6Ly90aGVtZWZvcmVzdC5uZXQv">themeforest<i class="fa fa-external-link-alt"></i></span>，可以享受持续更新。网上有破解和汉化的版本，某宝也可以购买，小心挂马，注意甄别。如果不想选收费的，这里推荐一个免费的主题，同样模板非常多，就是<span class="exturl" data-url="aHR0cHM6Ly93cGFzdHJhLmNvbS8=">Astra 主题<i class="fa fa-external-link-alt"></i></span>，可以在官网找模板，也可以在<span class="exturl" data-url="aHR0cHM6Ly93ZWJzaXRlZGVtb3MubmV0Lz90eXBlPWZyZWUmcGFnZS1idWlsZGVyPWVsZW1lbnRvcg==">模板网址<i class="fa fa-external-link-alt"></i></span>找。支持 Elementor、Beaver Builder、Brizy、Gutenberg 等 4 个模板编辑，免费和收费模板共 150+，免费的都有 95 个，可谓是非常多了。</p>
+<p>当然还有其他主题也很不错，比如 Neve 主题，也提供了很多模板，少量的免费，大部分的收费。还有 OceanWP 也很不错，其他受欢迎的还有 GeneratePress 等。我们这里就安装 Astra 并启用。</p>
+<h2 id="选择模板"><a href="#选择模板" class="headerlink" title="选择模板"></a>选择模板</h2><p>点击主题之后能看到开始使用的按钮。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722154703.png"></p>
+<p>提示我们安装<code>Starter Templates</code>的模板插件。</p>
+<p>wordpress 左侧菜单选择插件，搜索出<code>Starter Templaters</code>并安装，能看到左侧菜单多出了一个<code>Starter Templaters</code>选项。这里我们选择比较常用的<code>Elementor</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171950.png"></p>
+<p>可以看到很多的模板</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171946.png"></p>
+<p>选择一个模板之后可以选择单个页面导入或者整体导入。这里我们选择整体导入</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171945.png"></p>
+<p>然后会填写一些信息。填写之后等待导入。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722155656.png"></p>
+<p>导入完成之后点击预览</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722160100.png"></p>
+<p>能看到网站已经搭建成功。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171948.png"></p>
+<p>如果有修改和调整，比如文字图片的调整可以点击<code>使用Elementor</code>编辑。里面的媒体文件、文章等都可以在 wordpress 里面找到，导入模板的时候是导入过的。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171947.png"></p>
+<h1 id="网站迁移"><a href="#网站迁移" class="headerlink" title="网站迁移"></a>网站迁移</h1><p>如果网站需要迁移，主要是两个部分的，一个是数据库，一个是文件。</p>
+<h2 id="网站文件迁移"><a href="#网站文件迁移" class="headerlink" title="网站文件迁移"></a>网站文件迁移</h2><p>文件的话需要把<code>127.0.0.1</code>的文件夹下的东西都打包整体拷贝，注意根目录下<code>wp-config.php</code>里的配置需要换成生产环境下数据库的主机、账号名、密码、数据库名称。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171951.png"></p>
+<h2 id="数据库迁移"><a href="#数据库迁移" class="headerlink" title="数据库迁移"></a>数据库迁移</h2><p>数据库的话可以生成 sql 导入，这里进入宝塔面板，点击左侧数据库。选择管理</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722161031.png"></p>
+<p>进入 phpadmin 之后选择导出</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171952.png"></p>
+<p>生成的 sql 文件之后记得把里面的站点文件<code>127.0.0.1</code>换成生产环境需要用到的域名或者 ip，注意如果是 https 的话需要将相应的 http 改成 https。</p>
+<p>将 sql 文件导入到生产环境的数据库，将网址文件放到建立的网站根目录下，网站迁移成功。</p>
+]]></content>
+      <categories>
+        <category>搭建教程</category>
+      </categories>
+      <tags>
+        <tag>wordpress</tag>
+        <tag>astra</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>websocket经常自动关闭问题解决</title>
     <url>/Bug%E8%A7%A3%E5%86%B3/Websocket/websocket%E7%BB%8F%E5%B8%B8%E8%87%AA%E5%8A%A8%E5%85%B3%E9%97%AD%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
     <content><![CDATA[<p>记一次 Websocket 经常 close 问题的解决方式。</p>
@@ -2528,85 +2607,6 @@ client<span class="token punctuation">.</span><span class="token function">on</s
       </tags>
   </entry>
   <entry>
-    <title>wordpres搭建简易网站</title>
-    <url>/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/wordpres%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E7%BD%91%E7%AB%99/</url>
-    <content><![CDATA[<p>搭建网站的工具和平台有很多，常见的就有 wordpress，国内的有 pageadmin、metinfo、禅知等。还有自助建站的凡科等等。</p>
-<p>wordpress 是一个 php 开发的博客平台，由于使用甚广，也有很多网站的主题和模板，用来搭建简易网站的例子也很多，这里我们就使用 wordpress 来搭建简易网站。</p>
-<span id="more"></span>
-
-<h1 id="创建宝塔"><a href="#创建宝塔" class="headerlink" title="创建宝塔"></a>创建宝塔</h1><p>这里我们选用 docker 安装<span class="exturl" data-url="aHR0cHM6Ly9odWIuZG9ja2VyLmNvbS9yL3BjaDE4L2Jhb3Rh">宝塔<i class="fa fa-external-link-alt"></i></span>，这里 docker 的宝塔是自带了 LNMP(linux+nginx+mysql+php)环境，后面安装 wordpress 的时候就省事很多。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -tid --name baota -p <span class="token number">80</span>:80 -p <span class="token number">443</span>:443 -p <span class="token number">8888</span>:8888 -p <span class="token number">888</span>:888 --privileged<span class="token operator">=</span>true --shm-size<span class="token operator">=</span>1g -v D:<span class="token punctuation">\</span>docker<span class="token punctuation">\</span>baota<span class="token punctuation">\</span>wwwroot:/www/wwwroot pch18/baota<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>启动之后输入 <code>http://localhost:8888/</code>打开宝塔登录页面，输入账号<code>username</code>密码<code>password</code>，这里如果忘记了登录密码的话，可以进宝塔的服务器</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it baota <span class="token function">bash</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>输入<code>bt</code>命令</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ bt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>能看到可以修改密码</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722113138.png" alt="bt命令"></p>
-<p>这里我们修改密码为<code>123456</code>，然后登录进宝塔。登录之后有一个需要填写宝塔账号的，这里我是 F12 然后去掉了弹框。。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722145554.jpg" alt="宝塔面板"></p>
-<h1 id="创建网站"><a href="#创建网站" class="headerlink" title="创建网站"></a>创建网站</h1><h2 id="下载-wordpress"><a href="#下载-wordpress" class="headerlink" title="下载 wordpress"></a>下载 wordpress</h2><p>在官网上下载<span class="exturl" data-url="aHR0cHM6Ly93b3JkcHJlc3Mub3JnLw==">wordpress<i class="fa fa-external-link-alt"></i></span>，注意网址是<code>https://wordpress.org/</code>，这里容易进到另外一个网址<code>https://wordpress.com/</code>，这个<code>.com</code>是可托管 wordpress 的网站。</p>
-<h2 id="添加网站"><a href="#添加网站" class="headerlink" title="添加网站"></a>添加网站</h2><p>宝塔菜单栏选择网站–&gt;添加站点，这里我是用本机的，添加了一个<code>127.0.0.1</code>，然后再添加一个数据库。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722113728.png" alt="添加网站"></p>
-<p>解压前面下载的 wordpress 压缩包，由于我们映射了目录出来，这里我们可以直接拷贝 wordpress 解压之后的文件到<code>D:\docker\baota\wwwroot\127.0.0.1</code>文件夹。原来的文件夹里文件可以直接删除。</p>
-<p>如果没有映射出来的话，进入宝塔菜单栏选择&lt;文件&gt;，选择<code>127.0.0.1</code>文件夹，这里宝塔是通过 vhost 来创建的。将解压后的文件拷贝到<code>127.0.0.1</code>的文件夹的根目录，由于上传不能超过 800 个文件，这里可以上传了之后再解压，注意解压之后的文件一定要放到<code>127.0.0.1</code>的文件夹下。</p>
-<p>上传之后如下图：</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722151649.png"></p>
-<p>宝塔菜单栏点击设置–&gt;网站目录，去掉防跨站攻击。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722114004.png"></p>
-<p>点击伪静态–&gt;选择<code>wordpress</code>，再保存。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722150349.png"></p>
-<h2 id="配置-wordpress"><a href="#配置-wordpress" class="headerlink" title="配置 wordpress"></a>配置 wordpress</h2><p>输入网址<code>http://127.0.0.1</code>，打开 wordpress 启动配置页面。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722151758.png" alt="wordpress启动配置页"></p>
-<p>宝塔菜单栏选择数据库，查看数据库的用户名、密码、数据库名称等信息。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722151908.png" alt="宝塔-数据库"></p>
-<p>填入我们的宝塔建的数据库的数据库名字，用户名和密码。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722151931.png" alt="填入wordpress"></p>
-<p>再填写一些基本信息之后点击安装 wordpress。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722152044.png"></p>
-<h2 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h2><p>用刚刚创建的用户名<code>test</code>，密码<code>123456</code>登录 wordpress。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171949.png"></p>
-<p>选择外观–&gt;主题，我们可以把没有启用的主题删掉，点击主题详情之后，右下角有一个删除的按钮，点击之后可以删掉。</p>
-<p>这里主题推荐几个模板比较多的，首先<span class="exturl" data-url="aHR0cHM6Ly9hdmFkYS50aGVtZS1mdXNpb24uY29tLw==">Avada 主题<i class="fa fa-external-link-alt"></i></span>是非常受欢迎的，模板有 83 个之多，选择很多，如果是购买正版，购买网址在<span class="exturl" data-url="aHR0cHM6Ly90aGVtZWZvcmVzdC5uZXQv">themeforest<i class="fa fa-external-link-alt"></i></span>，可以享受持续更新。网上有破解和汉化的版本，某宝也可以购买，小心挂马，注意甄别。如果不想选收费的，这里推荐一个免费的主题，同样模板非常多，就是<span class="exturl" data-url="aHR0cHM6Ly93cGFzdHJhLmNvbS8=">Astra 主题<i class="fa fa-external-link-alt"></i></span>，可以在官网找模板，也可以在<span class="exturl" data-url="aHR0cHM6Ly93ZWJzaXRlZGVtb3MubmV0Lz90eXBlPWZyZWUmcGFnZS1idWlsZGVyPWVsZW1lbnRvcg==">模板网址<i class="fa fa-external-link-alt"></i></span>找。支持 Elementor、Beaver Builder、Brizy、Gutenberg 等 4 个模板编辑，免费和收费模板共 150+，免费的都有 95 个，可谓是非常多了。</p>
-<p>当然还有其他主题也很不错，比如 Neve 主题，也提供了很多模板，少量的免费，大部分的收费。还有 OceanWP 也很不错，其他受欢迎的还有 GeneratePress 等。我们这里就安装 Astra 并启用。</p>
-<h2 id="选择模板"><a href="#选择模板" class="headerlink" title="选择模板"></a>选择模板</h2><p>点击主题之后能看到开始使用的按钮。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722154703.png"></p>
-<p>提示我们安装<code>Starter Templates</code>的模板插件。</p>
-<p>wordpress 左侧菜单选择插件，搜索出<code>Starter Templaters</code>并安装，能看到左侧菜单多出了一个<code>Starter Templaters</code>选项。这里我们选择比较常用的<code>Elementor</code></p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171950.png"></p>
-<p>可以看到很多的模板</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171946.png"></p>
-<p>选择一个模板之后可以选择单个页面导入或者整体导入。这里我们选择整体导入</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171945.png"></p>
-<p>然后会填写一些信息。填写之后等待导入。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722155656.png"></p>
-<p>导入完成之后点击预览</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722160100.png"></p>
-<p>能看到网站已经搭建成功。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171948.png"></p>
-<p>如果有修改和调整，比如文字图片的调整可以点击<code>使用Elementor</code>编辑。里面的媒体文件、文章等都可以在 wordpress 里面找到，导入模板的时候是导入过的。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171947.png"></p>
-<h1 id="网站迁移"><a href="#网站迁移" class="headerlink" title="网站迁移"></a>网站迁移</h1><p>如果网站需要迁移，主要是两个部分的，一个是数据库，一个是文件。</p>
-<h2 id="网站文件迁移"><a href="#网站文件迁移" class="headerlink" title="网站文件迁移"></a>网站文件迁移</h2><p>文件的话需要把<code>127.0.0.1</code>的文件夹下的东西都打包整体拷贝，注意根目录下<code>wp-config.php</code>里的配置需要换成生产环境下数据库的主机、账号名、密码、数据库名称。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171951.png"></p>
-<h2 id="数据库迁移"><a href="#数据库迁移" class="headerlink" title="数据库迁移"></a>数据库迁移</h2><p>数据库的话可以生成 sql 导入，这里进入宝塔面板，点击左侧数据库。选择管理</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722161031.png"></p>
-<p>进入 phpadmin 之后选择导出</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210722171952.png"></p>
-<p>生成的 sql 文件之后记得把里面的站点文件<code>127.0.0.1</code>换成生产环境需要用到的域名或者 ip，注意如果是 https 的话需要将相应的 http 改成 https。</p>
-<p>将 sql 文件导入到生产环境的数据库，将网址文件放到建立的网站根目录下，网站迁移成功。</p>
-]]></content>
-      <categories>
-        <category>搭建教程</category>
-      </categories>
-      <tags>
-        <tag>wordpress</tag>
-        <tag>astra</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用docker+minio实现对象存储</title>
     <url>/%E5%BC%80%E5%8F%91/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/%E4%BD%BF%E7%94%A8docker-minio%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/</url>
     <content><![CDATA[<p>本文主要介绍通过 docker+minio 实现对象存储的环境搭建。<span class="exturl" data-url="aHR0cDovL2RvY3MubWluaW8ub3JnLmNuL2RvY3Mv">minio 文档<i class="fa fa-external-link-alt"></i></span></p>
@@ -2682,6 +2682,91 @@ client<span class="token punctuation">.</span><span class="token function">on</s
       <tags>
         <tag>docker</tag>
         <tag>minio</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用puppeteer实现自动登录和测试页面</title>
+    <url>/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/</url>
+    <content><![CDATA[<p>近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。</p>
+<span id="more"></span>
+
+<h1 id="获取-Browser-实例"><a href="#获取-Browser-实例" class="headerlink" title="获取 Browser 实例"></a>获取 Browser 实例</h1><p>关于 puppeteer 的文档可以查看<span class="exturl" data-url="aHR0cHM6Ly96aGFvcWl6ZS5naXRodWIuaW8vcHVwcGV0ZWVyLWFwaS16aF9DTi8=">Puppeteer<i class="fa fa-external-link-alt"></i></span><br>首先引入 puppeteer 库，这里我们选择的是 puppeteer 而不是 puppeteer-core，简单是说区别就是</p>
+<ol>
+<li>puppeteer-core 不会自动下载 Chromium</li>
+<li>puppeteer-core 会忽略 PUPPETEER_*环境变量</li>
+</ol>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> browser <span class="token operator">=</span> <span class="token keyword">await</span> puppeteer<span class="token punctuation">.</span><span class="token function">launch</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  headless<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  args<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--start-maximized"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  ignoreDefaultArgs<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--enable-automation"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  defaultViewport<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>参数解释：</p>
+<ul>
+<li><code>headless: false</code><br>为了更好的看到现象，采用的非 headless，默认情况 headless 是 true</li>
+<li><code>args: [&quot;--start-maximized&quot;]</code>内容铺满视频框。</li>
+<li><code>ignoreDefaultArgs: [&quot;--enable-automation&quot;]</code>不显示测试环境控制的提示。</li>
+<li><code>defaultViewport: null</code> 视口大小设置为全屏，默认是 800X600 的框。</li>
+</ul>
+<p>更多参数可参考<span class="exturl" data-url="aHR0cHM6Ly9wZXRlci5zaC9leHBlcmltZW50cy9jaHJvbWl1bS1jb21tYW5kLWxpbmUtc3dpdGNoZXMv">List Of Chromium Command Line Switches<i class="fa fa-external-link-alt"></i></span></p>
+<p>这里是用 launch 的方式创建的 Browser 实例，也可以用 connect 方式</p>
+<ul>
+<li>puppeteer.connect: 连接一个已经开启浏览器 websoket 链接的 Chrome 实例</li>
+<li>puppeteer.launch: 每次都启动一个 Chrome 实例</li>
+</ul>
+<p>connect 方式需要以 <code>remote-debugging-port</code> 参数启动 Chrome，具体参数参照<span class="exturl" data-url="aHR0cHM6Ly9jaHJvbWVkZXZ0b29scy5naXRodWIuaW8vZGV2dG9vbHMtcHJvdG9jb2wvI2hvdy1kby1pLWFjY2Vzcy10aGUtYnJvd3Nlci10YXJnZXQ=">Chrome DevTools Protocol<i class="fa fa-external-link-alt"></i></span></p>
+<ol>
+<li><p>以 <code>remote-debugging-port</code> 参数启动 Chrome</p>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165028.png" style="zoom:50%" /></li>
+<li><p>通过<code>http://$&#123;host&#125;:$&#123;port&#125;/json/version</code>获取到浏览器的一些信息。其中有 webSocketDebuggerUrl<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165029.png" alt="查看Chrome信息"></p>
+</li>
+<li><p>实现连接</p>
+</li>
+</ol>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">puppeteer<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  browserWSEndpoint<span class="token operator">:</span> webSocketDebuggerUrl<span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="测试自动登录"><a href="#测试自动登录" class="headerlink" title="测试自动登录"></a>测试自动登录</h1><p>由于我们项目采用了验证码，一般情况下有验证码的自动登录比较麻烦，如果验证码复杂的话需要借助验证码识别平台来做，如果用程序来破解涉及到灰度化，二值化，去除噪点，字符分割，训练模型，识别等等一系列的东西，用 OCR 识别等。这里我们就采用简单的方式来做，在申请验证码的时候接口返回了验证码的 base64 字符，我们获取到这个字符来解码。</p>
+<p>代码如下</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> bPage <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">pages</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/pages/login.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> finalResponse <span class="token operator">=</span> <span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForResponse</span><span class="token punctuation">(</span>
+  <span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+    response<span class="token punctuation">.</span><span class="token function">url</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/getVerify"</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">0</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> finalResponse<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> codeStr <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>data<span class="token punctuation">.</span>code<span class="token punctuation">,</span> <span class="token string">"base64"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">,</span> codeStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">[</span>responseStr<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  bPage<span class="token punctuation">.</span><span class="token function">waitForNavigation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  bPage<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token string">"button[lay-submit]"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="测试按键"><a href="#测试按键" class="headerlink" title="测试按键"></a>测试按键</h1><p>我们前端项目是在 TV 端，需要使用按键来测试页面。这里我们测试了之后保存页面的截图。<br>需要注意的是由于 js 在页面加载之后执行，这里做了一个延时 2s 的操作，具体的按键名称可以在 puppeteer 仓库中搜索<code>Keyboard</code>查找到<code>USKeyboardLayout.ts</code>，里面有详细按键名称。</p>
+<p>代码如下：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> fPage <span class="token operator">=</span> <span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">newPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/page/index.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"Enter"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">screenshot</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> path<span class="token operator">:</span> <span class="token string">"screenshot.png"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>测试</category>
+      </categories>
+      <tags>
+        <tag>puppeteer</tag>
       </tags>
   </entry>
   <entry>
@@ -2788,91 +2873,6 @@ client<span class="token punctuation">.</span><span class="token function">on</s
       </categories>
       <tags>
         <tag>svg</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用puppeteer实现自动登录和测试页面</title>
-    <url>/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/</url>
-    <content><![CDATA[<p>近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。</p>
-<span id="more"></span>
-
-<h1 id="获取-Browser-实例"><a href="#获取-Browser-实例" class="headerlink" title="获取 Browser 实例"></a>获取 Browser 实例</h1><p>关于 puppeteer 的文档可以查看<span class="exturl" data-url="aHR0cHM6Ly96aGFvcWl6ZS5naXRodWIuaW8vcHVwcGV0ZWVyLWFwaS16aF9DTi8=">Puppeteer<i class="fa fa-external-link-alt"></i></span><br>首先引入 puppeteer 库，这里我们选择的是 puppeteer 而不是 puppeteer-core，简单是说区别就是</p>
-<ol>
-<li>puppeteer-core 不会自动下载 Chromium</li>
-<li>puppeteer-core 会忽略 PUPPETEER_*环境变量</li>
-</ol>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> browser <span class="token operator">=</span> <span class="token keyword">await</span> puppeteer<span class="token punctuation">.</span><span class="token function">launch</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  headless<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
-  args<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--start-maximized"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  ignoreDefaultArgs<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--enable-automation"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  defaultViewport<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>参数解释：</p>
-<ul>
-<li><code>headless: false</code><br>为了更好的看到现象，采用的非 headless，默认情况 headless 是 true</li>
-<li><code>args: [&quot;--start-maximized&quot;]</code>内容铺满视频框。</li>
-<li><code>ignoreDefaultArgs: [&quot;--enable-automation&quot;]</code>不显示测试环境控制的提示。</li>
-<li><code>defaultViewport: null</code> 视口大小设置为全屏，默认是 800X600 的框。</li>
-</ul>
-<p>更多参数可参考<span class="exturl" data-url="aHR0cHM6Ly9wZXRlci5zaC9leHBlcmltZW50cy9jaHJvbWl1bS1jb21tYW5kLWxpbmUtc3dpdGNoZXMv">List Of Chromium Command Line Switches<i class="fa fa-external-link-alt"></i></span></p>
-<p>这里是用 launch 的方式创建的 Browser 实例，也可以用 connect 方式</p>
-<ul>
-<li>puppeteer.connect: 连接一个已经开启浏览器 websoket 链接的 Chrome 实例</li>
-<li>puppeteer.launch: 每次都启动一个 Chrome 实例</li>
-</ul>
-<p>connect 方式需要以 <code>remote-debugging-port</code> 参数启动 Chrome，具体参数参照<span class="exturl" data-url="aHR0cHM6Ly9jaHJvbWVkZXZ0b29scy5naXRodWIuaW8vZGV2dG9vbHMtcHJvdG9jb2wvI2hvdy1kby1pLWFjY2Vzcy10aGUtYnJvd3Nlci10YXJnZXQ=">Chrome DevTools Protocol<i class="fa fa-external-link-alt"></i></span></p>
-<ol>
-<li><p>以 <code>remote-debugging-port</code> 参数启动 Chrome</p>
-<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165028.png" style="zoom:50%" /></li>
-<li><p>通过<code>http://$&#123;host&#125;:$&#123;port&#125;/json/version</code>获取到浏览器的一些信息。其中有 webSocketDebuggerUrl<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165029.png" alt="查看Chrome信息"></p>
-</li>
-<li><p>实现连接</p>
-</li>
-</ol>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js">puppeteer<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  browserWSEndpoint<span class="token operator">:</span> webSocketDebuggerUrl<span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="测试自动登录"><a href="#测试自动登录" class="headerlink" title="测试自动登录"></a>测试自动登录</h1><p>由于我们项目采用了验证码，一般情况下有验证码的自动登录比较麻烦，如果验证码复杂的话需要借助验证码识别平台来做，如果用程序来破解涉及到灰度化，二值化，去除噪点，字符分割，训练模型，识别等等一系列的东西，用 OCR 识别等。这里我们就采用简单的方式来做，在申请验证码的时候接口返回了验证码的 base64 字符，我们获取到这个字符来解码。</p>
-<p>代码如下</p>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> bPage <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">pages</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/pages/login.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> finalResponse <span class="token operator">=</span> <span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForResponse</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token operator">=></span>
-    response<span class="token punctuation">.</span><span class="token function">url</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/getVerify"</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">0</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> finalResponse<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> codeStr <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>data<span class="token punctuation">.</span>code<span class="token punctuation">,</span> <span class="token string">"base64"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">,</span> codeStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> <span class="token punctuation">[</span>responseStr<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
-  bPage<span class="token punctuation">.</span><span class="token function">waitForNavigation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  bPage<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token string">"button[lay-submit]"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="测试按键"><a href="#测试按键" class="headerlink" title="测试按键"></a>测试按键</h1><p>我们前端项目是在 TV 端，需要使用按键来测试页面。这里我们测试了之后保存页面的截图。<br>需要注意的是由于 js 在页面加载之后执行，这里做了一个延时 2s 的操作，具体的按键名称可以在 puppeteer 仓库中搜索<code>Keyboard</code>查找到<code>USKeyboardLayout.ts</code>，里面有详细按键名称。</p>
-<p>代码如下：</p>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> fPage <span class="token operator">=</span> <span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">newPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/page/index.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"Enter"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">screenshot</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> path<span class="token operator">:</span> <span class="token string">"screenshot.png"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>测试</category>
-      </categories>
-      <tags>
-        <tag>puppeteer</tag>
       </tags>
   </entry>
   <entry>
