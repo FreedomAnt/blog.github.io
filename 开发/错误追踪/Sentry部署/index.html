@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512165049.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512170506.png">
 <meta property="article:published_time" content="2020-10-31T08:06:01.000Z">
-<meta property="article:modified_time" content="2021-05-12T09:21:46.170Z">
+<meta property="article:modified_time" content="2021-05-12T09:21:48.000Z">
 <meta property="article:author" content="Marco">
 <meta property="article:tag" content="docker">
 <meta property="article:tag" content="sentry">
@@ -269,7 +269,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-05-12 17:21:46" itemprop="dateModified" datetime="2021-05-12T17:21:46+08:00">2021-05-12</time>
+        <time title="修改时间：2021-05-12 17:21:48" itemprop="dateModified" datetime="2021-05-12T17:21:48+08:00">2021-05-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -342,7 +342,7 @@
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiN4MzI7JiN4MzU7JiN4MzU7JiM1NjsmI3gzMzsmI3gzODsmIzUyOyYjNTc7JiN4NDA7JiN4NzE7JiMxMTM7JiM0NjsmI3g2MzsmIzExMTsmIzEwOTs=">&#57;&#x32;&#x35;&#x35;&#56;&#x33;&#x38;&#52;&#57;&#x40;&#x71;&#113;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiN4MzI7JiN4MzU7JiM1MzsmIzU2OyYjNTE7JiN4Mzg7JiM1MjsmI3gzOTsmIzY0OyYjMTEzOyYjeDcxOyYjeDJlOyYjOTk7JiN4NmY7JiN4NmQ7">&#57;&#x32;&#x35;&#53;&#56;&#51;&#x38;&#52;&#x39;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h1 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h1><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -352,7 +352,7 @@
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
 $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h1 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h1><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjeDM5OyYjeDMyOyYjNTM7JiM1MzsmIzU2OyYjNTE7JiM1NjsmI3gzNDsmIzU3OyYjNjQ7JiN4NzE7JiMxMTM7JiN4MmU7JiN4NjM7JiMxMTE7JiMxMDk7">&#x39;&#x32;&#53;&#53;&#56;&#51;&#56;&#x34;&#57;&#64;&#x71;&#113;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h1 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h1><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiM1MDsmIzUzOyYjeDM1OyYjNTY7JiN4MzM7JiN4Mzg7JiN4MzQ7JiN4Mzk7JiN4NDA7JiN4NzE7JiMxMTM7JiN4MmU7JiM5OTsmI3g2ZjsmI3g2ZDs=">&#57;&#50;&#53;&#x35;&#56;&#x33;&#x38;&#x34;&#x39;&#x40;&#x71;&#113;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510170805.png"></p>
 <p>我们可以创建一个 Vue 项目，在 Browser 里面可以选</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512163352.png"></p>
@@ -379,7 +379,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjeDc4OyYjeDYxOyYjMTA5OyYjeDcwOyYjMTA4OyYjeDY1OyYjeDQwOyYjeDZkOyYjOTc7JiN4Njk7JiMxMDg7JiM0NjsmI3g2MzsmIzExMTsmIzEwOTs=">&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#x40;&#x6d;&#97;&#x69;&#108;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjeDY1OyYjNjQ7JiMxMDk7JiN4NjE7JiN4Njk7JiMxMDg7JiM0NjsmI3g2MzsmI3g2ZjsmI3g2ZDs=">&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#64;&#109;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -399,7 +399,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjeDc4OyYjOTc7JiMxMDk7JiN4NzA7JiN4NmM7JiMxMDE7JiN4NDA7JiN4NmQ7JiN4NjE7JiMxMDU7JiN4NmM7JiN4MmU7JiN4NjM7JiMxMTE7JiMxMDk7">&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#x40;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjeDZjOyYjeDY1OyYjNjQ7JiMxMDk7JiM5NzsmI3g2OTsmIzEwODsmIzQ2OyYjOTk7JiN4NmY7JiN4NmQ7">&#101;&#120;&#x61;&#x6d;&#112;&#x6c;&#x65;&#64;&#109;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <pre><code>网易邮箱示例：
@@ -595,13 +595,13 @@ token=1ef3e7b88d614ca9aa155fe693b5a68eb73fa88aacd941cdb9cd0a86091c0894<span aria
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">76k</span>
+    <span title="站点总字数">77k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:09</span>
+    <span title="站点阅读时长">1:10</span>
   </span>
 </div>
 <div class="busuanzi-count">
