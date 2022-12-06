@@ -91,9 +91,9 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">61</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">18</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">33</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">34</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -165,7 +165,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -178,7 +178,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -219,6 +219,139 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/Bug%E8%A7%A3%E5%86%B3/Node/node-gyp%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Marco">
+      <meta itemprop="description" content="talk is cheap, show me the code">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Marco's blog✍️">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Bug%E8%A7%A3%E5%86%B3/Node/node-gyp%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">node-gyp安装问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-12-06 19:06:26 / 修改时间：20:24:15" itemprop="dateCreated datePublished" datetime="2022-12-06T19:06:26+08:00">2022-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/" itemprop="url" rel="index"><span itemprop="name">Bug解决</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Bug%E8%A7%A3%E5%86%B3/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>npm安装better-sqlite3包的时候node-gyp报错，记录一下报错解决的过程。</p>
+<p>node-gyp是一个可以编译node插件的工具，使用node-gyp需要<code>python</code>环境和<code>c++</code>环境</p>
+<h1 id="windows-build-tools"><a href="#windows-build-tools" class="headerlink" title="windows-build-tools"></a>windows-build-tools</h1><p>如果在node.js安装的时候如果选择了<code>Automatically install the necessary tools,Note that this will also install Chocolatey</code>，会自动安装chocolatey并启动一个窗口开始安装visual studio和python。如果这里忘勾选的话，安装完成之后可以在node的安装文件夹找到<code>C:\Program Files\nodejs\install_tools.bat</code>，管理员运行安装。</p>
+<p>如果没有勾选可以选择以下方式安装windows-build-tools。</p>
+<ol>
+<li><p>执行命令<code>npm install --global --production windows-build-tools</code>，会自动安装python和visual studio build tools，如果安装失败，可以在目录<code>C:\Users\xxxx\.windows-build-tools</code>里找到，点击进行安装</p>
+<p>这里的版本有点老了，是python2.7和vs2017的版本，对于新版的node-gyp已经不适用了。</p>
+</li>
+<li><p>手动安装</p>
+<ol>
+<li>安装<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLm9yZy9kb3dubG9hZHMv">Python<i class="fa fa-external-link-alt"></i></span></li>
+<li>安装<span class="exturl" data-url="aHR0cHM6Ly92aXN1YWxzdHVkaW8ubWljcm9zb2Z0LmNvbS90aGFuay15b3UtZG93bmxvYWRpbmctdmlzdWFsLXN0dWRpby8/c2t1PUJ1aWxkVG9vbHM=">Visual Studio Build Tools<i class="fa fa-external-link-alt"></i></span>或者<span class="exturl" data-url="aHR0cHM6Ly92aXN1YWxzdHVkaW8ubWljcm9zb2Z0LmNvbS90aGFuay15b3UtZG93bmxvYWRpbmctdmlzdWFsLXN0dWRpby8/c2t1PUNvbW11bml0eQ==">Visual Studio Community<i class="fa fa-external-link-alt"></i></span></li>
+</ol>
+</li>
+</ol>
+<p>这里如果需要高版本的node-gyp，我这里需要node-gyp@9+版本，就选择对于高版本的python和vs安装，这里我选择的python3.11.0和vs2022，<strong>安装vs2022的时候注意勾选【使用 C++ 的桌面开发】</strong>!</p>
+<p>注意python环境变量也需要设置好。</p>
+<h1 id="node-gyp"><a href="#node-gyp" class="headerlink" title="node-gyp"></a>node-gyp</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">npm config set msvs_version 2022<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>设置了之后可以在<code>C:\Users\xxx\.npmrc</code>查看</p>
+<pre class="line-numbers language-none"><code class="language-none">msvs_version&#x3D;2022<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>全局安装node-gyp</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">npm install -g node-gyp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>我这里是vs2022，版本就设置为2022。</p>
+<p>然后到项目的文件夹下安装即可，安装之后最好把node_modules删除掉再安装。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">npm install<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p>如果是老版本或者需要指定python版本的，在npm install的时候需要指定<code>npm install --python=python2.7</code></p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>苦node-gyp安装失败久矣，安装的时候也注意看报错信息，根据报错信息来排查问题。</p>
+<p>其他可以参考</p>
+<ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1dpc2VMaWJzL2JldHRlci1zcWxpdGUzL2Jsb2IvSEVBRC9kb2NzL3Ryb3VibGVzaG9vdGluZy5tZA==">better-sqlite3 Troubleshooting installation<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9ub2RlanMtZ3VpZGVsaW5lcy9ibG9iL21hc3Rlci93aW5kb3dzLWVudmlyb25tZW50Lm1kI2NvbXBpbGluZy1uYXRpdmUtYWRkb24tbW9kdWxlcw==">windows nodejs guildelines<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2ZlbGl4cmllc2ViZXJnL3dpbmRvd3MtYnVpbGQtdG9vbHM=">windows-build-tools<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25vZGVqcy9ub2RlLWd5cCNvbi13aW5kb3dz">node-gyp<i class="fa fa-external-link-alt"></i></span></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1128,109 +1261,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://freedomant.github.io/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/code-server%E6%90%AD%E5%BB%BA%E5%9C%A8%E7%BA%BFVSCode%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="Marco">
-      <meta itemprop="description" content="talk is cheap, show me the code">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Marco's blog✍️">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/code-server%E6%90%AD%E5%BB%BA%E5%9C%A8%E7%BA%BFVSCode%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">code-server搭建在线VSCode环境</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-05-12 15:50:49" itemprop="dateCreated datePublished" datetime="2021-05-12T15:50:49+08:00">2021-05-12</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-22 10:42:01" itemprop="dateModified" datetime="2021-07-22T10:42:01+08:00">2021-07-22</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">搭建教程</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>604</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>code-server 可以使用户能在浏览器端搭建 VSCode 环境。<a target="_blank" rel="noopener" href="https://github.com/cdr/code-server">地址</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/code-server%E6%90%AD%E5%BB%BA%E5%9C%A8%E7%BA%BFVSCode%E7%8E%AF%E5%A2%83/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1255,13 +1285,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">75k</span>
+    <span title="站点总字数">76k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:08</span>
+    <span title="站点阅读时长">1:09</span>
   </span>
 </div>
 <div class="busuanzi-count">

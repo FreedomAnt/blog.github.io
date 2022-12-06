@@ -3102,4 +3102,56 @@ control<span class="token punctuation">.</span><span class="token function">upda
         <tag>svg</tag>
       </tags>
   </entry>
+  <entry>
+    <title>node-gyp安装问题</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Node/node-gyp%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>npm安装better-sqlite3包的时候node-gyp报错，记录一下报错解决的过程。</p>
+<p>node-gyp是一个可以编译node插件的工具，使用node-gyp需要<code>python</code>环境和<code>c++</code>环境</p>
+<h1 id="windows-build-tools"><a href="#windows-build-tools" class="headerlink" title="windows-build-tools"></a>windows-build-tools</h1><p>如果在node.js安装的时候如果选择了<code>Automatically install the necessary tools,Note that this will also install Chocolatey</code>，会自动安装chocolatey并启动一个窗口开始安装visual studio和python。如果这里忘勾选的话，安装完成之后可以在node的安装文件夹找到<code>C:\Program Files\nodejs\install_tools.bat</code>，管理员运行安装。</p>
+<p>如果没有勾选可以选择以下方式安装windows-build-tools。</p>
+<ol>
+<li><p>执行命令<code>npm install --global --production windows-build-tools</code>，会自动安装python和visual studio build tools，如果安装失败，可以在目录<code>C:\Users\xxxx\.windows-build-tools</code>里找到，点击进行安装</p>
+<p>这里的版本有点老了，是python2.7和vs2017的版本，对于新版的node-gyp已经不适用了。</p>
+</li>
+<li><p>手动安装</p>
+<ol>
+<li>安装<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLm9yZy9kb3dubG9hZHMv">Python<i class="fa fa-external-link-alt"></i></span></li>
+<li>安装<span class="exturl" data-url="aHR0cHM6Ly92aXN1YWxzdHVkaW8ubWljcm9zb2Z0LmNvbS90aGFuay15b3UtZG93bmxvYWRpbmctdmlzdWFsLXN0dWRpby8/c2t1PUJ1aWxkVG9vbHM=">Visual Studio Build Tools<i class="fa fa-external-link-alt"></i></span>或者<span class="exturl" data-url="aHR0cHM6Ly92aXN1YWxzdHVkaW8ubWljcm9zb2Z0LmNvbS90aGFuay15b3UtZG93bmxvYWRpbmctdmlzdWFsLXN0dWRpby8/c2t1PUNvbW11bml0eQ==">Visual Studio Community<i class="fa fa-external-link-alt"></i></span></li>
+</ol>
+</li>
+</ol>
+<p>这里如果需要高版本的node-gyp，我这里需要node-gyp@9+版本，就选择对于高版本的python和vs安装，这里我选择的python3.11.0和vs2022，<strong>安装vs2022的时候注意勾选【使用 C++ 的桌面开发】</strong>!</p>
+<p>注意python环境变量也需要设置好。</p>
+<h1 id="node-gyp"><a href="#node-gyp" class="headerlink" title="node-gyp"></a>node-gyp</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">npm config set msvs_version 2022<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>设置了之后可以在<code>C:\Users\xxx\.npmrc</code>查看</p>
+<pre class="line-numbers language-none"><code class="language-none">msvs_version&#x3D;2022<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>全局安装node-gyp</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">npm install -g node-gyp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>我这里是vs2022，版本就设置为2022。</p>
+<p>然后到项目的文件夹下安装即可，安装之后最好把node_modules删除掉再安装。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">npm install<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p>如果是老版本或者需要指定python版本的，在npm install的时候需要指定<code>npm install --python=python2.7</code></p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>苦node-gyp安装失败久矣，安装的时候也注意看报错信息，根据报错信息来排查问题。</p>
+<p>其他可以参考</p>
+<ol>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1dpc2VMaWJzL2JldHRlci1zcWxpdGUzL2Jsb2IvSEVBRC9kb2NzL3Ryb3VibGVzaG9vdGluZy5tZA==">better-sqlite3 Troubleshooting installation<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01pY3Jvc29mdC9ub2RlanMtZ3VpZGVsaW5lcy9ibG9iL21hc3Rlci93aW5kb3dzLWVudmlyb25tZW50Lm1kI2NvbXBpbGluZy1uYXRpdmUtYWRkb24tbW9kdWxlcw==">windows nodejs guildelines<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2ZlbGl4cmllc2ViZXJnL3dpbmRvd3MtYnVpbGQtdG9vbHM=">windows-build-tools<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25vZGVqcy9ub2RlLWd5cCNvbi13aW5kb3dz">node-gyp<i class="fa fa-external-link-alt"></i></span></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Node</category>
+      </categories>
+      <tags>
+        <tag>node-gyp</tag>
+      </tags>
+  </entry>
 </search>
