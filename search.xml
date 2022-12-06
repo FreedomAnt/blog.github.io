@@ -130,7 +130,7 @@ control<span class="token punctuation">.</span><span class="token function">upda
 <p>此处执行过程中会提示创建账号和密码，如果此处不想创建，等所有步骤执行完成后，再运行命令来创建：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it my-sentry &#x2F;bin&#x2F;sh &#x3D;&#x3D;&gt; sentry createuser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiN4MzI7JiN4MzU7JiM1MzsmIzU2OyYjNTE7JiN4Mzg7JiM1MjsmI3gzOTsmIzY0OyYjMTEzOyYjeDcxOyYjeDJlOyYjOTk7JiN4NmY7JiN4NmQ7">&#57;&#x32;&#x35;&#53;&#56;&#51;&#x38;&#52;&#x39;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<p>创建账号密码<span class="exturl" data-url="bWFpbHRvOiYjeDM5OyYjNTA7JiM1MzsmI3gzNTsmI3gzODsmIzUxOyYjeDM4OyYjNTI7JiN4Mzk7JiM2NDsmIzExMzsmI3g3MTsmI3gyZTsmIzk5OyYjeDZmOyYjeDZkOw==">&#x39;&#50;&#53;&#x35;&#x38;&#51;&#x38;&#52;&#x39;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <h1 id="启动-Sentry-Server，同时添加端口映射"><a href="#启动-Sentry-Server，同时添加端口映射" class="headerlink" title="启动 Sentry Server，同时添加端口映射"></a>启动 Sentry Server，同时添加端口映射</h1><p>启动 Sentry Server，同时添加端口映射。Sentry 的端口为 9000，可以使用 <code>-p 9000:9000</code> 参数，再启动后可以通过访问 <code>http://localhost:9000</code> 或 <code>http://host-ip:9000</code> 进入 Sentry 的 web 管理页面</p>
 <p>Now start up Sentry server</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name my-sentry -p 9000:9000 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-redis:redis --link sentry-postgres:postgres sentry<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -140,7 +140,7 @@ control<span class="token punctuation">.</span><span class="token function">upda
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d --name sentry-cron -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run cron
 $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret-key&gt;&#39; --link sentry-postgres:postgres --link sentry-redis:redis sentry run worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h1 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h1><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjNTc7JiM1MDsmIzUzOyYjeDM1OyYjNTY7JiN4MzM7JiN4Mzg7JiN4MzQ7JiN4Mzk7JiN4NDA7JiN4NzE7JiMxMTM7JiN4MmU7JiM5OTsmI3g2ZjsmI3g2ZDs=">&#57;&#50;&#53;&#x35;&#56;&#x33;&#x38;&#x34;&#x39;&#x40;&#x71;&#113;&#x2e;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
+<h1 id="登录-sentry"><a href="#登录-sentry" class="headerlink" title="登录 sentry"></a>登录 sentry</h1><p>地址:<code>http://127.0.0.1:9000</code>，账号密码是<span class="exturl" data-url="bWFpbHRvOiYjeDM5OyYjeDMyOyYjeDM1OyYjNTM7JiM1NjsmI3gzMzsmIzU2OyYjNTI7JiN4Mzk7JiN4NDA7JiMxMTM7JiN4NzE7JiM0NjsmI3g2MzsmIzExMTsmI3g2ZDs=">&#x39;&#x32;&#x35;&#53;&#56;&#x33;&#56;&#52;&#x39;&#x40;&#113;&#x71;&#46;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>/123456</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510170805.png"></p>
 <p>我们可以创建一个 Vue 项目，在 Browser 里面可以选</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210512163352.png"></p>
@@ -167,7 +167,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_EMAIL_USER</td>
 <td>登录的邮箱账号</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjeDY1OyYjNjQ7JiMxMDk7JiN4NjE7JiN4Njk7JiMxMDg7JiM0NjsmI3g2MzsmI3g2ZjsmI3g2ZDs=">&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#64;&#109;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjeDY1OyYjMTIwOyYjOTc7JiMxMDk7JiMxMTI7JiMxMDg7JiMxMDE7JiM2NDsmIzEwOTsmIzk3OyYjeDY5OyYjMTA4OyYjNDY7JiM5OTsmI3g2ZjsmI3g2ZDs=">&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#64;&#109;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 <tr>
 <td>SENTRY_EMAIL_PASSWORD</td>
@@ -187,7 +187,7 @@ $ docker run -d --name sentry-worker-1 -e SENTRY_SECRET_KEY&#x3D;&#39;&lt;secret
 <tr>
 <td>SENTRY_SERVER_EMAIL</td>
 <td>发送的账户，跟 SENTRY_EMAIL_USER 相同</td>
-<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjeDZjOyYjeDY1OyYjNjQ7JiMxMDk7JiM5NzsmI3g2OTsmIzEwODsmIzQ2OyYjOTk7JiN4NmY7JiN4NmQ7">&#101;&#120;&#x61;&#x6d;&#112;&#x6c;&#x65;&#64;&#109;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span></td>
+<td><span class="exturl" data-url="bWFpbHRvOiYjMTAxOyYjMTIwOyYjeDYxOyYjeDZkOyYjMTEyOyYjMTA4OyYjeDY1OyYjeDQwOyYjMTA5OyYjeDYxOyYjMTA1OyYjeDZjOyYjNDY7JiN4NjM7JiMxMTE7JiMxMDk7">&#101;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#x40;&#109;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span></td>
 </tr>
 </tbody></table>
 <pre><code>网易邮箱示例：
@@ -346,59 +346,6 @@ token=1ef3e7b88d614ca9aa155fe693b5a68eb73fa88aacd941cdb9cd0a86091c0894<span aria
       <tags>
         <tag>android</tag>
         <tag>canvas</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Threejs屏幕坐标和世界坐标</title>
-    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/Threejs%E5%B1%8F%E5%B9%95%E5%9D%90%E6%A0%87%E5%92%8C%E4%B8%96%E7%95%8C%E5%9D%90%E6%A0%87/</url>
-    <content><![CDATA[<p>这里记录一下Three.js中屏幕坐标与世界坐标互转。</p>
-<span id="more"></span>
-
-<p>Three.js中如果要点击一个场景中的物体，需要用到屏幕坐标和世界坐标的互转，转换需要以下几步</p>
-<p>屏幕坐标=&gt;标准设备坐标=&gt;世界坐标，我们常用的屏幕坐标系如下，左上角是原点。</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/202209082058272.png" alt="常用坐标系"></p>
-<p>而标准设备坐标采用右手坐标系，示例图如下：</p>
-<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/202209082058998.png" alt="右手坐标系"></p>
-<h1 id="屏幕坐标转世界坐标"><a href="#屏幕坐标转世界坐标" class="headerlink" title="屏幕坐标转世界坐标"></a>屏幕坐标转世界坐标</h1><p>转换步骤如下：</p>
-<ol>
-<li><p>这里我们设canvas坐标系的宽为 $w$ ，高为 $h$ ，Three.js中的中心点就是$w/2$,$h/2$,</p>
-</li>
-<li><p>假设有一个点canvas坐标为(x,y)，那么这个点相对于Three.js中的中心点就是<br>$$<br>x_1=-(\frac{w}{2}-x)<br>$$</p>
-<p>$$<br>y_1=(\frac{h}{2}-y)<br>$$</p>
-<p><strong>注意x轴和y轴的方向。</strong></p>
-</li>
-<li><p>将$x_1$,$y_1$标准化到[-1,1]之间，需要再除以Three.js的中心点，转换如下：<br>$$<br>x_1=\frac{-(\frac{w}{2}-x)}{\frac{w}{2}}=\frac{2x}{w}-1<br>$$</p>
-<p>$$<br>y_1=\frac{(\frac{h}{2}-y)}{\frac{h}{2}}=-\frac{2y}{h}+1<br>$$</p>
-</li>
-</ol>
-<p>使用代码表示：</p>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> x <span class="token operator">=</span> event<span class="token punctuation">.</span>clientX<span class="token punctuation">;</span><span class="token comment">//鼠标单击坐标X</span>
-<span class="token keyword">const</span> y <span class="token operator">=</span> event<span class="token punctuation">.</span>clientY<span class="token punctuation">;</span><span class="token comment">//鼠标单击坐标Y</span>
-
-<span class="token comment">// 屏幕坐标转标准设备坐标</span>
-<span class="token keyword">const</span> x1 <span class="token operator">=</span> <span class="token punctuation">(</span> x <span class="token operator">/</span> window<span class="token punctuation">.</span>innerWidth <span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> y1 <span class="token operator">=</span> <span class="token operator">-</span><span class="token punctuation">(</span> y <span class="token operator">/</span> window<span class="token punctuation">.</span>innerHeight <span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> stdVector <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//0.5为约定俗成</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>设备坐标转世界坐标</p>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> worldVector <span class="token operator">=</span> stdVector<span class="token punctuation">.</span><span class="token function">unproject</span><span class="token punctuation">(</span>camera<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h1 id="世界坐标转屏幕坐标"><a href="#世界坐标转屏幕坐标" class="headerlink" title="世界坐标转屏幕坐标"></a>世界坐标转屏幕坐标</h1><p>世界坐标转屏幕坐标与上面相反，推导出公式为：</p>
-<p>$$<br>x=x_1*\frac{w}{2}+\frac{w}{2}<br>$$</p>
-<p>$$<br>y=-y_1*\frac{h}{2}+\frac{h}{2}<br>$$</p>
-<p>使用代码表示：</p>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> centerX <span class="token operator">=</span> window<span class="token punctuation">.</span>innerWidth <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> centerY <span class="token operator">=</span> window<span class="token punctuation">.</span>innerHeight <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
-
-<span class="token keyword">const</span> standardVec <span class="token operator">=</span> worldVector<span class="token punctuation">.</span><span class="token function">project</span><span class="token punctuation">(</span>camera<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">const</span> screenX <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>centerX <span class="token operator">*</span> standardVec<span class="token punctuation">.</span>x <span class="token operator">+</span> centerX<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> screenY <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token operator">-</span>centerY <span class="token operator">*</span> standardVec<span class="token punctuation">.</span>y <span class="token operator">+</span> centerY<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-      <categories>
-        <category>工作笔记</category>
-      </categories>
-      <tags>
-        <tag>Three.js</tag>
       </tags>
   </entry>
   <entry>
@@ -643,6 +590,59 @@ console<span class="token punctuation">.</span><span class="token function">log<
       </tags>
   </entry>
   <entry>
+    <title>Threejs屏幕坐标和世界坐标</title>
+    <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/Threejs%E5%B1%8F%E5%B9%95%E5%9D%90%E6%A0%87%E5%92%8C%E4%B8%96%E7%95%8C%E5%9D%90%E6%A0%87/</url>
+    <content><![CDATA[<p>这里记录一下Three.js中屏幕坐标与世界坐标互转。</p>
+<span id="more"></span>
+
+<p>Three.js中如果要点击一个场景中的物体，需要用到屏幕坐标和世界坐标的互转，转换需要以下几步</p>
+<p>屏幕坐标=&gt;标准设备坐标=&gt;世界坐标，我们常用的屏幕坐标系如下，左上角是原点。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/202209082058272.png" alt="常用坐标系"></p>
+<p>而标准设备坐标采用右手坐标系，示例图如下：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/202209082058998.png" alt="右手坐标系"></p>
+<h1 id="屏幕坐标转世界坐标"><a href="#屏幕坐标转世界坐标" class="headerlink" title="屏幕坐标转世界坐标"></a>屏幕坐标转世界坐标</h1><p>转换步骤如下：</p>
+<ol>
+<li><p>这里我们设canvas坐标系的宽为 $w$ ，高为 $h$ ，Three.js中的中心点就是$w/2$,$h/2$,</p>
+</li>
+<li><p>假设有一个点canvas坐标为(x,y)，那么这个点相对于Three.js中的中心点就是<br>$$<br>x_1=-(\frac{w}{2}-x)<br>$$</p>
+<p>$$<br>y_1=(\frac{h}{2}-y)<br>$$</p>
+<p><strong>注意x轴和y轴的方向。</strong></p>
+</li>
+<li><p>将$x_1$,$y_1$标准化到[-1,1]之间，需要再除以Three.js的中心点，转换如下：<br>$$<br>x_1=\frac{-(\frac{w}{2}-x)}{\frac{w}{2}}=\frac{2x}{w}-1<br>$$</p>
+<p>$$<br>y_1=\frac{(\frac{h}{2}-y)}{\frac{h}{2}}=-\frac{2y}{h}+1<br>$$</p>
+</li>
+</ol>
+<p>使用代码表示：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> x <span class="token operator">=</span> event<span class="token punctuation">.</span>clientX<span class="token punctuation">;</span><span class="token comment">//鼠标单击坐标X</span>
+<span class="token keyword">const</span> y <span class="token operator">=</span> event<span class="token punctuation">.</span>clientY<span class="token punctuation">;</span><span class="token comment">//鼠标单击坐标Y</span>
+
+<span class="token comment">// 屏幕坐标转标准设备坐标</span>
+<span class="token keyword">const</span> x1 <span class="token operator">=</span> <span class="token punctuation">(</span> x <span class="token operator">/</span> window<span class="token punctuation">.</span>innerWidth <span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> y1 <span class="token operator">=</span> <span class="token operator">-</span><span class="token punctuation">(</span> y <span class="token operator">/</span> window<span class="token punctuation">.</span>innerHeight <span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> stdVector <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//0.5为约定俗成</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>设备坐标转世界坐标</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> worldVector <span class="token operator">=</span> stdVector<span class="token punctuation">.</span><span class="token function">unproject</span><span class="token punctuation">(</span>camera<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h1 id="世界坐标转屏幕坐标"><a href="#世界坐标转屏幕坐标" class="headerlink" title="世界坐标转屏幕坐标"></a>世界坐标转屏幕坐标</h1><p>世界坐标转屏幕坐标与上面相反，推导出公式为：</p>
+<p>$$<br>x=x_1*\frac{w}{2}+\frac{w}{2}<br>$$</p>
+<p>$$<br>y=-y_1*\frac{h}{2}+\frac{h}{2}<br>$$</p>
+<p>使用代码表示：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> centerX <span class="token operator">=</span> window<span class="token punctuation">.</span>innerWidth <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> centerY <span class="token operator">=</span> window<span class="token punctuation">.</span>innerHeight <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> standardVec <span class="token operator">=</span> worldVector<span class="token punctuation">.</span><span class="token function">project</span><span class="token punctuation">(</span>camera<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> screenX <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>centerX <span class="token operator">*</span> standardVec<span class="token punctuation">.</span>x <span class="token operator">+</span> centerX<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> screenY <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token operator">-</span>centerY <span class="token operator">*</span> standardVec<span class="token punctuation">.</span>y <span class="token operator">+</span> centerY<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      <categories>
+        <category>工作笔记</category>
+      </categories>
+      <tags>
+        <tag>Three.js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>code-server搭建在线VSCode环境</title>
     <url>/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/code-server%E6%90%AD%E5%BB%BA%E5%9C%A8%E7%BA%BFVSCode%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p>code-server 可以使用户能在浏览器端搭建 VSCode 环境。<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Nkci9jb2RlLXNlcnZlcg==">地址<i class="fa fa-external-link-alt"></i></span></p>
@@ -677,83 +677,6 @@ console<span class="token punctuation">.</span><span class="token function">log<
       <tags>
         <tag>code-server</tag>
         <tag>vscode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>elasticsearch未授权访问问题解决</title>
-    <url>/Bug%E8%A7%A3%E5%86%B3/Elasticsearch/elasticsearch%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<p>近日有扫描发现 elasticsearch 出现未授权访问的问题，这里记录一下解决过程。</p>
-<span id="more"></span>
-
-<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>扫描方通过<code>elasticsearch head</code>进入 web 页面，连接到 elasticsearch 的服务器，能查看到 es 的相关信息。</p>
-<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>先分析一下现象产生，elasticsearch 安装之后又安装了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vYnovZWxhc3RpY3NlYXJjaC1oZWFk">elasticsearch head<i class="fa fa-external-link-alt"></i></span>以便于查看 elasticsearch 的信息。<code>elasticsearch head</code>默认在<code>9100</code>端口。</p>
-<h2 id="关闭-elasticsearch-head-可选"><a href="#关闭-elasticsearch-head-可选" class="headerlink" title="关闭 elasticsearch head(可选)"></a>关闭 elasticsearch head(可选)</h2><p>查找<code>elasticsearch head</code>进程，我们在<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vYnovZWxhc3RpY3NlYXJjaC1oZWFkL2Jsb2IvbWFzdGVyL3BhY2thZ2UuanNvbg==">文档<i class="fa fa-external-link-alt"></i></span>中可以看到<code>elasticsearch head</code>是以 grunt 的方式启动的。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ps -ef|grep grunt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>查找到相关进程，再 kill 掉。也关闭跨域，只允许 elasticsearch 本机访问，在<code>elasticsearch.yml</code>中设置<code>http.cors.enabled: false</code>。</p>
-<h2 id="增加-elasticsearch-自身安全认证"><a href="#增加-elasticsearch-自身安全认证" class="headerlink" title="增加 elasticsearch 自身安全认证"></a>增加 elasticsearch 自身安全认证</h2><p>我们可以通过增加 elasticsearch 的自身安全设置来避免未授权访问，es 版本这里是 6.x，有以下几种方式：</p>
-<ol>
-<li>使用官方推荐的 shield 插件(收费)</li>
-<li>使用<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0FzcXVlcmEvZWxhc3RpY3NlYXJjaC1odHRwLWJhc2lj">elasticsearch-http-basic<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnNlYXJjaC1ndWFyZC5jb20v">searchguard 插件<i class="fa fa-external-link-alt"></i></span>(免费)</li>
-<li>架设 nginx 反向代理服务器，并设置<code>http basic</code>认证来实现 elasticsearch 的登录认证。</li>
-</ol>
-<p>这里 shield 插件收费的先排除了，<code>elasticsearch-http-basic</code>的话是有<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0FzcXVlcmEvZWxhc3RpY3NlYXJjaC1odHRwLWJhc2ljI3ZlcnNpb24tbWFwcGluZw==">版本限制<i class="fa fa-external-link-alt"></i></span>，而且 github 上面已经不维护了。</p>
-<table>
-<thead>
-<tr>
-<th>Http Basic Plugin</th>
-<th>elasticsearch</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>v1.5.1(master)</td>
-<td>1.5.1, 1.5.2, 1.6.0, 1.7.0</td>
-</tr>
-<tr>
-<td>v1.5.0</td>
-<td>1.5.0</td>
-</tr>
-<tr>
-<td>v1.4.0</td>
-<td>1.4.0</td>
-</tr>
-<tr>
-<td>v1.3.0</td>
-<td>1.3.0</td>
-</tr>
-<tr>
-<td>v1.2.0</td>
-<td>1.2.0</td>
-</tr>
-<tr>
-<td>1.1.0</td>
-<td>1.0.0</td>
-</tr>
-<tr>
-<td>1.0.4</td>
-<td>0.90.7</td>
-</tr>
-</tbody></table>
-<p>searchguard 配置有一点繁琐。这里我们选用第三种，Nginx 做反向代理的方式。</p>
-<p>在 location 配置下面增加以下：</p>
-<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">location</span> ~* /</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">#关键点，配置帐号密码</span>
-    <span class="token directive"><span class="token keyword">auth_basic</span> <span class="token string">"login"</span></span><span class="token punctuation">;</span> <span class="token comment">#提示信息</span>
-    <span class="token directive"><span class="token keyword">auth_basic_user_file</span> /usr/local/nginx/conf/vhosts/password/es</span><span class="token punctuation">;</span> <span class="token comment">#密码文件</span>
-    <span class="token directive"><span class="token keyword">autoindex</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>
-    <span class="token comment">#配置转发等</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里密码文件通过<span class="exturl" data-url="aHR0cHM6Ly90b29sLm9zY2hpbmEubmV0L2h0cGFzc3dk">htpasswd<i class="fa fa-external-link-alt"></i></span>来生成就可以。</p>
-<p>然后修改 elasticsearch.yml 里的<code>network.host: 127.0.0.1</code>，如果不在同一个机器上就将<code>network.host</code>选项设置为 nginx 服务器的 ip 就可以了。</p>
-<p>然后我们访问 elasticsearch 的时候就需要输入用户名密码了。</p>
-]]></content>
-      <categories>
-        <category>Bug解决</category>
-        <category>Elasticsearch</category>
-      </categories>
-      <tags>
-        <tag>elasticsearch</tag>
       </tags>
   </entry>
   <entry>
@@ -1200,6 +1123,83 @@ $ git config --system --unset credential.helper<span aria-hidden="true" class="l
       </categories>
       <tags>
         <tag>github</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>elasticsearch未授权访问问题解决</title>
+    <url>/Bug%E8%A7%A3%E5%86%B3/Elasticsearch/elasticsearch%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>近日有扫描发现 elasticsearch 出现未授权访问的问题，这里记录一下解决过程。</p>
+<span id="more"></span>
+
+<h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>扫描方通过<code>elasticsearch head</code>进入 web 页面，连接到 elasticsearch 的服务器，能查看到 es 的相关信息。</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>先分析一下现象产生，elasticsearch 安装之后又安装了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vYnovZWxhc3RpY3NlYXJjaC1oZWFk">elasticsearch head<i class="fa fa-external-link-alt"></i></span>以便于查看 elasticsearch 的信息。<code>elasticsearch head</code>默认在<code>9100</code>端口。</p>
+<h2 id="关闭-elasticsearch-head-可选"><a href="#关闭-elasticsearch-head-可选" class="headerlink" title="关闭 elasticsearch head(可选)"></a>关闭 elasticsearch head(可选)</h2><p>查找<code>elasticsearch head</code>进程，我们在<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21vYnovZWxhc3RpY3NlYXJjaC1oZWFkL2Jsb2IvbWFzdGVyL3BhY2thZ2UuanNvbg==">文档<i class="fa fa-external-link-alt"></i></span>中可以看到<code>elasticsearch head</code>是以 grunt 的方式启动的。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ps -ef|grep grunt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查找到相关进程，再 kill 掉。也关闭跨域，只允许 elasticsearch 本机访问，在<code>elasticsearch.yml</code>中设置<code>http.cors.enabled: false</code>。</p>
+<h2 id="增加-elasticsearch-自身安全认证"><a href="#增加-elasticsearch-自身安全认证" class="headerlink" title="增加 elasticsearch 自身安全认证"></a>增加 elasticsearch 自身安全认证</h2><p>我们可以通过增加 elasticsearch 的自身安全设置来避免未授权访问，es 版本这里是 6.x，有以下几种方式：</p>
+<ol>
+<li>使用官方推荐的 shield 插件(收费)</li>
+<li>使用<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0FzcXVlcmEvZWxhc3RpY3NlYXJjaC1odHRwLWJhc2lj">elasticsearch-http-basic<i class="fa fa-external-link-alt"></i></span>，<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnNlYXJjaC1ndWFyZC5jb20v">searchguard 插件<i class="fa fa-external-link-alt"></i></span>(免费)</li>
+<li>架设 nginx 反向代理服务器，并设置<code>http basic</code>认证来实现 elasticsearch 的登录认证。</li>
+</ol>
+<p>这里 shield 插件收费的先排除了，<code>elasticsearch-http-basic</code>的话是有<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0FzcXVlcmEvZWxhc3RpY3NlYXJjaC1odHRwLWJhc2ljI3ZlcnNpb24tbWFwcGluZw==">版本限制<i class="fa fa-external-link-alt"></i></span>，而且 github 上面已经不维护了。</p>
+<table>
+<thead>
+<tr>
+<th>Http Basic Plugin</th>
+<th>elasticsearch</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v1.5.1(master)</td>
+<td>1.5.1, 1.5.2, 1.6.0, 1.7.0</td>
+</tr>
+<tr>
+<td>v1.5.0</td>
+<td>1.5.0</td>
+</tr>
+<tr>
+<td>v1.4.0</td>
+<td>1.4.0</td>
+</tr>
+<tr>
+<td>v1.3.0</td>
+<td>1.3.0</td>
+</tr>
+<tr>
+<td>v1.2.0</td>
+<td>1.2.0</td>
+</tr>
+<tr>
+<td>1.1.0</td>
+<td>1.0.0</td>
+</tr>
+<tr>
+<td>1.0.4</td>
+<td>0.90.7</td>
+</tr>
+</tbody></table>
+<p>searchguard 配置有一点繁琐。这里我们选用第三种，Nginx 做反向代理的方式。</p>
+<p>在 location 配置下面增加以下：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">location</span> ~* /</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">#关键点，配置帐号密码</span>
+    <span class="token directive"><span class="token keyword">auth_basic</span> <span class="token string">"login"</span></span><span class="token punctuation">;</span> <span class="token comment">#提示信息</span>
+    <span class="token directive"><span class="token keyword">auth_basic_user_file</span> /usr/local/nginx/conf/vhosts/password/es</span><span class="token punctuation">;</span> <span class="token comment">#密码文件</span>
+    <span class="token directive"><span class="token keyword">autoindex</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>
+    <span class="token comment">#配置转发等</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里密码文件通过<span class="exturl" data-url="aHR0cHM6Ly90b29sLm9zY2hpbmEubmV0L2h0cGFzc3dk">htpasswd<i class="fa fa-external-link-alt"></i></span>来生成就可以。</p>
+<p>然后修改 elasticsearch.yml 里的<code>network.host: 127.0.0.1</code>，如果不在同一个机器上就将<code>network.host</code>选项设置为 nginx 服务器的 ip 就可以了。</p>
+<p>然后我们访问 elasticsearch 的时候就需要输入用户名密码了。</p>
+]]></content>
+      <categories>
+        <category>Bug解决</category>
+        <category>Elasticsearch</category>
+      </categories>
+      <tags>
+        <tag>elasticsearch</tag>
       </tags>
   </entry>
   <entry>
@@ -2685,91 +2685,6 @@ client<span class="token punctuation">.</span><span class="token function">on</s
       </tags>
   </entry>
   <entry>
-    <title>使用puppeteer实现自动登录和测试页面</title>
-    <url>/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/</url>
-    <content><![CDATA[<p>近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。</p>
-<span id="more"></span>
-
-<h1 id="获取-Browser-实例"><a href="#获取-Browser-实例" class="headerlink" title="获取 Browser 实例"></a>获取 Browser 实例</h1><p>关于 puppeteer 的文档可以查看<span class="exturl" data-url="aHR0cHM6Ly96aGFvcWl6ZS5naXRodWIuaW8vcHVwcGV0ZWVyLWFwaS16aF9DTi8=">Puppeteer<i class="fa fa-external-link-alt"></i></span><br>首先引入 puppeteer 库，这里我们选择的是 puppeteer 而不是 puppeteer-core，简单是说区别就是</p>
-<ol>
-<li>puppeteer-core 不会自动下载 Chromium</li>
-<li>puppeteer-core 会忽略 PUPPETEER_*环境变量</li>
-</ol>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> browser <span class="token operator">=</span> <span class="token keyword">await</span> puppeteer<span class="token punctuation">.</span><span class="token function">launch</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  headless<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
-  args<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--start-maximized"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  ignoreDefaultArgs<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--enable-automation"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  defaultViewport<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>参数解释：</p>
-<ul>
-<li><code>headless: false</code><br>为了更好的看到现象，采用的非 headless，默认情况 headless 是 true</li>
-<li><code>args: [&quot;--start-maximized&quot;]</code>内容铺满视频框。</li>
-<li><code>ignoreDefaultArgs: [&quot;--enable-automation&quot;]</code>不显示测试环境控制的提示。</li>
-<li><code>defaultViewport: null</code> 视口大小设置为全屏，默认是 800X600 的框。</li>
-</ul>
-<p>更多参数可参考<span class="exturl" data-url="aHR0cHM6Ly9wZXRlci5zaC9leHBlcmltZW50cy9jaHJvbWl1bS1jb21tYW5kLWxpbmUtc3dpdGNoZXMv">List Of Chromium Command Line Switches<i class="fa fa-external-link-alt"></i></span></p>
-<p>这里是用 launch 的方式创建的 Browser 实例，也可以用 connect 方式</p>
-<ul>
-<li>puppeteer.connect: 连接一个已经开启浏览器 websoket 链接的 Chrome 实例</li>
-<li>puppeteer.launch: 每次都启动一个 Chrome 实例</li>
-</ul>
-<p>connect 方式需要以 <code>remote-debugging-port</code> 参数启动 Chrome，具体参数参照<span class="exturl" data-url="aHR0cHM6Ly9jaHJvbWVkZXZ0b29scy5naXRodWIuaW8vZGV2dG9vbHMtcHJvdG9jb2wvI2hvdy1kby1pLWFjY2Vzcy10aGUtYnJvd3Nlci10YXJnZXQ=">Chrome DevTools Protocol<i class="fa fa-external-link-alt"></i></span></p>
-<ol>
-<li><p>以 <code>remote-debugging-port</code> 参数启动 Chrome</p>
-<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165028.png" style="zoom:50%" /></li>
-<li><p>通过<code>http://$&#123;host&#125;:$&#123;port&#125;/json/version</code>获取到浏览器的一些信息。其中有 webSocketDebuggerUrl<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165029.png" alt="查看Chrome信息"></p>
-</li>
-<li><p>实现连接</p>
-</li>
-</ol>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js">puppeteer<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  browserWSEndpoint<span class="token operator">:</span> webSocketDebuggerUrl<span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="测试自动登录"><a href="#测试自动登录" class="headerlink" title="测试自动登录"></a>测试自动登录</h1><p>由于我们项目采用了验证码，一般情况下有验证码的自动登录比较麻烦，如果验证码复杂的话需要借助验证码识别平台来做，如果用程序来破解涉及到灰度化，二值化，去除噪点，字符分割，训练模型，识别等等一系列的东西，用 OCR 识别等。这里我们就采用简单的方式来做，在申请验证码的时候接口返回了验证码的 base64 字符，我们获取到这个字符来解码。</p>
-<p>代码如下</p>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> bPage <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">pages</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/pages/login.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> finalResponse <span class="token operator">=</span> <span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForResponse</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token operator">=></span>
-    response<span class="token punctuation">.</span><span class="token function">url</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/getVerify"</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">0</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> finalResponse<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> codeStr <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>data<span class="token punctuation">.</span>code<span class="token punctuation">,</span> <span class="token string">"base64"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">,</span> codeStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> <span class="token punctuation">[</span>responseStr<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
-  bPage<span class="token punctuation">.</span><span class="token function">waitForNavigation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  bPage<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token string">"button[lay-submit]"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="测试按键"><a href="#测试按键" class="headerlink" title="测试按键"></a>测试按键</h1><p>我们前端项目是在 TV 端，需要使用按键来测试页面。这里我们测试了之后保存页面的截图。<br>需要注意的是由于 js 在页面加载之后执行，这里做了一个延时 2s 的操作，具体的按键名称可以在 puppeteer 仓库中搜索<code>Keyboard</code>查找到<code>USKeyboardLayout.ts</code>，里面有详细按键名称。</p>
-<p>代码如下：</p>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> fPage <span class="token operator">=</span> <span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">newPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/page/index.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"Enter"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">screenshot</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> path<span class="token operator">:</span> <span class="token string">"screenshot.png"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>测试</category>
-      </categories>
-      <tags>
-        <tag>puppeteer</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>原生JS实现SVG转图片</title>
     <url>/%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/%E5%8E%9F%E7%94%9FJS%E5%AE%9E%E7%8E%B0SVG%E8%BD%AC%E5%9B%BE%E7%89%87/</url>
     <content><![CDATA[<p>记录一下原生JS实现SVG转图片的功能,可实现水印为图片的情况。</p>
@@ -2873,6 +2788,91 @@ client<span class="token punctuation">.</span><span class="token function">on</s
       </categories>
       <tags>
         <tag>svg</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用puppeteer实现自动登录和测试页面</title>
+    <url>/%E5%BC%80%E5%8F%91/%E6%B5%8B%E8%AF%95/%E4%BD%BF%E7%94%A8puppeteer%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2/</url>
+    <content><![CDATA[<p>近日需要用到自动登录的方式，于是找来了流行的 puppeteer 实现自动登录并测试页面，现记录一下实现的方式。</p>
+<span id="more"></span>
+
+<h1 id="获取-Browser-实例"><a href="#获取-Browser-实例" class="headerlink" title="获取 Browser 实例"></a>获取 Browser 实例</h1><p>关于 puppeteer 的文档可以查看<span class="exturl" data-url="aHR0cHM6Ly96aGFvcWl6ZS5naXRodWIuaW8vcHVwcGV0ZWVyLWFwaS16aF9DTi8=">Puppeteer<i class="fa fa-external-link-alt"></i></span><br>首先引入 puppeteer 库，这里我们选择的是 puppeteer 而不是 puppeteer-core，简单是说区别就是</p>
+<ol>
+<li>puppeteer-core 不会自动下载 Chromium</li>
+<li>puppeteer-core 会忽略 PUPPETEER_*环境变量</li>
+</ol>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> browser <span class="token operator">=</span> <span class="token keyword">await</span> puppeteer<span class="token punctuation">.</span><span class="token function">launch</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  headless<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  args<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--start-maximized"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  ignoreDefaultArgs<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"--enable-automation"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  defaultViewport<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>参数解释：</p>
+<ul>
+<li><code>headless: false</code><br>为了更好的看到现象，采用的非 headless，默认情况 headless 是 true</li>
+<li><code>args: [&quot;--start-maximized&quot;]</code>内容铺满视频框。</li>
+<li><code>ignoreDefaultArgs: [&quot;--enable-automation&quot;]</code>不显示测试环境控制的提示。</li>
+<li><code>defaultViewport: null</code> 视口大小设置为全屏，默认是 800X600 的框。</li>
+</ul>
+<p>更多参数可参考<span class="exturl" data-url="aHR0cHM6Ly9wZXRlci5zaC9leHBlcmltZW50cy9jaHJvbWl1bS1jb21tYW5kLWxpbmUtc3dpdGNoZXMv">List Of Chromium Command Line Switches<i class="fa fa-external-link-alt"></i></span></p>
+<p>这里是用 launch 的方式创建的 Browser 实例，也可以用 connect 方式</p>
+<ul>
+<li>puppeteer.connect: 连接一个已经开启浏览器 websoket 链接的 Chrome 实例</li>
+<li>puppeteer.launch: 每次都启动一个 Chrome 实例</li>
+</ul>
+<p>connect 方式需要以 <code>remote-debugging-port</code> 参数启动 Chrome，具体参数参照<span class="exturl" data-url="aHR0cHM6Ly9jaHJvbWVkZXZ0b29scy5naXRodWIuaW8vZGV2dG9vbHMtcHJvdG9jb2wvI2hvdy1kby1pLWFjY2Vzcy10aGUtYnJvd3Nlci10YXJnZXQ=">Chrome DevTools Protocol<i class="fa fa-external-link-alt"></i></span></p>
+<ol>
+<li><p>以 <code>remote-debugging-port</code> 参数启动 Chrome</p>
+<img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165028.png" style="zoom:50%" /></li>
+<li><p>通过<code>http://$&#123;host&#125;:$&#123;port&#125;/json/version</code>获取到浏览器的一些信息。其中有 webSocketDebuggerUrl<br><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20201202165029.png" alt="查看Chrome信息"></p>
+</li>
+<li><p>实现连接</p>
+</li>
+</ol>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">puppeteer<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  browserWSEndpoint<span class="token operator">:</span> webSocketDebuggerUrl<span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="测试自动登录"><a href="#测试自动登录" class="headerlink" title="测试自动登录"></a>测试自动登录</h1><p>由于我们项目采用了验证码，一般情况下有验证码的自动登录比较麻烦，如果验证码复杂的话需要借助验证码识别平台来做，如果用程序来破解涉及到灰度化，二值化，去除噪点，字符分割，训练模型，识别等等一系列的东西，用 OCR 识别等。这里我们就采用简单的方式来做，在申请验证码的时候接口返回了验证码的 base64 字符，我们获取到这个字符来解码。</p>
+<p>代码如下</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> bPage <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">pages</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/pages/login.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> finalResponse <span class="token operator">=</span> <span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForResponse</span><span class="token punctuation">(</span>
+  <span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+    response<span class="token punctuation">.</span><span class="token function">url</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/getVerify"</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">0</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> finalResponse<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> codeStr <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>data<span class="token punctuation">.</span>code<span class="token punctuation">,</span> <span class="token string">"base64"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">,</span> codeStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=userName]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">"input[name=password]"</span><span class="token punctuation">,</span> <span class="token string">"xxxx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> bPage<span class="token punctuation">.</span><span class="token function">waitForSelector</span><span class="token punctuation">(</span><span class="token string">"input[name=code]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">[</span>responseStr<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  bPage<span class="token punctuation">.</span><span class="token function">waitForNavigation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  bPage<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token string">"button[lay-submit]"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="测试按键"><a href="#测试按键" class="headerlink" title="测试按键"></a>测试按键</h1><p>我们前端项目是在 TV 端，需要使用按键来测试页面。这里我们测试了之后保存页面的截图。<br>需要注意的是由于 js 在页面加载之后执行，这里做了一个延时 2s 的操作，具体的按键名称可以在 puppeteer 仓库中搜索<code>Keyboard</code>查找到<code>USKeyboardLayout.ts</code>，里面有详细按键名称。</p>
+<p>代码如下：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> fPage <span class="token operator">=</span> <span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">newPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">"http://ip:port/projectName/page/index.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"ArrowRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span>keyboard<span class="token punctuation">.</span><span class="token function">down</span><span class="token punctuation">(</span><span class="token string">"Enter"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">screenshot</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> path<span class="token operator">:</span> <span class="token string">"screenshot.png"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> fPage<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>测试</category>
+      </categories>
+      <tags>
+        <tag>puppeteer</tag>
       </tags>
   </entry>
   <entry>
