@@ -315,7 +315,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.6k</span>
+      <span>4.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -338,40 +338,40 @@
 </blockquote>
 <span id="more"></span>
 
-<h1 id="获取-node-exporter"><a href="#获取-node-exporter" class="headerlink" title="获取 node-exporter"></a>获取 node-exporter</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9100:9100 \
---name nodeexporter \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;proc:&#x2F;host&#x2F;proc \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;host&#x2F;sys:&#x2F;host&#x2F;sys \
--v d:&#x2F;docker&#x2F;node-exporter&#x2F;rootfs:&#x2F;rootfs \
-prom&#x2F;node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-node-exporter"><a href="#获取-node-exporter" class="headerlink" title="获取 node-exporter"></a>获取 node-exporter</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9100</span>:9100 <span class="token punctuation">\</span>
+--name nodeexporter <span class="token punctuation">\</span>
+-v d:/docker/node-exporter/host/proc:/host/proc <span class="token punctuation">\</span>
+-v d:/docker/node-exporter/host/sys:/host/sys <span class="token punctuation">\</span>
+-v d:/docker/node-exporter/rootfs:/rootfs <span class="token punctuation">\</span>
+prom/node-exporter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:9100/</code>即可查看页面</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510172501.png" alt="node-exporter"></p>
-<h1 id="获取-cadvisor"><a href="#获取-cadvisor" class="headerlink" title="获取 cadvisor"></a>获取 cadvisor</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 8080:8080 \
---name cadvisor \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;rootfs:&#x2F;rootfs:ro \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;run:&#x2F;var&#x2F;run:rw \
--v d:&#x2F;docker&#x2F;cadvisor&#x2F;var&#x2F;lib&#x2F;docker:&#x2F;var&#x2F;lib&#x2F;docker:ro \
-google&#x2F;cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-cadvisor"><a href="#获取-cadvisor" class="headerlink" title="获取 cadvisor"></a>获取 cadvisor</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">8080</span>:8080 <span class="token punctuation">\</span>
+--name cadvisor <span class="token punctuation">\</span>
+-v d:/docker/cadvisor/rootfs:/rootfs:ro <span class="token punctuation">\</span>
+-v d:/docker/cadvisor/var/run:/var/run:rw <span class="token punctuation">\</span>
+-v d:/docker/cadvisor/var/lib/docker:/var/lib/docker:ro <span class="token punctuation">\</span>
+google/cadvisor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:8080/</code>即可查看页面</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510180058.png" alt="cadvisor"></p>
-<h1 id="获取-prometheus"><a href="#获取-prometheus" class="headerlink" title="获取 prometheus"></a>获取 prometheus</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
---name prometheus \
-prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-prometheus"><a href="#获取-prometheus" class="headerlink" title="获取 prometheus"></a>获取 prometheus</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9090</span>:9090 <span class="token punctuation">\</span>
+--name prometheus <span class="token punctuation">\</span>
+prom/prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:9090/</code>即可查看页面</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510175743.png" alt="prometheus"></p>
-<h1 id="获取-grafana"><a href="#获取-grafana" class="headerlink" title="获取 grafana"></a>获取 grafana</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 3000:3000 \
---name grafana \
--v d:&#x2F;docker&#x2F;grafana&#x2F;grafana-storage:&#x2F;var&#x2F;lib&#x2F;grafana \
-grafana&#x2F;grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-grafana"><a href="#获取-grafana" class="headerlink" title="获取 grafana"></a>获取 grafana</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">3000</span>:3000 <span class="token punctuation">\</span>
+--name grafana <span class="token punctuation">\</span>
+-v d:/docker/grafana/grafana-storage:/var/lib/grafana <span class="token punctuation">\</span>
+grafana/grafana<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:3000/</code>即可查看页面<br>初始密码为 admin/admin，首次登陆需要修改密码。</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510175902.png" alt="grafana"></p>
-<h1 id="获取-alertmanager"><a href="#获取-alertmanager" class="headerlink" title="获取 alertmanager"></a>获取 alertmanager</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9093:9093 \
---name alertmanager \
-prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="获取-alertmanager"><a href="#获取-alertmanager" class="headerlink" title="获取 alertmanager"></a>获取 alertmanager</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9093</span>:9093 <span class="token punctuation">\</span>
+--name alertmanager <span class="token punctuation">\</span>
+prom/alertmanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>输入<code>http://localhost:9093/</code>即可查看页面</p>
 <p><img data-src="https://cdn.jsdelivr.net/gh/FreedomAnt/image@main/img/20210510180939.png" alt="alertmanager"></p>
@@ -379,26 +379,26 @@ prom&#x2F;alertmanager<span aria-hidden="true" class="line-numbers-rows"><span><
 <ul>
 <li>直接进 shell 环境修改。</li>
 </ul>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it prometheus sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it prometheus <span class="token function">sh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">vi</span> /etc/prometheus/prometheus.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ul>
 <li>删除此 container，重新新建</li>
 </ul>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p 9090:9090 \
---name prometheus \
--v d:&#x2F;docker&#x2F;prometheus&#x2F;opt&#x2F;prometheus.yml:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml  \
-prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker run -d -p <span class="token number">9090</span>:9090 <span class="token punctuation">\</span>
+--name prometheus <span class="token punctuation">\</span>
+-v d:/docker/prometheus/opt/prometheus.yml:/etc/prometheus/prometheus.yml  <span class="token punctuation">\</span>
+prom/prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这样就将配置文件映射到本地，修改本地可以达到一样的效果</p>
 <ul>
 <li>配置文件也可以单独拷贝出来，代码如下</li>
 </ul>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker cp prometheus:&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token function">cp</span> prometheus:/etc/prometheus/prometheus.yml ./<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>修改了配置文件之后用以下代码实现热加载</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ kill -HUP 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">kill</span> -HUP <span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里本地地址为<code>192.168.7.104</code>，其中 scrape_configs 的配置部分修改为</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
@@ -482,10 +482,10 @@ prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></s
           description<span class="token punctuation">:</span> <span class="token string">"&#123;&#123; $labels.instance &#125;&#125; of job &#123;&#123; $labels.job &#125;&#125; has been down for more than 1 minutes."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="配置-alertmanager-yml"><a href="#配置-alertmanager-yml" class="headerlink" title="配置 alertmanager.yml"></a>配置 alertmanager.yml</h2><p>进入 alertmanager 的 shell</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker exec -it alertmanager sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ docker <span class="token builtin class-name">exec</span> -it alertmanager <span class="token function">sh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>配置 alertmanager 的配置文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ vi &#x2F;etc&#x2F;alertmanager&#x2F;alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">vi</span> /etc/alertmanager/alertmanager.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里我们也可以采用和 prometheus 同样的方式，拷贝配置文件出来修改，或者映射配置文件到本地修改。</p>
 <p>这里我配置的为我的 126 邮箱地址发送告警到我的 qq 邮箱地址，完整代码如下：</p>
@@ -597,13 +597,13 @@ prom&#x2F;prometheus<span aria-hidden="true" class="line-numbers-rows"><span></s
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">77k</span>
+    <span title="站点总字数">76k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:10</span>
+    <span title="站点阅读时长">1:09</span>
   </span>
 </div>
 <div class="busuanzi-count">
